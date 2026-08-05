@@ -1,0 +1,21 @@
+<script type="template/klevu" id="klevuQuickCategorySuggestions">
+<% if(data.query.categoryCompressed && data.query.categoryCompressed.result.length > 0) { %>
+  <div class="klv-Suggestions_Categories">
+
+    <div class="klv-Suggestions_Heading fz-10_10">
+      {{ 'general.search.categories' | t }}
+    </div>
+
+    <ul class="klv-Suggestions_Items">
+      <% helper.each(data.query.categoryCompressed.result,function(key,category){ %>
+        <li class="klv-Suggestions_Item">
+          <a class="klv-Suggestions_Link klevu-track-click" target="_self" href="<%=category.url%>" data-url="<%=category.url%>" data-name="<%=category.name%>" >
+            <%=category.name%>
+          </a>
+        </li>
+      <% }); %>
+    </ul>
+
+  </div>
+<% } %>
+</script>

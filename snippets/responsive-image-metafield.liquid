@@ -1,0 +1,57 @@
+{%- comment -%}
+It creates a style tag and it restricts an image from growing larger than its max resolution.
+
+Dependencies:
+- Lazysizes plugin (https://github.com/aFarkas/lazysizes) which enable responsive image with faster load time and better performance.
+- Lazysizes Responsive Images as a Service (https://github.com/aFarkas/lazysizes/tree/gh-pages/plugins/rias) To load the correct image size with our CDN
+- Lazysizes Bgset (https://github.com/aFarkas/lazysizes/tree/gh-pages/plugins/bgset) To use responsive images on background-image (CSS)
+
+Accepts:
+- image: {Object} Image object
+- width: {Number} Max width of the image container
+- height: {Number} Max height of the image container
+- img_class: {String} class name of the <img />
+- wrapper_class: {String} class name of the <div> wrapper
+  {%- endcomment -%}
+
+  {%- comment -%}
+    Added incremental number to avoid conflict styling code when the same images are using this snippet
+  {%- endcomment -%}
+
+  {%- capture responsive_image_counter %}{% increment responsive_image_counter %}{% endcapture -%}
+
+  <style>
+    {%- assign width_image = width -%}
+    {%- assign height_image = height | times: 1.0 -%}
+
+    {%- if provide_css -%}
+    #Image-{{ image.id }}-{{ responsive_image_counter }} {
+      max-width: {{ width_image }}px;
+      max-height: {{ height_image }}px;
+    }
+    #ImageWrapper-{{ image.id }}-{{ responsive_image_counter }} {
+      max-width: {{ width_image }}px;
+    }
+    {%- endif -%}
+
+    #ImageWrapper-{{ image.id }}-{{ responsive_image_counter }}::before {
+      padding-top:{{ height_image | divided_by: width_image | times: 100 }}%;
+    }
+  </style>
+
+  {%- assign img_url = image.cloudinary_src | append: 'w_{width},h_{height}' -%}
+
+  <div class="rsp-Image {{ wrapper_class }}" id="ImageWrapper-{{ image.id }}-{{ responsive_image_counter }}" data-image-id="{{ image.id }}">
+    <img class="rsp-Image_Image lazyload {{ img_class }}"
+         id="Image-{{ image.id }}-{{ responsive_image_counter }}"
+         src="{{ image.cloudinary_src }}"
+         data-src="{{ img_url }}"
+         data-widths="[180, 360, 540, 720, 900, 1080, 1296, 1512, 1728, 1944, 2160, 2376, 2592, 2808, 3024]"
+         data-aspectratio="{{ image.aspect_ratio }}"
+         data-sizes="auto"
+         alt="{{ image.alt | escape }}" />
+  </div>
+
+  <noscript>
+    <img class="{{ img_class }}" src="{{ image.src }}" alt="{{ image.alt | escape }}" />
+  </noscript>

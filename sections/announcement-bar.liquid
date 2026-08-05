@@ -1,0 +1,49 @@
+{%- liquid
+  assign should_show = false
+
+  if settings.bar_enabled
+    assign should_show = true
+  endif
+
+  if section.settings.title == blank
+    assign should_show = false
+  endif
+-%}
+
+{%- if should_show -%}
+  <section class="hd-AnnouncementBar{% if section.settings.link != blank %} util-FauxLink{% endif %}">
+    <div class="hd-AnnouncementBar_Inner">
+      <div class="hd-AnnouncementBar_Body">
+        <p class="hd-AnnouncementBar_Text">
+          {{ section.settings.title }}
+        </p>
+      </div>
+    </div>
+
+    {%- if section.settings.link != blank -%}
+      <a
+        class="util-FauxLink_Link"
+        href="{{ section.settings.link }}"
+        title="{{ section.settings.title }}"
+      ></a>
+    {%- endif -%}
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Announcement Bar",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Text"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,53 @@
+{%- capture file -%}{{ 'site.webmanifest.json' | asset_url }}{%- endcapture -%}
+{%- assign assets_path = file | split: 'site.webmanifest.json' | first -%}
+
+{%- liquid
+  assign is_dev_theme = false
+
+  if theme.name contains '(Development'
+    assign is_dev_theme = true
+  endif
+-%}
+
+<script>
+  if (!window.BAO) {
+    window.BAO = {}
+  }
+
+  document.documentElement.className = document.documentElement.className
+    .replace('util-NoJs', '')
+
+  window.theme = {
+    isDevTheme: {{ is_dev_theme }},
+    strings: {
+      addToCart: {{ 'products.product.add_to_cart' | t | json }},
+      soldOut: {{ 'products.product.sold_out' | t | json }},
+      unavailable: {{ 'products.product.unavailable' | t | json }},
+      pushCart: {
+        title: {{ 'cart.drawer.title' | t | json }},
+        subtotal: {{ 'cart.drawer.subtotal' | t | json }},
+        delivery: {{ 'cart.drawer.delivery' | t | json }},
+        calculatedAtCheckout: {{ 'cart.drawer.calculated_at_checkout' | t | json }},
+        checkout: {{ 'cart.drawer.checkout_securely' | t | json }},
+        continueShopping: {{ 'cart.drawer.continue_shopping' | t | json }},
+        remove: {{ 'cart.drawer.remove' | t | json }},
+        removeAll: {{ 'cart.drawer.remove_all' | t | json }},
+      },
+    },
+    customer: {
+      isLoggedIn: {% if customer %}true{% else %}false{% endif %},
+      id: {{ customer.id | default: 'null' }},
+    },
+    moneyFormat: {{ shop.money_format | json }}
+  }
+
+  {% if template.directory == 'customers' %}
+    window.theme.allCountryOptionTags = {{ all_country_option_tags | json }}
+  {% endif %}
+
+  if (!window.theme.isDevTheme) {
+    window.__webpack_public_path__ = "{{ assets_path }}"
+  }
+</script>
+
+{%- render 'iwish_v2' with component: "head-script" -%}

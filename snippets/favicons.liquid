@@ -1,0 +1,28 @@
+{%- if settings.favicon_small != blank -%}
+  <link rel="icon" type="image/png" href="{{ settings.favicon_small | img_url: '16x16' }}" sizes="16x16" />
+{%- endif -%}
+
+{%- if settings.favicon_medium != blank -%}
+  <link rel="shortcut icon" type="image/png" href="{{ settings.favicon_medium | img_url: '32x32' }}" sizes="32x32" />
+{%- endif -%}
+
+{%- if settings.favicon_large != blank -%}
+  <link rel="icon" type="image/png" href="{{ settings.favicon_large | img_url: '194x194' }}" sizes="194x194" />
+{%- endif -%}
+
+{%- if settings.apple_touch_icon != blank -%}
+  <link rel="apple-touch-icon" href="{{ settings.apple_touch_icon | img_url: '180x180' }}" sizes="180x180" />
+{%- endif -%}
+
+{%- if settings.android_chrome_icon != blank -%}
+  <link rel="icon" type="image/png" href="{{ settings.android_chrome_icon | img_url: '192x192' }}" sizes="192x192" />
+{%- endif -%}
+
+<link rel="manifest" href="{{ 'site.webmanifest.json' | asset_url }}" />
+<link rel="mask-icon" href="{{ 'safari-pinned-tab.svg' | asset_url }}" color="{{ settings.favicons_color }}" />
+
+<meta name="apple-mobile-web-app-title" content="{{ shop.name }}" />
+<meta name="application-name" content="{{ shop.name }}" />
+<meta name="msapplication-TileColor" content="{{ settings.favicons_color }}" />
+<meta name="msapplication-config" content="{{ 'browserconfig.xml' | asset_url }}" />
+<meta name="theme-color" content="{{ settings.favicons_color }}" />

@@ -1,0 +1,146 @@
+{%- assign new_comment = false -%}
+{%- assign number_of_comments = article.comments_count -%}
+
+{%- if comment and comment.created_at -%}
+  {%- assign new_comment = true -%}
+  {%- assign new_comment_id = comment.id -%}
+{%- endif -%}
+
+{%- if new_comment -%}
+  {%- assign duplicate_comment = false -%}
+
+  {%- for comment in article.comments -%}
+    {%- if comment.id == new_comment_id -%}
+      {%- assign duplicate_comment = true -%}
+
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- unless duplicate_comment -%}
+  {%- assign number_of_comments = article.comments_count | plus: 1 -%}
+  {%- endunless -%}
+{%- endif -%}
+
+<section class="art-Comments">
+  {%- if number_of_comments > 0 -%}
+    <h2 class="art-Comments_Title">
+      {{ 'article.comments.with_count' | t: count: number_of_comments }}
+    </h2>
+  {%- endif -%}
+
+  {%- paginate article.comments by 50 -%}
+    {%- if comment and comment.status and comment.id != blank and paginate.current_page == 1 -%}
+      <div class="val-Validation val-Validation-success">
+        {%- if blog.moderated? and comment.status != 'published' -%}
+          <p class="val-Validation_Text">{{ 'article.comments.success_moderated' | t }}</p>
+        {%- else -%}
+          <p class="val-Validation_Text">{{ 'article.comments.success' | t }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+
+    {%- if number_of_comments > 0 -%}
+      <ul class="art-Comments_Items">
+        {%- if comment and comment.status != 'published' and comment.id != blank -%}
+          <li class="art-Comments_Item" id="{{ comment.id }}">
+            <p class="art-Comments_Text">{{ comment.content | strip_html }}</p>
+
+            {%- capture date -%}{{ comment.created_at | time_tag: format: 'month_day_year' }}{%- endcapture -%}
+            <p class="art-Comments_Meta">
+              {{ 'article.comments.comment_meta_html' | t: author: comment.author, date: date }}
+            </p>
+          </li>
+        {%- endif -%}
+
+        {%- for comment in article.comments -%}
+          <li class="art-Comments_Item" id="{{ comment.id }}">
+            <p class="art-Comments_Text">{{ comment.content | strip_html }}</p>
+
+            {%- capture date -%}{{ comment.created_at | time_tag: format: 'month_day_year' }}{%- endcapture -%}
+            <p class="art-Comments_Meta">
+              {{ 'article.comments.comment_meta_html' | t: author: comment.author, date: date }}
+            </p>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  {%- endpaginate -%}
+
+  {%- form 'new_comment', article, class: 'frm-Form' -%}
+    <fieldset class="frm-Form_Fieldset">
+      <legend class="frm-Form_Legend">{{ 'article.comments.title' | t }}</legend>
+
+      {%- render 'form-errors', form: form -%}
+
+      <div class="frm-Form_Row">
+        <label
+          class="frm-Form_Label util-ScreenReaderOnly"
+          for="CommentAuthor"
+        >
+          {{ 'article.comments.name' | t }}
+        </label>
+
+        <input
+          class="frm-Form_Input{% if form.errors contains 'author' %} frm-Form_Input-error{% endif %}"
+          type="text"
+          name="comment[author]"
+          id="CommentAuthor"
+          placeholder="{{ 'article.comments.name' | t }}"
+          value="{{ form.author }}"
+          autocapitalize="words"
+        />
+      </div>
+
+      <div class="frm-Form_Row">
+        <label
+          class="frm-Form_Label util-ScreenReaderOnly"
+          for="CommentEmail"
+        >
+          {{ 'article.comments.email' | t }}
+        </label>
+
+        <input
+          class="frm-Form_Input{% if form.errors contains 'email' %} frm-Form_Input-error{% endif %}"
+          type="email"
+          name="comment[email]"
+          id="CommentEmail"
+          placeholder="{{ 'article.comments.email' | t }}"
+          value="{{ form.email }}"
+          spellcheck="false"
+          autocomplete="off"
+          autocapitalize="off"
+        />
+      </div>
+
+      <div class="frm-Form_Row">
+        <label
+          class="frm-Form_Label util-ScreenReaderOnly"
+          for="CommentBody"
+        >
+          {{ 'article.comments.message' | t }}
+        </label>
+
+        <textarea
+          class="frm-Form_Textarea{% if form.errors contains 'body' %} frm-Form_Textarea-error{% endif %}"
+          rows="6"
+          name="comment[body]"
+          id="CommentBody"
+          placeholder="{{ 'article.comments.message' | t }}"
+        >
+          {{- form.body -}}
+        </textarea>
+      </div>
+    </fieldset>
+
+    <footer class="frm-Form_Footer">
+      {%- if blog.comments_enabled? -%}
+        <p class="frm-Form_Text">{{ 'article.comments.moderated' | t }}</p>
+      {%- endif -%}
+
+      <button class="frm-Form_Submit btn-Primary" type="submit">
+        {{ 'article.comments.post_comment' | t }}
+      </button>
+    </footer>
+  {%- endform -%}
+</section>

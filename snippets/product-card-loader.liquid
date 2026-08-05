@@ -1,0 +1,40 @@
+{%- liquid
+
+  assign product = nil
+
+  if product_handle != blank
+    assign product = all_products[product_handle]
+  endif
+
+  assign current_variant = product.selected_or_first_available_variant
+
+  if variant_id != nil 
+    assign passed_variant_id = variant_id | strip | times: 1
+    if current_variant.id != passed_variant_id
+
+      for variant in product.variants
+        if variant.id == passed_variant_id
+          assign current_variant = variant
+        endif
+      endfor
+    endif    
+  endif
+
+  if wishlist_remove_link_html == nil 
+    assign wishlist_remove_link_html = blank
+  endif
+
+  if show_add_to_bag_button == nil 
+    assign show_add_to_bag_button = false
+  endif
+  
+-%}
+
+{%- if product.handle != blank -%}
+  {%- render 'product-card', 
+    product: product, 
+    current_variant: current_variant,
+    wishlist_remove_link_html: wishlist_remove_link_html,
+    show_add_to_bag_button: show_add_to_bag_button 
+  -%}
+{%- endif -%}

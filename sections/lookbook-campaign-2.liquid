@@ -1,0 +1,797 @@
+<section
+  class="sec-MediaGrid"
+  data-section-id="{{ section.id }}"
+  data-section-type="media-grid"
+>
+
+  {%- for block in section.blocks -%}
+    {%- assign mobile_image = block.settings.mobile_image -%}
+    {%- assign has_image = false -%}
+
+    {%- if mobile_image == blank -%}
+      {%- assign mobile_image = block.settings.image -%}
+    {%- endif -%}
+
+    {%- if mobile_image != blank or block.settings.image != blank -%}
+      {%- assign has_image = true -%}
+    {%- endif -%}
+
+    <div class="sec-MediaGrid_Item sec-MediaGrid_Item-{{ block.settings.size }} js-Animate" data-animation="Fade">
+      <div
+        class="mgi-MediaGridItem{% if block.settings.link != blank %} util-FauxLink{% endif %}{% unless has_image %} mgi-MediaGridItem-noImage{% endunless %}"
+        style="{%- render 'media-grid-item-variable-setter',
+          variable: 'Item_BackgroundColour',
+          select: block.settings.background_colour,
+          custom: block.settings.background_colour_custom
+        -%}"
+      >
+        {%- if mobile_image != blank -%}
+          <div class="mgi-MediaGridItem_ImageContainer mgi-MediaGridItem_ImageContainer-mobile">
+            <div class="mgi-MediaGridItem_Image">
+              {%- render 'responsive-image',
+                image: mobile_image,
+                width: mobile_image.width,
+                height: mobile_image.height
+              -%}
+            </div>
+          </div>
+        {%- endif -%}
+
+        <div class="mgi-MediaGridItem_ImageContainer mgi-MediaGridItem_ImageContainer-desktop">
+          {%- assign width = 1440 -%}
+          {%- assign height = 1740 -%}
+
+          {%- if block.settings.size == 'full' -%}
+            {%- assign width = 2880 -%}
+          {%- elsif block.settings.size == 'third'  -%}
+            {%- assign width = 960 -%}
+            {%- assign height = 1340 -%}
+          {%- endif -%}
+
+          <div class="mgi-MediaGridItem_Image">
+            {%- render 'responsive-image',
+              image: block.settings.image,
+              width: width,
+              height: height
+            -%}
+          </div>
+        </div>
+
+        <div class="mgi-MediaGridItem_Content">
+          {%- if block.settings.top_box_text != blank -%}
+            <div
+              class="mgi-MediaGridItem_Box mgi-MediaGridItem_Box-top"
+              style="
+              {%- render 'media-grid-item-variable-setter',
+                variable: 'Item_Background',
+                select: block.settings.top_box_background_colour,
+                custom: block.settings.top_box_background_colour_custom
+              -%}
+              {%- render 'media-grid-item-variable-setter',
+                variable: 'Item_Colour',
+                select: block.settings.top_box_text_colour,
+                custom: block.settings.top_box_text_colour_custom
+              -%}
+                "
+            >
+              <div class="mgi-MediaGridItem_Text fz-13_18">
+                {{ block.settings.top_box_text }}
+              </div>
+            </div>
+          {%- endif -%}
+
+          {%- if block.settings.top_kicker != blank or block.settings.top_title != blank or block.settings.top_subtitle != blank or block.settings.top_text != blank or block.settings.top_show_arrow != blank -%}
+            <div
+              class="mgi-MediaGridItem_Top"
+              style="
+              {%- render 'media-grid-item-variable-setter',
+                variable: 'Item_Colour',
+                select: block.settings.top_text_colour,
+                custom: block.settings.top_text_colour_custom
+              -%}
+              {%- if block.settings.top_text_alignment != blank -%}
+                --Item_Alignment: {%- if block.settings.top_text_alignment == 'left' -%}flex-start{%- elsif block.settings.top_text_alignment == 'center' -%}center{%- elsif block.settings.top_text_alignment == 'right' -%}flex-end{%- endif -%};
+                --Item_TextAlignment: {{ block.settings.top_text_alignment }};
+              {%- endif -%}
+                "
+            >
+              {%- if block.settings.top_kicker != blank -%}
+                <p class="mgi-MediaGridItem_Kicker fz-12_12">
+                  {{ block.settings.top_kicker | newline_to_br }}
+                </p>
+              {%- endif -%}
+
+              {%- if block.settings.top_title != blank -%}
+                <p class="mgi-MediaGridItem_Title{% if block.settings.top_title_size == 'regular' %}{% if block.settings.top_title_font == 'futura' %} fz-56_56-futura{% else %} fz-56_56{% endif %}{% else %}{% if block.settings.top_title_font == 'futura' %} fz-112_112-futura{% else %} fz-112_112{% endif %}{% endif %}">
+                  {{ block.settings.top_title | newline_to_br }}
+                </p>
+              {%- endif -%}
+
+              {%- if block.settings.top_subtitle != blank -%}
+                <p class="mgi-MediaGridItem_Subtitle fz-25_33">
+                  {{ block.settings.top_subtitle | newline_to_br }}
+                </p>
+              {%- endif -%}
+
+              {%- if block.settings.top_text != blank -%}
+                <p class="mgi-MediaGridItem_Text fz-13_18">
+                  {{ block.settings.top_text | newline_to_br }}
+                </p>
+              {%- endif -%}
+
+              {%- if block.settings.top_show_arrow -%}
+                <div class="mgi-MediaGridItem_Arrow">
+                  {%- render 'bao-arrow' -%}
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+          {%- if block.settings.middle_kicker != blank or block.settings.middle_title != blank or block.settings.middle_subtitle != blank or block.settings.middle_text != blank or block.settings.middle_show_arrow != blank -%}
+            <div
+              class="mgi-MediaGridItem_Middle{% if block.settings.middle_thin_content %} mgi-MediaGridItem_Middle-thin{% endif %}"
+              style="
+              {%- render 'media-grid-item-variable-setter',
+                variable: 'Item_Colour',
+                select: block.settings.middle_text_colour,
+                custom: block.settings.middle_text_colour_custom
+              -%}
+              {%- if block.settings.middle_text_alignment != blank -%}
+                --Item_Alignment: {%- if block.settings.middle_text_alignment == 'left' -%}flex-start{%- elsif block.settings.middle_text_alignment == 'center' -%}center{%- elsif block.settings.middle_text_alignment == 'right' -%}flex-end{%- endif -%};
+                --Item_TextAlignment: {{ block.settings.middle_text_alignment }};
+              {%- endif -%}
+                "
+            >
+              {%- if block.settings.middle_kicker != blank -%}
+                <p class="mgi-MediaGridItem_Kicker fz-12_12">
+                  {{ block.settings.middle_kicker | newline_to_br }}
+                </p>
+              {%- endif -%}
+
+              {%- if block.settings.middle_title != blank -%}
+                <p class="mgi-MediaGridItem_Title{% if block.settings.middle_title_size == 'regular' %}{% if block.settings.middle_title_font == 'futura' %} fz-56_56-futura{% else %} fz-56_56{% endif %}{% else %}{% if block.settings.middle_title_font == 'futura' %} fz-112_112-futura{% else %} fz-112_112{% endif %}{% endif %}">
+                  {{ block.settings.middle_title | newline_to_br }}
+                </p>
+              {%- endif -%}
+
+              {%- if block.settings.middle_subtitle != blank -%}
+                <p class="mgi-MediaGridItem_Subtitle fz-25_33">
+                  {{ block.settings.middle_subtitle | newline_to_br }}
+                </p>
+              {%- endif -%}
+
+              {%- if block.settings.middle_text != blank -%}
+                <p class="mgi-MediaGridItem_Text fz-13_18">
+                  {{ block.settings.middle_text | newline_to_br }}
+                </p>
+              {%- endif -%}
+
+              {%- if block.settings.middle_show_arrow -%}
+                <div class="mgi-MediaGridItem_Arrow">
+                  {%- render 'bao-arrow' -%}
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+          {%- if block.settings.bottom_kicker != blank or block.settings.bottom_title != blank or block.settings.bottom_subtitle != blank or block.settings.bottom_text != blank or block.settings.bottom_show_arrow != blank or block.settings.bottom_text_small != blank -%}
+            <div
+              class="mgi-MediaGridItem_Bottom"
+              style="
+              {%- render 'media-grid-item-variable-setter',
+                variable: 'Item_Colour',
+                select: block.settings.bottom_text_colour,
+                custom: block.settings.bottom_text_colour_custom
+              -%}
+              {%- if block.settings.bottom_text_alignment != blank -%}
+                --Item_Alignment: {%- if block.settings.bottom_text_alignment == 'left' -%}flex-start{%- elsif block.settings.bottom_text_alignment == 'center' -%}center{%- elsif block.settings.bottom_text_alignment == 'right' -%}flex-end{%- endif -%};
+                --Item_TextAlignment: {{ block.settings.bottom_text_alignment }};
+              {%- endif -%}
+                "
+            >
+              {%- if block.settings.bottom_kicker != blank -%}
+                <p class="mgi-MediaGridItem_Kicker fz-12_12">
+                  {{ block.settings.bottom_kicker | newline_to_br }}
+                </p>
+              {%- endif -%}
+
+              {%- if block.settings.bottom_title != blank -%}
+                <p class="mgi-MediaGridItem_Title{% if block.settings.bottom_title_size == 'regular' %}{% if block.settings.bottom_title_font == 'futura' %} fz-56_56-futura{% else %} fz-56_56{% endif %}{% else %}{% if block.settings.bottom_title_font == 'futura' %} fz-112_112-futura{% else %} fz-112_112{% endif %}{% endif %}">
+                  {{ block.settings.bottom_title | newline_to_br }}
+                </p>
+              {%- endif -%}
+
+              {%- if block.settings.bottom_subtitle != blank -%}
+                <p class="mgi-MediaGridItem_Subtitle fz-25_33">
+                  {{ block.settings.bottom_subtitle | newline_to_br }}
+                </p>
+              {%- endif -%}
+
+              {%- if block.settings.bottom_text != blank -%}
+                <p class="mgi-MediaGridItem_Text fz-13_18">
+                  {{ block.settings.bottom_text | newline_to_br }}
+                </p>
+              {%- endif -%}
+
+              {%- if block.settings.bottom_text_small != blank -%}
+                <p class="mgi-MediaGridItem_TextSmall fz-13_18">
+                  {{ block.settings.bottom_text_small | newline_to_br }}
+                </p>
+              {%- endif -%}
+
+              {%- if block.settings.bottom_show_arrow -%}
+                <div class="mgi-MediaGridItem_Arrow">
+                  {%- render 'bao-arrow' -%}
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+
+        {%- if block.settings.link != blank -%}
+          <a
+            class="util-FauxLink_Link"
+            href="{{ block.settings.link }}"
+            title="{{ block.settings.title }}"
+          ></a>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endfor -%}
+
+  {%- if section.settings.lookbook_link != blank and section.settings.lookbook_link_text != blank -%}
+    <a class="sec-MediaGrid_Link fz-12_12 lyt-Container" href="{{ section.settings.lookbook_link }}">
+      {{ section.settings.lookbook_link_text }}
+    </a>
+  {%- elsif settings.lookbook_link != blank and settings.lookbook_link_text != blank -%}
+    <a class="sec-MediaGrid_Link fz-12_12 lyt-Container" href="{{ settings.lookbook_link }}">
+      {{ settings.lookbook_link_text }}
+    </a>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "Media Grid",
+  "settings": [
+    {
+      "type": "url",
+      "id": "lookbook_link",
+      "label": "Use this to override the global link that is set"
+    },
+    {
+      "type": "text",
+      "id": "lookbook_link_text",
+      "label": "Use this to override the global text that is set"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        {
+          "type": "select",
+          "id": "size",
+          "label": "Size",
+          "options": [
+            {
+              "value": "third",
+              "label": "Third"
+            },
+            {
+              "value": "half",
+              "label": "Half"
+            },
+            {
+              "value": "full",
+              "label": "Full Width"
+            }
+          ],
+          "default": "half"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "header",
+          "content": "Images"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "1440x1740"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile image",
+          "info": "750x1200"
+        },
+        {
+          "type": "header",
+          "content": "Top box"
+        },
+        {
+          "type": "richtext",
+          "id": "top_box_text",
+          "label": "Text"
+        },
+        {
+          "type": "select",
+          "id": "top_box_background_colour",
+          "label": "Background colour",
+          "options": [
+            {
+              "value": "",
+              "label": "-"
+            },
+            {
+              "value": "Primary",
+              "label": "Primary"
+            },
+            {
+              "value": "Secondary",
+              "label": "Secondary"
+            }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "top_box_background_colour_custom",
+          "label": "Background colour",
+          "info": "If you want an entirely custom background colour that will be present regardless of theme selected then choose this."
+        },
+        {
+          "type": "select",
+          "id": "top_box_text_colour",
+          "label": "Text Colour",
+          "options": [
+            {
+              "value": "",
+              "label": "-"
+            },
+            {
+              "value": "Primary",
+              "label": "Primary"
+            },
+            {
+              "value": "Secondary",
+              "label": "Secondary"
+            }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "top_box_text_colour_custom",
+          "label": "Text colour",
+          "info": "If you want an entirely custom colour that will be present regardless of theme selected then choose this."
+        },
+        {
+          "type": "header",
+          "content": "Top content"
+        },
+        {
+          "type": "textarea",
+          "id": "top_kicker",
+          "label": "Kicker"
+        },
+        {
+          "type": "textarea",
+          "id": "top_title",
+          "label": "Title"
+        },
+        {
+          "type": "select",
+          "id": "top_title_size",
+          "label": "Title Font Size",
+          "options": [
+            {
+              "value": "regular",
+              "label": "Regular (56px)"
+            },
+            {
+              "value": "large",
+              "label": "Large (112px)"
+            }
+          ],
+          "default": "regular"
+        },
+        {
+          "type": "select",
+          "id": "top_title_font",
+          "label": "Title Font",
+          "options": [
+            {
+              "value": "lacrima",
+              "label": "Lacrima"
+            },
+            {
+              "value": "futura",
+              "label": "Futura"
+            }
+          ],
+          "default": "lacrima"
+        },
+        {
+          "type": "textarea",
+          "id": "top_subtitle",
+          "label": "Subtitle"
+        },
+        {
+          "type": "textarea",
+          "id": "top_text",
+          "label": "Text"
+        },
+        {
+          "type": "select",
+          "id": "top_text_colour",
+          "label": "Text Colour",
+          "options": [
+            {
+              "value": "",
+              "label": "-"
+            },
+            {
+              "value": "Primary",
+              "label": "Primary"
+            },
+            {
+              "value": "Secondary",
+              "label": "Secondary"
+            }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "top_text_colour_custom",
+          "label": "Text colour",
+          "info": "If you want an entirely custom colour that will be present regardless of theme selected then choose this."
+        },
+        {
+          "type": "select",
+          "id": "top_text_alignment",
+          "label": "Text Alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Centre"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "checkbox",
+          "id": "top_show_arrow",
+          "label": "Show arrow?",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "Middle content"
+        },
+        {
+          "type": "textarea",
+          "id": "middle_kicker",
+          "label": "Kicker"
+        },
+        {
+          "type": "textarea",
+          "id": "middle_title",
+          "label": "Title"
+        },
+        {
+          "type": "select",
+          "id": "middle_title_size",
+          "label": "Title Font Size",
+          "options": [
+            {
+              "value": "regular",
+              "label": "Regular (56px)"
+            },
+            {
+              "value": "large",
+              "label": "Large (112px)"
+            }
+          ],
+          "default": "regular"
+        },
+        {
+          "type": "select",
+          "id": "middle_title_font",
+          "label": "Title Font",
+          "options": [
+            {
+              "value": "lacrima",
+              "label": "Lacrima"
+            },
+            {
+              "value": "futura",
+              "label": "Futura"
+            }
+          ],
+          "default": "lacrima"
+        },
+        {
+          "type": "textarea",
+          "id": "middle_subtitle",
+          "label": "Subitle"
+        },
+        {
+          "type": "textarea",
+          "id": "middle_text",
+          "label": "Text"
+        },
+        {
+          "type": "select",
+          "id": "middle_text_colour",
+          "label": "Text Colour",
+          "options": [
+            {
+              "value": "",
+              "label": "-"
+            },
+            {
+              "value": "Primary",
+              "label": "Primary"
+            },
+            {
+              "value": "Secondary",
+              "label": "Secondary"
+            }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "middle_text_colour_custom",
+          "label": "Text colour",
+          "info": "If you want an entirely custom colour that will be present regardless of theme selected then choose this."
+        },
+        {
+          "type": "select",
+          "id": "middle_text_alignment",
+          "label": "Text Alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Centre"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "checkbox",
+          "id": "middle_show_arrow",
+          "label": "Show arrow?",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "middle_thin_content",
+          "label": "Thin content?",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "Bottom content"
+        },
+        {
+          "type": "textarea",
+          "id": "bottom_kicker",
+          "label": "Kicker"
+        },
+        {
+          "type": "textarea",
+          "id": "bottom_title",
+          "label": "Title"
+        },
+        {
+          "type": "select",
+          "id": "bottom_title_size",
+          "label": "Title Font Size",
+          "options": [
+            {
+              "value": "regular",
+              "label": "Regular (56px)"
+            },
+            {
+              "value": "large",
+              "label": "Large (112px)"
+            }
+          ],
+          "default": "regular"
+        },
+        {
+          "type": "select",
+          "id": "bottom_title_font",
+          "label": "Title Font",
+          "options": [
+            {
+              "value": "lacrima",
+              "label": "Lacrima"
+            },
+            {
+              "value": "futura",
+              "label": "Futura"
+            }
+          ],
+          "default": "lacrima"
+        },
+        {
+          "type": "textarea",
+          "id": "bottom_subtitle",
+          "label": "Subitle"
+        },
+        {
+          "type": "textarea",
+          "id": "bottom_text",
+          "label": "Text"
+        },
+        {
+          "type": "textarea",
+          "id": "bottom_text_small",
+          "label": "Small Text"
+        },
+        {
+          "type": "select",
+          "id": "bottom_text_colour",
+          "label": "Text Colour",
+          "options": [
+            {
+              "value": "",
+              "label": "-"
+            },
+            {
+              "value": "Primary",
+              "label": "Primary"
+            },
+            {
+              "value": "Secondary",
+              "label": "Secondary"
+            }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "bottom_text_colour_custom",
+          "label": "Text colour",
+          "info": "If you want an entirely custom colour that will be present regardless of theme selected then choose this."
+        },
+        {
+          "type": "select",
+          "id": "bottom_text_alignment",
+          "label": "Text Alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Centre"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "checkbox",
+          "id": "bottom_show_arrow",
+          "label": "Show arrow?",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "Bottom box"
+        },
+        {
+          "type": "richtext",
+          "id": "bottom_box_text",
+          "label": "Text"
+        },
+        {
+          "type": "select",
+          "id": "bottom_box_background_colour",
+          "label": "Background colour",
+          "options": [
+            {
+              "value": "",
+              "label": "-"
+            },
+            {
+              "value": "Primary",
+              "label": "Primary"
+            },
+            {
+              "value": "Secondary",
+              "label": "Secondary"
+            }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "bottom_box_background_colour_custom",
+          "label": "Background colour",
+          "info": "If you want an entirely custom background colour that will be present regardless of theme selected then choose this."
+        },
+        {
+          "type": "select",
+          "id": "bottom_box_text_colour",
+          "label": "Text Colour",
+          "options": [
+            {
+              "value": "",
+              "label": "-"
+            },
+            {
+              "value": "Primary",
+              "label": "Primary"
+            },
+            {
+              "value": "Secondary",
+              "label": "Secondary"
+            }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "bottom_box_text_colour_custom",
+          "label": "Text colour",
+          "info": "If you want an entirely custom colour that will be present regardless of theme selected then choose this."
+        },
+        {
+          "type": "header",
+          "content": "Style"
+        },
+        {
+          "type": "select",
+          "id": "background_colour",
+          "label": "Background colour",
+          "options": [
+            {
+              "value": "",
+              "label": "-"
+            },
+            {
+              "value": "Primary",
+              "label": "Primary"
+            },
+            {
+              "value": "Secondary",
+              "label": "Secondary"
+            }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "background_colour_custom",
+          "label": "Background colour",
+          "info": "If you want an entirely custom background colour that will be present regardless of theme selected then choose this."
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

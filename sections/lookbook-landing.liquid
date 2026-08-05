@@ -1,0 +1,122 @@
+<section
+  class="sec-LookbookGrid lyt-Container"
+  data-section-id="{{ section.id }}"
+  data-section-type="lookbook-grid"
+>
+
+  {%- for block in section.blocks -%}
+    {%- assign mobile_image = block.settings.mobile_image -%}
+    {%- assign has_image = false -%}
+
+    {%- if mobile_image == blank -%}
+      {%- assign mobile_image = block.settings.image -%}
+    {%- endif -%}
+
+    {%- if mobile_image != blank or block.settings.image != blank -%}
+      {%- assign has_image = true -%}
+    {%- endif -%}
+
+    <div class="sec-LookbookGrid_Item js-Animate" data-animation="Fade"{% if block.settings.grid_start != blank and block.settings.grid_end != blank %} style="grid-column: {{ block.settings.grid_start }} / span {{ block.settings.grid_end }};"{% endif %}>
+      <div
+        class="lgi-LookbookGridItem{% if block.settings.link != blank %} util-FauxLink{% endif %}{% unless has_image %} lgi-LookbookGridItem-noImage{% endunless %}"
+      >
+        {%- if mobile_image != blank -%}
+          <div class="lgi-LookbookGridItem_ImageContainer lgi-LookbookGridItem_ImageContainer-mobile">
+            <div class="lgi-LookbookGridItem_Image">
+              {%- render 'responsive-image',
+                image: mobile_image,
+                width: mobile_image.width,
+                height: mobile_image.height
+              -%}
+            </div>
+          </div>
+        {%- endif -%}
+
+        <div class="lgi-LookbookGridItem_ImageContainer lgi-LookbookGridItem_ImageContainer-desktop">
+          <div class="lgi-LookbookGridItem_Image">
+            {%- render 'responsive-image',
+              image: block.settings.image,
+              width: 2880,
+              size_by_width: true
+            -%}
+          </div>
+        </div>
+
+        {%- if block.settings.title != blank -%}
+          <div class="lgi-LookbookGridItem_Content">
+            <p class="lgi-LookbookGridItem_Title fz-25_33">
+              {{ block.settings.title }}
+            </p>
+          </div>
+        {%- endif -%}
+
+        {%- if block.settings.link != blank -%}
+          <a
+            class="util-FauxLink_Link"
+            href="{{ block.settings.link }}"
+            title="{{ block.settings.title }}"
+          ></a>
+        {%- endif -%}
+      </div>
+    </div>
+  {%- endfor -%}
+</section>
+
+{% schema %}
+{
+  "name": "Lookbook Landing Grid",
+  "settings": [],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        {
+          "type": "range",
+          "id": "grid_start",
+          "min": 1,
+          "max": 15,
+          "step": 1,
+          "unit": "Spn",
+          "label": "Item placement on the grid",
+          "default": 1
+        },
+        {
+          "type": "range",
+          "id": "grid_end",
+          "min": 1,
+          "max": 14,
+          "step": 1,
+          "unit": "Spn",
+          "label": "How far should the item span on the grid?",
+          "default": 1
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "header",
+          "content": "Images"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "1440x1740"
+        },
+        {
+          "type": "header",
+          "content": "Content"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

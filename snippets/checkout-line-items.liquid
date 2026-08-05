@@ -1,0 +1,50 @@
+<script type="text/html" class="js-Checkout_LineItems">
+  {%- for line_item in checkout.line_items -%}
+  <tr class="chk-LineItem product" 
+    data-product-id="{{- line_item.product_id -}}" 
+    data-variant-id="{{- line_item.variant_id -}}" 
+    data-product-type="{{- line_item.product.type -}}" 
+    data-customer-ready-visible="">
+    <td class="chk-LineItem_Media product__image">
+      <div class="chk-LineItem_Thumbnail product-thumbnail">
+        <div class="chk-LineItem_ThumbnailWrapper product-thumbnail__wrapper">
+          <img alt="{{- line_item.title -}} {{- line_item.variant.title -}}" 
+            class="chk-LineItem_Image product-thumbnail__image" 
+            src="{{- line_item.image | img_url: '200x200' -}}"
+            />
+        </div>
+          <span class="chk-LineItem_ThumbnailQuantity product-thumbnail__quantity" aria-hidden="true">
+            {{ line_item.quantity }}
+          </span>
+        </div>
+    </td>
+    <th class="chk-LineItem_Description product__description" scope="row">
+      <span class="chk-LineItem_Title product__description__name order-summary__emphasis">
+        {{ line_item.product.title }}
+      </span>
+      {%- if line_item.options_with_values.size -%}
+      <span class="chk-LineItem_Meta product__description__variant order-summary__small-text">        
+        {%- for product_option in line_item.options_with_values -%}
+          {%- assign option_name = product_option.name -%}
+          {%- assign downcased_option_name = option_name | downcase -%}
+          {%- if downcased_option_name contains 'size' -%}
+            {%- assign option_name = 'products.product.size' | t -%}
+          {%- endif -%}
+          {{ option_name }} / {{ product_option.value }}
+        {%- endfor -%}
+      </span>
+      {%- endif -%}
+    </th>
+    <td class="chk-LineItem_Quantity product__quantity">
+      <span class="visually-hidden">
+        {{ line_item.quantity }}
+      </span>
+    </td>
+    <td class="chk-LineItem_Price product__price">
+      <span class="order-summary__emphasis skeleton-while-loading">
+        {{ line_item.final_line_price | money }}
+      </span>
+    </td>
+  </tr>
+  {%- endfor -%}
+</script>

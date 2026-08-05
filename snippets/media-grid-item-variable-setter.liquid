@@ -1,0 +1,21 @@
+{%- assign has_value = false -%}
+{%- assign value = nil -%}
+{%- assign custom_has_value = true -%}
+
+{%- if custom == blank -%}
+  {%- assign custom_has_value = false -%}
+{%- elsif custom == 'rgba(0,0,0,0)' -%}
+  {%- assign custom_has_value = false -%}
+{%- endif -%}
+
+{%- if select != blank or custom_has_value -%}
+  {%- assign has_value = true -%}
+{%- endif -%}
+
+{%- if select != blank -%}
+  {%- capture value -%}var(--Color_{{ select }}){%- endcapture -%}
+{%- elsif custom != blank -%}
+  {%- assign value = custom -%}
+{%- endif -%}
+
+{%- if has_value -%}--{{ variable }}: {{ value }};{%- endif -%}

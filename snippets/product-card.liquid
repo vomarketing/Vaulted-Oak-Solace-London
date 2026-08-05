@@ -1,0 +1,204 @@
+{%- liquid
+
+  assign is_default_variant = false
+
+  if current_variant == nil
+    assign current_variant = product.selected_or_first_available_variant
+  endif
+
+  if current_variant.id == product.selected_or_first_available_variant.id
+    assign is_default_variant = true
+  endif
+
+  assign has_size_option = false
+  assign size_option = nil
+  assign option_key = nil
+
+-%}
+
+{%- if product.options.size == 1 -%}
+  {%- for option in product.options -%}
+    {%- assign downcased_option = option | downcase -%}
+
+    {%- if downcased_option contains 'size' -%}
+      {%- assign has_size_option = true -%}
+      {%- assign size_option = product.options_by_name[option] -%}
+      {%- assign option_key = "option" | append: size_option.position -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endif -%}
+
+<div class="prd-Card util-FauxLink {% unless current_variant.available %}prd-Card-unavaliable{% endunless %}"{% if has_size_option %} data-module="product-card" data-product-card-handle="{{ product.handle }}"{% endif %}>
+
+  <div class="prd-Card_ImageContainer">
+    {%- for image in product.images -%}
+      {%- if image.alt contains "-plp-hover" -%}
+        <div class="prd-Card_Image prd-Card_Image-hoverImage">
+          {%- render 'responsive-image',
+            image: image,
+            width: 1600,
+            height: 2382
+          -%}
+        </div>
+      {%- endif -%}
+    {%- endfor -%}
+
+    {%- if product.featured_image != blank -%}
+      <div class="prd-Card_Image">
+        {%- render 'responsive-image',
+          image: product.featured_image,
+          width: 1600,
+          height: 2382
+        -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="prd-Card_Bottom">
+    <div class="prd-Card_Content fz-12_12">
+      <p class="prd-Card_Kicker{% if product.compare_at_price > product.price %} prd-Card_Kicker-red{% endif %}">
+        {%- if product.compare_at_price > product.price -%}
+          {{ 'products.product.on_sale' | t }}
+        {%- endif -%}
+      </p>
+
+      <h3 class="prd-Card_Title fz-12_12">
+        {{ product.title }} 
+      </h3>
+
+      {%- if show_add_to_bag_button and has_size_option and option_key -%}
+        <div class="prd-Card_Meta">
+          {%- assign option_name = size_option.name -%}
+          {%- assign downcased_option_name = option_name | downcase -%}
+          {%- if downcased_option_name contains 'size' -%}
+            {%- assign option_name = 'products.product.size' | t -%}
+          {%- endif -%}
+          {{ option_name }} {{ current_variant[option_key] }}
+        </div>
+      {%- else -%}
+        <div class="prd-Card_Price">
+          {%- render 'product-price', product: product %}
+        </div>
+      {%- endif -%}
+
+      {% comment %} Passed in from product-card-loader when on wishlist page {% endcomment %}
+      {%- if wishlist_remove_link_html -%}
+        {{ wishlist_remove_link_html }}
+      {%- endif -%}
+
+    </div>
+
+    {%- if has_size_option -%}
+
+      {%- assign selected_index = 0 -%}
+
+      {%- form 'product',
+        product,
+        class: 'prd-Card_Overlay fz-12_12',
+        data-push-cart-form: '',
+        data-el: 'product-card.form'
+      -%}
+        <div class="prd-Card_OverlayContent">
+          <select
+            name="id"
+            class="util-NoJs util-ScreenReaderOnly"
+            data-el="product-card.id"
+          >
+            {%- for variant in product.variants -%}
+
+              {% if variant.id == current_variant.id %}
+                {%- assign selected_index = forloop.index0 -%}
+              {% endif %}
+
+              <option
+              {% if variant.id == current_variant.id %}selected="selected"{% endif %} {% unless variant.available %}disabled="disabled"{% endunless %}
+                value="{{ variant.id }}"
+              >
+                {{ variant.title }}
+              </option>
+            {%- endfor -%}
+          </select>
+          <input type="hidden" name="quantity" value="1" />
+
+          <p class="prd-Card_Text">{{ 'products.card.size_label' | t }}</p>
+
+          <div class="prd-Card_Options" data-el="product-card.options">
+            {%- for value in size_option.values -%}
+              {%- assign option_is_available = true -%}
+
+              {%- if product.options.size == 1 -%}
+                {%- unless product.variants[forloop.index0].available -%}
+                  {%- assign option_is_available = false -%}
+                {%- endunless -%}
+              {%- endif -%}
+
+              <div class="prd-Card_Option">
+                <button
+                  class="prd-Card_Button"
+                  type="button"
+                  data-value="{{ value | escape }}"
+                  {% if product.variants[forloop.index0].id == current_variant.id %}
+                    aria-current="true"
+                  {% else %}
+                    aria-current="false"
+                  {% endif %}
+                  {% unless option_is_available %}disabled{% endunless %}
+                  data-el="product-card.option"
+                >
+                  <span class="prd-Card_ButtonText">
+                    {{ value }}
+                  </span>
+                </button>
+              </div>
+            {%- endfor -%}
+
+            <select
+              class="util-ScreenReaderOnly"
+              id="SingleOptionSelector-0"
+              data-single-option-selector
+              data-index="option{{ size_option.position }}"
+              name="options[{{ size_option.name | escape }}]"
+              data-el="product-card.select"
+            >
+              {%- for value in size_option.values -%}
+                <option
+                  value="{{ value | escape }}"
+                  {% comment %}{% if size_option.selected_value == value %}selected="selected"{% endif %}{% endcomment %}
+                  {% if forloop.index0 == selected_index %}selected="selected"{% endif %}>
+                  {{ value }}
+                </option>
+              {%- endfor -%}
+            </select>
+
+          </div>
+        </div>
+
+        {% comment %} Passed in from product-card-loader when on wishlist page {% endcomment %}
+        {%- if show_add_to_bag_button -%}
+          {%- render 'product-add-to-bag', product: product, current_variant: current_variant -%}
+        {%- endif -%}
+
+      {%- endform -%}
+    {%- endif -%}
+
+    {%- if has_size_option == false and show_add_to_bag_button -%}
+
+      {%- form 'product',
+          product,
+          class: 'prd-Card_Overlay fz-12_12',
+          data-push-cart-form: '',
+          data-el: 'product-card.form'
+        -%}
+
+          {%- render 'product-add-to-bag', product: product, current_variant: current_variant -%}
+
+          <input type="hidden" name="id" value="{{- current_variant.id -}}" />
+
+      {%- endform -%}
+
+    {%- endif -%}
+
+  </div>
+
+  <a class="prd-Card_FauxLink util-FauxLink_Link" href="{{- product.url | within: collection -}}{%- unless is_default_variant -%}?variant={{- current_variant.id -}}{%- endunless -%}"></a>
+</div>

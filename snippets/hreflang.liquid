@@ -1,0 +1,17 @@
+{%- if template == 'list-collections' -%}
+  {%- assign page_url = '/collections' -%}
+{%- elsif template.name == 'collection' -%}
+  {%- assign page_url = collection.url -%}
+{%- elsif template.name == 'product' -%}
+  {%- assign page_url = product.url -%}
+{%- elsif template.name == 'article' -%}
+  {%- assign page_url = article.url -%}
+{%- elsif template.name == 'blog' -%}
+  {%- assign page_url = blog.url -%}
+{%- else -%}
+  {%- assign page_url = page.url -%}
+{%- endif -%}
+
+<link rel="alternate" href="https://www.solacelondon.com{{ page_url }}" hreflang="en-gb" />
+<link rel="alternate" href="https://us.solacelondon.com{{ page_url }}" hreflang="en-us" />
+

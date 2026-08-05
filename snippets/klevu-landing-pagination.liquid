@@ -1,0 +1,68 @@
+<script type="template/klevu" id="klevuLandingTemplatePagination">
+<% if(data.query[dataLocal].result.length > 0 ) { %>
+
+  <%
+
+  var productListLimit = data.query[dataLocal].meta.noOfResults
+  var productListTotal = data.query[dataLocal].meta.totalResultsFound
+  var currentOffset = data.query[dataLocal].meta.offset
+
+  var pageCount = Math.ceil(productListTotal / productListLimit)
+
+  var currentPage = 1
+  if (currentOffset === productListLimit) {
+    currentPage = 2
+  } else if (currentOffset > productListLimit) {
+    currentPage = Math.ceil((currentOffset+productListLimit) / productListLimit)
+  }
+
+  var previousOffset = currentOffset - productListLimit
+  var nextOffset = currentOffset + productListLimit
+
+  %>
+
+  <nav class="pgn-Pagination">
+
+    <% if(currentOffset > 0) { %>
+      <div class="pgn-Pagination_Previous">
+        <a target="_self" href="javascript:void(0)" class="pgn-Pagination_Link klevuPaginate" data-offset="<%= previousOffset %>">
+          {%- render 'bao-chevron-left' -%}
+        </a>
+      </div>
+    <% } %>
+
+    <div class="pgn-Pagination_Items">
+    <% for ( var page = 1; page <= pageCount; page++ ) { %>
+      <div class="pgn-Pagination_Item">
+        <a 
+          <% if ( page === currentPage ){ %>
+            aria-current="page"
+          <% } %>
+          target="_self" 
+          href="javascript:void(0)" 
+          class="pgn-Pagination_Link klevuPaginate" 
+          data-offset="<%= (page * productListLimit) - productListLimit %>"
+          >
+          <%= page %>
+        </a>
+      </div>
+
+      <% if ( page < pageCount ){ %>
+      <div class="pgn-Pagination_Item pgn-Pagination_Item-separator">/</div>
+      <% } %>
+
+    <% } %>
+    </div>
+
+    <% if(currentOffset < (productListTotal - productListLimit)) { %>
+      <div class="pgn-Pagination_Next">
+        <a target="_self" href="javascript:void(0)" class="pgn-Pagination_Link klevuPaginate" data-offset="<%= nextOffset %>">
+          {%- render 'bao-chevron-right' -%}
+        </a>
+      </div>
+    <% } %>
+
+  </nav>
+  
+<% } %>
+</script>

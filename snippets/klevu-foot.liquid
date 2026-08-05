@@ -1,0 +1,14 @@
+{% comment %} KLEVU - TEMPLATES FOR QUICK SEARCH {% endcomment %}
+{%- render "klevu-quick-base" -%}
+{%- render "klevu-quick-auto-suggestions" -%}
+{%- render "klevu-quick-category-suggestions" -%}
+{%- render "klevu-no-results" -%}
+{%- render "klevu-product-list" -%}
+{%- render "klevu-product-card" -%}
+
+{%- if request.page_type == "search" -%}
+  {%- render "klevu-landing-base" -%}
+  {%- render "klevu-landing-pagination" -%}
+  {%- render "klevu-landing-filters" -%}
+  {%- render "klevu-landing-results" -%}
+{%- endif -%}

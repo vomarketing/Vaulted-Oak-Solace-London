@@ -1,0 +1,40 @@
+{%- render 'collection-filters' -%}
+
+{% schema %}
+{
+  "name": "Collection Filters",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "label": "Enable sort by filters"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "filter",
+      "name": "filter",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Filter By",
+          "info": "e.g. By Type"
+        },
+        {
+          "type": "text",
+          "id": "filter_all_text",
+          "label": "Filter All Text",
+          "info": "e.g. All Types"
+        },
+        {
+          "type": "text",
+          "id": "filter_key",
+          "label": "Filter Key",
+          "info": "This is the part that will appear where the \"filter-{key}: {label}\" key part is. e.g. type"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

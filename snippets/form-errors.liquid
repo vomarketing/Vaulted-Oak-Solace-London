@@ -1,0 +1,9 @@
+{%- if form.errors -%}
+  <div class="val-Validation val-Validation-error">
+    {%- for field in form.errors -%}
+      <p class="val-Validation_Text">
+        {{ field | capitalize }} {{ form.errors.messages[field] }}
+      </p>
+    {%- endfor -%}
+  </div>
+{%- endif -%}

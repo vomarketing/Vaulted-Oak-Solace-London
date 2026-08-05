@@ -1,0 +1,68 @@
+<div class="soc-Sharing">
+  <ul class="soc-Sharing_Items">
+    {%- if settings.share_facebook != blank -%}
+      <li class="soc-Sharing_Item">
+        <a
+          class="soc-Sharing_Link"
+          href="//www.facebook.com/sharer.php?u={{ shop.url | append: share_permalink }}"
+          target="_blank"
+        >
+          <span class="util-ScreenReaderOnly">{{ 'general.social.alt_text.share_on_facebook' | t }}</span>
+          <span
+            class="soc-Sharing_Text"
+            aria-hidden="true"
+          >
+            {{ 'general.social.share_on_facebook' | t }}
+          </span>
+
+          <span class="soc-Sharing_Icon">{%- render 'bao-icon-facebook' -%}</span>
+        </a>
+      </li>
+    {%- endif -%}
+
+    {%- if settings.share_twitter != blank -%}
+      <li class="soc-Sharing_Item">
+        <a
+          class="soc-Sharing_Link"
+          href="//twitter.com/share?text={{ share_title | url_param_escape }}&amp;url={{ shop.url | append: share_permalink }}"
+          target="_blank"
+        >
+          <span class="util-ScreenReaderOnly">
+            {{ 'general.social.alt_text.share_on_twitter' | t }}
+          </span>
+
+          <span
+            class="soc-Sharing_Text"
+            aria-hidden="true"
+          >
+            {{ 'general.social.share_on_twitter' | t }}
+          </span>
+
+          <span class="soc-Sharing_Icon">{%- render 'bao-icon-twitter' -%}</span>
+        </a>
+      </li>
+    {%- endif -%}
+
+    {%- if settings.share_pinterest != blank -%}
+      <li class="soc-Sharing_Item">
+        <a
+          class="soc-Sharing_Link"
+          href="//pinterest.com/pin/create/button/?url={{ shop.url | append: share_permalink }}&amp;media={{ share_image | img_url: '1024x1024' }}&amp;description={{ share_title | url_param_escape }}"
+          target="_blank"
+        >
+          <span class="util-ScreenReaderOnly">
+            {{ 'general.social.alt_text.share_on_pinterest' | t }}
+          </span>
+          <span
+            class="soc-Sharing_Text"
+            aria-hidden="true"
+          >
+            {{ 'general.social.share_on_pinterest' | t }}
+          </span>
+
+          <span class="soc-Sharing_Icon">{%- render 'bao-icon-pinterest' -%}</span>
+        </a>
+      </li>
+    {%- endif -%}
+  </ul>
+</div>

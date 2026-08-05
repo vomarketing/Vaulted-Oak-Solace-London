@@ -1,0 +1,110 @@
+<header class="pg-404_Header">
+
+  <div class="pg-404_HeaderInner">
+
+    {%- if section.settings.mobile_image != blank -%}
+      <div class="pg-404_HeaderImage pg-404_HeaderImage-mobile">
+        {%- render 'responsive-image' with
+          image: section.settings.mobile_image,
+          width: 375,
+          height: 375 -%}
+      </div>
+    {%- endif -%}
+
+    {%- if section.settings.desktop_image != blank -%}
+      <div class="pg-404_HeaderImage pg-404_HeaderImage-desktop">
+        {%- render 'responsive-image' with
+          image: section.settings.desktop_image,
+          width: 1440,
+          height: 435 -%}
+      </div>
+    {%- endif -%}
+
+    <div class="pg-404_Content">
+      <h1 class="pg-404_Title fz-56_56-futura">{{ section.settings.title }}</h1>
+
+      <p class="pg-404_Text fz-13_18">{{ section.settings.text }}</p>
+    </div>
+  </div>
+
+  <div class="pg-404_Body">
+    <a class="pg-404_Link fz-12_16" href="{{ section.settings.link }}">
+      <span class="pg-404_Chevron">{%- render 'bao-chevron-left' -%}</span> {{ section.settings.link_text }}
+    </a>
+  </div>
+</header>
+
+{%- assign collection = collections[section.settings.collection] -%}
+
+<div class="pg-404_Arrivals lyt-Container">
+  <div class="pg-404_ArrivalsHeader">
+    <h2 class="pg-404_ArrivalsTitle fz-25_33">
+      {{ collection.title }}
+    </h2>
+  </div>
+
+  {% if collection.products.size > 0 %}
+  <div class="pg-404_ArrivalsBody">
+    <div class="prd-List">
+      <div class="prd-List_Items prd-List_Items-404">
+        
+        {% for product in collection.products limit: 3 %}
+          <div class="prd-List_Item prd-List_Item-smallGapTop js-Animate" data-animation="Fade">
+            {%- render 'product-card', product: product -%}
+          </div>
+        {% endfor %}
+
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+</div>
+
+
+{% schema %}
+{
+  "name": "404 Hero",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile Image"
+    },
+    {
+      "type": "image_picker",
+      "id": "desktop_image",
+      "label": "Desktop Image"
+    },
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title",
+      "default": "404 ERROR"
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "The page you're looking for can't be found"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link",
+      "default": "/"
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Link Text",
+      "default": "Continue Shopping"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection to display"
+    }
+  ]
+}
+{% endschema %}

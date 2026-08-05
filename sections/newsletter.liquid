@@ -1,0 +1,94 @@
+<section class="pg-Split pg-Split-light">
+  <div class="pg-Split_Inner">
+    <div class="pg-Split_Columns">
+      <div class="pg-Split_Column pg-Split_Column-content pg-Split_Column-light">
+        <div class="pg-Newsletter_Content">
+          <header class="pg-Newsletter_Header">
+            <h1 class="pg-Newsletter_Title fz-25_33">{{ page.title }}</h1>
+
+            <div class="pg-Newsletter fz-13_18">
+              {{ section.settings.top_text }}
+            </div>
+          </header>
+
+          <div class="pg-Newsletter">
+            <div class="pg-Newsletter_Form">
+              {{ section.settings.klaviyo_form }}
+            </div>
+          </div>
+
+          {%- if section.settings.bottom_text != blank -%}
+            <footer class="pg-Newsletter_Footer">
+              <div class="pg-Newsletter_Text pg-Newsletter_Text-gapTop fz-13_18">
+                {{ section.settings.bottom_text }}
+              </div>
+            </footer>
+          {%- endif -%}
+        </div>
+      </div>
+
+      <div class="pg-Split_Column pg-Split_Column-image">
+        <div class="pg-Split_ImageContainer">
+          <div class="pg-Split_Image pg-Split_Image-desktop">
+            {%- render 'responsive-image',
+              image: section.settings.desktop_image,
+              width: 1402,
+              height: 1058 -%}
+          </div>
+
+          {%- if section.settings.enable_mobile -%}
+            <div class="pg-Split_Image pg-Split_Image-mobile">
+              {%- render 'responsive-image',
+                image: section.settings.mobile_image,
+                width: 750,
+                height: 550 -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </div>
+
+</section>
+
+{% schema %}
+  {
+    "name": "Newsletter",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "desktop_image",
+        "label": "Image",
+        "info": "Recommended Size: 1440x1440"
+      },
+      {
+        "type": "image_picker",
+        "id": "mobile_image",
+        "label": "Mobile Image",
+        "info": "Recommended Size: 750x550"
+      },
+      {
+      "type": "checkbox",
+      "id": "enable_mobile",
+      "label": "Tick to enable image on mobile"
+      },
+      {
+        "type": "richtext",
+        "id": "top_text",
+        "label": "Top Text"
+      },
+      {
+        "type": "richtext",
+        "id": "bottom_text",
+        "label": "Bottom Text"
+      },
+      {
+        "type": "text",
+        "id": "klaviyo_form",
+        "label": "Klaviyo Form",
+        "info": "Copy/Paste the embed code for the Klaviyo form here",
+        "default": "<div class=\"klaviyo-form-UHg5rb\"></div>"
+      }
+    ]
+  }
+{% endschema %}

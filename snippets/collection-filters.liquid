@@ -1,0 +1,293 @@
+{%- assign collection_url = collection.url -%}
+{%- assign current_tag_handles = '' -%}
+{%- for current_tag in current_tags -%}
+  {%- assign current_tag_handle = current_tag | handleize -%}
+
+  {%- if current_tag_handle contains '-amp-' -%}
+    {%- assign current_tag_handle = current_tag_handle | replace: '-amp-', '-' -%}
+  {%- endif -%}
+
+  {%- assign current_tag_handles = current_tag_handles | append: ',' | append: current_tag_handle -%}
+{%- endfor -%}
+{%- assign current_tag_handles_string = current_tag_handles | remove_first: ',' -%}
+{%- assign current_tag_handles = current_tag_handles | remove_first: ',' | split: ',' -%}
+
+{%- assign has_filters = false -%}
+{%- for block in section.blocks -%}
+  {%- assign all_collection_tags = collection.all_tags -%}
+  {%- assign relevant_tag_list = '' -%}
+  {%- capture tag_key -%}filter-{{ block.settings.filter_key }}: {%- endcapture -%}
+  {%- for collection_tag in all_collection_tags -%}
+    {%- if collection_tag contains tag_key -%}
+      {%- assign has_filters = true -%}
+      {%- break -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endfor -%}
+
+{%- assign has_filters_set = false -%}
+
+<div class="clc-Filters_Holder">
+  <section class="clc-Filters">
+
+    <div class="clc-Filters_Items">
+      {%- if has_filters == true -%}
+        {%- for block in section.blocks -%}
+          {%- assign all_collection_tags = collection.all_tags -%}
+          {%- assign relevant_tag_list = '' -%}
+
+          {%- capture tag_key -%}filter-{{ block.settings.filter_key }}: {%- endcapture -%}
+
+          {%- for collection_tag in all_collection_tags -%}
+            {%- if collection_tag contains tag_key -%}
+              {%- assign relevant_tag_list = relevant_tag_list | append: ',' | append: collection_tag -%}
+            {%- endif -%}
+          {%- endfor -%}
+
+          {%- assign relevant_tag_list = relevant_tag_list | remove_first: ',' | split: ',' -%}
+
+          {%- assign filters_all_text = block.settings.filter_all_text -%}
+          {%- assign filters_title = block.settings.title -%}
+
+          {%- if relevant_tag_list.size >= 1 -%}
+            {%- assign relevant_current_tag = nil -%}
+            {%- assign tag_key_handle = tag_key | handleize -%}
+            {%- assign category_has_something_selected = false -%}
+
+            {%- if current_tag_handles_string contains tag_key_handle -%}
+              {%- assign category_has_something_selected = true -%}
+
+              {%- for current_tag in current_tags -%}
+                {%- if current_tag contains tag_key_handle -%}
+                  {%- assign relevant_current_tag = current_tag -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endif -%}
+
+            {%- assign all_collection_tags = collection.all_tags -%}
+            {%- assign relevant_tag_list = '' -%}
+            {%- capture tag_key -%}filter-{{ block.settings.filter_key }}: {%- endcapture -%}
+
+            {%- comment -%}Create the zero padding variables needed for string sorting{%- endcomment -%}
+            {%- assign zeros = '0000' -%}
+            {%- assign zeros_count = zeros | size -%}
+
+            {%- for collection_tag in all_collection_tags -%}
+              {%- if collection_tag contains tag_key -%}
+                {%- comment -%}If it's a size tag treat it differently{%- endcomment -%}
+                {% if block.settings.filter_key == 'size' %}
+                  {%- comment -%}Get the actual size value{%- endcomment -%}
+                  {%- assign size = collection_tag | split: ':' | last | strip -%}
+                  {%- comment -%}Find the number of characters{%- endcomment -%}
+                  {%- assign size_length = size | size -%}
+                  {%- comment -%}Work out where we need to slice our zeros to{%- endcomment -%}
+                  {%- assign end_slice = zeros_count | minus: size_length -%}
+                  {%- comment -%}Create a zero padded version of the size e.g. 12 becomes 0012{%- endcomment -%}
+                  {%- assign zero_padded_size = zeros | slice: 0, end_slice | append: size -%}
+
+                  {%- comment -%}Add the tag to the list, prepended by the zero padded size{%- endcomment -%}
+                  {%- assign relevant_tag_list = relevant_tag_list | append: ',' | append: zero_padded_size | append: '^' | append: collection_tag -%}                  
+                {% else %}
+                  {%- assign relevant_tag_list = relevant_tag_list | append: ',' | append: collection_tag -%}
+                {% endif %}
+              {%- endif -%}
+            {%- endfor -%}
+
+            {%- assign relevant_tag_list = relevant_tag_list | remove_first: ',' | split: ',' -%}
+
+            {%- comment -%}Sort the array here so the sizes are in the correct order{%- endcomment -%}
+            {% if block.settings.filter_key == 'size' %}
+              {%- assign relevant_tag_list = relevant_tag_list | sort -%}
+            {% endif %}
+            
+            {%- assign relevant_current_tag_index = nil -%}
+            {%- if relevant_current_tag != nil -%}
+              {%- for relevant_tag in relevant_tag_list -%}
+                {%- if relevant_tag == relevant_current_tag -%}
+                  {%- assign relevant_current_tag_index = forloop.index | times: 1 -%}
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endif -%}
+
+            {%- assign filters_all_text = block.settings.filter_all_text -%}
+            {%- assign filters_title = block.settings.title -%}
+
+            {%- capture all_tags_string -%}{%- for current_tag in current_tags -%}{%- unless current_tag contains tag_key -%}+{{ current_tag | handleize }}{%- endunless -%}{%- endfor -%}{%- endcapture -%}
+            {%- assign all_tags_string = all_tags_string | remove_first: '+' -%}
+
+            {%- capture all_url -%}{{ collection_url }}{%- if all_tags_string.size > 0 -%}/{{ all_tags_string }}{%- endif -%}{%- endcapture -%}
+
+            {%- assign down_title = block.settings.title | downcase -%}
+
+            <div class="clc-Filters_Item clc-Filters_Item-fields">
+              <div class="clc-FiltersItem">
+                <div class="clc-FiltersItem_Header">
+                  <h3 class="clc-FiltersItem_Title fz-12_12">
+                    {{ block.settings.title }}
+                  </h3>
+                </div>
+
+                <div class="clc-FiltersItem_Body">
+                  <ul class="clc-FiltersItem_Items">
+                    <li class="clc-FiltersItem_Item">
+                      <a class="clc-FiltersItem_Link"
+                          href="{{ all_url }}"
+                          {%- if category_has_something_selected == false -%}aria-current="page"{%- endif -%}>
+
+                        <span class="clc-FiltersItem_LinkText fz-12_12">
+                          {{ filters_all_text }}
+                        </span>
+                      </a>
+                    </li>
+
+                    {%- for relevant_tag in relevant_tag_list -%}
+                      {%- assign cleaned_tag = relevant_tag | split: '^' | last -%}
+                      {%- assign relevant_tag_handle = cleaned_tag | handleize -%}
+
+                      {%- if relevant_tag_handle contains '-amp-' -%}
+                        {%- assign relevant_tag_handle = relevant_tag | replace: '-amp-', '-' -%}
+                      {%- endif -%}
+
+                      {%- assign relevant_tag_is_in_current_tags = false -%}
+
+                      {%- if current_tag_handles contains relevant_tag_handle -%}
+                        {%- assign relevant_tag_is_in_current_tags = true -%}
+
+                        {%- assign has_filters_set = true -%}
+                      {%- endif -%}
+
+                      {%- capture relevant_tags_string -%}{{ all_tags_string }}{%- unless all_tags_string == blank -%}+{%- endunless -%}{%- unless relevant_tag_is_in_current_tags -%}{{ relevant_tag_handle }}{%- endunless -%}{%- endcapture -%}
+
+                      {%- if relevant_tags_string.last == '+' -%}
+                        {%- assign size_minus_one = relevant_tags_string.size | minus: 1 -%}
+
+                        {%- assign relevant_tags_string = relevant_tags_string | slice: 0, size_minus_one -%}
+                      {%- endif -%}
+
+                      <li class="clc-FiltersItem_Item">
+                        <a class="clc-FiltersItem_Link fz-12_12"
+                            href="{{ collection_url }}/{{ relevant_tags_string }}"
+                            {% for current_tag in current_tags %}{% if current_tag == cleaned_tag %}aria-current="page"{% endif %}{% endfor %}>
+
+                          <span class="clc-FiltersItem_LinkText">
+                            {{ cleaned_tag | remove: tag_key | split: '|' | last }}
+                          </span>
+                        </a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                </div>
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endif -%}
+
+      {%- if section.settings.enable_sorting -%}
+        <div class="clc-Filters_Item clc-Filters_Item-fields">
+          <div class="clc-FiltersItem">
+            <div class="clc-FiltersItem_Header">
+              <h3 class="clc-FiltersItem_Title fz-12_12">
+                {{ 'collections.sorting.title' | t }}
+              </h3>
+            </div>
+
+            {%- assign current_sort = collection.sort_by | default: collection.default_sort_by -%}
+
+            <div class="clc-FiltersItem_Body">
+              <ul class="clc-FiltersItem_Items" data-module="collection-sort-buttons" data-module-class="js-SortButton">
+                <li class="clc-FiltersItem_Item">
+                  <button class="clc-FiltersItem_Link js-SortButton_Button"
+                    value="manual"
+                    {%- if current_sort == 'manual' -%}aria-current="page"{%- endif -%}>
+
+                    <span class="clc-FiltersItem_LinkText fz-12_12">
+                      {{ 'collections.sorting.featured' | t }}
+                    </span>
+                  </button>
+                </li>
+
+                <li class="clc-FiltersItem_Item">
+                  <button class="clc-FiltersItem_Link js-SortButton_Button"
+                    value="best-selling"
+                    {%- if current_sort == 'best-selling' -%}aria-current="page"{%- endif -%}>
+
+                    <span class="clc-FiltersItem_LinkText fz-12_12">
+                      {{ 'collections.sorting.best_selling' | t }}
+                    </span>
+                  </button>
+                </li>
+
+                <li class="clc-FiltersItem_Item">
+                  <button class="clc-FiltersItem_Link js-SortButton_Button"
+                    value="title-ascending"
+                    {%- if current_sort == 'title-ascending' -%}aria-current="page"{%- endif -%}>
+
+                    <span class="clc-FiltersItem_LinkText fz-12_12">
+                      {{ 'collections.sorting.az' | t }}
+                    </span>
+                  </button>
+                </li>
+
+                <li class="clc-FiltersItem_Item">
+                  <button class="clc-FiltersItem_Link js-SortButton_Button"
+                    value="title-descending"
+                    {%- if current_sort == 'title-descending' -%}aria-current="page"{%- endif -%}>
+
+                    <span class="clc-FiltersItem_LinkText fz-12_12">
+                      {{ 'collections.sorting.za' | t }}
+                    </span>
+                  </button>
+                </li>
+
+                <li class="clc-FiltersItem_Item">
+                  <button class="clc-FiltersItem_Link js-SortButton_Button"
+                    value="price-ascending"
+                    {%- if current_sort == 'price-ascending' -%}aria-current="page"{%- endif -%}>
+
+                    <span class="clc-FiltersItem_LinkText fz-12_12">
+                      {{ 'collections.sorting.price_ascending' | t }}
+                    </span>
+                  </button>
+                </li>
+
+                <li class="clc-FiltersItem_Item">
+                  <button class="clc-FiltersItem_Link js-SortButton_Button"
+                    value="price-descending"
+                    {%- if current_sort == 'price-descending' -%}aria-current="page"{%- endif -%}>
+
+                    <span class="clc-FiltersItem_LinkText fz-12_12">
+                      {{ 'collections.sorting.price_descending' | t }}
+                    </span>
+                  </button>
+                </li>
+
+                <li class="clc-FiltersItem_Item">
+                  <button class="clc-FiltersItem_Link js-SortButton_Button"
+                    value="created-descending"
+                    {%- if current_sort == 'created-descending' -%}aria-current="page"{%- endif -%}>
+
+                    <span class="clc-FiltersItem_LinkText fz-12_12">
+                      {{ 'collections.sorting.date_descending' | t }}
+                    </span>
+                  </button>
+                </li>
+
+                <li class="clc-FiltersItem_Item">
+                  <button class="clc-FiltersItem_Link js-SortButton_Button"
+                    value="created-ascending"
+                    {%- if current_sort == 'created-ascending' -%}aria-current="page"{%- endif -%}>
+
+                    <span class="clc-FiltersItem_LinkText fz-12_12">
+                      {{ 'collections.sorting.date_ascending' | t }}
+                    </span>
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      {%- endif -%}
+    </div>
+  </section>
+</div>

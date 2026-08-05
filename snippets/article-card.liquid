@@ -1,0 +1,29 @@
+<div class="art-Card">
+  <a class="art-Card_ImageContainer" href="{{ article.url }}">
+    {%- if use_metafields == false or article.metafields.blog_images.portrait_image.first == blank -%}
+      {%- if article.image != blank -%}
+        <div class="art-Card_Image">
+          {%- render 'responsive-image',
+            image: article.image,
+            width: 2880,
+            size_by_width: true -%}
+        </div>
+      {%- endif -%}
+
+    {%- else -%}
+      {%- render 'responsive-image-metafield',
+        image: article.metafields.blog_images.portrait_image.first,
+        height: 2400
+        width: 1800,
+        size_by_width: true -%}
+    {%- endif -%}
+  </a>
+
+  <div class="art-Card_Content">
+    <h3 class="art-Card_Title">
+      <a class="art-Card_TitleLink fz-25_33" href="{{ article.url }}">
+        {{ article.title }}
+      </a>
+    </h3>
+  </div>
+</div>

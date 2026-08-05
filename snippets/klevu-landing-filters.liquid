@@ -1,0 +1,183 @@
+<script type="template/klevu" id="klevuLandingTemplateFilters">
+<% if(data.query[dataLocal].filters.length > 0 ) { %>
+
+<%
+var isActive = document.body.getAttribute("data-active-drawer-key") === "klevuFilters"
+document.querySelector('[data-module-drawers-trigger="klevuFilters"]').setAttribute("aria-hidden","false")
+
+function isNumeric(num){
+  return !isNaN(num)
+}
+%>
+
+<div class="drw-Drawer drw-Drawer-klevuFilters drw-Drawer-fromRight <% if(isActive) { %>drw-Drawer-active<% } %>" data-module-drawers-drawer="klevuFilters">
+
+  <div class="drw-Drawer_Inner">
+
+    <div class="klv-Filters fz-13_18">
+      <div class="klv-Filters_TopBar">
+        <h4 class="klv-Filters_Title fz-25_33">
+          {{ 'general.search.filter_by' | t }}
+        </h4>
+      </div>
+
+      <div class="klv-Filters_Body">
+
+        <div class="klv-Filter_Boxes kuFilters">
+          <% helper.each(data.query[dataLocal].filters,function(key,filter){ %>
+
+            <% if(filter.type == "OPTIONS"){ %>
+
+            <div class="klv-Filter_Box kuFilterBox klevuFilter <%=(filter.multiselect)?'kuMulticheck':''%>" data-filter="<%=filter.key%>" <% if(filter.multiselect){ %> data-singleselect="false" <% } else { %> data-singleselect="true"<% } %>>
+
+              <div class="klv-Filter_Heading fz-12_12 kuFilterHead <%=(filter.isCollapsed) ? 'kuExpand' : 'kuCollapse'%>">
+                  <% var filter_label = (filter.label=="klevu_price") ? "price" : filter.label; %>
+                  <%=filter_label%>
+              </div>
+
+              <div class="klv-Filter_Filters kuFilterNames <%=(filter.isCollapsed) ? 'kuFilterCollapse' : ''%>">
+                  <ul class="klv-Filter_Items">
+                    <%
+
+                    var filterOptions = filter.options
+                    var keys = [], newFilterOptions = {}, k, i, len;
+                    var hasNumericKeys = false
+                    var hasAlphanumericKeys = false
+
+                    var reA = /[^a-zA-Z]/g;
+                    var reN = /[^0-9]/g;
+
+                    for (var key in filterOptions) {
+                      var filterOptionName = filterOptions[key].name
+
+                      if( filterOptionName.includes(window.klevu_filterKey) ){
+                        var productTagKey = filterOptionName.split(window.klevu_filterDelimiter).shift()
+                        filterOptionName = filterOptionName.replace(productTagKey,"").trim()
+                      }
+
+                      var filterOptionKey = filterOptionName.toLowerCase().replace(/ /g,"-")
+                      newFilterOptions[filterOptionKey] = filterOptions[key]
+                    }
+
+                    for (k in newFilterOptions) {
+                      if (newFilterOptions.hasOwnProperty(k)) {
+
+                        if(isNumeric(k)){
+                          hasNumericKeys = true
+                          k = parseFloat(k)
+                        }else{
+                          hasAlphanumericKeys = true
+                        }
+                        keys.push(k);
+                      }
+                    }
+
+                    if(hasNumericKeys === true && hasAlphanumericKeys === false){
+                      keys.sort(function(a, b) {
+                        return a - b;
+                      });
+                    }else if(hasNumericKeys === false && hasAlphanumericKeys === true){
+                      keys.sort()
+                    }else{
+                      keys.sort(function(a, b) {
+                        var aA = a.toString().replace(reA, "");
+                        var bA = b.toString().replace(reA, "");
+                        if (aA === bA) {
+                          var aN = parseInt(a.toString().replace(reN, ""), 10);
+                          var bN = parseInt(b.toString().replace(reN, ""), 10);
+                          return aN === bN ? 0 : aN > bN ? 1 : -1;
+                        } else {
+                          return aA > bA ? 1 : -1;
+                        }
+                      })
+                    }
+
+                    console.log(keys)
+
+                    len = keys.length;
+
+                    %>
+
+                    <% for (i = 0; i < len; i++) { k = keys[i]; var filterOption = newFilterOptions[k] %>
+                    <li class="klv-Filter_Item <% if(filterOption.selected ===true) { %>kuSelected<% } %>">
+                        <a
+                          href="#"
+                          title="<%=filterOption.value%>"
+                          class="klv-Filter_Link fz-12_12 klevuFilterOption <% if(filterOption.selected) { %>klv-Filter_Link-selected klevuFilterOptionActive<% } %>"
+                          data-value="<%=filterOption.value%>"
+                        >
+                          <span class="klv-Filter_Label <% if(filterOption.selected) { %>klv-Filter_Label-selected<% } %>">
+
+                            <% if( filterOption.name.includes(window.klevu_filterKey) ){
+                              var productTagKey = filterOption.name.split(window.klevu_filterDelimiter).shift()
+                            %>
+                              <%= filterOption.name.replace(productTagKey,"").trim() %>
+                            <% } else { %>
+                              <%= filterOption.name %>
+                            <% } %>
+                          </span>
+                        </a>
+                    </li>
+                    <%  } %>
+
+                  </ul>
+
+              </div>
+            </div>
+
+            <% } else if(filter.type == "SLIDER")  { %>
+
+            {% comment %}
+            <div class="kuFilterBox klevuFilter data-filter="<%=filter.key%>">
+              <div class="kuFilterHead <%=(filter.isCollapsed) ? 'kuExpand' : 'kuCollapse'%>">
+                  <% var filter_label = (filter.label=="klevu_price") ? "price" : filter.label; %>
+                  <%=filter_label%>
+              </div>
+              <div class="kuFilterNames sliderFilterNames <%=(filter.isCollapsed) ? 'kuFilterCollapse' : ''%>">
+                  <div class="kuPriceSlider klevuSliderFilter" data-query = "<%=dataLocal%>">
+                    <div data-querykey = "<%=dataLocal%>" class="noUi-target noUi-ltr noUi-horizontal noUi-background kuSliderFilter kuPriceRangeSliderFilter<%=dataLocal%>"></div>
+                    <div class="kuSliderVal">
+                        <div class="kuSliderVal-min">
+                          <span class="kulabel">Min</span>
+                          <span class="kuCurrency"></span>
+                          <span class="minValue<%=dataLocal%>" ></span>
+                        </div>
+                        <span class="kuSliderTo">To</span>
+                        <div class="kuSliderVal-max">
+                          <span class="kulabel">Max</span>
+                          <span class="kuCurrency"></span>
+                          <span class="maxValue<%=dataLocal%>"></span>
+                        </div>
+                    </div>
+                  </div>
+              </div>
+            </div>
+            {% endcomment %}
+
+            <% } else { %>
+
+            <!-- Other Facets -->
+
+            <% } %>
+
+          <% }); %>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <button type="button" class="drw-Drawer_Close fz-10_10 btn-Primary" data-module-drawers-close="klevuFilters">
+    <span class="drw-Drawer_CloseText">
+      {{ 'general.search.close' | t }}
+    </span>
+    <span class="drw-Drawer_CloseIcon">
+      {%- render 'bao-chevron-right' -%}
+    </span>
+  </button>
+
+</div>
+
+<% } %>
+</script>

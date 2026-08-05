@@ -1,0 +1,40 @@
+{%- if settings.cookies_enable == true -%}
+  <div
+    class="ck-Banner"
+    aria-hidden="true"
+    data-module="cookie-banner"
+    data-cookie-banner-active-class="ck-Banner-active"
+  >
+    <div class="ck-Banner_Inner ck-Banner_Inner-{{ settings.cookies_bg }}">
+      <div class="ck-Banner_Body">
+        <div class="ck-Banner_Content">
+          <div class="ck-Banner_Main">
+            {%- if settings.cookies_title != blank -%}
+              <h4 class="ck-Banner_Title">{{ settings.cookies_title }}</h4>
+            {%- endif -%}
+
+            <p class="ck-Banner_Text">
+              {{ settings.cookies_text }}
+
+              {%- if settings.cookies_url -%}
+                <a
+                  href="{{ settings.cookies_url }}"
+                  class="ck-Banner_Link"
+                >
+                  {{ settings.cookies_button_text }}
+                </a>
+              {%- endif -%}
+            </p>
+          </div>
+
+          <button
+            class="ck-Banner_Button"
+            data-el="cookie-banner.acceptButton"
+          >
+            {{ settings.cookies_accept_text }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endif -%}

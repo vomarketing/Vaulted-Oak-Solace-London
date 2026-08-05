@@ -1,0 +1,74 @@
+<section class="acc-Auth acc-Auth-activateAccount">
+
+      <div class="acc-Auth_Column">
+        <div class="acc-Auth_Content">
+
+          {%- capture title -%}{{ 'customer.activate_account.activate_account' | t }}{%- endcapture -%}
+          {%- capture subtitle -%}{{ 'customer.activate_account.text' | t }}{%- endcapture -%}
+          {%- render 'account-header', title: title, subtitle: subtitle -%}
+
+          <div class="acc-Auth_Body">
+            {%- form 'activate_customer_password', class: 'frm-Form' -%}
+            {%- render 'form-errors', form: form -%}
+
+              <div class="frm-Form_Row">
+                <label
+                  class="frm-Form_Label util-ScreenReaderOnly"
+                  for="CustomerPassword"
+                >
+                  {{ 'customer.activate_account.password' | t }}
+                </label>
+                <input
+                  class="frm-Form_Input"
+                  type="password"
+                  name="customer[password]"
+                  id="CustomerPassword"
+                  placeholder="{{ 'customer.activate_account.password' | t }}"
+                />
+              </div>
+
+              <div class="frm-Form_Row">
+                <label
+                  class="frm-Form_Label util-ScreenReaderOnly"
+                  for="CustomerPasswordConfirmation"
+                >
+                  {{ 'customer.activate_account.confirm_password' | t }}
+                </label>
+                <input
+                  class="frm-Form_Input"
+                  type="password"
+                  name="customer[password_confirmation]"
+                  id="CustomerPasswordConfirmation"
+                  placeholder="{{ 'customer.activate_account.confirm_password' | t }}"
+                />
+              </div>
+
+              <footer class="frm-Form_Footer">
+                <div class="frm-Form_Actions">
+                  <div class="frm-Form_Row frm-Form_Row-gappy">
+                    <button class="frm-Form_Button frm-Form_Button-primary" type="submit">
+                      <span class="frm-Form_ButtonText">{{ 'customer.activate_account.activate' | t }}</span>
+                      <span class="frm-Form_ButtonIcon">
+                        {%- render 'bao-arrow' -%}
+                      </span>
+                    </button>
+                  </div>
+
+                  <div class="frm-Form_Row frm-Form_Row-gappyish">
+                    <a
+                      class="frm-Form_Link"
+                      href="{{ shop.url }}"
+                    >
+                      {{ 'customer.activate_account.cancel' | t }}
+                    </a>
+                  </div>
+
+                </div>
+              </footer>
+            {%- endform -%}
+          </div>
+        </div>
+
+      </div>
+
+</section>

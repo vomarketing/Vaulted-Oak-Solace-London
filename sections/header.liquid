@@ -1,0 +1,502 @@
+{%- liquid
+  assign use_transparent_header = false
+
+  if section.settings.header_background_style == 'transparent'
+    if section.settings.transparent_homepage_only
+      if template.name == 'index'
+        assign use_transparent_header = true
+      endif
+    else
+      assign use_transparent_header = true
+    endif
+  endif
+
+  assign header_bg_color = section.settings.solid_background_color
+  assign header_text_color = '#000000'
+
+  if section.settings.solid_color_scheme == 'light'
+    assign header_text_color = '#ffffff'
+  endif
+
+  if use_transparent_header
+    assign header_bg_color = 'transparent'
+
+    if section.settings.transparent_color_scheme == 'light'
+      assign header_text_color = '#ffffff'
+    else
+      assign header_text_color = '#000000'
+    endif
+  endif
+
+  assign use_transparent = false
+
+  if section.settings.header_background_style == 'transparent'
+    if section.settings.transparent_homepage_only
+      if template.name == 'index'
+        assign use_transparent = true
+      endif
+    else
+      assign use_transparent = true
+    endif
+  endif
+
+  if use_transparent
+    if section.settings.transparent_color_scheme == 'light'
+      assign bubble_count_color = '#000000'
+    else
+      assign bubble_count_color = '#ffffff'
+    endif
+  else
+    if section.settings.solid_color_scheme == 'light'
+      assign bubble_count_color = '#000000'
+    else
+      assign bubble_count_color = '#ffffff'
+    endif
+  endif
+-%}
+
+<style>
+  .hd-Header {
+    --Header_Background: {{ header_bg_color }};
+    --Header_TextColor: {{ header_text_color }};
+    --Color_Secondary: {{ header_text_color }};
+
+    --Header_CountTextColor: {{ bubble_count_color }};
+
+    width: 100%;
+    z-index: 9;
+    background: var(--Header_Background);
+    color: var(--Header_TextColor);
+    --Color_Primary: var(--Header_CountTextColor);
+  }
+
+  {% if use_transparent_header %}
+    .hd-Header {
+      position: absolute;
+      top: 0;
+      left: 0;
+      background: transparent;
+      --Color_Primary: var(--Header_CountTextColor);
+    }
+  {% endif %}
+</style>
+<header
+  class="hd-Header{% if use_transparent_header %} hd-Header-transparent{% else %} hd-Header-solid{% endif %}"
+  role="banner"
+  data-section-id="{{ section.id }}"
+  data-section-type="header"
+  data-module="header"
+  data-module-lazy
+  data-header-active-class="hd-Header-dropdownActive"
+  data-header-item-active-class="hd-Nav_Item-dropdownActive"
+>
+  <div class="hd-Header_Inner lyt-Container">
+    <div class="hd-Header_Body">
+      <div class="hd-Header_Nav hd-Header_Nav-left">
+        <nav class="hd-Nav">
+          <ul class="hd-Nav_Items" data-el="header.items">
+            {%- for link in linklists[section.settings.left_navigation].links -%}
+              <li
+                class="hd-Nav_Item"
+                data-el="header.item"
+                data-has-children="{%- if link.links.size > 0 -%}true{%- else -%}false{%- endif -%}"
+              >
+                <a
+                  class="hd-Nav_Link"
+                  href="{{ link.url }}"
+                  {% if link.active %} aria-current="page"{% endif %}
+                >
+                  {{ link.title }}
+                </a>
+
+                {%- if link.links.size > 0 -%}
+                  <div class="hd-Nav_Dropdown">
+                    <ul class="hd-Nav_Children">
+                      {%- for child_link in link.links -%}
+                        <li
+                          class="hd-Nav_Child"
+                          style="--Transition_Delay: {{ forloop.index0 | times: 0.05 | plus: 0.3 }}s;"
+                        >
+                          {%- unless child_link.title == ':empty:' -%}
+                            <a
+                              class="hd-Nav_ChildLink"
+                              href="{{ child_link.url }}"
+                              {% if link.active %} aria-current="page"{% endif %}
+                            >
+                              {{ child_link.title }}
+                            </a>
+                          {%- endunless -%}
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  </div>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </nav>
+
+        <div class="hd-MobileNav">
+          <div class="hd-MobileNav_Items">
+            <div class="hd-MobileNav_Item">
+              <button
+                type="button"
+                class="mb-MenuTrigger"
+                data-module-drawers-trigger="mobile-menu"
+              >
+                <span class="mb-MenuTrigger_Line mb-MenuTrigger_Line-top"></span>
+                <span class="mb-MenuTrigger_Line mb-MenuTrigger_Line-middle"></span>
+                <span class="mb-MenuTrigger_Line mb-MenuTrigger_Line-bottom"></span>
+              </button>
+            </div>
+
+            <div class="hd-MobileNav_Item hd-MobileNav_Item-search">
+              <a
+                class="hd-MobileNav_Link"
+                href="{{ routes.search_url }}"
+                {% if request.page_type == 'search' %} aria-current="page"{% endif %}
+                data-module-drawers-trigger="search"
+                {% comment %}
+                {% unless request.page_type == 'search' %} data-module-drawers-trigger="search"{% endunless %}
+                {% endcomment %}
+              >
+                <span class="util-ScreenReaderOnly">{{ 'layout.header.search' | t }}</span>
+
+                <span class="hd-MobileNav_Icon hd-MobileNav_Icon-search">
+                  {%- render 'bao-search' -%}
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <a class="hd-Header_Logo" href="{{ routes.root_url }}">
+        {%- render 'bao-logo' -%}
+      
+      </a>
+
+      <div class="hd-Header_Nav hd-Header_Nav-right">
+        <nav class="hd-Nav">
+          <ul class="hd-Nav_Items">
+            <li class="hd-Nav_Item">
+              <a
+                class="hd-Nav_Link"
+                {% unless request.page_type == 'search' %}href="/search"{% endunless %}
+                {% if request.page_type == 'search' %}href="#"{% endif %}
+                {% if request.page_type == 'search' %} aria-current="page"{% endif %}
+                {% unless request.page_type == 'search' %} data-module-drawers-trigger="search"{% endunless %}
+              >
+                {{ 'layout.header.search' | t }}
+              </a>
+            </li>
+
+            {%- for link in linklists[section.settings.right_navigation].links -%}
+              <li class="hd-Nav_Item">
+                <a
+                  class="hd-Nav_Link"
+                  href="{{ link.url }}"
+                  {% if link.active %} aria-current="page"{% endif %}
+                >
+                  {{ link.title }}
+                </a>
+              </li>
+            {%- endfor -%}
+
+            {%- if shop.customer_accounts_enabled -%}
+              <li class="hd-Nav_Item">
+                <a
+                  class="hd-Nav_Link"
+                  href="{{ routes.account_url }}"
+                  {% if request.page_type contains 'customers' %} aria-current="page"{% endif %}
+                >
+                  {{ 'layout.header.account' | t }}
+                </a>
+              </li>
+            {%- endif -%}
+
+            <li class="hd-Nav_Item">
+              <a
+                class="hd-Nav_Cart"
+                href="{{ routes.cart_url }}"
+                {% unless page.request_type == 'cart' %} data-module-drawers-trigger="cart"{% endunless %}
+              >
+                <span class="util-ScreenReaderOnly">
+                  {{ 'layout.header.cart' | t }}
+                </span>
+
+                <span class="hd-Nav_CartCount" data-push-cart-count>{{ cart.item_count }}</span>
+              </a>
+            </li>
+          </ul>
+        </nav>
+
+        <div class="hd-MobileNav">
+          <div class="hd-MobileNav_Items">
+            <div class="hd-MobileNav_Item">
+              <a
+                class="hd-MobileNav_Link"
+                href="{{ routes.account_url }}"
+                {% if request.page_type contains 'customers' %} aria-current="page"{% endif %}
+              >
+                <span class="util-ScreenReaderOnly">{{ 'layout.header.account' | t }}</span>
+
+                <span class="hd-MobileNav_Icon hd-MobileNav_Icon-user">
+                  {%- render 'bao-user' -%}
+                </span>
+              </a>
+            </div>
+
+            <div class="hd-MobileNav_Item">
+              <a
+                class="hd-MobileNav_Cart"
+                href="{{ routes.cart_url }}"
+                {% unless page.request_type == 'cart' %} data-module-drawers-trigger="cart"{% endunless %}
+              >
+                <span class="util-ScreenReaderOnly">
+                  {{ 'layout.header.cart' | t }}
+                </span>
+
+                <span
+                  class="hd-MobileNav_CartCount"
+                  data-push-cart-count
+                >
+                  {{ cart.item_count }}
+                </span>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hd-Header_NavBackdrop">
+        <a href="/" class="hd-Header_NavBackdropLogo">
+          {%- render 'bao-logo' -%}
+        </a>
+      </div>
+
+      <div class="hd-Header_Backdrop" data-el="header.backdrop"></div>
+    </div>
+  </div>
+</header>
+
+ {% comment %} <div class="hd-AnimatedHeader" style="display: none;">
+  <div class="hd-AnimatedHeader_Logo">
+    {%- render 'bao-logo' -%}
+  </div>
+</div>  {% endcomment %}
+
+{%- capture same_as -%}
+  {%- if settings.social_twitter_link != blank -%}|{{ settings.social_twitter_link }}{%- endif -%}
+  {%- if settings.social_facebook_link != blank -%}|{{ settings.social_facebook_link }}{%- endif -%}
+  {%- if settings.social_pinterest_link != blank -%}|{{ settings.social_pinterest_link }}{%- endif -%}
+  {%- if settings.social_instagram_link != blank -%}|{{ settings.social_instagram_link }}{%- endif -%}
+  {%- if settings.social_tumblr_link != blank -%}|{{ settings.social_tumblr_link }}{%- endif -%}
+  {%- if settings.social_snapchat_link != blank -%}|{{ settings.social_snapchat_link }}{%- endif -%}
+  {%- if settings.social_youtube_link != blank -%}|{{ settings.social_youtube_link }}{%- endif -%}
+  {%- if settings.social_vimeo_link != blank -%}|{{ settings.social_vimeo_link }}{%- endif -%}
+{%- endcapture -%}
+{%- assign same_as = same_as | remove_first: '|' | strip | split: '|' -%}
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Organization",
+    "name": "{{ shop.name }}",
+    "logo": "{{ section.settings.logo | img_url: '200x' }}",
+    {% if same_as != blank %}
+    "sameAs": [
+      {% for item in same_as %}
+      "{{ item }}"{% unless forloop.last %}{% endunless %}
+  {% endfor %}
+    ],
+    {% endif %}
+    "url": "{{ shop.url }}{{ page.url }}"
+  }
+</script>
+
+{%- if template.name == 'index' -%}
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "WebSite",
+      "name": "{{ shop.name }}",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": "{{ shop.url }}/search?q={search_term_string}",
+        "query-input": "required name=search_term_string"
+      },
+      "url": "{{ shop.url }}"
+    }
+  </script>
+{%- endif -%}
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    var header = document.querySelector('.hd-Header');
+    if (!header || !window.matchMedia('(hover: hover)').matches) return;
+
+    var items = header.querySelectorAll('.hd-Nav_Item[data-has-children="true"]');
+    var allNavItems = header.querySelectorAll('.hd-Nav_Item');
+    var backdrop = document.querySelector('.hd-Header_NavBackdrop');
+    var hideTimer;
+
+    function keepMenuOpen() {
+      clearTimeout(hideTimer);
+    }
+
+    function closeMenu() {
+      clearTimeout(hideTimer);
+
+      items.forEach(function (i) {
+        i.classList.remove('hd-Nav_Item-dropdownActive');
+      });
+
+      header.classList.remove('hd-Header-dropdownActive');
+
+      if (backdrop) {
+        backdrop.classList.remove('hd-Header-dropdownActive');
+      }
+    }
+
+    function initiateClose() {
+      clearTimeout(hideTimer);
+
+      hideTimer = setTimeout(function () {
+        var isHoveringActiveItem = header.querySelector('.hd-Nav_Item[data-has-children="true"]:hover');
+        var isHoveringBackdrop = backdrop ? backdrop.matches(':hover') : false;
+
+        if (!isHoveringActiveItem && !isHoveringBackdrop) {
+          closeMenu();
+        }
+      }, 250);
+    }
+
+    items.forEach(function (item) {
+      var dropdown = item.querySelector('.hd-Nav_Dropdown');
+
+      function openMenu() {
+        clearTimeout(hideTimer);
+
+        items.forEach(function (i) {
+          if (i !== item) {
+            i.classList.remove('hd-Nav_Item-dropdownActive');
+          }
+        });
+
+        item.classList.add('hd-Nav_Item-dropdownActive');
+        header.classList.add('hd-Header-dropdownActive');
+
+        if (backdrop) {
+          backdrop.classList.add('hd-Header-dropdownActive');
+        }
+      }
+
+      item.addEventListener('mouseenter', openMenu);
+      item.addEventListener('mouseleave', initiateClose);
+
+      if (dropdown) {
+        dropdown.addEventListener('mouseenter', keepMenuOpen);
+        dropdown.addEventListener('mouseleave', initiateClose);
+      }
+    });
+
+    allNavItems.forEach(function (item) {
+      if (item.getAttribute('data-has-children') === 'false') {
+        item.addEventListener('mouseenter', closeMenu);
+      }
+    });
+
+    if (backdrop) {
+      backdrop.addEventListener('mouseenter', keepMenuOpen);
+      backdrop.addEventListener('mouseleave', initiateClose);
+    }
+
+    header.addEventListener('mouseleave', initiateClose);
+  });
+</script>
+{% schema %}
+{
+  "name": "Header",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header navigation"
+    },
+    {
+      "type": "link_list",
+      "id": "left_navigation",
+      "label": "Left navigation"
+    },
+    {
+      "type": "link_list",
+      "id": "right_navigation",
+      "label": "Right navigation"
+    },
+    {
+      "type": "header",
+      "content": "Header style"
+    },
+    {
+      "type": "select",
+      "id": "header_background_style",
+      "label": "Header background style",
+      "default": "solid",
+      "options": [
+        {
+          "value": "solid",
+          "label": "Solid"
+        },
+        {
+          "value": "transparent",
+          "label": "Transparent"
+        }
+      ]
+    },
+    {
+      "type": "checkbox",
+      "id": "transparent_homepage_only",
+      "label": "Use transparent header only on homepage",
+      "default": true
+    },
+    {
+      "type": "select",
+      "id": "transparent_color_scheme",
+      "label": "Transparent header colour scheme",
+      "default": "light",
+      "options": [
+        {
+          "value": "light",
+          "label": "Light text / white logo"
+        },
+        {
+          "value": "dark",
+          "label": "Dark text / black logo"
+        }
+      ]
+    },
+    {
+      "type": "color",
+      "id": "solid_background_color",
+      "label": "Solid header background colour",
+      "default": "#ffffff"
+    },
+    {
+      "type": "select",
+      "id": "solid_color_scheme",
+      "label": "Solid header colour scheme",
+      "default": "dark",
+      "options": [
+        {
+          "value": "light",
+          "label": "Light text / white logo"
+        },
+        {
+          "value": "dark",
+          "label": "Dark text / black logo"
+        }
+      ]
+    },
+   
+  ]
+}
+{% endschema %}

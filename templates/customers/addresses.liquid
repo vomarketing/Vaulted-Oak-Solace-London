@@ -1,0 +1,46 @@
+<section class="acc-Account acc-Account-addresses" data-module="addresses">
+  {%- capture title -%}{{ 'customer.addresses.addresses' | t }}{%- endcapture -%}
+
+  <div class="acc-Account_Inner">
+    <aside class="acc-Account_Nav">
+      {%- render "account-navigation" -%}
+
+      <div class="acc-Account_Item acc-Account_Item-mobile">
+        <div class="acc-Section">
+          <div class="acc-Section_Body">
+            {%- render 'account-add-address' -%}
+          </div>
+          <div class="acc-Section_Actions">
+            <button class="acc-Address_Button btn-Button btn-Button-wide btn-Button-spacy" type="button">
+              {{ 'customer.addresses.new_address' | t }}
+            </button>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <div class="acc-Account_Body">
+      <div class="acc-Account_Items">
+        <div class="acc-Account_Item">
+          <div class="acc-Section" id="hideOnAddAddress">
+            <div class="acc-Section_Header">
+              <h2 class="acc-Section_Title fz-25_33">{{ 'customer.addresses.your_addresses' | t }}</h2>
+            </div>
+            {%- render 'account-edit-address' -%}
+          </div>
+        </div>
+
+        <div class="acc-Account_Item">
+          <div class="acc-Section">
+            <div class="acc-Section_Body">
+              {%- render 'account-edit-address-forms' -%}
+              <div class="acc-Section_Body-desktop">
+                {%- render 'account-add-address' -%}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

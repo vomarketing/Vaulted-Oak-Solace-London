@@ -1,0 +1,45 @@
+{%- if initial_value == nil -%}
+  {%- assign initial_value = 1 -%}
+{%- endif -%}
+
+<div
+  class="qty-Adjuster"
+  data-module="quantity-adjuster"
+  data-quantity-adjuster-value="{{ initial_value }}"
+>
+  <label class="qty-Adjuster_Label util-ScreenReaderOnly" for="Quantity">
+    {{ 'cart.products.quantity' | t }}
+  </label>
+
+  <div
+    class="qty-Adjuster_Control qty-Adjuster_Control-minus"
+    role="button"
+    {% if initial_value == 1 %} disabled{% endif %}
+    data-el="quantity-adjuster.minus"
+  >
+    <span class="qty-Adjuster_Indicator">
+      <span class="qty-Adjuster_IndicatorLine qty-Adjuster_IndicatorLine-1"></span>
+    </span>
+  </div>
+
+  <input
+    class="qty-Adjuster_Input"
+    type="number"
+    id="Quantity"
+    name="quantity"
+    value="{{ initial_value }}"
+    min="1"
+    data-el="quantity-adjuster.input"
+  />
+
+  <div
+    class="qty-Adjuster_Control qty-Adjuster_Control-plus"
+    role="button"
+    data-el="quantity-adjuster.plus"
+  >
+    <span class="qty-Adjuster_Indicator">
+      <span class="qty-Adjuster_IndicatorLine qty-Adjuster_IndicatorLine-1"></span>
+      <span class="qty-Adjuster_IndicatorLine qty-Adjuster_IndicatorLine-2"></span>
+    </span>
+  </div>
+</div>

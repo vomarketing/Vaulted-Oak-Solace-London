@@ -1,0 +1,1 @@
+(window.shopifyUnisianJsonp=window.shopifyUnisianJsonp||[]).push([[27],{24:function(i,n,e){"use strict";function r(i){return[...i.entries()].filter(([i,n])=>i.includes("properties[")&&""!==n).reduce((function(i,[n,e]){return{...i,[n.replace("properties[","").slice(0,-1)]:e}}),{})}e.r(n),e.d(n,"buildProperties",(function(){return r}))}}]);

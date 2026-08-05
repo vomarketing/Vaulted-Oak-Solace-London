@@ -1,0 +1,231 @@
+{% section 'product' %}
+
+{%- if product.metafields.Detail.Recommended_Products != blank -%}
+  <section class="sec-Section sec-Section-flushUntilMd">
+    <div class="sec-Section_Inner lyt-Container">
+      <header class="sec-Section_Header">
+        {%- capture recommended_title -%}
+          {%- if product.metafields.Detail.Recommended_Title -%}
+            {{ product.metafields.Detail.Recommended_Title }}
+          {%- else -%}
+            {{ 'products.product.recommended_products' | t }}
+          {%- endif -%}
+        {%- endcapture -%}
+
+        <h2 class="sec-Section_Title fz-12_12">{{ recommended_title }}</h2>
+      </header>
+
+      <div class="sec-Section_Body">
+        <div
+          class="prd-Recommended css-Scroller"
+          data-module="css-scroller"
+          data-css-scroller-remove-at-breakpoint="md"
+        >
+          <div class="prd-Recommended_Items css-Scroller_Items" data-el="css-scroller.track">
+            {%- assign recommended_handles = product.metafields.Detail.Recommended_Products | split: '|' -%}
+
+            <div class="prd-Recommended_Item css-Scroller_Spacer"></div>
+
+            {%- for recommended_handle in recommended_handles -%}
+              {%- assign recommended_product = all_products[recommended_handle] -%}
+
+              {%- if recommended_product != blank -%}
+                <div
+                  class="prd-Recommended_Item css-Scroller_Item js-Animate"
+                  data-animation="Fade"
+                  {% if forloop.last %} style="--Item_HorizontalSpacing: 0;"{% endif %}
+                >
+                  {%- render 'product-card', product: recommended_product -%}
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+
+            <div class="prd-Recommended_Item css-Scroller_Spacer"></div>
+          </div>
+
+          <div
+            class="prd-Recommended_Scroller css-Scroller_Scroller"
+            data-el="css-scroller.scroller"
+          >
+            <div
+              class="prd-Recommended_Thumb css-Scroller_Thumb"
+              data-el="css-scroller.thumb"
+            ></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+{%- endif -%}
+
+{%- if collection -%}
+  <div class="pg-Back">
+    <div class="pg-Back_Inner lyt-Container">
+      <div class="pg-Back_Body">
+        <a class="pg-Back_Link" href="{{ collection.url }}">
+          <span class="pg-Back_Icon">{%- render 'bao-chevron-left' -%}</span>
+
+          <span class="pg-Back_Text">{{ 'products.product.back' | t }}</span>
+        </a>
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org/",
+  "@type": "Product",
+  "name": "{{ product.title | escape }}",
+  "url": "{{ shop.url }}{{ product.url }}",
+  {% if product.featured_image %}
+    {% assign image_size = product.featured_image.width | append: 'x' %}
+    "image": [
+      "https:{{ product.featured_image.src | img_url: image_size }}"
+    ],
+  {% endif %}
+  "description": "{{ product.description | strip_html | escape }}",
+  {% if current_variant.sku != blank %}
+    "sku": "{{ current_variant.sku }}",
+  {% endif %}
+  "brand": {
+    "@type": "Thing",
+    "name": "{{ product.vendor | escape }}"
+  },
+  {% if product.variants.size > 0 %}
+    "offers": [
+    {% for variant in product.variants %}
+      {
+        "@type" : "Offer",
+        "availability" : "http://schema.org/{% if product.available %}InStock{% else %}OutOfStock{% endif %}",
+        "price" : "{{ variant.price | divided_by: 100.00 }}",
+        "priceCurrency" : "{{ shop.currency }}",
+        "url" : "{{ shop.url }}{{ variant.url }}",
+        "itemOffered" :
+          {
+            "@type" : "Product",
+            {% if variant.image %}
+              {% assign variant_image_size = variant.image.width | append: 'x' %}
+              "image": "http:{{ variant.image.src | img_url: variant_image_size }}",
+            {% endif %}
+            {% if variant.title != blank %}
+              "name" : "{{ variant.title | escape }}",
+            {% endif %}
+            {% if variant.sku != blank %}
+              "sku": "{{ variant.sku }}",
+            {% endif %}
+            {% if variant.weight != blank %}
+              "weight": {
+                "@type": "QuantitativeValue",
+                {% if variant.weight_unit != blank %}
+                  "unitCode": "{{ variant.weight_unit }}",
+                {% endif %}
+                "value": "{{ variant.weight | weight_with_unit: variant.weight_unit }}"
+              },
+            {% endif %}
+            "url": "{{ shop.url }}{{ variant.url }}"
+          }
+        }{% unless forloop.last %},{% endunless %}
+      {% endfor %}
+    ]
+  {% endif %}
+}
+</script>
+
+<script type="text/javascript">
+if (typeof(BIS) !== 'undefined') {
+  if (BIS.urlIsProductPage()) {
+    BISPopover.ready.then(function() {
+      var link;
+      var root = $('.module.unavailable');
+      if (root[0]) {
+        link = $('<span>', {
+          text: BISConfig.labels.button_label,
+          type: 'button',
+          class: 'action-button',
+          id: 'BIS_trigger',
+          css: { display: 'none' }
+        });
+        root.eq(0).append(link);
+      } else {
+        link = $('<input>', {
+          value: BISConfig.labels.button_label,
+          type: 'button',
+          class: 'action-button',
+          id: 'BIS_trigger',
+          css: { display: 'none' }
+        });
+        $('.submit-wrapper').eq(0).append(link);
+      }
+
+      var variant_id;
+      var reload = function() {
+        try {
+          var variant = BIS.detectVariant(BIS.popup);
+          if (variant && BIS.popup.variantIsUnavailable(variant)) {
+            variant_id = variant.id;
+            link.show();
+          } else {
+            link.hide();
+          }
+        } catch (e) {};
+      };
+
+      link.click(function() {
+        BISPopover.form.selectVariant(variant_id);
+      });
+
+      setTimeout(reload, 13);
+
+      // sold out products don't have that element
+      var elm = $('.single-option-selector')
+      if (elm[0]) {
+        elm.on('change', reload);
+
+        // prepend event since this theme swallows it
+        event = $._data(elm[0], 'events').change.pop()
+        $._data(elm[0], 'events').change.unshift(event);
+      } else {
+        link.show();
+      }
+    });
+  }
+}
+</script>
+
+{% comment %}
+Enable Klaviyo JS - Abandon Browse & Add to cart tracking
+{%  endcomment %}
+<script type="text/javascript">
+  var _learnq = _learnq || [];
+  var item = {
+    Name: {{ product.title|json }},
+    ProductID: {{ product.id|json }},
+    Categories: {{ product.collections|map:'title'|json }},
+    ImageURL: "https:{{ product.featured_image.src|img_url:'grande' }}",
+    URL: "{{ shop.secure_url }}{{ product.url }}",
+    Brand: {{ product.vendor|json }},
+    Price: {{ product.price|money|json }},
+    CompareAtPrice: {{ product.compare_at_price_max|money|json }}
+  };
+  _learnq.push(['track', 'Viewed Product', item]);
+  _learnq.push(['trackViewedItem', {
+    Title: item.Name,
+    ItemId: item.ProductID,
+    Categories: item.Categories,
+    ImageUrl: item.ImageURL,
+    Url: item.URL,
+    Metadata: {
+      Brand: item.Brand,
+      Price: item.Price,
+      CompareAtPrice: item.CompareAtPrice
+    }
+  }]);
+</script>
+
+<script type="text/javascript">
+  var _learnq = _learnq || [];
+  document.getElementById("AddToCart").addEventListener('click',function (){
+    _learnq.push(['track', 'Added to Cart', item]);
+  });
+</script>

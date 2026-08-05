@@ -1,0 +1,35 @@
+<button
+  class="prd-Offers_Submit fz-12_12"
+  type="submit"
+  name="add"
+  data-el="product-card.button"
+  {% unless current_variant.available %}disabled{% endunless %}
+>
+
+  <span class="prd-Offers_SubmitText">
+    {%- if current_variant.available -%}
+      {{ 'products.product.add_to_cart' | t }}
+    {%- else -%}
+      {{ 'products.product.sold_out' | t }}
+    {%- endif -%}
+  </span>
+
+  <span
+    class="prd-Offers_SubmitPrice 1211111"
+    data-product-detail-button-price
+    aria-current="false"
+  >
+    {%- render 'product-price', product: product %}
+  </span>
+
+  <span
+    class="prd-Offers_SubmitPrice 1212"
+    data-product-detail-button-price
+    aria-current="true"
+  >
+    {%- render 'product-price', product: product %}
+  </span>
+</button>
+<script>
+  console.log("product.price =",{{ product.price | json }});
+</script>

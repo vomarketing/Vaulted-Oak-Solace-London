@@ -1,0 +1,122 @@
+<script type="template/klevu" id="klevuProductBlock">
+
+<div class="klv-Card util-FauxLink">
+  <% if(dataLocal.image && dataLocal.image.length ) { %>
+  <div class="klv-Card_ImageContainer">
+    <div class="klv-Card_ImageOuter">
+      <img class="klv-Card_Image" src="<%=dataLocal.image%>" alt="<%=dataLocal.name%>" />
+    </div>
+  </div>
+  <% } %>
+
+  <div class="klv-Card_Bottom">
+    <div class="klv-Card_Content fz-12_12">
+      <p class="klv-Card_Kicker klv-Card_Kicker-red prd-Card_Kicker-red">
+        <% if(parseFloat(dataLocal.salePrice,2) < parseFloat(dataLocal.price,2)) { %>
+          {{ 'products.product.on_sale' | t }}
+        <% } %>
+      </p>
+
+      <h3 class="klv-Card_Title fz-12_12">
+        <%=dataLocal.name%>
+      </h3>   
+
+      <div class="klv-Card_Price">
+        <p class="prd-Price <% if(dataLocal.ondiscount && dataLocal.ondiscount == "true") { %> prd-Price-onSale<% } %>">
+          <% if(parseFloat(dataLocal.salePrice,2) < parseFloat(dataLocal.price,2)) { %>
+            <span class="util-ScreenReaderOnly ttt">
+              {{ 'products.product.regular_price' | t }}
+            </span>
+            <s class="prd-Price_Compare">
+              {{ cart.currency.symbol }}<%=parseFloat(dataLocal.price,2) %>
+            </s>
+            <% } %>
+          <span class="prd-Price_Price ttttt <% if(parseFloat(dataLocal.salePrice,2) < parseFloat(dataLocal.price,2)) { %> prd-Card_Kicker-red <% } %>121211228">
+            <% if(dataLocal.ondiscount && dataLocal.ondiscount == "true") { %>
+                <% if(dataLocal.startPrice < dataLocal.toPrice) { %>
+                  <%= "{{ 'products.product.on_sale_from_html' | t }}".replace('price',dataLocal.salePrice) %>
+                <% } else { %>
+                  {{ cart.currency.symbol }}<%=parseFloat(dataLocal.salePrice,2) %>
+                <% } %>
+              <% } else { %>
+              <% if(dataLocal.startPrice < dataLocal.toPrice) { %>
+                <%= "{{ 'products.product.from_text_html' | t }}".replace('price',dataLocal.salePrice) %>
+              <% } else { %>
+                {{ cart.currency.symbol }}<%=parseFloat(dataLocal.salePrice,2)%>
+              <% } %>
+            <% } %>
+          </span>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <a class="klv-Card_FauxLink util-FauxLink_Link" href="<%=dataLocal.url%>"></a>
+</div>
+</script>
+
+<script>
+(function() {
+  function formatMoney(cents) {
+    return (cents / 100).toFixed(2);
+  }
+
+  function updateKlevuPrices() {
+    document.querySelectorAll('.klv-Card:not([data-price-updated])').forEach(function(card) {
+      var fauxLink = card.querySelector('.klv-Card_FauxLink');
+      if (!fauxLink) return;
+
+      var handle = fauxLink.href.split('/products/')[1];
+      if (!handle) return;
+
+      card.setAttribute('data-price-updated', 'true');
+
+      fetch('/products/' + handle + '.js')
+        .then(function(r) { return r.json(); })
+        .then(function(product) {
+          if (!card.isConnected) return;
+
+          var variant = product.variants[0];
+          var price = formatMoney(variant.price);
+          var comparePrice = variant.compare_at_price ? formatMoney(variant.compare_at_price) : null;
+          var symbol = '{{ cart.currency.symbol }}';
+
+          var priceEl = card.querySelector('.prd-Price_Price');
+          var compareEl = card.querySelector('.prd-Price_Compare');
+          var kickerEl = card.querySelector('.klv-Card_Kicker');
+          var priceWrap = card.querySelector('.prd-Price');
+
+          if (priceEl) priceEl.textContent = symbol + price;
+
+          if (comparePrice && parseFloat(comparePrice) > parseFloat(price)) {
+            if (compareEl) compareEl.textContent = symbol + comparePrice;
+            if (kickerEl) kickerEl.textContent = '{{ 'products.product.on_sale' | t }}';
+            if (priceWrap) priceWrap.classList.add('prd-Price-onSale');
+            if (priceEl) priceEl.classList.add('prd-Card_Kicker-red');
+          } else {
+            if (compareEl) compareEl.style.display = 'none';
+            if (kickerEl) kickerEl.textContent = '';
+            if (priceWrap) priceWrap.classList.remove('prd-Price-onSale');
+            if (priceEl) priceEl.classList.remove('prd-Card_Kicker-red');
+          }
+        });
+    });
+  }
+
+  var debounceTimer;
+  var observer = new MutationObserver(function(mutations) {
+    var hasNewCards = mutations.some(function(mutation) {
+      return Array.from(mutation.addedNodes).some(function(node) {
+        return node.nodeType === 1 && (node.classList.contains('klv-Card') || node.querySelector('.klv-Card'));
+      });
+    });
+
+    if (hasNewCards) {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(updateKlevuPrices, 300);
+    }
+  });
+
+  observer.observe(document.body, { childList: true, subtree: true });
+})();
+</script>

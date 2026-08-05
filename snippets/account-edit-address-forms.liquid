@@ -1,0 +1,91 @@
+{%- if customer.addresses.size > 0 -%}
+  <div class="acc-Section_Body acc-Section_Body-address">
+    {%- for address in customer.addresses -%}
+      <div class="acc-Address util-Hide" data-address-form data-form-id="{{ address.id }}">
+        {%- if address == customer.default_address -%}
+          <h2 class="acc-Section_Title fz-25_33">{{ 'customer.addresses.edit' | t }}</h2>
+          <h3 class="acc-Address_Title fz-14_18">{{ 'customer.addresses.default_address' | t }}</h3>
+        {%- else -%}
+          <h2 class="acc-Section_Title fz-25_33">{{ 'customer.addresses.edit' | t }}</h2>
+          <h3 class="acc-Address_Title fz-14_18">{{ 'customer.account.address' | t }} ({{ forloop.index }})</h3>
+        {%- endif -%}
+
+        <div class="acc-Address_Form" id="EditAddress_{{ address.id }}">
+          {%- form 'customer_address', address, class: 'frm-Form' -%}
+            <div class="frm-Form_Field">
+              <label class="frm-Form_Label util-ScreenReaderOnly" for="AddressFirstName_{{ form.id }}">{{ 'customer.addresses.first_name' | t }}</label>
+              <input class="frm-Form_Input" type="text" name="address[first_name]" id="AddressFirstName_{{ form.id }}" value="{{ form.first_name }}" placeholder="{{ 'customer.addresses.first_name' | t }}" autocapitalize="words" />
+            </div>
+
+            <div class="frm-Form_Field">
+              <label class="frm-Form_Label util-ScreenReaderOnly" for="AddressLastName_{{ form.id }}">{{ 'customer.addresses.last_name' | t }}</label>
+              <input class="frm-Form_Input" type="text" name="address[last_name]" id="AddressLastName_{{ form.id }}" value="{{ form.last_name }}" placeholder="{{ 'customer.addresses.last_name' | t }}" autocapitalize="words" />
+            </div>
+
+            <div class="frm-Form_Field">
+              <label class="frm-Form_Label util-ScreenReaderOnly" for="AddressCompany_{{ form.id }}">{{ 'customer.addresses.company' | t }}</label>
+              <input class="frm-Form_Input" type="text" name="address[company]" id="AddressCompany_{{ form.id }}" value="{{ form.company }}" placeholder="{{ 'customer.addresses.company' | t }}" autocapitalize="words" />
+            </div>
+
+            <div class="frm-Form_Field">
+              <label class="frm-Form_Label util-ScreenReaderOnly" for="AddressAddress1_{{ form.id }}">{{ 'customer.addresses.address1' | t }}</label>
+              <input class="frm-Form_Input" type="text" name="address[address1]" id="AddressAddress1_{{ form.id }}" value="{{ form.address1 }}" placeholder="{{ 'customer.addresses.address1' | t }}" autocapitalize="words" />
+            </div>
+
+            <div class="frm-Form_Field">
+              <label class="frm-Form_Label util-ScreenReaderOnly" for="AddressAddress2_{{ form.id }}">{{ 'customer.addresses.address2' | t }}</label>
+              <input class="frm-Form_Input" type="text" name="address[address2]" id="AddressAddress2_{{ form.id }}" value="{{ form.address2 }}" placeholder="{{ 'customer.addresses.address2' | t }}" autocapitalize="words" />
+            </div>
+
+            <div class="frm-Form_Field">
+              <label class="frm-Form_Label util-ScreenReaderOnly" for="AddressCity_{{ form.id }}">{{ 'customer.addresses.city' | t }}</label>
+              <input class="frm-Form_Input" type="text" name="address[city]" id="AddressCity_{{ form.id }}" value="{{ form.city }}" placeholder="{{ 'customer.addresses.city' | t }}" autocapitalize="words" />
+            </div>
+
+            <div class="frm-Form_Field">
+              <label class="frm-Form_Label util-ScreenReaderOnly" for="AddressCountry_{{ form.id }}">{{ 'customer.addresses.country' | t }}</label>
+              <select class="frm-Form_Select" name="address[country]" id="AddressCountry_{{ form.id }}" data-form-id="{{ form.id }}" data-address-country data-default="{{ form.country }}">
+                {{ country_option_tags }}
+              </select>
+            </div>
+
+            <div class="frm-Form_Field util-Hide" id="AddressProvinceContainer_{{ form.id }}" data-address-province-wrapper>
+              <label class="frm-Form_Label util-ScreenReaderOnly" for="AddressProvince_{{ form.id }}">{{ 'customer.addresses.province' | t }}</label>
+              <select class="frm-Form_Select" data-address-province name="address[province]" id="AddressProvince_{{ form.id }}" data-default="{{ form.province }}"></select>
+            </div>
+
+            <div class="frm-Form_Field">
+              <label class="frm-Form_Label util-ScreenReaderOnly" for="AddressZip_{{ form.id }}">{{ 'customer.addresses.zip' | t }}</label>
+              <input class="frm-Form_Input" type="text" name="address[zip]" id="AddressZip_{{ form.id }}" value="{{ form.zip }}" placeholder="{{ 'customer.addresses.zip' | t }}" autocapitalize="characters" />
+            </div>
+
+            <div class="frm-Form_Field">
+              <label class="frm-Form_Label util-ScreenReaderOnly" for="AddressPhone_{{ form.id }}">{{ 'customer.addresses.phone' | t }}</label>
+              <input class="frm-Form_Input" type="tel" name="address[phone]" id="AddressPhone_{{ form.id }}" pattern="[0-9\-]*" value="{{ form.phone }}" placeholder="{{ 'customer.addresses.phone' | t }}" />
+            </div>
+
+            <div class="frm-Form_Checkbox frm-Form_Checkbox-circle frm-Form_Checkbox-gapTopBottom">
+              <label class="frm-Form_CheckboxLabel">{{ 'customer.addresses.set_default' | t }}
+                {{ form.set_as_default_checkbox }}
+                <span class="frm-Form_CheckboxInput"></span>
+              </label>
+            </div>
+
+            <div class="acc-Address_Actions acc-Address_Actions-editActions">
+              <button class="acc-Address_Button acc-Address_Button-update btn-Button btn-Button-secondary btn-Button-spacy" type="submit" value="{{ 'customer.addresses.update' | t }}">
+                {{ 'customer.addresses.update' | t }}
+                <span class="frm-Form_ButtonIcon">
+                  {%- render 'bao-arrow' -%}
+                </span>
+              </button>
+
+              <button class="acc-Address_Button acc-Address_Button-delete btn-Button btn-Button-secondary btn-Button-spacy" type="button" data-address-hide data-form-id="{{ form.id }}">
+                {{ 'customer.addresses.cancel' | t }}
+              </button>
+            </div>
+          {%- endform -%}
+        </div>
+      </div>
+    {%- endfor -%}
+  </div>
+{%- endif -%}

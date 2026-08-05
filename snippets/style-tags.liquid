@@ -1,0 +1,14 @@
+
+{%- if layout == 'checkout' -%}
+<link type="text/css" href="{{ 'layout.checkout.css' | asset_url }}" rel="stylesheet">
+{%- else -%}
+<link rel="prefetch" href="{{ 'layout.checkout.css' | asset_url }}" as="style">
+{%- endif -%} {%- if layout == 'password' -%}
+<link type="text/css" href="{{ 'layout.password.css' | asset_url }}" rel="stylesheet">
+{%- else -%}
+<link rel="prefetch" href="{{ 'layout.password.css' | asset_url }}" as="style">
+{%- endif -%} {%- if layout == 'theme' -%}
+<link type="text/css" href="{{ 'layout.theme.css' | asset_url }}" rel="stylesheet">
+{%- else -%}
+<link rel="prefetch" href="{{ 'layout.theme.css' | asset_url }}" as="style">
+{%- endif -%}

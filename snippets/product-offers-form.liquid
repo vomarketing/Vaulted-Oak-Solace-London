@@ -1,0 +1,194 @@
+<div class="prd-Offers">
+  {%- form 'product',
+    product,
+    class: 'prd-Offers_Form',
+    data-push-cart-form: '',
+    data-product-detail-form: '' -%}
+    <input type="hidden" name="quantity" value="1">
+
+    <div class="prd-Offers_Options util-Js">
+      {%- unless product.has_only_default_variant -%}
+        {%- for option in product.options_with_values -%}
+          <div class="prd-Offers_Option">
+            <div
+              class="prd-OffersOption fz-13_18"
+              data-product-detail-size-option
+            >
+              <header class="prd-OffersOption_Header">
+                <label
+                  class="prd-OffersOption_Label"
+                  for="SingleOptionSelector-{{ forloop.index0 }}"
+                >
+                  {{ option.name }}
+                </label>
+
+                {%- if forloop.first -%}
+                  <div class="prd-OffersOption_Body">
+                    <button
+                      class="prd-OffersOption_Link"
+                      type="button"
+                      data-module-drawers-trigger="pdp-size-guide"
+                    >
+                      {{ 'products.product.size_guide' | t }}
+                    </button>
+
+                    <div
+                      class="drw-Drawer drw-Drawer-fromRight"
+                      data-module-drawers-drawer="pdp-size-guide"
+                      data-module-drawers-move-me="root"
+                    >
+                      <div class="drw-Drawer_Inner">
+                        <button
+                          type="button"
+                          class="drw-Drawer_Close"
+                          data-module-drawers-close="pdp-size-guide"
+                        >
+                          {%- render 'bao-close' -%}
+                        </button>
+
+                        <div class="drw-Drawer_Body">
+                          <div class="drw-Drawer_Header">
+                            <h2 class="drw-Drawer_Title fz-25_33">{{ 'products.product.size_guide' | t }}</h2>
+                            <p class="drw-Drawer_Product fz-10_10">{{product.title}}</p>
+                          </div>
+                          <div class="drw_Drawer_Content">
+                            {{ pages[section.settings.size_guide_page].content }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                {%- endif -%}
+              </header>
+
+              <div class="prd-OffersOption_Body">
+                {%- assign downcased_name = option.name | downcase -%}
+
+                {%- if downcased_name contains 'size' -%}
+                  <div
+                    class="prd-OffersOption_Items"
+                    data-product-detail-choices
+                  >
+                    {%- for value in option.values -%}
+                      {%- assign option_is_available = true -%}
+
+                      {%- if product.options.size == 1 -%}
+                        {%- unless product.variants[forloop.index0].available -%}
+                        {%- assign option_is_available = false -%}
+                        {%- endunless -%}
+                      {%- endif -%}
+
+                      <div class="prd-OffersOption_Item">
+                        <button
+                          type="button"
+                          class="prd-OffersOption_Button"
+                          data-value="{{ value | escape }}"
+                          aria-current="false"
+                          {% unless option_is_available %}disabled{% endunless %}
+                          data-product-detail-choice
+                        >
+                          <span class="prd-OffersOption_ButtonText">
+                            {{ value }}
+                          </span>
+                        </button>
+                      </div>
+                    {%- endfor -%}
+                  </div>
+
+                  <select
+                    class="util-ScreenReaderOnly"
+                    id="SingleOptionSelector-{{ forloop.index0 }}"
+                    data-single-option-selector
+                    data-index="option{{ option.position }}"
+                    name="options[{{ option.name | escape }}]"
+                    data-product-detail-select
+                  >
+                    {%- for value in option.values -%}
+                      <option
+                        value="{{ value | escape }}"
+                        {% if option.selected_value == value %}selected="selected"{% endif %}>
+                        {{ value }}
+                      </option>
+                    {%- endfor -%}
+                  </select>
+                {%- else -%}
+                  <select
+                    class="prd-Offers_OptionSelect"
+                    id="SingleOptionSelector-{{ forloop.index0 }}"
+                    data-single-option-selector
+                    name="options[{{ option.name | escape }}]"
+                    data-index="option{{ option.position }}"
+                  >
+                    {%- for value in option.values -%}
+                      <option
+                        value="{{ value | escape }}"
+                        {% if option.selected_value == value %}selected="selected"{% endif %}>
+                        {{ value }}
+                      </option>
+                    {%- endfor -%}
+                  </select>
+                {%- endif -%}
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endunless -%}
+
+      <select
+        name="id"
+        class="util-NoJs util-ScreenReaderOnly"
+        data-product-select
+      >
+        {%- for variant in product.variants -%}
+          <option
+            {% if variant == current_variant %}selected="selected"{% endif %} {% unless variant.available %}disabled="disabled"{% endunless %}
+            value="{{ variant.id }}"
+          >
+            {{ variant.title }}
+          </option>
+        {%- endfor -%}
+      </select>
+    </div>
+
+    <div class="prd-Offers_Footer">
+      <button
+        class="prd-Offers_Submit fz-12_12"
+        type="submit"
+        name="add"
+        {% if has_size_option %}disabled{% endif %}
+        {% unless current_variant.available %}disabled{% endunless %}
+        data-product-detail-submit
+      >
+        {%- if has_size_option -%}
+          <span class="prd-Offers_Choose">
+            {{ 'products.product.please_choose' | t }}
+          </span>
+        {%- endif -%}
+
+        <span class="prd-Offers_SubmitText">
+          {%- if current_variant.available -%}
+            {{ 'products.product.add_to_cart' | t }}
+          {%- else -%}
+            {{ 'products.product.sold_out' | t }}
+          {%- endif -%}
+        </span>
+
+        <span
+          class="prd-Offers_SubmitPrice"
+          data-product-detail-button-price
+          aria-current="false"
+        >
+          {{ current_variant.price | money_without_trailing_zeros }}
+        </span>
+
+        <span
+          class="prd-Offers_SubmitPrice"
+          data-product-detail-button-price
+          aria-current="true"
+        >
+          {{ current_variant.price | money_without_trailing_zeros }}
+        </span>
+      </button>
+    </div>
+  {%- endform -%}
+</div>

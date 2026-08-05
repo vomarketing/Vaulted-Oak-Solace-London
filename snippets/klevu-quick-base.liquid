@@ -1,0 +1,148 @@
+<script type="template/klevu" id="klevuQuickTemplateBase">
+<div class="klv-QuickSearch_Suggestions" data-module-search-el="suggestions">
+  <div class="klv-Suggestions">
+    <%=helper.render('klevuQuickAutoSuggestions',scope) %>
+
+    <div class="klv-Suggestions_Refine">
+
+    <div class="klv-Suggestions_Heading fz-10_10">
+      {{ 'general.search.refine' | t }}
+    </div>
+
+    <%
+      var tags = {
+        tags:[]
+      }
+      helper.each(data.query.productList.result,function(key,product) {
+        if(product.typeOfRecord == "KLEVU_PRODUCT") {
+          if(typeof(product.tags) !== "undefined" && product.tags) {
+            var productTags = product.tags.replace(/, /g, ",").split(",")
+            productTags.forEach(function(productTag){
+
+              if(productTag.includes(window.klevu_filterKey)) {
+                var productTagKey = productTag.split(window.klevu_filterDelimiter).shift()
+                var newProductTag = productTag.replace(productTagKey,"").trim()
+
+                if(typeof(tags[productTagKey]) === "undefined") {
+                  tags[productTagKey] = []
+                } else if(!tags[productTagKey].includes(newProductTag)) {
+                  tags[productTagKey].push(newProductTag.trim())
+                }
+
+              } else if(!tags.tags.includes(productTag)) {
+                tags.tags.push(productTag.trim())
+              }
+
+            })
+          }
+        }
+      });
+
+      %>
+
+      {% comment %} <div class="klv-Refine 565">
+      <% Object.keys(tags).forEach(function(key) { %>
+        <div class="klv-Refine_Heading fz-12_12">
+          <%= key.replace(window.klevu_filterKey,"") %>
+        </div>
+        <ul class="klv-Refine_Items 54657">
+        <%
+        var reA = /[^a-zA-Z]/g;
+        var reN = /[^0-9]/g;
+        var sortedTags = tags[key].sort(function(a, b) {
+          var aA = a.toString().replace(reA, "");
+          var bA = b.toString().replace(reA, "");
+          if (aA === bA) {
+            var aN = parseInt(a.toString().replace(reN, ""), 10);
+            var bN = parseInt(b.toString().replace(reN, ""), 10);
+            return aN === bN ? 0 : aN > bN ? 1 : -1;
+          } else {
+            return aA > bA ? 1 : -1;
+          }
+        }) %>
+        <% sortedTags.forEach(function(tag) { %>
+          <li class="klv-Refine_Item 986754">
+            <button class="klv-Refine_Button fz-12_12 <% if (window.klevu_quickSearchTags.includes(tag)) { %>klv-Refine_Button-selected<% } %>" onclick="window.updateSearchQuery(this)" value="<%= tag %>">
+              <%= tag %>
+            </button>
+          </li>
+        <% }) %>
+        </ul>
+      <% }) %>
+      </div> {% endcomment %}
+
+      <div class="klv-Refine">
+        <% Object.keys(tags).forEach(function(key) { %>
+          <div class="klv-Refine_Group" data-for="<%= key.replace(window.klevu_filterKey,"") %>">
+            <div class="klv-Refine_Heading fz-12_12">
+              <%= key.replace(window.klevu_filterKey,"") %>
+            </div>
+            <ul class="klv-Refine_Items">
+              <%
+              var reA = /[^a-zA-Z]/g;
+              var reN = /[^0-9]/g;
+              var sortedTags = tags[key].sort(function(a, b) {
+                var aA = a.toString().replace(reA, "");
+                var bA = b.toString().replace(reA, "");
+                if (aA === bA) {
+                  var aN = parseInt(a.toString().replace(reN, ""), 10);
+                  var bN = parseInt(b.toString().replace(reN, ""), 10);
+                  return aN === bN ? 0 : aN > bN ? 1 : -1;
+                } else {
+                  return aA > bA ? 1 : -1;
+                }
+              }) %>
+              <% sortedTags.forEach(function(tag) { %>
+                <li class="klv-Refine_Item 986754">
+                  <button
+                    class="klv-Refine_Button fz-12_12 <% if (window.klevu_quickSearchTags.includes(tag)) { %>klv-Refine_Button-selected<% } %>"
+                    onclick="window.updateSearchQuery(this)"
+                    value="<%= tag %>"
+                  >
+                    <%= tag %>
+                  </button>
+                </li>
+              <% }) %>
+            </ul>
+          </div>
+        <% }) %>
+      </div>
+
+    </div>
+
+    <%=helper.render('klevuQuickCategorySuggestions',scope) %>
+
+  </div>
+</div>
+
+<div class="klv-QuickSearch_Results">
+
+  <div class="klv-QuickSearch_Header">
+
+    <div class="klv-QuickSearch_Term fz-12_12">
+      <%= helper.stripHtml(data.settings.term) %>_
+    </div>
+
+    <div class="klv-QuickSearch_Count fz-12_12">
+      <%= data.query.productList.result.length %> {{ 'general.search.results' | t }}
+    </div>
+
+    <div class="klv-QuickSearch_ViewAll fz-12_12">
+      <a class="klv-QuickSearch_Link" href="<%=helper.buildUrl(data.settings.landingUrl,'q',helper.stripHtml(window.klevu_initialSearchValue))%>" target="_parent">
+        {{ 'general.search.view_all' | t }}
+      </a>
+    </div>
+
+    <div class="klv-QuickSearch_Refine fz-12_12">
+      <button class="klv-QuickSearch_Link" onclick="window.showSuggestions(this)">
+        {{ 'general.search.refine' | t }}
+      </button>
+    </div>
+
+  </div>
+
+  <div class="klv-QuickSearch_Body">
+    <%=helper.render('klevuProductList',scope) %>
+  </div>
+</div>
+</script>

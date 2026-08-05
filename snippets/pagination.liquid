@@ -1,0 +1,56 @@
+<nav class="pgn-Pagination">
+  {%- if paginate.previous.is_link -%}
+    <div class="pgn-Pagination_Previous">
+      <a
+        class="pgn-Pagination_Link"
+        href="{{ paginate.previous.url }}"
+      >
+        {%- render 'bao-chevron-left' -%}
+
+        <span class="util-ScreenReaderOnly">
+          {{ paginate.previous.title }}
+        </span>
+      </a>
+    </div>
+  {%- endif -%}
+
+  <div class="pgn-Pagination_Items">
+    {%- for part in paginate.parts -%}
+      {%- if part.is_link -%}
+        <div class="pgn-Pagination_Item">
+          <a class="pgn-Pagination_Link" href="{{ part.url }}">{{ part.title }}</a>
+        </div>
+      {%- else -%}
+        {%- if part.title == paginate.current_page -%}
+          <div class="pgn-Pagination_Item">
+            <a
+              class="pgn-Pagination_Link"
+              href="{{ part.url }}"
+              aria-current="page"
+            >
+              {{ part.title }}
+            </a>
+          </div>
+        {%- else -%}
+          <div class="pgn-Pagination_Item">{{ part.title }}</div>
+        {%- endif -%}
+      {%- endif -%}
+
+      {%- unless forloop.last -%}
+        <div class="pgn-Pagination_Item pgn-Pagination_Item-separator">/</div>
+      {%- endunless -%}
+    {%- endfor -%}
+  </div>
+
+  {%- if paginate.next.is_link -%}
+    <div class="pgn-Pagination_Next">
+      <a class="pgn-Pagination_Link" href="{{ paginate.next.url }}">
+        {%- render 'bao-chevron-right' -%}
+
+        <span class="util-ScreenReaderOnly">
+          {{ paginate.next.title }}
+        </span>
+      </a>
+    </div>
+  {%- endif -%}
+</nav>

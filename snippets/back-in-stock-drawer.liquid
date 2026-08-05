@@ -1,0 +1,44 @@
+<div class="drw-Drawer drw-Drawer-fromRight" data-module-drawers-drawer="bis">
+
+  <button type="button" class="drw-Drawer_Close drw-Drawer_Close-mobile" data-module-drawers-close="bis">
+    {%- render 'bao-close' -%}
+  </button>
+
+  <button type="button" class="drw-Drawer_Close drw-Drawer_Close-desktop" data-module-drawers-close="bis">
+    {%- render 'bao-close' -%}
+  </button>
+
+  <div class="drw-Drawer_Inner">
+    <div class="bis-BackInStock fz-13_18">
+
+      <div class="bis-BackInStock_Header">
+
+        <h4 class="bis-BackInStock_Title fz-25_33">
+          {{ product.title }}
+        </h4>
+
+        {%- if settings.bis_message != blank -%}
+        <div class="bis-BackInStock_Message">
+          {{ settings.bis_message }}
+        </div>
+        {%- endif -%}
+
+      </div>
+
+      <div class="bis-BackInStock_Form">
+
+        {%- render 'back-in-stock-form' -%}
+
+      </div>
+
+      {%- if settings.bis_footnote != blank -%}
+      <div class="bis-BackInStock_Footer">
+        {{ settings.bis_footnote }}
+      </div>
+      {%- endif -%}
+
+    </div>
+
+  </div>
+
+</div>

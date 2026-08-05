@@ -1,0 +1,15 @@
+<script type="template/klevu" id="klevuQuickAutoSuggestions">
+<% if(data.suggestions.autosuggestion && data.suggestions.autosuggestion.length > 0) { %>
+<div class="klv-Suggestions_Suggestions">
+  <ul class="klv-Suggestions_Items">
+    <% helper.each(data.suggestions.autosuggestion,function(key,suggestion){ %>
+      <li class="klv-Suggestions_Item">
+        <a class="klv-Suggestions_Link klevu-track-click fz-12_12" target="_self" href="<%=helper.buildUrl(data.settings.landingUrl, 'q' , helper.stripHtml(suggestion.suggest))%>" data-content="<%=helper.stripHtml(suggestion.suggest) %>">
+          <%=suggestion.suggest %>
+        </a>
+      </li>
+    <% }); %>
+  </ul>
+</div>
+<% } %>
+</script>

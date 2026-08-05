@@ -1,0 +1,39 @@
+<div class="psh-Cart_Item">
+  <div class="psh-Item" data-key="{{ item.key }}" data-el="push-cart.item">
+    <div class="psh-Item_ImageContainer">
+      {%- render 'responsive-image',
+        image: item.image,
+        width: 260,
+        height: 388
+      -%}
+    </div>
+
+    <div class="psh-Item_Content fz-13_18">
+      {% if item.variant.compare_at_price > 0 %}
+        <span class="sale-badge" style="font-weight: 700;">SALE</span>
+      {% endif %}
+      <h4 class="psh-Item_Title fz-13_18">{{ item.product.title }} x {{ item.quantity }}</h4>
+
+      {%- unless item.product.has_only_default_variant -%}
+        {%- for option in item.options_with_values -%}
+          <p class="psh-Item_Text">{{ option.name }} {{ option.value }}</p>
+        {%- endfor -%}
+      {%- endunless -%}
+
+      <p class="psh-Item_Text">
+        {% if item.variant.compare_at_price > 0 %}
+          <s style="margin-right: 5px;">{{ item.variant.compare_at_price | times: item.quantity | money }}</s>
+        {% endif %}
+        <span>{{ item.line_price | money }}</span>
+      </p>
+
+      <button class="psh-Item_Remove" type="button" data-el="push-cart.remove">
+        {%- render 'bao-close' -%}
+      </button>
+    </div>
+
+    <div class="psh-Item_Loading">
+      {%- render 'bao-push-item-loading' -%}
+    </div>
+  </div>
+</div>

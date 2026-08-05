@@ -1,0 +1,38 @@
+{%- liquid
+  assign should_show = false
+
+  if section.settings.navigation != blank
+    assign should_show = true
+  endif
+-%}
+
+{%- if should_show -%}
+  <div class="pg-Nav fz-12_12">
+    <nav class="pg-Nav_Items">
+      {%- for link in linklists[section.settings.navigation].links -%}
+        <div class="pg-Nav_Item">
+          <a
+            class="pg-Nav_Link"
+            href="{{ link.url }}"
+            {% if link.active %} aria-current="page"{% endif %}
+          >
+            {{ link.title }}
+          </a>
+        </div>
+      {%- endfor -%}
+    </nav>
+  </div>
+{%- endif -%}
+
+{% schema %}
+  {
+    "name": "Page nav",
+    "settings": [
+      {
+        "type": "link_list",
+        "id": "navigation",
+        "label": "Navigation"
+      }
+    ]
+  }
+{% endschema %}

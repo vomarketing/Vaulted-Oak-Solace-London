@@ -1,0 +1,140 @@
+<!doctype html>
+<html class="util-NoJs" lang="{{ shop.locale }}">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+    <meta name="author" content="By Association Only" />
+<link rel="stylesheet" href="https://use.typekit.net/ojr8oqr.css">
+
+
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+   'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-TBK8PQT');</script>
+    <!-- End Google Tag Manager -->
+
+    {%- if request.page_type == 'search' -%}
+      <meta name="robots" content="noindex">
+    {%- endif -%}
+
+    {%- if template contains 'collection' and current_tags -%}
+      <meta name="robots" content="noindex, follow" />
+      <link rel="canonical" href="{{ shop.url }}{{ collection.url }}" />
+    {%- else -%}
+      <link rel="canonical" href="{{ canonical_url }}" />
+    {%- endif -%}
+
+    {%- render 'favicons' -%}
+
+    {%- capture seo_title -%}
+      {{ page_title }}
+      {%- if current_tags -%}
+        {%- assign meta_tags = current_tags | join: ', ' -%} &ndash; {{ 'general.meta.tags' | t: tags: meta_tags -}}
+      {%- endif -%}
+      {%- if current_page != 1 -%}
+        &ndash; {{ 'general.meta.page' | t: page: current_page }}
+      {%- endif -%}
+    {%- assign escaped_page_title = page_title | escape -%}
+      {%- unless escaped_page_title contains shop.name -%}
+        &ndash; {{ shop.name }}
+      {%- endunless -%}
+    {%- endcapture -%}
+    <title>{{ seo_title | strip }}</title>
+
+    {%- if page_description -%}
+      <meta name="description" content="{{ page_description | escape }}" />
+    {%- endif -%}
+
+    {%- render 'hreflang' -%}
+    {%- render 'social-meta-tags' -%}
+    {%- render 'style-tags', layout: 'theme' -%}
+
+    {%- render 'head-script' -%}
+
+    {%- render 'typekit' -%}
+
+    {{ "//cdn.shopify.com/s/shopify/shopify_common.js" | script_tag }}
+    {{ "//cdn.shopify.com/s/javascripts/currencies.js" | script_tag }}
+    {%- render 'script-tags', layout: 'theme' -%}
+
+    <link href="https://vjs.zencdn.net/7.10.2/video-js.css" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+
+    {{ content_for_header }}
+
+    {%- render 'klevu-head' -%}
+    <!-- Hotjar Tracking Code for https://www.solacelondon.com/ -->
+<script>
+    (function(h,o,t,j,a,r){
+        h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+        h._hjSettings={hjid:3318252,hjsv:6};
+        a=o.getElementsByTagName('head')[0];
+        r=o.createElement('script');r.async=1;
+        r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+        a.appendChild(r);
+    })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');
+</script>
+  </head>
+
+  <body id="{{ page_title | handle }}" class="lyt-Site template-{{ template.name | handle }} thm-{{ settings.theme }} {% if settings.bar_enabled %}thm-AnnouncementBar{% endif %}">
+    <a
+      class="util-ScreenReaderOnly"
+      href="#MainContent"
+    >
+      {{ 'general.accessibility.skip_to_content' | t }}
+    </a>
+
+    <noscript>
+      <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TZG83G4" height="0" width="0" style="display:none;visibility:hidden"></iframe>
+    </noscript>
+
+    {% comment %} {%- render 'cookie-banner' -%} {% endcomment %}
+
+    <div class="lyt-Header">
+      {%- section 'announcement-bar' -%}
+      {%- section 'header' -%}
+    </div>
+
+    <main role="main" id="MainContent">
+      {{ content_for_layout }}
+{% comment %} {{ content_for_index }} {% endcomment %}
+
+    </main>
+
+    {%- section 'footer' -%}
+
+    {%- section 'store-switcher' -%}
+
+    {%- render 'newsletter-modal' -%}
+
+    {%- render 'drawers' -%}
+
+    <script src="https://vjs.zencdn.net/7.10.2/video.min.js"></script>
+
+    {%- render 'klevu-foot' -%}
+
+    {%- render 'back-in-stock-helper' -%}
+
+    {% comment %} Klaviyo {% endcomment %}
+    {%- if shop.permanent_domain == 'solace-london.myshopify.com' -%}
+      <script async type="text/javascript" src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=XuEqtQ"></script>
+    {%- else -%}
+      <script async type="text/javascript" src="https://static.klaviyo.com/onsite/js/klaviyo.js?company_id=MKZsDF"></script>
+    {%- endif -%}
+
+    {% comment %} Zendesk {% endcomment %}
+    <!-- Start of solacelondonsupport Zendesk Widget script -->
+    <script id="ze-snippet" src="https://static.zdassets.com/ekr/snippet.js?key=67874f43-97a3-4fb1-8c49-2a5e344d04e0"> </script>
+    <!-- End of solacelondonsupport Zendesk Widget script -->
+
+  </body>
+  
+  <!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TBK8PQT"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+  
+</html>

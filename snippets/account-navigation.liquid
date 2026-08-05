@@ -1,0 +1,49 @@
+{%- if linklists.account-menu.links.size != blank -%}
+  <section class="acc-Navigation">
+    <div class="acc-Navigation_Inner">
+      <div class="acc-Navigation_Header">
+        <h2 class="acc-Navigation_Title fz-25_33">
+          {{ 'customer.account.your_account' | t }}
+        </h2>
+
+        {%- if customer.first_name -%}
+        <h3 class="acc-Navigation_Text fz-13_18">
+          {{ 'customer.account.welcome_back' | t }}, {{ customer.first_name }}
+        </h3>
+        {%- else- %}
+        <h3 class="acc-Navigation_Text fz-13_18">
+          {{ 'customer.account.welcome_back' | t }}
+        </h3>
+      </div>
+      {%- endif -%}
+
+      <div class="acc-Navigation_Body" data-module="reload-select">
+        <select class="acc-Navigation_Select frm-Form_Select-white" data-el="reload-select.select">
+          {%- for link in linklists.account-menu.links -%}
+            <option
+              value="{{ link.url }}"
+              {% if link.active %}selected{% endif %}
+            >
+              {{ link.title }}
+            </option>
+          {%- endfor -%}
+        </select>
+
+        <ul class="acc-Navigation_Items">
+          {%- for link in linklists.account-menu.links -%}
+            <li class="acc-Navigation_Item">
+              <a
+                href="{{ link.url }}"
+                class="acc-Navigation_Link"
+                {% if link.active %}selected aria-current="true"{% endif %}
+                data-el="account-overview.link"
+              >
+                {{ link.title }}
+              </a>
+            </li>
+          {%- endfor -%}
+        </ul>
+      </div>
+    </div>
+  </section>
+{%- endif -%}

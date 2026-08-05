@@ -1,0 +1,32 @@
+{%- if settings.newsletter_enable -%}
+  <div
+    class="mod-Modal mod-Modal_Newsletter"
+    aria-hidden="true"
+    data-module="newsletter"
+    data-newsletter-active-class="mod-Modal-active"
+    data-newsletter-current-store-id="{{ shop.domain | handleize }}"
+    data-newsletter-delay="{{ settings.newsletter_delay }}"
+  >
+    <div class="mod-Modal_Modal">
+      <div class="mod-Modal_Inner">
+        <div class="mod-Modal_Body">
+          <div class="mod-Modal_Content">
+            <button class="mod-Modal_Close" type="button" data-el="newsletter.closeButton">
+              {%- render 'bao-close' -%}
+            </button>
+            <div class="mod-Newsletter">
+              <h2 class="mod-Newsletter_Title fz-25_33">{{ settings.newsletter_title }}</h2>
+              <div class="mod-Newsletter_Intro">
+                {{ settings.newsletter_intro }}
+              </div>
+              <div class="mod-Newsletter_Form">
+                {{ settings.klaviyo_form }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+{%- endif -%}

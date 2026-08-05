@@ -1,0 +1,90 @@
+<section class="gft-GiftCard">
+  <div class="gft-GiftCard_Inner lyt-Container">
+    <header class="gft-GiftCard_Header">
+      <h1 class="gft-GiftCard_Title fz-25_33">{{ 'gift_card.general.title' | t }}</h1>
+
+      <p class="gft-GiftCard_Text">{{ 'gift_card.general.text' | t }}</p>
+    </header>
+
+    <div class="gft-GiftCard_Body">
+      <div class="gft-Card{% unless settings.gift_card_image != blank %} gft-Card-noimage{% endunless %}">
+        {%- if settings.gift_card_image != blank -%}
+          <div class="gft-Card_ImageContainer">
+            {%- render 'responsive-image',
+              image: settings.gift_card_image,
+              width: 460,
+              height: 290
+            -%}
+          </div>
+        {%- endif -%}
+
+        <div class="gft-Card_Content">
+          <div class="gft-Card_Logo">
+            {%- render 'bao-logo' -%}
+          </div>
+
+          <p class="gft-Card_Amount">{{ gift_card.initial_value | money_without_trailing_zeros: gift_card.currency }}</p>
+
+          {%- if gift_card.expired and gift_card.enabled -%}
+            <div class="gft-Card_Box gft-Card_Box-expired">
+              <p class="gft-Card_Code" id="GiftCardDigits" disabled data-gift-card-digits>{{ gift_card.code | format_code }}</p>
+            </div>
+            {%- elsif gift_card.expired and gift_card.enabled == false -%}
+            <div class="gft-Card_Box gft-Card_Box-disabled">
+              <p class="gft-Card_Code" id="GiftCardDigits" disabled data-gift-card-digits>{{ gift_card.code | format_code }}</p>
+            </div>
+            {%- elsif gift_card.enabled == false -%}
+            <div class="gft-Card_Box gft-Card_Box-disabled">
+              <p class="gft-Card_Code" id="GiftCardDigits" disabled data-gift-card-digits>{{ gift_card.code | format_code }}</p>
+            </div>
+          {%- else -%}
+            <div class="gft-Card_Box">
+              <p class="gft-Card_Code" id="GiftCardDigits" data-gift-card-digits>{{ gift_card.code | format_code }}</p>
+            </div>
+          {%- endif -%}
+
+          <p class="gft-Card_Text fz-10_10">
+            {%- unless gift_card.enabled -%}
+              {{ 'gift_card.general.disabled' | t }}
+              {%- else -%}
+              {%- if gift_card.expired and gift_card.enabled -%}
+                {%- assign gift_card_expiry_date = gift_card.expires_on | date: "%d/%m/%y" -%}
+                {{ 'gift_card.general.expired' | t: value: gift_card_expiry_date }}
+                {%- elsif gift_card.expired == false and gift_card.expires_on and gift_card.enabled -%}
+                {%- assign gift_card_expiry_date = gift_card.expires_on | date: "%d/%m/%y" -%}
+                {{ 'gift_card.general.active' | t: value: gift_card_expiry_date }}
+              {%- else -%}
+                {{ 'gift_card.general.never' | t }}
+              {%- endif -%}
+            {%- endunless -%}
+          </p>
+        </div>
+      </div>
+
+      {%- if gift_card.expired == false and gift_card.enabled -%}
+        <div class="gft-GiftCard_Content">
+          {%- if gift_card.balance != gift_card.initial_value -%}
+            <h3 class="gft-GiftCard_Subtitle">{{ 'gift_card.general.remaining_html' | t }}</h3>
+          {%- else -%}
+            <p class="gft-GiftCard_Text">{{ 'gift_card.general.redeem' | t }}</p>
+          {%- endif -%}
+
+          <div class="gft-GiftCard_Buttons">
+            <a class="gft-GiftCard_Button btn-Primary" href="{{ shop.url }}" target="_blank">
+              {{ 'gift_card.general.shop_link' | t }}
+            </a>
+          </div>
+
+          <div class="giftcard-qr" id="QrCode" data-identxifier="{{ gift_card.qr_identifier }}"></div>
+          <canvas class="giftcard-qr" id="QrCode" data-identifier="{{ gift_card.qr_identifier }}" data-gift-card-qr></canvas>
+
+          {%- if gift_card.pass_url -%}
+            <a class="apple-wallet" href="{{ gift_card.pass_url }}">
+              <img class="apple-wallet-image" src="{{ 'gift-card/add-to-apple-wallet.svg' | shopify_asset_url }}" width="120" height="40" alt="{{ 'gift_card.general.add_to_apple_wallet' | t }}" />
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</section>

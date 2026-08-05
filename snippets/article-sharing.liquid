@@ -1,0 +1,47 @@
+<div class="art-Sharing">
+  <h2 class="art-Sharing_Title fz-18_25">{{ 'article.sharing.title' | t }}</h2>
+
+  <ul class="art-Sharing_Items">
+    {%- if settings.share_facebook != blank -%}
+      <li class="art-Sharing_Item">
+        <a class="art-Sharing_Link" href="//www.facebook.com/sharer.php?u={{ shop.url | append: share_permalink }}" title="{{ 'general.social.share_on_facebook' | t }}" target="_blank">
+          <span class="art-Sharing_Icon">
+            {%- render 'bao-icon-facebook' -%}
+          </span>
+
+          <span class="art-Sharing_Text">
+            {{ 'general.social.share_on_facebook' | t }}
+          </span>
+        </a>
+      </li>
+    {%- endif -%}
+
+    {%- if settings.share_twitter != blank -%}
+      <li class="art-Sharing_Item art-Sharing_Item-twitter">
+        <a class="art-Sharing_Link" href="//twitter.com/share?text={{ share_title | url_param_escape }}&amp;url={{ shop.url | append: share_permalink }}" title="{{ 'general.social.share_on_twitter' | t }}" target="_blank">
+          <span class="art-Sharing_Icon">
+            {%- render 'bao-icon-twitter' -%}
+          </span>
+
+          <span class="art-Sharing_Text">
+            {{ 'general.social.share_on_twitter' | t }}
+          </span>
+        </a>
+      </li>
+    {%- endif -%}
+
+    {%- if settings.share_pinterest != blank -%}
+      <li class="art-Sharing_Item art-Sharing_Item-pinterest">
+        <a class="art-Sharing_Link" href="//pinterest.com/pin/create/button/?url={{ shop.url | append: share_permalink }}&amp;media={{ share_image | img_url: '1024x1024' }}&amp;description={{ share_title | url_param_escape }}" title="{{ 'general.social.share_on_pinterest' | t }}" target="_blank">
+          <span class="art-Sharing_Icon">
+            {%- render 'bao-icon-pinterest' -%}
+          </span>
+
+          <span class="art-Sharing_Text">
+            {{ 'general.social.share_on_pinterest' | t }}
+          </span>
+        </a>
+      </li>
+    {%- endif -%}
+  </ul>
+</div>

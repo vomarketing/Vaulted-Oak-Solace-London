@@ -1,0 +1,60 @@
+<div class="drw-Drawer drw-Drawer-search drw-Drawer-fromRight" data-module-drawers-drawer="search">
+
+  <button type="button" class="drw-Drawer_Close drw-Drawer_Close-mobile" data-module-drawers-close="search">
+    {%- render 'bao-close' -%}
+  </button>
+
+  <button type="button" class="drw-Drawer_Close drw-Drawer_Close-desktop" data-module-drawers-close="search">
+    {%- render 'bao-close' -%}
+  </button>
+
+  <div class="drw-Drawer_Inner">
+    <div
+      class="psh-Search fz-13_18"
+      data-module="search"
+    >
+      <div class="psh-Search_TopBar">
+        <h4 class="psh-Search_Title fz-25_33">
+          {{ 'layout.header.search' | t }}
+        </h4>
+      </div>
+
+      <div class="psh-Search_Body">
+        <form action="/search" method="get" role="search" class="frm-Form psh-Search_Form" data-el="search.form">
+          <label for="Push-Search" class="util-ScreenReaderOnly">
+            {{ 'general.search.placeholder' | t }}
+          </label>
+
+          <input type="search"
+            name="q"
+            id="Push-Search"
+            class="frm-Form_Input psh-Search_Input"
+            value="{{ search.terms | escape }}"
+            data-el="search.input"
+          />
+          <button class="psh-Search_Button psh-Search_Button-search" data-el="search.submit" aria-hidden="true">
+            {{ 'general.search.search' | t }}
+          </button>
+          <button class="psh-Search_Button psh-Search_Button-reset fz-10_10" data-el="search.reset" aria-hidden="true">
+            {{ 'general.search.reset' | t }}
+          </button>
+        </form>
+
+      </div>
+
+      <div class="psh-Search_Klevu">
+        <div id="klv-PopularSearches" class="klv-PopularSearches" data-el="search.popular">
+          <div class="klv-PopularSearches_Heading fz-10_10">
+            {{ 'general.search.popular_searches' | t }}
+          </div>
+
+          <ul class="klv-PopularSearches_Items" data-el="search.popularItems">
+            {% comment %} placeholder for popular search terms {% endcomment %}
+          </ul>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+</div>

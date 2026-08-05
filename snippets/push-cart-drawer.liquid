@@ -1,0 +1,57 @@
+<div class="drw-Drawer drw-Drawer-fromRight" data-module-drawers-drawer="cart">
+  <button type="button" class="drw-Drawer_Close" data-module-drawers-close="cart">
+    {%- render 'bao-close' -%}
+  </button>
+
+  <div class="drw-Drawer_Inner">
+    <div
+      class="psh-Cart fz-13_18"
+      data-module="push-cart"
+      data-push-cart-loading-class="psh-Cart-loading"
+      data-push-cart-item-loading-class="psh-Item-loading"
+    >
+      <div class="psh-Cart_TopBar">
+        <h4 class="psh-Cart_Title fz-25_33">
+          {{ 'cart.drawer.title' | t }} (
+          <span class="psh-Cart_Count" data-el="push-cart.count">{{ cart.item_count }}</span>
+          )
+        </h4>
+      </div>
+
+      <div class="psh-Cart_Body" data-el="push-cart.body">
+        <div class="psh-Cart_Items" data-el="push-cart.items">
+          {%- for item in cart.items -%}
+            {%- render 'push-cart-item', item: item -%}
+          {%- else -%}
+            <p class="psh-Cart_Empty">{{ 'cart.drawer.empty' | t }}</p>
+          {%- endfor -%}
+        </div>
+
+        <div class="psh-Cart_Loading">
+          {%- render 'bao-push-cart-loading' -%}
+        </div>
+      </div>
+
+      <footer class="psh-Cart_Footer">
+        <p class="psh-Cart_Label">{{ 'cart.drawer.subtotal' | t }}</p>
+        <p class="psh-Cart_Subtotal" data-el="push-cart.subtotal">
+          {{ cart.total_price | money }}
+        </p>
+
+        <form class="psh-Cart_Form" action="{{ routes.cart_url }}" method="POST">
+          <button class="psh-Cart_Submit btn-Button btn-Button-arrow btn-Button-secondary" type="submit" name="checkout" data-el="push-cart.submit"{%- if cart.item_count < 1 -%} disabled{%- endif -%}>
+
+            <span class="btn-Button_Text">
+              {{ 'cart.drawer.checkout_securely' | t }}
+            </span>
+
+            <span class="btn-Button_Arrow">
+              {%- render 'bao-arrow' -%}
+            </span>
+
+          </button>
+        </form>
+      </footer>
+    </div>
+  </div>
+</div>

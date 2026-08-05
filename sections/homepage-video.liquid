@@ -1,0 +1,60 @@
+<section class="sec-Video">
+  <div class="sec-Video_Video">
+    {%- render 'video-embed',
+      video_url: section.settings.video_url
+      video_poster: section.settings.video_poster
+      video_aspect_ratio: section.settings.video_aspect_ratio
+    -%}
+  </div>
+ </div> 
+
+{% schema %}
+{
+  "name": "Video",
+  "settings": [
+    {
+      "type": "select",
+      "id": "video_aspect_ratio",
+      "label": "Aspect Ratio",
+      "options": [
+        { "value": "100%", "label": "1:1", "group": "Square" },
+        { "value": "56.25%", "label": "16:9 (Default)", "group": "Landscape" },
+        { "value": "60%", "label": "16:10", "group": "Landscape" },
+        { "value": "75%", "label": "4:3", "group": "Landscape" },
+        { "value": "66.66%", "label": "3:2", "group": "Landscape" },
+        { "value": "62.5%", "label": "8:5", "group": "Landscape" },
+        { "value": "156.25%", "label": "9:16", "group": "Portrait" },
+        { "value": "160%", "label": "10:16", "group": "Portrait" },
+        { "value": "175%", "label": "3:4", "group": "Portrait" },
+        { "value": "166.66%", "label": "2:3", "group": "Portrait" },
+        { "value": "162.5%", "label": "5:8", "group": "Portrait" }
+      ],
+      "default": "56.25%",
+      "info": "Set the aspect ratio of your video, 16:9 tends to be most common"
+    },
+    {
+      "type": "image_picker",
+      "id": "video_poster",
+      "label": "Poster Image",
+      "info": "The image that shows before the video plays"
+    },
+    {
+      "type": "text",
+      "id": "video_url",
+      "label": "Video URL",
+      "info": "Full URL to MP4 video"
+    },
+    {
+      "type": "paragraph",
+      "content": "In Vimeo click on the Distribution tab, then choose Video file links. Select Play the video from the dropdown, then copy the link for the video - High def 1080 is recommended."
+    }
+  ],
+  "blocks": [],
+  "presets": [
+    {
+      "category": "Homepage",
+      "name": "Video"
+    }
+  ]
+}
+{% endschema %}

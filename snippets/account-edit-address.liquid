@@ -1,0 +1,33 @@
+{%- if customer.addresses.size > 0 -%}
+  <div class="acc-Section_Body acc-Section_Body-address">
+    {%- for address in customer.addresses -%}
+      <div class="acc-Address" data-address>
+        {%- if address == customer.default_address -%}
+          <h3 class="acc-Address_Title fz-14_18">{{ 'customer.addresses.default_address' | t }}</h3>
+        {%- else -%}
+          <h3 class="acc-Address_Title fz-14_18">{{ 'customer.account.address' | t }} ({{ forloop.index }})</h3>
+        {%- endif -%}
+
+        <div class="acc-Address_Actions">
+          <button class="acc-Address_Button acc-Address_Button-gapLeft" type="button" data-address-show data-form-id="{{ address.id }}">
+            {{ 'customer.addresses.edit' | t }}
+          </button>
+
+          <form data-address-delete-form method="post" action="/account/addresses/{{ address.id }}" data-confirm-message="{{ 'customer.addresses.remove_confirm' | t }}">
+            <input type="hidden" name="_method" value="delete" />
+
+            <button class="acc-Address_Button acc-Address_Button-gapLeft" type="submit">
+              {{ 'customer.addresses.remove' | t }}
+            </button>
+          </form>
+        </div>
+
+        <div class="acc-Address_Text">{{ address | format_address }}</div>
+      </div>
+    {%- endfor -%}
+  </div>
+{%- else -%}
+  <div class="acc-Section_Body">
+    <p class="acc-Section_Text">{{ 'customer.addresses.no_addresses' | t }}</p>
+  </div>
+{%- endif -%}

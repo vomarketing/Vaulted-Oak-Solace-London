@@ -1,0 +1,603 @@
+{%- render 'section-media-grid' with section -%}
+
+{% schema %}
+{
+  "name": "Media Grid 10",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "show_page_title",
+      "label": "Show page title?",
+      "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Item",
+      "settings": [
+        {
+          "type": "select",
+          "id": "size",
+          "label": "Size",
+          "options": [
+            {
+              "value": "third",
+              "label": "Third"
+            },
+            {
+              "value": "half",
+              "label": "Half"
+            },
+            {
+              "value": "full",
+              "label": "Full Width"
+            }
+          ],
+          "default": "half"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        },
+        {
+          "type": "header",
+          "content": "Images"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Full Width - 4472x2360"
+        },
+        {
+          "type": "paragraph",
+          "content": "Half - 3700x4472"
+        },
+        {
+          "type": "paragraph",
+          "content": "Third - 3204x4472"
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile image",
+          "info": "750x1200"
+        },
+        {
+          "type": "header",
+          "content": "Video"
+        },
+        {
+          "type": "paragraph",
+          "content": "Adding a video will override the image"
+        },
+        {
+          "type": "select",
+          "id": "video_aspect_ratio",
+          "label": "Aspect Ratio",
+          "options": [
+            { "value": "100%", "label": "1:1", "group": "Square" },
+            { "value": "56.25%", "label": "16:9 (Default)", "group": "Landscape" },
+            { "value": "60%", "label": "16:10", "group": "Landscape" },
+            { "value": "75%", "label": "4:3", "group": "Landscape" },
+            { "value": "66.66%", "label": "3:2", "group": "Landscape" },
+            { "value": "62.5%", "label": "8:5", "group": "Landscape" },
+            { "value": "156.25%", "label": "9:16", "group": "Portrait" },
+            { "value": "160%", "label": "10:16", "group": "Portrait" },
+            { "value": "175%", "label": "3:4", "group": "Portrait" },
+            { "value": "166.66%", "label": "2:3", "group": "Portrait" },
+            { "value": "162.5%", "label": "5:8", "group": "Portrait" }
+          ],
+          "default": "56.25%",
+          "info": "Set the aspect ratio of your video, 16:9 tends to be most common"
+        },
+        {
+          "type": "image_picker",
+          "id": "video_poster",
+          "label": "Poster Image",
+          "info": "The image that shows before the video plays"
+        },
+        {
+          "type": "text",
+          "id": "video_url",
+          "label": "Video URL",
+          "info": "Full URL to MP4 video"
+        },
+        {
+          "type": "paragraph",
+          "content": "In Shopify, upload your video under 'Settings > Files' then paste the URL here"
+        },
+        {
+          "type": "paragraph",
+          "content": "In Vimeo, click on the Distribution tab, then choose Video file links. Select Play the video from the dropdown, then copy the link for the video - High def 1080 is recommended."
+        },
+        {
+          "type": "checkbox",
+          "id": "video_autoplay",
+          "label": "Autoplay",
+          "info": "This will autoplay the muted video in a loop",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "Top box"
+        },
+        {
+          "type": "richtext",
+          "id": "top_box_text",
+          "label": "Text"
+        },
+        {
+          "type": "select",
+          "id": "top_box_background_colour",
+          "label": "Background colour",
+          "options": [
+            {
+              "value": "",
+              "label": "-"
+            },
+            {
+              "value": "Primary",
+              "label": "Primary"
+            },
+            {
+              "value": "Secondary",
+              "label": "Secondary"
+            }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "top_box_background_colour_custom",
+          "label": "Background colour",
+          "info": "If you want an entirely custom background colour that will be present regardless of theme selected then choose this."
+        },
+        {
+          "type": "select",
+          "id": "top_box_text_colour",
+          "label": "Text Colour",
+          "options": [
+            {
+              "value": "",
+              "label": "-"
+            },
+            {
+              "value": "Primary",
+              "label": "Primary"
+            },
+            {
+              "value": "Secondary",
+              "label": "Secondary"
+            }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "top_box_text_colour_custom",
+          "label": "Text colour",
+          "info": "If you want an entirely custom colour that will be present regardless of theme selected then choose this."
+        },
+        {
+          "type": "header",
+          "content": "Top content"
+        },
+        {
+          "type": "textarea",
+          "id": "top_kicker",
+          "label": "Kicker"
+        },
+        {
+          "type": "textarea",
+          "id": "top_title",
+          "label": "Title"
+        },
+        {
+          "type": "select",
+          "id": "top_title_size",
+          "label": "Title Font Size",
+          "options": [
+            {
+              "value": "regular",
+              "label": "Regular (56px)"
+            },
+            {
+              "value": "medium",
+              "label": "Medium (84px)"
+            },
+            {
+              "value": "large",
+              "label": "Large (112px)"
+            }
+          ],
+          "default": "regular"
+        },
+        {
+          "type": "select",
+          "id": "top_title_font",
+          "label": "Title Font",
+          "options": [
+            {
+              "value": "lacrima",
+              "label": "Lacrima"
+            },
+            {
+              "value": "futura",
+              "label": "Futura"
+            }
+          ],
+          "default": "lacrima"
+        },
+        {
+          "type": "textarea",
+          "id": "top_text",
+          "label": "Text"
+        },
+        {
+          "type": "select",
+          "id": "top_text_colour",
+          "label": "Text Colour",
+          "options": [
+            {
+              "value": "",
+              "label": "-"
+            },
+            {
+              "value": "Primary",
+              "label": "Primary"
+            },
+            {
+              "value": "Secondary",
+              "label": "Secondary"
+            }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "top_text_colour_custom",
+          "label": "Text colour",
+          "info": "If you want an entirely custom colour that will be present regardless of theme selected then choose this."
+        },
+        {
+          "type": "select",
+          "id": "top_text_alignment",
+          "label": "Text Alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Centre"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "checkbox",
+          "id": "top_show_arrow",
+          "label": "Show arrow?",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "Middle content"
+        },
+        {
+          "type": "textarea",
+          "id": "middle_kicker",
+          "label": "Kicker"
+        },
+        {
+          "type": "textarea",
+          "id": "middle_title",
+          "label": "Title"
+        },
+        {
+          "type": "select",
+          "id": "middle_title_size",
+          "label": "Title Font Size",
+          "options": [
+            {
+              "value": "regular",
+              "label": "Regular (56px)"
+            },
+            {
+              "value": "medium",
+              "label": "Medium (84px)"
+            },
+            {
+              "value": "large",
+              "label": "Large (112px)"
+            }
+          ],
+          "default": "regular"
+        },
+        {
+          "type": "select",
+          "id": "middle_title_font",
+          "label": "Title Font",
+          "options": [
+            {
+              "value": "lacrima",
+              "label": "Lacrima"
+            },
+            {
+              "value": "futura",
+              "label": "Futura"
+            }
+          ],
+          "default": "lacrima"
+        },
+        {
+          "type": "textarea",
+          "id": "middle_text",
+          "label": "Text"
+        },
+        {
+          "type": "select",
+          "id": "middle_text_colour",
+          "label": "Text Colour",
+          "options": [
+            {
+              "value": "",
+              "label": "-"
+            },
+            {
+              "value": "Primary",
+              "label": "Primary"
+            },
+            {
+              "value": "Secondary",
+              "label": "Secondary"
+            }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "middle_text_colour_custom",
+          "label": "Text colour",
+          "info": "If you want an entirely custom colour that will be present regardless of theme selected then choose this."
+        },
+        {
+          "type": "select",
+          "id": "middle_text_alignment",
+          "label": "Text Alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Centre"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "checkbox",
+          "id": "middle_show_arrow",
+          "label": "Show arrow?",
+          "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "middle_thin_content",
+          "label": "Thin content?",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "Bottom content"
+        },
+        {
+          "type": "textarea",
+          "id": "bottom_kicker",
+          "label": "Kicker"
+        },
+        {
+          "type": "textarea",
+          "id": "bottom_title",
+          "label": "Title"
+        },
+        {
+          "type": "select",
+          "id": "bottom_title_size",
+          "label": "Title Font Size",
+          "options": [
+            {
+              "value": "regular",
+              "label": "Regular (56px)"
+            },
+            {
+              "value": "medium",
+              "label": "Medium (84px)"
+            },
+            {
+              "value": "large",
+              "label": "Large (112px)"
+            }
+          ],
+          "default": "regular"
+        },
+        {
+          "type": "select",
+          "id": "bottom_title_font",
+          "label": "Title Font",
+          "options": [
+            {
+              "value": "lacrima",
+              "label": "Lacrima"
+            },
+            {
+              "value": "futura",
+              "label": "Futura"
+            }
+          ],
+          "default": "lacrima"
+        },
+        {
+          "type": "textarea",
+          "id": "bottom_text",
+          "label": "Text"
+        },
+        {
+          "type": "textarea",
+          "id": "bottom_text_small",
+          "label": "Small Text"
+        },
+        {
+          "type": "select",
+          "id": "bottom_text_colour",
+          "label": "Text Colour",
+          "options": [
+            {
+              "value": "",
+              "label": "-"
+            },
+            {
+              "value": "Primary",
+              "label": "Primary"
+            },
+            {
+              "value": "Secondary",
+              "label": "Secondary"
+            }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "bottom_text_colour_custom",
+          "label": "Text colour",
+          "info": "If you want an entirely custom colour that will be present regardless of theme selected then choose this."
+        },
+        {
+          "type": "select",
+          "id": "bottom_text_alignment",
+          "label": "Text Alignment",
+          "options": [
+            {
+              "value": "left",
+              "label": "Left"
+            },
+            {
+              "value": "center",
+              "label": "Centre"
+            },
+            {
+              "value": "right",
+              "label": "Right"
+            }
+          ],
+          "default": "left"
+        },
+        {
+          "type": "checkbox",
+          "id": "bottom_show_arrow",
+          "label": "Show arrow?",
+          "default": false
+        },
+        {
+          "type": "header",
+          "content": "Bottom box"
+        },
+        {
+          "type": "richtext",
+          "id": "bottom_box_text",
+          "label": "Text"
+        },
+        {
+          "type": "select",
+          "id": "bottom_box_background_colour",
+          "label": "Background colour",
+          "options": [
+            {
+              "value": "",
+              "label": "-"
+            },
+            {
+              "value": "Primary",
+              "label": "Primary"
+            },
+            {
+              "value": "Secondary",
+              "label": "Secondary"
+            }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "bottom_box_background_colour_custom",
+          "label": "Background colour",
+          "info": "If you want an entirely custom background colour that will be present regardless of theme selected then choose this."
+        },
+        {
+          "type": "select",
+          "id": "bottom_box_text_colour",
+          "label": "Text Colour",
+          "options": [
+            {
+              "value": "",
+              "label": "-"
+            },
+            {
+              "value": "Primary",
+              "label": "Primary"
+            },
+            {
+              "value": "Secondary",
+              "label": "Secondary"
+            }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "bottom_box_text_colour_custom",
+          "label": "Text colour",
+          "info": "If you want an entirely custom colour that will be present regardless of theme selected then choose this."
+        },
+        {
+          "type": "header",
+          "content": "Style"
+        },
+        {
+          "type": "select",
+          "id": "background_colour",
+          "label": "Background colour",
+          "options": [
+            {
+              "value": "",
+              "label": "-"
+            },
+            {
+              "value": "Primary",
+              "label": "Primary"
+            },
+            {
+              "value": "Secondary",
+              "label": "Secondary"
+            }
+          ]
+        },
+        {
+          "type": "color",
+          "id": "background_colour_custom",
+          "label": "Background colour",
+          "info": "If you want an entirely custom background colour that will be present regardless of theme selected then choose this."
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

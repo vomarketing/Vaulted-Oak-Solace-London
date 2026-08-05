@@ -1,0 +1,79 @@
+<div class="drw-Drawers" data-module="drawers">
+  <div class="drw-Drawers_Backdrop js-Drawers_Backdrop"></div>
+
+  <div class="drw-Drawer drw-Drawer-fromLeft" data-module-drawers-drawer="mobile-menu">
+    <div class="drw-Drawer_Nav">
+      <div
+        class="drw-Nav"
+        data-module="mobile-nav"
+        data-mobile-nav-item-active-class="drw-Nav_Item-dropdownActive"
+      >
+        <button type="button" class="drw-Nav_Close" data-module-drawers-close="mobile-menu">
+          {%- render 'bao-close' -%}
+        </button>
+
+        <nav class="drw-Nav_Body">
+          <ul class="drw-Nav_Items" data-el="mobile-nav.items">
+            {%- for link in linklists.mobile-menu.links -%}
+              <li
+                class="drw-Nav_Item{% if forloop.first %} drw-Nav_Item-dropdownActive{% endif %}"
+                data-el="mobile-nav.item"
+                data-has-children="{%- if link.links.size > 0 -%}true{%- else -%}false{%- endif -%}"
+              >
+                <a
+                  class="drw-Nav_Link"
+                  href="{{ link.url }}"
+                  {% if link.active %} aria-current="page"{% endif %}
+                >
+                  {{ link.title }}
+                </a>
+
+                {%- if link.links.size > 0 -%}
+                  <div class="drw-Nav_Dropdown">
+                    <ul class="drw-Nav_Children">
+                      {%- for child_link in link.links -%}
+                        <li
+                          class="drw-Nav_Child"
+                          style="--Transition_Delay: {{ forloop.index0 | times: 0.05 | plus: 0.3 }}s;"
+                        >
+                          {%- unless child_link.title == ':empty:' -%}
+                            <a
+                              class="drw-Nav_Link"
+                              href="{{ child_link.url }}"
+                              {% if link.active %} aria-current="page"{% endif %}
+                            >
+                              {{ child_link.title }}
+                            </a>
+                          {%- endunless -%}
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  </div>
+                {%- endif -%}
+              </li>
+            {%- endfor -%}
+          </ul>
+        </nav>
+
+        <div class="drw-Nav_Logo">
+          {%- render 'bao-logo' -%}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {%- render 'search-drawer' -%}
+  {%- if request.page_type == 'search' -%}
+    {%- render 'search-filter-drawer' -%}
+  {%- endif -%}
+
+  {%- unless page.request_type == 'cart' -%}
+    {%- render 'push-cart-drawer' -%}
+  {%- endunless -%}
+
+  {%- if request.page_type == 'product' -%}
+    {%- render 'back-in-stock-drawer' -%}
+    {%- render 'wishlist-drawer' -%}
+  {%- endif -%}
+
+</div>

@@ -1,0 +1,98 @@
+<article class="art-Article" role="article">
+  {%- if article.image != blank or settings.blog_fallback_image != blank -%}
+  <header class="art-Article_Header">
+    <div class="art-Article_ImageContainer">
+      {%- if article.image != blank -%}
+        {%- render 'responsive-image',
+          image: article.image,
+          width: 1440,
+          height: 900
+        -%}
+      {%- else -%}
+        {%- render 'responsive-image',
+          image: settings.blog_fallback_image,
+          width: 1440,
+          height: 900
+        -%}
+      {%- endif -%}
+    </div>
+  </header>
+  {%- endif -%}
+  <div class="art-Article_Inner lyt-Container">
+    <div class="art-Article_Body art-Article_Body-skinny">
+      <h1 class="art-Article_Title fz-25_25">{{ article.title }}</h1>
+
+      <p class="art-Article_Meta">
+        {{ article.published_at | time_tag: format: 'month_day_year' }} | {{ blog.title }} | {{ article.author }}
+      </p>
+
+      <div class="art-Article_Text rte-RichText">
+        {{ article.content }}
+      </div>
+
+      <div class="art-Article_Sharing">
+        {%- render 'article-sharing',
+          share_title: article.title,
+          share_permalink: article.url,
+          share_image: article.image
+        -%}
+      </div>
+
+      {%- if blog.comments_enabled? -%}
+        <div class="art-Article_Comments" id="comments">
+          {%- render 'article-comments' -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</article>
+
+<script type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "articleBody": "{{ article.content | strip_html }}",
+    "mainEntityOfPage": {
+      "@type": "WebPage",
+      "@id": "{{ shop.url }}{{ page.url }}"
+    },
+    "headline": "{{ article.title }}",
+    {% if article.excerpt != blank %}
+      "description": "{{ article.excerpt | strip_html }}",
+    {% endif %}
+
+    {% if article.image %}
+      {% assign image_size = article.image.width | append: 'x' %}
+      "image": [
+        "https:{{ article | img_url: image_size }}"
+      ],
+    {% endif %}
+    "datePublished": "{{ article.published_at | date: '%Y-%m-%dT%H:%M:%SZ' }}",
+    "dateCreated": "{{ article.created_at | date: '%Y-%m-%dT%H:%M:%SZ' }}",
+    "author": {
+      "@type": "Person",
+      "name": "{{ article.author }}"
+    },
+    "publisher": {
+      "@type": "Organization",
+      {% if settings.share_image %}
+        {% assign image_size = settings.share_image.width | append: 'x' %}
+        "logo": {
+          "@type": "ImageObject",
+          "height": "{{ settings.share_image.height }}",
+          "url": "https:{{ settings.share_image | img_url: image_size }}",
+          "width": "{{ settings.share_image.width }}"
+        },
+      {% elsif article.image %}
+        {% assign image_size = article.image.width | append: 'x' %}
+        "logo": {
+          "@type": "ImageObject",
+          "height": "{{ article.image.height }}",
+          "url": "https:{{ article.image | img_url: image_size }}",
+          "width": "{{ article.image.width }}"
+        },
+      {% endif %}
+      "name": "{{ shop.name }}"
+    }
+  }
+</script>

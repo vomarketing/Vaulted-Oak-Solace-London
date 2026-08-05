@@ -1,0 +1,16 @@
+{%- if settings.checkout_footer_navigation != blank -%}
+<nav class="chk-Nav">
+  <ul class="chk-Nav_Items">
+    {%- for link in linklists[settings.checkout_footer_navigation].links -%}
+      <li class="chk-Nav_Item">
+        <a
+          class="chk-Nav_Link"
+          href="{{ link.url }}"
+        >
+          {{ link.title }}
+        </a>
+      </li>
+    {%- endfor -%}
+  </ul>
+</nav>
+{%- endif -%}

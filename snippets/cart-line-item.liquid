@@ -1,0 +1,63 @@
+<div class="crt-Products_Item" data-key="{{ line_item.key }}" data-el="cart.item">
+  <div class="crt-Product">
+    <a class="crt-Product_ImageContainer" href="{{ line_item.url }}">
+      {%- render 'responsive-image',
+        image: line_item.image,
+        width: 131,
+        height: 160
+      -%}
+    </a>
+
+    <div class="crt-Product_Content">
+      <h3 class="crt-Product_Title">
+        <a class="crt-Product_TitleLink fz-13_18" href="{{ line_item.url }}">
+          {{ line_item.product.title }}
+
+          {%- unless line_item.product.has_only_default_variant -%}
+            {%- for option in line_item.options_with_values -%}
+              <p class="psh-Item_Text fz-13_18">{{ option.name }} / {{ option.value }}</p>
+            {%- endfor -%}
+          {%- endunless -%}
+        </a>
+      </h3>
+
+      <p class="crt-Product_Price">
+        {%- if line_item.variant.compare_at_price > line_item.variant.price -%}
+          <span class="crt-Product_PriceOriginal">
+            {{ line_item.variant.compare_at_price | money }}
+          </span>
+
+          <span class="crt-Product_PriceCompare" data-compare-price>
+            {{ line_item.variant.price | money }}
+          </span>
+        {%- else -%}
+          {{ line_item.variant.price | money }}
+        {%- endif -%}
+
+        {%- if line_item.quantity > 1 -%}
+          <span class="crt-Product_PriceQuantity"></span>
+        {%- endif -%}
+      </p>
+
+      <div class="crt-Product_Details">
+        <div class="crt-Product_Quantity">
+          <label for="quantity">{{ 'cart.products.quantity' | t }} </label>
+          <select class="crt-Product_QuantitySelect" id="quantity" name="crt-Product_Quantity">
+            {%- for i in (1..15) -%}
+              <option value="{{ i }}">{{ i }}</option>
+            {%- endfor -%}
+          </select>
+
+          <button class="crt-Product_Update" type="button" data-el="cart.update">
+            <span class="crt-Product_UpdateText">{{ 'cart.products.update' | t }}</span>
+            <span class="crt-Product_UpdateIcon"></span>
+          </button>
+        </div>
+
+        <button class="crt-Product_Remove" type="button" data-el="cart.remove">
+          <span class="crt-Product_RemoveIcon">{%- render 'bao-close' -%}</span>
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

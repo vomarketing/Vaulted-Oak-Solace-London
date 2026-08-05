@@ -1,0 +1,26 @@
+{%- for image in product.images -%}
+  <div
+    class="prd-DetailImages_Item {% if is_carousel %} css-Scroller_Item {% endif %}"{% if forloop.last %} style="--Item_HorizontalSpacing: 0;"{% endif %}
+    data-module="product-zoom">
+    <div class="prd-DetailImages_Image" data-el="product-zoom.modalbutton">
+      {%- render 'responsive-image',
+        image: image,
+        width: image.width,
+        height: image.height -%}
+    </div>
+    <div class="mod-Modal" aria-expanded="false" data-el="product-zoom.modal">
+      <div class="mod-Modal_Modal">
+        <div class="mod-Modal_Inner">
+          <div class="mod-Modal_Body" data-el="product-zoom.modalclose">
+            <div class="mod-Modal_Content">
+              {%- render 'responsive-image',
+                image: image,
+                width: image.width,
+                height: image.height -%}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{%- endfor -%}

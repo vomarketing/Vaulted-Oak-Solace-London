@@ -1,0 +1,19 @@
+<section class="pg-Page">
+  <div class="pg-Page_Inner lyt-Container">
+    <header class="pg-Page_Header">
+      <h1 class="pg-Page_Title">{{ page.title }}</h1>
+    </header>
+
+    <div class="pg-Page_Body">
+      {%- if page.content != blank -%}
+        <div class="pg-Page_Text rte-RichText">
+          {{ page.content }}
+        </div>
+      {%- endif -%}
+
+      <div class="pg-Page_Section">
+        {%- section 'faqs' -%}
+      </div>
+    </div>
+  </div>
+</section>

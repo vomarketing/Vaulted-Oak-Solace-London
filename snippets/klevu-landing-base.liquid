@@ -1,0 +1,7 @@
+<script type="template/klevu" id="klevuLandingTemplateBase">
+<% if(!helper.hasResults(data,"productList")) { %>
+  <%=helper.render('klevuNoResultFound',scope) %>
+<% } else { %>
+  <%=helper.render('results',scope) %>
+<% }%>
+</script>

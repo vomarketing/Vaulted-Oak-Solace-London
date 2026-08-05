@@ -1,0 +1,5 @@
+{%- for item in cart.items -%}
+  {%- render 'push-cart-item', item: item -%}
+{%- else -%}
+  <p class="psh-Cart_Text">{{ 'cart.drawer.empty' | t }}</p>
+{%- endfor -%}

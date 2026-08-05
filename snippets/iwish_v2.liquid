@@ -1,0 +1,157 @@
+{%- liquid
+
+  assign wishlist_page_url = "/apps/iwish"
+  assign jquery_cdn_url = "https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"
+  assign is_collection = false
+
+  if page_type == "collection"
+    assign is_collection = true
+  else
+    assign page_type = "product"
+  endif
+
+-%}
+
+{% comment %} Script for head {% endcomment %}
+{%- if component == 'head-script' -%}
+
+  {% comment %} Load jQuery for wishlist page - it is required :( {% endcomment %}
+  {%- if request.path == wishlist_page_url -%}
+    <script type="text/javascript" async="" src="{{- jquery_cdn_url -}}"></script>
+  {%- endif -%}
+
+  <script type="text/javascript">
+
+    var iwish_shop = "{{ shop.permanent_domain }}";
+    var iwish_pro_template = {% if template contains 'product' %}true{% else %} false{% endif %};
+    var iwish_cid = "{{ customer.id }}";
+    //Add to Wishlist - Product Page Text
+    var iwish_added_txt = "{{- 'wishlist.added_to_wishlist' | t -}}";
+    var iwish_add_txt = "{{- 'wishlist.add_to_wishlist' | t -}}";
+    //Add to Wishlist - Collection Page Text
+    var iwish_added_txt_col = "{{- 'wishlist.added_to_wishlist' | t -}}";
+    var iwish_add_txt_col = "{{- 'wishlist.add_to_wishlist' | t -}}";
+
+    document.addEventListener('DOMContentLoaded', function () {
+
+      window.wishlist = {
+        wishlistCountEls: document.querySelectorAll('.js-Wishlist_Count'),
+        onWishlistLinkClick: function(event) {
+          if(typeof(Storage) !== "undefined") {
+            event.preventDefault();
+            iWishPost('{{- wishlist_page_url -}}',{iwishlist:JSON.stringify(iWishlistmain), cId: iwish_cid});
+          }
+          return false
+        },
+        addToWishlist: function(element,variantId,isCollection) {
+          if((isCollection === "true") || (isCollection === true)){
+            iwish_addCollection(jQuery(element), variantId)
+          }else{
+            iwish_add(jQuery(element), variantId);
+          }
+          this.updateWishlistCount()
+        },
+        removeFromWishlist: function(element,variantId,isWishlistPage) {
+          iwish_remove(jQuery(element), variantId)
+          var addButton = element.parentNode.querySelector('.js-Wishlist_Button-add')
+          if(addButton){
+            addButton.classList.remove('iwishAdded')
+          }
+          this.updateWishlistCount()
+          if(isWishlistPage) {
+            window.location.href = window.location.href
+          }
+        },
+        updateWishlistCount() {
+          if (typeof(Storage) !== "undefined") {
+            for(wishlistCountEl of window.wishlist.wishlistCountEls){
+              var count = (typeof(localStorage.iWishCnt) != "undefined") ? localStorage.iWishCnt : 0
+              wishlistCountEl.dataset.count = count
+              wishlistCountEl.innerHTML = count
+            }
+          }
+        }
+      }
+
+      window.wishlist.updateWishlistCount()
+
+      function asyncLoadRequiredJs() {
+        var urls = ["https://cdn.myshopapps.com/iwish/iwishlist_v2.js"];
+
+        /* Load jQuery if it's not already included */
+        if (!window.jQuery) {
+          urls.unshift("{{- jquery_cdn_url -}}");
+        }
+
+        for (var i = 0; i < urls.length; i++) {
+          var s = document.createElement('script');
+          s.type = 'text/javascript';
+          s.async = true;
+          s.defer = true;
+          s.src = urls[i];
+          var x = document.getElementsByTagName('script')[0];
+          x.parentNode.insertBefore(s, x);
+        }
+      }
+
+      if (window.attachEvent) {
+        window.attachEvent('onload', asyncLoadRequiredJs);
+      } else {
+        window.addEventListener('load', asyncLoadRequiredJs, false);
+      }
+
+    });
+
+  </script>
+
+{%- endif -%}
+
+{% comment %} Link to wishlist app page {% endcomment %}
+{%- if component == 'wishlist-page-link' -%}
+<a
+  class="{{ css_class }}_Link {{ css_class }}_Link-withIcon"
+  title="{{ 'layout.header.wishlist' | t }}"
+    href="{{- wishlist_page_url -}}"
+    onclick="window.wishlist.onWishlistLinkClick(event)"
+  >
+  <span class="{{ css_class }}_Icon {{ css_class }}_Icon-heart">
+    {%- render 'bao-heart' -%}
+    <span class="{{ css_class }}_Count js-Wishlist_Count" data-count="0">0</span>
+  </span>
+
+  <span class="{{ css_class }}_LinkText {% if hide_text %} util-ScreenReaderOnly{% endif %}">
+    {{ 'layout.header.wishlist' | t }}
+  </span>
+</a>
+{%- endif -%}
+
+{% comment %} Add to Wishlist {% endcomment %}
+{%- if component == 'add-to-wishlist' -%}
+  <div class="prd-Wishlist prd-Wishlist-{{ page_type }}">
+
+    {%- if variant == nil -%}
+      {%- assign variant = product.selected_or_first_available_variant -%}
+    {%- endif -%}
+
+    <button class="prd-Wishlist_Button prd-Wishlist_Button-{{ page_type }} prd-Wishlist_Button-add iWishAddColl iwishcheck js-Wishlist_Button js-Wishlist_Button-add"
+      onclick="this.parentElement.classList.add('prd-Wishlist-added'); window.wishlist.addToWishlist(this, this.dataset.variant, '{{- is_collection -}}')"
+      {%- unless customer -%}data-module-drawers-trigger="wishlist"{%- endunless -%}
+      data-variant="{{- variant.id -}}"
+      data-product="{{- product.id -}}"
+      data-pTitle="{{- product.title | escape -}}"
+      title="{{- 'wishlist.add_to_wishlist' | t -}}"
+    >
+    {{- 'wishlist.add_to_wishlist' | t -}}
+    </button>
+
+    <button class="prd-Wishlist_Button prd-Wishlist_Button-{{ page_type }} prd-Wishlist_Button-remove js-Wishlist_Button js-Wishlist_Button-remove"
+      onclick="this.parentElement.classList.remove('prd-Wishlist-added'); window.wishlist.removeFromWishlist(this, this.dataset.variant, false)"
+      data-variant="{{- variant.id -}}"
+      data-product="{{- product.id -}}"
+      title="{{- 'wishlist.remove_from_wishlist' | t -}}"
+    >
+      {{- 'wishlist.remove_from_wishlist' | t -}}
+    </button>
+
+  </div>
+{%- endif -%}

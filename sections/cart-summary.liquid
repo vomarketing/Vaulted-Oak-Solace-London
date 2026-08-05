@@ -1,0 +1,58 @@
+<div class="crt-Summary">
+  <header class="crt-Summary_Header">
+    <h2 class="crt-Summary_Title fz-25_33">{{ 'cart.summary.continue_to_checkout' | t }}</h2>
+  </header>
+
+  <div class="crt-Summary_Body">
+    {% comment %} <p class="crt-Summary_Text crt-Summary_Text-opacity">{{ 'cart.summary.text' | t }}</p> {% endcomment %}
+
+    <div class="crt-Summary_Row">
+      <p class="crt-Summary_Label">{{ 'cart.summary.subtotal' | t }}:</p>
+      <p class="crt-Summary_Value">{{ cart.total_price | money }}</p>
+    </div>
+
+    {%- if cart.total_discounts > 0 -%}
+      <div class="crt-Summary_Row">
+        <p class="crt-Summary_Label">{{ 'cart.summary.discount' | t }}:</p>
+        <p class="crt-Summary_Value">{{ cart.total_discounts | money }}</p>
+      </div>
+    {%- endif -%}
+
+    <div class="crt-Summary_Row">
+      <p class="crt-Summary_Label">{{ 'cart.summary.delivery' | t }}:</p>
+      <p class="crt-Summary_Value crt-Summary_Value-opacity">
+        {{ 'cart.summary.calculated_at_checkout' | t }}
+      </p>
+    </div>
+
+    <form class="crt-Summary_Form" action="/cart" method="post" novalidate>
+      <button class="crt-Summary_Button" type="submit" name="checkout">
+        {{ 'cart.summary.checkout_securely' | t }}
+      </button>
+    </form>
+
+    <div class="crt-Summary_Secure">
+      <p class="crt-Summary_Text">
+        {{ 'cart.summary.secure_payment_methods' | t }}
+      </p>
+
+      <div class="crt-Summary_Items">
+        <div class="crt-Summary_Item">
+          {%- render 'bao-icon-visa-clr' -%}
+        </div>
+
+        <div class="crt-Summary_Item">
+          {%- render 'bao-icon-master-clr' -%}
+        </div>
+
+        <div class="crt-Summary_Item">
+          {%- render 'bao-icon-american_express-clr' -%}
+        </div>
+
+        <div class="crt-Summary_Item">
+          {%- render 'bao-icon-paypal-clr' -%}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,501 @@
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign has_size_option = false
+
+  for option in product.options
+    assign downcased_name = option | downcase
+
+    if downcased_name contains 'size'
+      assign has_size_option = true
+
+      break
+    endif
+  endfor
+-%}
+
+<div
+  class="prd-Detail"
+  data-section-id="{{ section.id }}"
+  data-section-type="product"
+  data-enable-history-state="true"
+  data-product-handle="{{ product.handle }}"
+  data-has-size-option="{{ has_size_option }}"
+  data-size-chosen="{% if has_size_option %}false{% else %}true{% endif %}"
+>
+  <div class="prd-Detail_Inner">
+    <div class="prd-Detail_Body">
+      <div class="prd-Detail_Columns">
+        <div class="prd-Detail_Column prd-Detail_Column-image">
+          {%- render 'product-media-gallery' with product -%}
+        </div>
+
+        <div class="prd-Detail_Column prd-Detail_Column-content">
+          <h1 class="prd-Detail_Title fz-25_33">{{ product.title }}</h1>
+
+          <div class="prd-Detail_Text fz-13_18">
+            {{ product.description | newline_to_br | split: '<br />' | first }}
+          </div>
+          {% if product.compare_at_price > product.price %}
+            <div class="final-sale">
+              <div style="color:red;  font-size:12px;font-weight:400;margin-top:15px;">
+                <strong>Archive Sale – Final Sale</strong><br>
+                This item is final sale. No returns or exchanges. If you need assistance with sizing, contact
+                <u><a style="color:red;" href="mailto:help@solacelondon.com">help@solacelondon.com</a></u> prior to purchasing. Our team are available daily between 9am - 5pm GMT.
+              </div>
+            </div>
+          {% endif %}
+          <div class="prd-Detail_Offers">
+            <div class="prd-Offers">
+              {%- form 'product',
+                product,
+                class: 'prd-Offers_Form',
+                data-push-cart-form: '',
+                data-product-detail-form: ''
+              -%}
+                <input type="hidden" name="quantity" value="1">
+
+                <div class="prd-Offers_Options util-Js">
+                  {%- unless product.has_only_default_variant -%}
+                    {%- for option in product.options_with_values -%}
+                      <div class="prd-Offers_Option">
+                        <div
+                          class="prd-OffersOption fz-13_18"
+                          data-product-detail-size-option
+                        >
+                          <header class="prd-OffersOption_Header">
+                            <label
+                              class="prd-OffersOption_Label"
+                              for="SingleOptionSelector-{{ forloop.index0 }}"
+                            >
+                              {{ option.name }}
+                            </label>
+
+                            {%- if forloop.first and product.metafields.Detail.Size_Guide_Table != blank -%}
+                              <div class="prd-OffersOption_Body">
+                                <button
+                                  class="prd-OffersOption_Link"
+                                  type="button"
+                                  data-module-drawers-trigger="pdp-size-guide"
+                                >
+                                  {{ 'products.product.size_guide' | t }}
+                                </button>
+
+                                <div
+                                  class="drw-Drawer drw-Drawer-fromRight"
+                                  data-module-drawers-drawer="pdp-size-guide"
+                                  data-module-drawers-move-me="root"
+                                >
+                                  <button
+                                    type="button"
+                                    class="drw-Drawer_Close"
+                                    data-module-drawers-close="pdp-size-guide"
+                                  >
+                                    {%- render 'bao-close' -%}
+                                  </button>
+                                  <div class="drw-Drawer_Inner">
+                                    <div class="drw-Drawer_Body">
+                                      <div class="drw-Drawer_Header">
+                                        <h2
+                                          class="drw-Drawer_Title drw-Drawer_Title-largeSpacing fz-25_33"
+                                        >
+                                          {{ 'products.product.size_guide' | t }}
+                                        </h2>
+                                        <p
+                                          class="drw-Drawer_Product fz-10_10"
+                                        >
+                                          {{ product.title }}
+                                        </p>
+                                      </div>
+                                      {%- if product.metafields.Detail.Size_Guide_Table != blank -%}
+                                        <div class="drw_Drawer_Content">
+                                          {%- if product.metafields.Detail.Size_Guide_Table -%}
+                                            {{ product.metafields.Detail.Size_Guide_Table }}
+                                          {%- endif -%}
+                                        </div>
+                                      {% endif %}
+                                    </div>
+                                  </div>
+                                </div>
+                              </div>
+                            {%- endif -%}
+                          </header>
+
+                          <div class="prd-OffersOption_Body">
+                            {%- assign downcased_name = option.name | downcase -%}
+
+                            {%- if downcased_name contains 'size' -%}
+                              <div
+                                class="prd-OffersOption_Items"
+                                data-module="product-stock-status"
+                                data-product-detail-choices
+                              >
+                                {%- for value in option.values -%}
+                                  {%- assign option_is_available = true -%}
+
+                                  {%- if product.options.size == 1 -%}
+                                    {%- unless product.variants[forloop.index0].available -%}
+                                      {%- assign option_is_available = false -%}
+                                    {%- endunless -%}
+                                  {%- endif -%}
+
+                                  <div
+                                    class="prd-OffersOption_Item"
+                                    data-el="product-stock-status.option"
+                                    data-stock="{{ product.variants[forloop.index0].inventory_quantity }}"
+                                  >
+                                    <button
+                                      type="button"
+                                      class="testing prd-OffersOption_Button {% unless option_is_available %}disabled-btn{% endunless %}"
+                                      data-value="{{ value | escape }}"
+                                      aria-current="false"
+
+                                      {% unless option_is_available %}
+                                        data-module-drawers-trigger="bis"
+                                      {% endunless %}
+                                      data-product-detail-choice
+                                    >
+                                      <span class="prd-OffersOption_ButtonText">
+                                        {{ value }}
+                                      </span>
+                                    </button>
+                                  </div>
+                                {%- endfor -%}
+                              </div>
+                              <style>
+                                button.testing.prd-OffersOption_Button.disabled-btn {
+                                    opacity: .4;
+                                }
+                                .disabled-btn span.prd-OffersOption_ButtonText:hover {
+                                    cursor: not-allowed;
+                                }
+                              </style>
+                              <select
+                                class="util-ScreenReaderOnly"
+                                id="SingleOptionSelector-{{ forloop.index0 }}"
+                                data-single-option-selector
+                                data-index="option{{ option.position }}"
+                                name="options[{{ option.name | escape }}]"
+                                data-product-detail-select
+                              >
+                                {%- for value in option.values -%}
+                                  <option
+                                    value="{{ value | escape }}"
+                                    {% if option.selected_value == value %}
+                                      selected="selected"
+                                    {% endif %}
+                                  >
+                                    {{ value }}
+                                  </option>
+                                {%- endfor -%}
+                              </select>
+                            {%- else -%}
+                              <select
+                                class="prd-Offers_OptionSelect {% if product.handle == 'gift-card' %} prd-GiftCard_Select {% endif %}"
+                                id="SingleOptionSelector-{{ forloop.index0 }}"
+                                data-single-option-selector
+                                name="options[{{ option.name | escape }}]"
+                                data-index="option{{ option.position }}"
+                              >
+                                {%- for value in option.values -%}
+                                  <option
+                                    value="{{ value | escape }}"
+                                    {% if option.selected_value == value %}
+                                      selected="selected"
+                                    {% endif %}
+                                  >
+                                    {{ value | replace: '.00', '' }}
+                                  </option>
+                                {%- endfor -%}
+                              </select>
+                            {%- endif -%}
+                          </div>
+                        </div>
+                      </div>
+                    {%- endfor -%}
+                  {%- endunless -%}
+
+                  <select
+                    name="id"
+                    class="util-NoJs util-ScreenReaderOnly"
+                    data-product-select
+                  >
+                    {%- for variant in product.variants -%}
+                      <option
+                        {% if variant == current_variant %}
+                          selected="selected"
+                        {% endif %}
+                        {% unless variant.available %}
+                          disabled="disabled"
+                        {% endunless %}
+                        value="{{ variant.id }}"
+                      >
+                        {{ variant.title }}
+                      </option>
+                    {%- endfor -%}
+                  </select>
+                </div>
+
+                <div class="prd-Offers_Footer">
+                  <button
+                    class="{% if product.handle != 'gift-card' %}prd-Offers_Submit {% endif %} fz-12_12 {% if product.handle == 'gift-card' %} prd-GiftCard_Submit {% endif %}"
+                    type="submit"
+                    name="add"
+                    {% if has_size_option %}
+                      disabled
+                    {% endif %}
+                    {% unless current_variant.available %}
+                      disabled
+                    {% endunless %}
+                    {% unless current_variant.available %}
+                      data-module-drawers-trigger="bis"
+                    {% endunless %}
+                    data-product-detail-submit
+                  >
+                    {%- if has_size_option -%}
+                      <span class="prd-Offers_Choose">
+                        {{ 'products.product.please_choose' | t }}
+                      </span>
+                    {%- endif -%}
+
+                    <span
+                      class="prd-Offers_SubmitText"
+                      data-product-detail-submit-text
+                      data-translation-add-to-cart="{{ 'products.product.add_to_cart' | t }}"
+                      data-translation-sold-out="{{ 'products.product.sold_out' | t }}"
+                    >
+                      {%- if current_variant.available -%}
+                        {{ 'products.product.add_to_cart' | t }}
+                      {%- else -%}
+                        {{ 'products.product.sold_out' | t }}
+                      {%- endif -%}
+                    </span>
+
+                    <div class="price-wrapper">
+                      <span
+                        class="prd-Offers_SubmitPrice 121"
+                        data-product-detail-button-price
+                        aria-current="false"
+                      >
+                        {%- if current_variant.compare_at_price > current_variant.price -%}
+                          <s class="prd-Price_Compare">{{ current_variant.compare_at_price | money }}</s>
+                        {%- endif %}
+                        {{ current_variant.price | money_without_trailing_zeros }}
+                      </span>
+
+                      <span
+                        class="prd-Offers_SubmitPrice 12111 33"
+                        data-product-detail-button-price
+                        aria-current="true"
+                      >
+                        {%- if product.compare_at_price > product.price -%}
+                          <s class="prd-Price_Compare">{{ current_variant.compare_at_price | money }}</s>
+                          <span class="prd-Card_Kicker prd-Card_Kicker-red" style="margin-right: 2px;">Sale</span>
+                        {% endif %}
+                        <span {% if product.compare_at_price > product.price %}class="prd-Card_Kicker-red"{% endif %}>{{ current_variant.price | money_without_trailing_zeros }}</span>
+                      </span>
+                    </div>
+                  </button>
+
+                  {% comment %}
+                    <a class="prd-Offers_Checkout btn-Button-secondary fz-12_11"
+                      aria-hidden="true"
+                      href="{{- routes.cart_url -}}"
+                    >
+
+                      <span
+                        class="prd-Offers_CheckoutText"
+                      >
+                        Size
+                        <span class="prd-Offers_CheckoutValue">{{ current_variant.title }}</span>
+                        <span class="prd-Offers_CheckoutText-dim">added to bag</span>
+                      </span>
+
+                      <span
+                        class="prd-Offers_CheckoutText"
+                      >
+                        Checkout Now
+                      </span>
+
+                    </a>
+                  {% endcomment %}
+                </div>
+              {%- endform -%}
+            </div>
+          </div>
+
+          {%- if section.settings.stock_note != blank
+            or section.settings.delivery_note
+            or section.settings.wishlist_enable
+          -%}
+            {%- if product.handle != 'gift-card' -%}
+              <div class="prd-Detail_Status">
+                <div class="prd-Status">
+                  <div class="prd-Status_Stock" aria-hidden="true">
+                    {{ section.settings.stock_note }}
+                  </div>
+                  <div class="prd-Status_Stock" aria-hidden="true">
+                    {{ section.settings.stock_note }}
+                  </div>
+
+                  {%- if section.settings.delivery_note != blank -%}
+                    {% if product.compare_at_price %}
+                      <div class="prd-Status_Delivery">
+                        <strong>
+                          {% comment %} Final Sale Policy. All Archive Sale purchases are considered final sale and are not eligible
+                          for returns or refunds except where required by law. Items may not be returned for change of
+                          mind, size, or preference. Your statutory rights under the Consumer Contracts Regulations (UK)
+                          / Consumer Rights Directive (EU) are unaffected. If an item is faulty, damaged, or
+                          misdescribed, you are entitled to a refund or replacement in line with consumer protection
+                          law. If you are unsure of your sizing please contact help@solacelondon.com {% endcomment %}
+                        </strong>
+                        <br>
+                        <br>
+                        <br>
+                      </div>
+                    {% endif %}
+
+                    <div class="prd-Status_Delivery">
+                      {{ section.settings.delivery_note }}
+                    </div>
+                  {%- endif -%}
+                </div>
+                {%- if section.settings.wishlist_enable -%}
+                  {%- render 'iwish_v2',
+                    component: 'add-to-wishlist',
+                    product: product,
+                    variant: current_variant,
+                    page_type: 'product'
+                  -%}
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          {%- endif -%}
+
+          {%- if product.metafields.Detail.Related_Products != blank -%}
+            {%- capture related_title -%}
+              {%- if product.metafields.Detail.Related_Title -%}
+                {{ product.metafields.Detail.Related_Title }}
+              {%- else -%}
+                {{ 'products.product.related_products' | t }}
+              {%- endif -%}
+            {%- endcapture -%}
+
+            <div class="prd-Detail_Related">
+              <div class="prd-Related">
+                <header class="prd-Related_Header">
+                  <h4 class="prd-Related_Title fz-13_18">{{ related_title }}</h4>
+                </header>
+
+                <div class="prd-Related_Body">
+                  <div class="prd-Related_Items">
+                    {%- assign related_handles = product.metafields.Detail.Related_Products | split: '|' -%}
+
+                    {%- for related_handle in related_handles -%}
+                      {%- assign related_product = all_products[related_handle] -%}
+
+                      {%- if related_product != blank -%}
+                        <div class="prd-Related_Item">
+                          <a
+                            class="prd-Related_Link"
+                            href="{{ related_product.url }}"
+                            title="{{ related_product.title }}"
+                          >
+                            {%- render 'responsive-image',
+                              image: related_product.featured_image,
+                              width: 220,
+                              size_by_width: true
+                            -%}
+                          </a>
+                        </div>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  </div>
+                </div>
+              </div>
+            </div>
+          {%- endif -%}
+
+          <div class="prd-Detail_Links fz-13_18 {% if product.handle == 'gift-card' %} prd-GiftCard_Links {% endif %}">
+            <div class="prd-Detail_LinksItem">
+              <button
+                class="prd-Detail_Link"
+                type="button"
+                data-module-drawers-trigger="pdp-details"
+              >
+                {{ 'products.product.details' | t }}
+              </button>
+
+              <div
+                class="drw-Drawer drw-Drawer-fromRight"
+                data-module-drawers-drawer="pdp-details"
+                data-module-drawers-move-me="root"
+              >
+                <button
+                  type="button"
+                  class="drw-Drawer_Close"
+                  data-module-drawers-close="pdp-details"
+                >
+                  {%- render 'bao-close' -%}
+                </button>
+                <div class="drw-Drawer_Inner">
+                  <header class="drw-Drawer_Header">
+                    <h2 class="drw-Drawer_Title fz-25_33">{{ 'products.product.details' | t }}</h2>
+                  </header>
+
+                  <div class="drw-Drawer_Body">
+                    <div class="rte-RichText">
+                      {%- if product.metafields.Detail.Description != blank -%}
+                        {{ product.metafields.Detail.Description }}
+                      {%- else -%}
+                        {{ product.description }}
+                      {%- endif -%}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {%- if section.settings.delivery_and_returns_page != blank -%}
+              <div class="prd-Detail_LinksItem">
+                <button
+                  class="prd-Detail_Link"
+                  type="button"
+                  data-module-drawers-trigger="pdp-delivery"
+                >
+                  {{ 'products.product.delivery_and_returns' | t }}
+                </button>
+
+                <div
+                  class="drw-Drawer drw-Drawer-fromRight"
+                  data-module-drawers-drawer="pdp-delivery"
+                  data-module-drawers-move-me="root"
+                >
+                  <button
+                    type="button"
+                    class="drw-Drawer_Close"
+                    data-module-drawers-close="pdp-delivery"
+                  >
+                    {%- render 'bao-close' -%}
+                  </button>
+                  <div class="drw-Drawer_Inner">
+                    <div class="drw-Drawer_Body">
+                      <div class="rte-RichText">
+                        {{ pages[section.settings.delivery_and_returns_page].content }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {%- endif -%}
+
+            <div class="prd-Detail_LinksItem">
+              <a class="prd-Detail_Link" href="{{ pages[section.settings.contact_page].url }}">
+                {{ 'products.product.contact_us' | t }}
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

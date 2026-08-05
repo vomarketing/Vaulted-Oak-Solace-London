@@ -1,0 +1,24 @@
+<div class="drw-Drawer drw-Drawer-fromRight" data-module-drawers-drawer="wishlist">
+  <button type="button" class="drw-Drawer_Close" data-module-drawers-close="wishlist">
+    {%- render 'bao-close' -%}
+  </button>
+  <div class="drw-Drawer_Inner">
+    <div class="prd-Wishlist_Message">
+      {% capture login_link %}
+        <a class="prd-Wishlist_MessageLink" href="{{ routes.account_login_url }}">
+          {{ 'customer.login.login' | t }}
+        </a>
+      {% endcapture %}
+
+      {% capture register_link %}
+        <a class="prd-Wishlist_MessageLink" href="{{ routes.account_register_url }}">
+          {{ 'customer.register.register' | t }}
+        </a>
+      {% endcapture %}
+
+      <h2 class="drw-Drawer_Title fz-25_33">{{ 'wishlist.wishlist_drawer_title' | t }}</h2>
+
+      <p>{{ 'wishlist.temporarilly_saved_html' | t: login: login_link, register: register_link }}</p>
+    </div>
+  </div>
+</div>

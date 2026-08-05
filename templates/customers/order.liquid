@@ -1,0 +1,172 @@
+<section class="acc-Account acc-Account-order">
+  {%- capture title -%}{{ 'customer.order.order_details' | t: name: order.name }}{%- endcapture -%}
+
+  <div class="acc-Account_Inner">
+    <aside class="acc-Account_Nav">
+      {%- render "account-navigation" -%}
+    </aside>
+
+    <div class="acc-Account_Body">
+      <div class="acc-Account_Items">
+        <div class="acc-Account_Item acc-Account_Item-order">
+          <div class="acc-Section">
+            <div class="acc-Section_Header">
+              <h2 class="acc-Section_Title fz-20_20">
+                {%- capture created_at_date -%}{{ order.created_at | date: '%d/%m/%y' }}{%- endcapture -%}
+
+                {{ 'customer.order.order_name' | t: name: order.name }} - ({{ order.created_at | date: format: 'month_day_year' }})
+              </h2>
+
+              {%- if order.cancelled -%}
+                <div class="acc-Order_Cancelled">
+                  {%- assign cancelled_at = order.cancelled_at | date: '%d/%m/%y' -%}
+
+                  {{ 'customer.order.cancelled_on' | t: date: cancelled_at }}<br />
+                  {{ 'customer.order.cancelled_reason' | t: reason: order.cancel_reason }}
+                </div>
+              {%- endif -%}
+            </div>
+
+            <ul class="acc-Order_Items">
+              {%- for line_item in order.line_items -%}
+                <li class="acc-Order_Item">
+                  <a class="acc-Order_Image" href="{{ line_item.product.url }}">
+                    {%- include 'responsive-image' with
+                      image: line_item.image,
+                      width: 520,
+                      height: 774
+                    -%}
+                  </a>
+
+                  <div class="acc-Order_ItemDetail">
+                    <a href="{{ line_item.product.url }}" class="acc-Order_ItemTitleLink">
+                      <h3 class="acc-Order_ItemTitle fz-13_18">{{ line_item.title }}</h3>
+                    </a>
+
+                    {%- if line_item.sku != blank -%}
+                      <p class="acc-Order_ItemText">{{ 'customer.order.sku' | t }}: {{ line_item.sku }}</p>
+                    {%- endif -%}
+
+                    <p class="acc-Order_ItemText">{{ 'customer.order.quantity' | t }}: {{ line_item.quantity }}</p>
+                    <p class="acc-Order_ItemPrice">{{ line_item.quantity | times: line_item.price | money_without_trailing_zeros }}</p>
+
+                    {%- if line_item.fulfillment -%}
+                      <p class="acc-Order_ItemFulfilled">
+                        {{ 'customer.order.fulfilled_at' | t }}: {{ line_item.fulfillment.created_at | date: format: 'month_day_year' }}
+                      </p>
+
+                      {%- if line_item.fulfillment.tracking_number -%}
+                        <a
+                          class="acc-Order_Tracking btn-Button btn-Button-arrow btn-Button-wide btn-Button-secondary btn-Button-spacy"
+                          href="{{ line_item.fulfillment.tracking_url }}">
+                          <span class="btn-Button_Text">{{ line_item.fulfillment.tracking_company }} #{{ line_item.fulfillment.tracking_number}}</span>
+
+                          <span class="btn-Button_Arrow">
+                            {%- render 'bao-arrow' -%}
+                          </span>
+                        </a>
+                      {%- endif -%}
+                    {%- endif -%}
+
+                  </div>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        </div>
+
+        <div class="acc-Account_Item">
+          <div class="acc-Section">
+            <div class="acc-Section_Header">
+              <h2 class="acc-Section_Title fz-20_20">{{ 'customer.order.order_summary' | t }}</h2>
+            </div>
+
+            <div class="acc-Section_Body">
+              <p class="acc-Section_Text">
+                {{ 'customer.order.fulfillment' | t }}: {{ order.fulfillment_status_label }}<br />
+                {{ 'customer.order.payment' | t }}: {{ order.financial_status_label }}<br />
+              </p>
+
+              <a
+                class="acc-Section_Button btn-Button btn-Button-arrow btn-Button-wide btn-Button-secondary btn-Button-spacy" target="_new"
+                href="{{ order.order_status_url }}">
+                <span class="btn-Button_Text">{{ 'customer.account.view_order_confirmation' | t }}</span>
+
+                <span class="btn-Button_Arrow">
+                  {%- render 'bao-arrow' -%}
+                </span>
+              </a>
+
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-Account_Item">
+          <div class="acc-Section">
+            <div class="acc-Section_Header">
+              <h2 class="acc-Section_Title fz-20_20">{{ 'customer.order.track_your_order' | t }}</h2>
+            </div>
+
+            <div class="acc-Section_Body">
+              {%- for line_item in order.line_items limit:1 -%}
+                {%- if line_item.fulfillment.tracking_number -%}
+                  <p class="acc-Section_Text">
+                    {{ 'customer.order.tracking_company' | t }}: {{ line_item.fulfillment.tracking_company }}<br />
+                    {{ 'customer.order.tracking_number' | t }}: #{{ line_item.fulfillment.tracking_number }}
+                  </p>
+
+                  <a
+                    class="acc-Section_Button btn-Button btn-Button-arrow btn-Button-wide btn-Button-secondary btn-Button-spacy" target="_new"
+                    href="{{ line_item.fulfillment.tracking_url }}">
+                    <span class="btn-Button_Text">{{ 'customer.order.track_order' | t }}</span>
+
+                    <span class="btn-Button_Arrow">
+                      {%- render 'bao-arrow' -%}
+                    </span>
+                  </a>
+                {%- else -%}
+                  <p class="acc-Section_Text">{{ 'customer.order.no_tracking' | t }}</p>
+                {%- endif -%}
+              {%- endfor -%}
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-Account_Item">
+          <div class="acc-Section">
+            <div class="acc-Section_Header">
+              <h2 class="acc-Section_Title fz-20_20">{{ 'customer.order.delivery_address' | t }}</h2>
+            </div>
+
+            <div class="acc-Section_Body">
+              <div class="acc-Section_Text">{{ order.shipping_address | format_address }}</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="acc-Account_Item">
+          <div class="acc-Section">
+            <div class="acc-Section_Header">
+              <h2 class="acc-Section_Title fz-20_20">{{ 'customer.order.billing_address' | t }}</h2>
+            </div>
+
+            <div class="acc-Section_Body">
+              <div class="acc-Section_Text">{{ order.billing_address | format_address }}</div>
+            </div>
+          </div>
+        </div>
+
+        <a
+          class="acc-Order_BackButton btn-Button btn-Button-arrow btn-Button-wide btn-Button-secondary btn-Button-spacy"
+          href="/account">
+          <span class="btn-Button_Text">{{ 'customer.order.back_button' | t }}</span>
+
+          <span class="btn-Button_Arrow">
+            {%- render 'bao-arrow' -%}
+          </span>
+        </a>
+
+      </div>
+    </div>
+  </div>
+</section>

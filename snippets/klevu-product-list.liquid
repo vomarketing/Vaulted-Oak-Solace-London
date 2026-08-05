@@ -1,0 +1,45 @@
+<script type="template/klevu" id="klevuProductList">
+<% if(data.query.productList && data.query.productList.result.length > 0) { %>
+
+  <div class="klv-Results">
+
+    <div class="klv-Results_ItemsContainer" data-section="productList" id="productsList">
+
+      <ul class="klv-Results_Items">
+        <% helper.each(data.query.productList.result,function(key,product){ %>
+          <% if(product.typeOfRecord == "KLEVU_PRODUCT") { %>
+
+            <%
+            var showProduct = true
+            /*
+            if(window.klevu_quickSearchTags.length) {
+              console.log(product.tags);
+              window.klevu_quickSearchTags.forEach(function(quickSearchTag){
+                console.log(product.tags.indexOf(quickSearchTag))
+                if(product.tags.indexOf(quickSearchTag) === -1) {
+                  showProduct == false
+                }
+              })
+            }   
+            */      
+            %>
+
+            <% if (showProduct){ %>
+              <li class="klv-Results_Item" data-id="<%=product.id%>">
+                <%=helper.render('klevuProductBlock',scope,data,product) %>
+              </li>
+            <% } %>
+          <% } %>
+        <% }); %>
+      </ul>
+        
+    </div>
+
+  </div>
+
+<% } else { %>
+
+  <%= helper.render('klevuQuickNoResultFound',scope) %>
+
+<% } %>
+</script>

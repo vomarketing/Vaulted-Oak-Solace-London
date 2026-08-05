@@ -1,0 +1,95 @@
+{%- form 'create_customer', class: 'frm-Form' -%}
+  {%- if form.errors -%}
+    <div class="val-Validation val-Validation-error">
+      {%- for field in form.errors -%}
+        <p class="val-Validation_Text">{{ form.errors.messages[field] }}</p>
+      {%- endfor -%}
+    </div>
+  {%- endif -%}
+
+  <div class="frm-Form_Row">
+    <label
+      class="frm-Form_Label util-ScreenReaderOnly"
+      for="FirstName"
+    >
+      {{ 'customer.register.first_name' | t }}
+    </label>
+
+    <input
+      class="frm-Form_Input frm-Form_Input-black"
+      type="text"
+      name="customer[first_name]"
+      id="FirstName"
+      required
+      placeholder="{{ 'customer.register.first_name' | t }}"
+      {% if form.first_name %}value="{{ form.first_name }}"{% endif %} />
+  </div>
+
+  <div class="frm-Form_Row">
+    <label
+      class="frm-Form_Label util-ScreenReaderOnly"
+      for="LastName"
+    >
+      {{ 'customer.register.last_name' | t }}
+    </label>
+
+    <input
+      class="frm-Form_Input frm-Form_Input-black"
+      type="text"
+      name="customer[last_name]"
+      id="LastName"
+      required
+      placeholder="{{ 'customer.register.last_name' | t }}"
+      {% if form.last_name %}value="{{ form.last_name }}"{% endif %} />
+  </div>
+
+  <div class="frm-Form_Row">
+    <label
+      class="frm-Form_Label util-ScreenReaderOnly"
+      for="Email"
+    >
+      {{ 'customer.register.email_address' | t }}
+    </label>
+
+    <input
+      class="frm-Form_Input{% if form.errors contains 'email' %} frm-Form_Input-error{% endif %} frm-Form_Input-black"
+      type="email"
+      name="customer[email]"
+      id="Email"
+      required
+      placeholder="{{ 'customer.register.email_address' | t }}"
+      value="{% if form.email %}{{ form.email }}{% endif %}"
+      spellcheck="false"
+      autocomplete="off"
+      autocapitalize="off"
+    />
+  </div>
+
+  <div class="frm-Form_Row">
+    <label
+      class="frm-Form_Label util-ScreenReaderOnly"
+      for="CreatePassword"
+    >
+      {{ 'customer.register.password' | t }}
+    </label>
+
+    <input
+      class="frm-Form_Input{% if form.errors contains 'password' %} frm-Form_Input-error{% endif %} frm-Form_Input-black"
+      type="password"
+      name="customer[password]"
+      required
+      id="CreatePassword"
+      placeholder="{{ 'customer.register.password' | t }}"
+    />
+  </div>
+
+  <div class="frm-Form_Row frm-Form_Row-gappy">
+    <button class="frm-Form_Button frm-Form_Button-gappy frm-Form_Button-white" type="submit">
+      <span class="frm-Form_ButtonText">{{ 'customer.register.submit' | t }}</span>
+
+      <span class="frm-Form_ButtonIcon">
+        {%- render 'bao-arrow' -%}
+      </span>
+    </button>
+  </div>
+{%- endform -%}

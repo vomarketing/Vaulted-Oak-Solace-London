@@ -1,0 +1,162 @@
+<section class="pg-Split">
+  <div class="pg-Split_Columns">
+    <div class="pg-Split_Column">
+      <div class="pg-Split_Content">
+        <div class="pg-Split_Form">
+          <header class="pg-Split_Header">
+            <h1 class="pg-Split_Title fz-25_33">{{ page.title }}</h1>
+
+            <div class="pg-Split_Text">
+              {{ page.content }}
+            </div>
+          </header>
+
+          {%- form 'contact', class: 'frm-Form' -%}
+            <div class="frm-Form_Row">
+              <label
+                class="frm-Form_Label"
+                for="ContactFormFirstName"
+              >
+                {{ 'pages.contact.first_name' | t }}
+              </label>
+
+              <input
+                class="frm-Form_Input"
+                type="text"
+                name="contact[first_name]"
+                id="ContactFormFirstName"
+                placeholder="{{ 'pages.contact.first_name' | t }}"
+                required
+              >
+            </div>
+
+            <div class="frm-Form_Row">
+              <label
+                class="frm-Form_Label"
+                for="ContactFormLastName"
+              >
+                {{ 'pages.contact.last_name' | t }}
+              </label>
+
+              <input
+                class="frm-Form_Input"
+                type="text"
+                name="contact[last_name]"
+                id="ContactFormLastName"
+                placeholder="{{ 'pages.contact.last_name' | t }}"
+                required
+              >
+            </div>
+
+            <div class="frm-Form_Row">
+              <label
+                class="frm-Form_Label"
+                for="ContactFormEmail"
+              >
+                {{ 'pages.contact.email' | t }}
+              </label>
+
+              <input
+                class="frm-Form_Input"
+                type="email"
+                name="contact[email]"
+                id="ContactFormEmail"
+                placeholder="{{ 'pages.contact.email' | t }}"
+                required
+              >
+            </div>
+
+            {%- if section.blocks.size > 0 -%}
+            <div class="frm-Form_Row">
+              <label class="frm-Form_Label" for="topic">{{ 'pages.contact.topic' | t }}</label>
+              <select class="frm-Form_Select" id="topic" name="contact[topic]">
+                <option value="">{{ 'pages.contact.topic' | t }}</option>
+                {%- for block in section.blocks -%}
+                  <option value="first">{{ block.settings.topic }}</option>
+                {%- endfor -%}
+              </select>
+            </div>
+            {%- endif -%}
+
+            <div class="frm-Form_Row frm-Form_Row-gappy">
+              <label class="frm-Form_Label" for="message">{{ 'pages.contact.message' | t }}</label>
+
+              <textarea
+                class="frm-Form_Textarea"
+                name="contact[message]"
+                id="message"
+                placeholder="{{ 'pages.contact.message' | t }}"
+                required
+              ></textarea>
+            </div>
+
+            <div class="frm-Form_Row frm-Form_Row-gappy">
+              <button class="frm-Form_Button" type="submit">
+                <span class="frm-Form_ButtonText">{{ 'pages.contact.submit' | t }}</span>
+
+                <span class="frm-Form_ButtonIcon">
+                  {%- render 'bao-arrow' -%}
+                </span>
+              </button>
+            </div>
+
+            {%- if form.errors -%}
+              <div class="val-Validation val-Validation-error frm-Form_Row-gappy">
+                {%- for field in form.errors -%}
+                  <p class="val-Validation_Text">{{ form.errors.messages[field] }}</p>
+                {%- endfor -%}
+              </div>
+            {%- endif -%}
+
+            {%- if form.posted_successfully? -%}
+              <div class="val-Validation val-Validation-success frm-Form_Row-gappy">
+                <p class="val-Validation_Text">{{ 'pages.contact.validation' | t }}</p>
+              </div>
+            {%- endif -%}
+
+          {%- endform -%}
+        </div>
+      </div>
+    </div>
+
+    {%- if section.settings.image != blank -%}
+    <div class="pg-Split_Column">
+      <div class="pg-Split_Image">
+        {%- render 'responsive-image',
+          image: section.settings.image,
+          width: 1402,
+          height: 1058
+        -%}
+      </div>
+    </div>
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Contact",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image",
+      "info": "1400x1400px"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "topic",
+      "name": "Topic",
+      "settings": [
+        {
+          "type": "text",
+          "id": "topic",
+          "label": "Topic",
+          "info": "Add a topic that will be added to the Choose a topic dropdown menu as part of the form"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

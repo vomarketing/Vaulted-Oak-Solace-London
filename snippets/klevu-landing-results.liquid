@@ -1,0 +1,20 @@
+<script type="template/klevu" id="klevuLandingTemplateResults">
+<div class="klv-Landing_Results">
+
+  <div class="klv-Landing_Body kuResultContent">
+    <div class="productList klevuMeta" data-section="productList">
+
+      {% comment %} These filters get positioned over the drawer with css {% endcomment %}
+      <%=helper.render('filters',scope,data,"productList") %>
+
+      <%=helper.render('klevuProductList',scope) %>
+
+      <div class="klv-Landing_Pagination">
+        <%=helper.render('pagination',scope,data,"productList") %>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+</script>

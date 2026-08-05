@@ -1,0 +1,26 @@
+<div class="prd-Detail_Images prd-Detail_Images-desktop">
+  <div class="prd-DetailImages_Items">
+    {%- render 'product-images' with product, is_carousel: false -%}
+  </div>
+</div>
+
+<div class="prd-Detail_Images prd-Detail_Images-mobile">
+  <div
+    class="prd-DetailImages css-Scroller"
+    data-module="css-scroller"
+  >
+    <div class="prd-DetailImages_Items css-Scroller_Items" data-el="css-scroller.track">
+      {%- render 'product-images' with product, is_carousel: true -%}
+    </div>
+
+    <div class="prd-DetailImages_Dots css-Scroller_Dots">
+      {%- for image in product.images -%}
+        <div
+          class="prd-DetailImages_Dot css-Scroller_Dot"
+          data-el="css-scroller.dot"
+          aria-current="{{ forloop.first }}"
+        ></div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>

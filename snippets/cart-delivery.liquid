@@ -1,0 +1,18 @@
+<div class="crt-Delivery">
+  {%- assign first_tier_minimum = settings.delivery_first_tier_minimum | times: 1 -%}
+  {%- assign first_tier_maximum = settings.delivery_first_tier_maximum | times: 1 -%}
+  {%- assign second_tier_minimum = settings.delivery_second_tier_minimum | times: 1 -%}
+  {%- assign second_tier_maximum = settings.delivery_second_tier_maximum | times: 1 -%}
+
+  <p class="crt-Delivery_Text">
+    {%- if cart.total_price >= second_tier_minimum and cart.total_price <= second_tier_maximum -%}
+      {%- assign message = settings.delivery_second_tier_cart_message -%}
+      {%- assign amount = third_tier_minimum | minus: cart.total_price | money -%}
+    {%- elsif cart.total_price >= first_tier_minimum and cart.total_price <= first_tier_maximum -%}
+      {%- assign message = settings.delivery_first_tier_cart_message -%}
+      {%- assign amount = second_tier_minimum | minus: cart.total_price | money -%}
+    {%- endif -%}
+
+    {{ message | replace: '[amount]', amount }}
+  </p>
+</div>

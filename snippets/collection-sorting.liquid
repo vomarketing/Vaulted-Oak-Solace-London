@@ -1,0 +1,39 @@
+{%- assign current_sort = collection.sort_by | default: collection.default_sort_by -%}
+
+<form
+  class="clc-Control js-CollectionSortBy"
+  data-module="collection-sort-by"
+>
+  <label class="clc-Control_Label" for="SortBy">{{ 'collections.sorting.title' | t }}:</label>
+  <select class="clc-Control_Select" name="SortBy" id="SortBy" data-el="collection-sort-by.select">
+    <option value="manual"{% if current_sort == 'manual' %} selected{% endif %}>{{ 'collections.sorting.featured' | t }}</option>
+
+    <option value="best-selling"{% if current_sort == 'best-selling' %} selected{% endif %}>
+      {{ 'collections.sorting.best_selling' | t }}
+    </option>
+
+    <option value="title-ascending"{% if current_sort == 'title-ascending' %} selected{% endif %}>
+      {{ 'collections.sorting.az' | t }}
+    </option>
+
+    <option value="title-descending"{% if current_sort == 'title-descending' %} selected{% endif %}>
+      {{ 'collections.sorting.za' | t }}
+    </option>
+
+    <option value="price-ascending"{% if current_sort == 'price-ascending' %} selected{% endif %}>
+      {{ 'collections.sorting.price_ascending' | t }}
+    </option>
+
+    <option value="price-descending"{% if current_sort == 'price-descending' %} selected{% endif %}>
+      {{ 'collections.sorting.price_descending' | t }}
+    </option>
+
+    <option value="created-descending"{% if current_sort == 'created-descending' %} selected{% endif %}>
+      {{ 'collections.sorting.date_descending' | t }}
+    </option>
+
+    <option value="created-ascending"{% if current_sort == 'created-ascending' %} selected{% endif %}>
+      {{ 'collections.sorting.date_ascending' | t }}
+    </option>
+  </select>
+</form>

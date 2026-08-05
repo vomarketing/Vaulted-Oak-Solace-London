@@ -1,0 +1,58 @@
+<!doctype html>
+<html class="util-NoJs" lang="{{ shop.locale }}">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+    <meta name="author" content="By Association Only" />
+
+    <link rel="canonical" href="{{ canonical_url }}" />
+
+    {%- render 'favicons' -%}
+
+    {%- assign formatted_initial_value = gift_card.initial_value | money_without_trailing_zeros: gift_card.currency -%}
+    {%- assign formatted_initial_value_stripped = formatted_initial_value | strip_html -%}
+    <title>{{ 'gift_card.meta.title' | t: value: formatted_initial_value_stripped, shop: shop.name }}</title>
+
+    <meta name="description" content="{{ 'gift_card.meta.description' | t }}" />
+
+    {%- render 'social-meta-tags' -%}
+    {%- render 'style-tags', layout: 'theme' -%}
+
+    <script>
+      document.documentElement.className = document.documentElement.className.replace('util-NoJs', '');
+
+      window.theme = {
+        strings: {
+          addToCart: {{ 'products.product.add_to_cart' | t | json }},
+          soldOut: {{ 'products.product.sold_out' | t | json }},
+          unavailable: {{ 'products.product.unavailable' | t | json }}
+        },
+        moneyFormat: {{ shop.money_format | json }}
+      };
+    </script>
+
+    {%- render 'typekit' -%}
+
+    {{ "//cdn.shopify.com/s/shopify/shopify_common.js" | script_tag }}
+    {{ "//cdn.shopify.com/s/javascripts/currencies.js" | script_tag }}
+    {%- render 'script-tags', layout: 'theme' -%}
+
+    {{ content_for_header }}
+  </head>
+
+  <body id="{{ page_title | handle }}" class="lyt-Site template-{{ template.name | handle }}">
+    <div id="app">
+      <a class="util-ScreenReaderOnly" href="#MainContent">{{ 'general.accessibility.skip_to_content' | t }}</a>
+
+      {%- section 'header' -%}
+
+      <main role="main" id="MainContent">
+        {{ content_for_layout }}
+      </main>
+
+      {%- section 'footer' -%}
+      {%- render 'drawers' -%}
+    </div>
+  </body>
+</html>

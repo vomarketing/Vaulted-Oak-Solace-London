@@ -1,0 +1,346 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Solace London by BAO",
+    "theme_version": "1.0.0",
+    "theme_author": "By Association Only",
+    "theme_documentation_url": "https://github.com/baoagency/solace-london",
+    "theme_support_url": "https://github.com/baoagency/solace-london/issues",
+    "theme_packaged_with": "@by-association-only/unisian-tools@1.6.2"
+  },
+  {
+    "name": "Announcement Bar",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "bar_enabled",
+        "label": "Enabled?",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "App Icons",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Settings"
+      },
+      {
+        "type": "text",
+        "id": "store_name",
+        "label": "Store name"
+      },
+      {
+        "type": "text",
+        "id": "store_url",
+        "label": "Store URL"
+      },
+      {
+        "type": "color",
+        "id": "favicons_color",
+        "label": "Theme colour",
+        "default": "#ffffff"
+      },
+      {
+        "type": "header",
+        "content": "Icons"
+      },
+      {
+        "type": "image_picker",
+        "id": "apple_touch_icon",
+        "label": "Apple touch icon",
+        "info": "Size: 180 x 180 px"
+      },
+      {
+        "type": "image_picker",
+        "id": "android_chrome_icon",
+        "label": "Android chrome icon",
+        "info": "Size: 192 x 192 px"
+      },
+      {
+        "type": "image_picker",
+        "id": "ms_tile_icon",
+        "label": "Microsoft tile icon",
+        "info": "Size: 150 x 150 px"
+      }
+    ]
+  },
+  {
+    "name": "Fav Icons",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "favicon_small",
+        "label": "Favicon (small)",
+        "info": "Size: 16 x 16 px"
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon_medium",
+        "label": "Favicon (medium)",
+        "info": "Size: 32 x 32 px"
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon_large",
+        "label": "Favicon (large)",
+        "info": "Size: 194 x 194 px"
+      }
+    ]
+  },
+  {
+    "name": "Gift Card",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "gift_card_image",
+        "label": "Image",
+        "info": "Size: 720 x 446 px"
+      },
+      {
+        "type": "richtext",
+        "id": "gift_card_text",
+        "label": "Gift Card Intro text"
+      }
+    ]
+  },
+  {
+    "name": "Lookbook",
+    "settings": [
+      {
+        "type": "url",
+        "id": "lookbook_link",
+        "label": "Use this to set the global url of the link"
+      },
+      {
+        "type": "text",
+        "id": "lookbook_link_text",
+        "label": "Use this to set the global text of the link"
+      }
+    ]
+  },
+  {
+    "name": "Newsletter popup",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "newsletter_enable",
+        "label": "Enable",
+        "default": true
+      },
+      {
+        "type": "text",
+        "id": "newsletter_delay",
+        "label": "Delay in ms. Example: 1000 = 1 second",
+        "default": "10000"
+      },
+      {
+        "type": "text",
+        "id": "newsletter_title",
+        "label": "Title"
+      },
+      {
+        "type": "richtext",
+        "id": "newsletter_intro",
+        "label": "Intro Text"
+      },
+      {
+        "type": "text",
+        "id": "klaviyo_form",
+        "label": "Klaviyo Form",
+        "info": "Copy/Paste the embed code for the Klaviyo form here",
+        "default": "<div class=\"klaviyo-form-TzTzuJ\"></div>"
+      }
+    ]
+  },
+  {
+    "name": "Password",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "password_image",
+        "label": "Image",
+        "info": "Size: 1440 x 900 px"
+      }
+    ]
+  },
+  {
+    "name": "Social Media",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Social sharing image"
+      },
+      {
+        "type": "image_picker",
+        "id": "share_image",
+        "label": "Image",
+        "info": "Shown when sharing a link on social media. [Learn more](https://help.shopify.com/manual/using-themes/troubleshooting/showing-social-media-thumbnail-images/) about image thumbnails."
+      },
+      {
+        "type": "header",
+        "content": "Social sharing options"
+      },
+      {
+        "type": "checkbox",
+        "id": "social_sharing_blog",
+        "label": "Enable sharing for blog articles",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "share_facebook",
+        "label": "Share on Facebook",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "share_twitter",
+        "label": "Tweet on Twitter",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "share_pinterest",
+        "label": "Pin on Pinterest",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Sharing links"
+      },
+      {
+        "type": "text",
+        "id": "social_twitter_link",
+        "label": "Twitter link"
+      },
+      {
+        "type": "text",
+        "id": "social_facebook_link",
+        "label": "Facebook link"
+      },
+      {
+        "type": "text",
+        "id": "social_pinterest_link",
+        "label": "Pinterest link"
+      },
+      {
+        "type": "text",
+        "id": "social_instagram_link",
+        "label": "Instagram link"
+      },
+      {
+        "type": "text",
+        "id": "social_snapchat_link",
+        "label": "Snapchat link"
+      },
+      {
+        "type": "text",
+        "id": "social_tumblr_link",
+        "label": "Tumblr link"
+      },
+      {
+        "type": "text",
+        "id": "social_youtube_link",
+        "label": "Youtube link"
+      },
+      {
+        "type": "text",
+        "id": "social_vimeo_link",
+        "label": "Vimeo link"
+      }
+    ]
+  },
+  {
+    "name": "Misc",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Klevu"
+      },
+      {
+        "type": "text",
+        "id": "klevu_api_key",
+        "label": "API Key",
+        "default": "klevu-161002084819213112"
+      },
+      {
+        "type": "header",
+        "content": "Back in Stock"
+      },
+      {
+        "type": "paragraph",
+        "content": "Drawer"
+      },
+      {
+        "type": "richtext",
+        "id": "bis_message",
+        "label": "Message"
+      },
+      {
+        "type": "text",
+        "id": "bis_placeholder",
+        "label": "Email Placeholder",
+        "default": "Email"
+      },
+      {
+        "type": "text",
+        "id": "bis_button_text",
+        "label": "Button Text",
+        "default": "Email me when available"
+      },
+      {
+        "type": "richtext",
+        "id": "bis_footnote",
+        "label": "Foot Note"
+      },
+      {
+        "type": "text",
+        "id": "bis_error_message",
+        "label": "Additional Error Message"
+      },
+      {
+        "type": "text",
+        "id": "bis_success_message",
+        "label": "Additional Success Message"
+      }
+    ]
+  },
+  {
+    "name": "Site",
+    "settings": [
+      {
+        "type": "select",
+        "id": "theme",
+        "label": "Theme",
+        "options": [
+          {
+            "value": "Light",
+            "label": "Light"
+          },
+          {
+            "value": "Dark",
+            "label": "Dark"
+          }
+        ],
+        "default": "Light"
+      },
+      {
+        "type": "header",
+        "content": "Checkout"
+      },
+      {
+        "type": "richtext",
+        "id": "checkout_terms_message",
+        "label": "T&C Message",
+        "default": "<p>By placing an order you agree to Solace London’s Terms and Conditions,<br /> Privacy Policy and Cookie Policy.</p>"
+      },
+      {
+        "type": "link_list",
+        "id": "checkout_footer_navigation",
+        "label": "Footer navigation"
+      }
+    ]
+  }
+]

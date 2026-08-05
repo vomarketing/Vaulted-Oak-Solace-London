@@ -1,0 +1,17 @@
+<section class="clc-Collections">
+  <div class="clc-Collections_Inner lyt-Container">
+
+    <div class="clc-Collections_Body">
+      <ul class="clc-Collections_Items">
+        {%- for link in linklists.all-collections.links -%}
+          {%- assign collection = link.object -%}
+          <li class="clc-Collections_Item fz-25_25">
+            <a class="clc-Collections_Link {% if link.title contains ' :: Sale' -%} clc-Collections_Link-sale{% endif %}" href="{{ collection.url }}">
+              {{ collection.title }} <span class="clc-Collections_ItemCount"> {{ collection.products.size }}</span>
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="{{ locale }}" dir="{{ direction }}" class="{{ checkout_html_classes }}">
+  <head>
+
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, height=device-height, minimum-scale=1.0, user-scalable=0">
+    <meta name="referrer" content="origin">
+
+    <title>{{ page_title }}</title>
+
+    {{ content_for_header }}
+
+    {{ checkout_stylesheets }}
+    {{ checkout_scripts }}
+
+    {%- render 'style-tags', layout: 'checkout' -%}
+    {%- render 'script-tags', layout: 'checkout' -%}
+
+    <script type="text/javascript" src="{{ 'checkout-bao-utils.js' | asset_url }}" defer="defer"></script>
+    <script type="text/javascript" src="{{ 'checkout-bao-listeners.js' | asset_url }}" defer="defer"></script>
+    <script type="text/javascript" src="{{ 'checkout-bao-checkout.js' | asset_url }}" defer="defer"></script>
+
+    <script type="text/javascript" src="{{ 'checkout.js' | asset_url }}" defer="defer"></script>
+
+    {%- render 'typekit' -%}
+
+    <script>
+      if (!window.BAO) {
+        window.BAO = {}
+      }
+
+      window.theme = {
+        moneyFormat: {{ shop.money_format | json }},
+        strings: {
+          personalisationPrice: {{ 'bespoke.checkout.price_title' | t | json }}
+        }
+      }
+    </script>
+
+  </head>
+  <body class="chk-Body thm-{{ settings.theme }}">
+
+    <div class="chk-Body_Inner">
+
+      <div class="wrap">
+        {{ skip_to_content_link }}
+        
+        <header class="banner" data-header role="banner">
+          {{ content_for_logo }}
+        </header>
+
+        {%- capture step_html -%}
+          <span class="chk-Progress_Number js-Progress_Number">1</span>
+        {%- endcapture -%}
+        <div class="chk-Progress chk-Progress-mobile">
+          {{ 'general.checkout.step_html' | t: step_html: step_html }}
+        </div>
+
+      </div>
+
+      {{ order_summary_toggle }}
+
+      <div class="content" data-content>
+        <div class="wrap">
+          <div class="main">
+            <header class="main__header" role="banner">
+              {{ content_for_logo }}            
+
+              <div class="chk-Progress chk-Progress-desktop">
+                {{ 'general.checkout.step_html' | t: step_html: step_html }}
+              </div>
+
+              {{ alternative_payment_methods }}
+
+            </header>
+            <main class="main__content" role="main">
+              {{ content_for_layout }}
+            </main>
+            <footer class="main__footer" role="contentinfo">
+              {{ content_for_footer }}
+            </footer>
+          </div>
+          <aside class="sidebar" role="complementary">
+            <div class="sidebar__header">
+              {{ content_for_logo }}
+            </div>
+            <div class="sidebar__content">
+              {{ content_for_order_summary }}
+
+              {%- if order.note !=  blank -%}
+                <div class="chk-Note">
+                  <h3 class="chk-Note_Title"></h3>
+                  <p class="chk-Note_Text">{{ order.note }}</p>
+                </div>
+              {%- endif -%}
+            </div>
+          </aside>
+        </div>
+      </div>
+
+      {{ tracking_code }}
+
+    </div>
+
+    {%- render 'checkout-navigation' -%}
+    {%- render 'checkout-additional-html' -%}
+    {%- render 'checkout-button-arrow' -%}
+    {%- render 'checkout-line-items' -%}
+
+  </body>
+</html>

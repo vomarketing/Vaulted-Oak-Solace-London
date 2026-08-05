@@ -1,0 +1,15 @@
+<script>
+	window.klevu_apiKey = "{{- settings.klevu_api_key | default: 'klevu-161002084819213112' -}}"
+  window.klevu_filterKey = "filter-"
+  window.klevu_filterDelimiter = " "
+</script>
+
+{{ '//js.klevu.com/klevu-js-v2/2.3.2/klevu.js' | script_tag }}
+{{ 'klevu-settings.js' | asset_url | script_tag }}
+{{ 'klevu-quick.js' | asset_url | script_tag }}
+
+{%- if request.page_type == "search" -%}
+  {{ 'klevu-landing.js' | asset_url | script_tag }}
+  {{ 'klevu-facets.js' | asset_url | script_tag }}
+  {{ 'klevu-landing-filter-left.js' | asset_url | script_tag }}
+{%- endif -%}

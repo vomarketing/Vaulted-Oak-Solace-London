@@ -1,0 +1,29 @@
+<div class="clc-Card util-FauxLink">
+  <div class="clc-Card_ImageContainer">
+    {%- if collection.image != blank or collection.products.first != blank -%}
+      {%- render 'responsive-image',
+        image: collection.image | default: collection.products.first.featured_image,
+        width: width,
+        height: height
+      -%}
+    {%- else -%}
+      {%- render 'responsive-image',
+        image: settings.collections_fallback_image,
+        width: width,
+        height: height
+      -%}
+    {%- endif -%}
+  </div>
+
+  <div class="clc-Card_Content">
+    <h3 class="clc-Card_Title">{{ collection.title }}</h3>
+
+    <p class="clc-Card_Text">{{ collection.description | strip_html }}</p>
+
+    <button class="clc-Card_Link btn-Primary" type="button">
+      {{ 'collections.general.shop_now' | t }}
+    </button>
+  </div>
+
+  <a class="clc-Card_FauxLink util-FauxLink_Link" href="{{ collection.url }}"></a>
+</div>

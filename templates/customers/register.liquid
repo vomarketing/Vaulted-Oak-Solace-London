@@ -1,0 +1,26 @@
+<section class="acc-Auth acc-Auth-activateAccount">
+  <div class="acc-Auth_Column">
+    <div class="acc-Auth_Content">
+      <div class="acc-Auth_Inner lyt-Container">
+        <header class="acc-Auth_Header">
+          {%- capture title -%}{{ 'customer.register.register' | t }}{%- endcapture -%}
+          {%- capture subtitle -%}{{ 'customer.register.text' | t }}{%- endcapture -%}
+          {%- render 'account-header', title: title, subtitle: subtitle -%}
+        </header>
+
+        <div class="acc-Auth_Body">
+          {%- render 'account-register' -%}
+
+          <footer class="frm-Form_Footer">
+            <a
+              class="frm-Form_Link"
+              href="/account/login"
+            >
+              {{ 'customer.register.have_account' | t }}
+            </a>
+          </footer>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

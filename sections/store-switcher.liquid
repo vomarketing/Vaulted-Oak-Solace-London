@@ -1,0 +1,310 @@
+{%- if section.settings.store_switcher_enable -%}
+
+  <div
+    class="mod-Modal mod-Modal-storeSwitcher"
+    data-module="store-switcher"
+    data-api-key="{{- section.settings.api_key -}}"
+
+    data-store-switcher-current-store-id="{{ shop.domain | handleize }}"
+    data-store-switcher-current-store="{{ shop.domain }}"
+    data-store-switcher-fallback-store-id="{{ section.settings.fallback_store_domain | handleize }}"
+    data-store-switcher-fallback-store="{{ section.settings.fallback_store_domain }}"
+    data-is-cookie-policy="false"
+  >
+    <div class="mod-Modal_Inner">
+
+      <div class="mod-Modal_Flush">
+
+        <div class="sto-Switcher">
+
+          <div class="sto-Switcher_Inner">
+
+            {%- if section.settings.cookie_banner_enable -%}
+            <div class="sto-Switcher_Store"
+                data-el="store-switcher.store"
+                aria-hidden="true"
+                data-store-id="cookie-banner" 
+                data-domain="{{ shop.domain }}"
+                style="order:0">
+                
+              <div class="sto-Store">
+
+                <div class="sto-Store_Content">
+
+                  <div class="sto-Store_Title fz-25_33">  
+                    {%- if section.settings.cookie_title != blank -%}
+                      {{ section.settings.cookie_title }}
+                    {%- endif -%}     
+                  </div>
+
+                  <div class="sto-Store_Text">
+                    {%- if section.settings.cookie_message != blank -%}
+                      {{ section.settings.cookie_message }}
+                    {%- endif -%}
+                  </div>
+
+                </div>
+
+                <div class="sto-Store_Buttons">
+
+                  <button class="sto-Store_Button frm-Form_Button" data-el="store-switcher.accept">
+                    <span class="frm-Form_ButtonText">{{ section.settings.cookie_button_text }}</span>
+                    <span class="frm-Form_ButtonIcon">
+                      {%- render 'bao-arrow' -%}
+                    </span>
+                  </button>
+
+                </div>
+
+              </div>
+
+            </div>
+            {%- endif -%}
+
+            {%- for block in section.blocks -%}
+
+              {%- if block.settings.enable_store -%}
+
+                {%- liquid
+
+                  assign is_current_store = false
+                  assign store_order = 1
+                  
+                  if block.settings.domain == shop.domain
+                    assign store_order = 0
+                    assign is_current_store = true
+                  endif
+
+                -%}
+
+                <div class="sto-Switcher_Store"
+                  data-el="store-switcher.store"
+                  aria-hidden="true" 
+                  data-store-id="{{ block.settings.domain | handleize }}" 
+                  data-domain="{{ block.settings.domain }}"
+                  style="order:{{- store_order -}}">
+                  
+                  <div class="sto-Store {% if is_current_store %}sto-Store-current{% endif %}">
+
+                    <div class="sto-Store_Content">
+
+                      <div class="sto-Store_Title fz-25_33">
+                        {%- if is_current_store -%}      
+                          {%- if section.settings.stay_title != blank -%}
+                            {{ section.settings.stay_title | replace: "[store]", block.settings.title }}
+                          {%- endif -%}
+                        {%- else -%}
+                          {%- if section.settings.go_title != blank -%}
+                            {{ section.settings.go_title | replace: "[store]", block.settings.title }}
+                          {%- endif -%}      
+                        {%- endif -%}
+                      </div>
+
+                      <div class="sto-Store_Text">
+                        {%- if is_current_store -%}
+                          {%- if section.settings.stay_message != blank -%}
+                            {{ section.settings.stay_message | replace: "[store]", block.settings.title }}
+                          {%- endif -%}
+                        {%- else -%}
+                          {%- if section.settings.go_message != blank -%}
+                            {{ section.settings.go_message | replace: "[store]", block.settings.title }}
+                          {%- endif -%}      
+                        {%- endif -%}
+                      </div>
+
+                    </div>
+
+                    <div class="sto-Store_Buttons">
+
+                      {%- if is_current_store -%}
+                        <button class="sto-Store_Button frm-Form_Button" data-el="store-switcher.accept">
+                          <span class="frm-Form_ButtonText">
+                            {{ section.settings.stay_button_text | replace: "[store]", block.settings.title }}
+                          </span>
+                          <span class="frm-Form_ButtonIcon">
+                            {%- render 'bao-arrow' -%}
+                          </span>
+                        </button>
+                      {%- else -%}
+                        <a class="sto-Store_Button frm-Form_Button"
+                          href="https://{{- block.settings.domain -}}/">
+                          <span class="frm-Form_ButtonText">
+                            {{ section.settings.go_button_text | replace: "[store]", block.settings.title }}
+                          </span>
+                          <span class="frm-Form_ButtonIcon">
+                            {%- render 'bao-arrow' -%}
+                          </span>
+                        </a>
+                      {%- endif -%}
+
+                    </div>
+
+                  </div>
+
+                </div>
+              {%- endif -%}
+
+            {%- endfor -%}
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <script type="application/json" data-el="store-switcher.data">
+      {
+        {%- for block in section.blocks -%}
+        "{{- block.settings.domain | handleize -}}": {
+          "id": "{{- block.settings.domain | handleize -}}",
+          "name": "{{- block.settings.title -}}",
+          "domain": "{{- block.settings.domain -}}",
+          "countryList": "{{- block.settings.country_list -}}"
+        }
+        {%- unless forloop.last -%},{%- endunless -%}
+        {%- endfor -%}
+      }
+    </script>
+
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Store Switcher",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "store_switcher_enable",
+      "label": "Enable store switcher",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "fallback_store_domain",
+      "label": "Fallback Store Domain",
+      "default": "solace-london.myshopify.com"
+    },
+    {
+      "type": "text",
+      "id": "stay_title",
+      "label": "Stay Title",
+      "default": "Stay on [store]",
+      "info": "[store] will get replaced with the current stores name"
+    },
+    {
+      "type": "richtext",
+      "id": "stay_message",
+      "label": "Stay message",
+      "default": "<p>We use cookies to improve our site and your shopping experience. By clicking Accept and browsing the site you are agreeing to our cookies policy.</p>",
+      "info": "[store] will get replaced with the current stores name"
+    },
+    {
+      "type": "text",
+      "id": "stay_button_text",
+      "label": "Stay Button Text",
+      "default": "[store] store",
+      "info": "[store] will get replaced with the current stores name"
+    },
+    {
+      "type": "text",
+      "id": "go_title",
+      "label": "Go title",
+      "default": "Go to [store]",
+      "info": "[store] will get replaced with the suggested stores name"
+    },
+    {
+      "type": "richtext",
+      "id": "go_message",
+      "label": "Go message",
+      "default": "<p>Are you in the right place? We have a store that might be more relevant to your location and currency.</p>",
+      "info": "[store] will get replaced with the suggested stores name"
+    },
+    {
+      "type": "text",
+      "id": "go_button_text",
+      "label": "Go Button Text",
+      "default": "Continue to our [store] store",
+      "info": "[store] will get replaced with the current stores name"
+    },
+    {
+      "type": "header",
+      "content": "Cookie Banner"
+    },
+    {
+      "type": "checkbox",
+      "id": "cookie_banner_enable",
+      "label": "Enable cookie banner",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "cookie_title",
+      "label": "Title Text",
+      "default": "COOKIE POLICY"
+    },
+    {
+      "type": "richtext",
+      "id": "cookie_message",
+      "label": "Cookie message",
+      "default": "<p>We use cookies to improve our site and your shopping experience. By clicking Accept and browsing the site you are agreeing to our cookies policy.</p>"
+    },
+    {
+      "type": "text",
+      "id": "cookie_button_text",
+      "label": "Button Text",
+      "default": "Accept"
+    },
+    {
+      "type": "header",
+      "content": "IP Geolocation"
+    },
+    {
+      "type": "text",
+      "id": "api_key",
+      "label": "API Key",
+      "default": "b45b909d45e14604b9c262141c69bd2b",
+      "info": "Default: b45b909d45e14604b9c262141c69bd2b"
+    },
+    {
+      "type": "paragraph",
+      "content": "Service: https://ipgeolocation.io/" 
+    }
+  ],
+  "blocks": [
+    {
+      "type": "store",
+      "name": "Store",
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "enable_store",
+          "label": "Enable store",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Store Name",
+          "default": "UK STORE"
+        },
+        {
+          "type": "text",
+          "id": "domain",
+          "label": "Store Domain",
+          "default": "solace-london.myshopify.com"
+        },
+        {
+          "type": "textarea",
+          "id": "country_list",
+          "label": "Country list",
+          "default": "gb",
+          "info": "Enter a comma separated list of two character country codes"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

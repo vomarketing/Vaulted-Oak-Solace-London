@@ -1,0 +1,37 @@
+<div class="clc-PromotedCard js-Animate" data-animation="Fade">
+  <div class="clc-PromotedCard_ImageContainer">
+    <div class="clc-PromotedCard_Image clc-PromotedCard_Image-desktop">
+      {%- render 'responsive-image-metafield',
+        image: metafields.Image.first,
+        width: 3250,
+        height: 2380
+      -%}
+    </div>
+
+    {%- if metafields.Mobile_Image != blank -%}
+      <div class="clc-PromotedCard_Image clc-PromotedCard_Image-mobile">
+        {%- render 'responsive-image-metafield',
+          image: metafields.Mobile_Image.first,
+          width: 824,
+          height: 1161
+        -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="clc-PromotedCard_Content fz-12_12">
+    {%- if metafields.Is_A_Product == 'true' -%}
+      {%- assign product = all_products[metafields.Product] -%}
+
+      <h3 class="clc-PromotedCard_Title fz-12_12">{{ product.title }}</h3>
+
+      <div class="clc-PromotedCard_Price">
+        {%- render 'product-price', product: product %}
+      </div>
+    {%- else -%}
+      <div class="clc-PromotedCard_Text rte-RichText">
+        {{ metafields.Text.html }}
+      </div>
+    {%- endif -%}
+  </div>
+</div>

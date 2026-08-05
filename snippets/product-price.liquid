@@ -1,0 +1,24 @@
+<p class="67667 prd-Price{% if product.compare_at_price > product.price %} prd-Price-onSale{% endif %}">
+  {%- if product.compare_at_price > product.price -%}
+    <span class="util-ScreenReaderOnly">{{ 'products.product.regular_price' | t }}</span>
+    <s class="prd-Price_Compare">{{ product.compare_at_price | money }}</s>
+  {%- endif -%}
+
+  <span class="prd-Price_Price">
+    {%- if product.compare_at_price > product.price -%}
+      {%- if product.price_varies -%}
+        {%- assign sale_price = product.price | money -%}
+        {{ 'products.product.on_sale_from_html' | t: price: sale_price }}
+      {%- else -%}
+        {{ product.price | money }}
+      {%- endif -%}
+    {%- else -%}
+      {%- if product.price_varies -%}
+        {%- assign price = product.price | money -%}
+        {{ 'products.product.from_text_html' | t: price: price }}
+      {%- else -%}
+        {{ product.price | money }}
+      {%- endif -%}
+    {%- endif -%}
+  </span>
+</p>
