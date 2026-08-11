@@ -1,0 +1,17 @@
+{
+  "sections": {
+    "main": {
+      "type": "404-header",
+      "settings": {
+        "title": "404 ERROR",
+        "text": "The page you're looking for can't be found",
+        "link": "/",
+        "link_text": "Continue Shopping",
+        "collection": ""
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
