@@ -1,0 +1,52 @@
+{
+  "sections": {
+    "main": {
+      "type": "contact",
+      "blocks": {
+        "b337ef74-0e27-4a35-941c-4dc000ed1d96": {
+          "type": "topic",
+          "settings": {
+            "topic": "Order Enquiry"
+          }
+        },
+        "e4700750-021e-4530-8414-5b1038be0ff3": {
+          "type": "topic",
+          "settings": {
+            "topic": "Returns Enquiry"
+          }
+        },
+        "943a863a-7400-4702-98b8-7274f684af5b": {
+          "type": "topic",
+          "settings": {
+            "topic": "Shipping Information"
+          }
+        },
+        "203e0b76-a25f-4930-b3ce-e0052e8fb894": {
+          "type": "topic",
+          "settings": {
+            "topic": "Press Enquiry"
+          }
+        },
+        "cd78db52-d0eb-462c-8b13-05d4fd8a501e": {
+          "type": "topic",
+          "settings": {
+            "topic": "Other"
+          }
+        }
+      },
+      "block_order": [
+        "b337ef74-0e27-4a35-941c-4dc000ed1d96",
+        "e4700750-021e-4530-8414-5b1038be0ff3",
+        "943a863a-7400-4702-98b8-7274f684af5b",
+        "203e0b76-a25f-4930-b3ce-e0052e8fb894",
+        "cd78db52-d0eb-462c-8b13-05d4fd8a501e"
+      ],
+      "settings": {
+        "image": "shopify://shop_images/contact_image.jpg"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
