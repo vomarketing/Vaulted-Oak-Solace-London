@@ -1,4 +1,4 @@
-{% section 'product' %}
+{%- render 'section-product' with product, section -%}
 
 {%- if product.metafields.Detail.Recommended_Products != blank -%}
   <section class="sec-Section sec-Section-flushUntilMd">
@@ -229,3 +229,56 @@ Enable Klaviyo JS - Abandon Browse & Add to cart tracking
     _learnq.push(['track', 'Added to Cart', item]);
   });
 </script>
+
+{% schema %}
+{
+  "name": "Main product",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Product Notes"
+    },
+    {
+      "type": "text",
+      "id": "delivery_note",
+      "label": "Delivery Note",
+      "default": "Order by 4pm for Next Day Delivery"
+    },
+    {
+      "type": "text",
+      "id": "stock_note",
+      "label": "Stock Note",
+      "info": "This will only show if the product stock level is below 10 and this note field contains text",
+      "default": "Only a few left in stock"
+    },
+    {
+      "type": "checkbox",
+      "id": "wishlist_enable",
+      "label": "Enable Wishlist?",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Supporting Product Content"
+    },
+    {
+      "type": "page",
+      "id": "delivery_and_returns_page",
+      "label": "Delivery & Returns page",
+      "info": "This is where the content for the \"Delivery and returns\" drawer comes from"
+    },
+    {
+      "type": "page",
+      "id": "size_guide_page",
+      "label": "Size Guide page",
+      "info": "This is where the default content for the \"Size Guide\" drawer comes from"
+    },
+    {
+      "type": "page",
+      "id": "contact_page",
+      "label": "Contact page"
+    }
+  ]
+}
+{% endschema %}
+
