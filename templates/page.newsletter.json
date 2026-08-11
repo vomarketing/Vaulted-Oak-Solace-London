@@ -1,0 +1,18 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-newsletter",
+      "settings": {
+        "desktop_image": "shopify://shop_images/subscribe.jpg",
+        "mobile_image": "shopify://shop_images/subscribe.jpg",
+        "enable_mobile": true,
+        "top_text": "<p>Subscribe to the newsletter for the latest news, early access to new campaigns and the exclusive products &amp; ranges </p>",
+        "bottom_text": "<p>By clicking ’Subscribe’, you are accepting our Terms and Conditions and have read and understood our Privacy Policy. You can unsubscribe at any time.</p>",
+        "klaviyo_form": "<div class=\"klaviyo-form-UHg5rb\"></div>"
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
