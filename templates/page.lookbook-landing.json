@@ -1,0 +1,158 @@
+{
+  "sections": {
+    "main": {
+      "type": "lookbook-landing",
+      "blocks": {
+        "item_mi88qp": {
+          "type": "item",
+          "settings": {
+            "grid_start": 6,
+            "grid_end": 5,
+            "link": "",
+            "image": "shopify://shop_images/3_ef7056ed-611a-43af-8d6b-0edc1aed654d.png",
+            "title": ""
+          }
+        },
+        "c504063e-052d-437d-9741-2e17c9406e88": {
+          "type": "item",
+          "disabled": true,
+          "settings": {
+            "grid_start": 1,
+            "grid_end": 7,
+            "link": "shopify://pages/resort-nineteen",
+            "image": "shopify://shop_images/Landing-8.jpg",
+            "title": "Fall Twenty"
+          }
+        },
+        "f691c001-6cd5-4d24-a06e-f95c1668d86a": {
+          "type": "item",
+          "disabled": true,
+          "settings": {
+            "grid_start": 11,
+            "grid_end": 5,
+            "link": "shopify://pages/resort-nineteen-alternative",
+            "image": "shopify://shop_images/Landing-2.jpg",
+            "title": "Resort Twenty"
+          }
+        },
+        "5089c7bb-cb7f-4332-8096-65cc402cb001": {
+          "type": "item",
+          "disabled": true,
+          "settings": {
+            "grid_start": 6,
+            "grid_end": 5,
+            "link": "shopify://collections/all",
+            "image": "shopify://shop_images/Landing-3.jpg",
+            "title": "Fall Nineteen"
+          }
+        },
+        "ae18f6a5-51b3-4faf-bfe9-84cc593f917e": {
+          "type": "item",
+          "disabled": true,
+          "settings": {
+            "grid_start": 1,
+            "grid_end": 5,
+            "link": "shopify://pages/resort-nineteen-alternative",
+            "image": "shopify://shop_images/Landing-4.jpg",
+            "title": "Pre-Fall Nineteen"
+          }
+        },
+        "a15a0d7c-310c-405e-8b8d-0a71a8cdf9ae": {
+          "type": "item",
+          "disabled": true,
+          "settings": {
+            "grid_start": 7,
+            "grid_end": 9,
+            "link": "shopify://pages/lookbook-landing",
+            "image": "shopify://shop_images/Landing-5.jpg",
+            "title": "Spring Summer Nineteen"
+          }
+        },
+        "47a8810b-6dab-4796-854f-f5f4df0b1038": {
+          "type": "item",
+          "disabled": true,
+          "settings": {
+            "grid_start": 2,
+            "grid_end": 5,
+            "link": "shopify://collections",
+            "image": "shopify://shop_images/Landing-6.jpg",
+            "title": "Resort Nineteen"
+          }
+        },
+        "8eab2295-1550-4112-a75b-9a25683ffe60": {
+          "type": "item",
+          "disabled": true,
+          "settings": {
+            "grid_start": 10,
+            "grid_end": 5,
+            "link": "shopify://blogs/news",
+            "image": "shopify://shop_images/Landing-7.jpg",
+            "title": "Fall Eighteen"
+          }
+        },
+        "999b6855-dbe4-4c4f-95e1-f73a7121418a": {
+          "type": "item",
+          "disabled": true,
+          "settings": {
+            "grid_start": 1,
+            "grid_end": 9,
+            "link": "",
+            "image": "shopify://shop_images/Landing-8.jpg",
+            "title": "Spring Summer Eighteen"
+          }
+        },
+        "654bd290-62c0-41dd-9b4d-fdc1e57c15f4": {
+          "type": "item",
+          "disabled": true,
+          "settings": {
+            "grid_start": 11,
+            "grid_end": 5,
+            "link": "",
+            "image": "shopify://shop_images/Landing-9.jpg",
+            "title": "Resort Eighteen"
+          }
+        },
+        "2e8f884b-77c0-4ee5-b3fd-02b2d06e03bb": {
+          "type": "item",
+          "disabled": true,
+          "settings": {
+            "grid_start": 6,
+            "grid_end": 5,
+            "link": "",
+            "image": "shopify://shop_images/Landing-10.jpg",
+            "title": "Fall Winter"
+          }
+        },
+        "fa9807a1-57b1-41ae-bc5e-46ccff2565c4": {
+          "type": "item",
+          "disabled": true,
+          "settings": {
+            "grid_start": 1,
+            "grid_end": 5,
+            "link": "",
+            "image": "shopify://shop_images/Landing-11.jpg",
+            "title": "Pre-Fall Nineteen"
+          }
+        }
+      },
+      "block_order": [
+        "item_mi88qp",
+        "c504063e-052d-437d-9741-2e17c9406e88",
+        "f691c001-6cd5-4d24-a06e-f95c1668d86a",
+        "5089c7bb-cb7f-4332-8096-65cc402cb001",
+        "ae18f6a5-51b3-4faf-bfe9-84cc593f917e",
+        "a15a0d7c-310c-405e-8b8d-0a71a8cdf9ae",
+        "47a8810b-6dab-4796-854f-f5f4df0b1038",
+        "8eab2295-1550-4112-a75b-9a25683ffe60",
+        "999b6855-dbe4-4c4f-95e1-f73a7121418a",
+        "654bd290-62c0-41dd-9b4d-fdc1e57c15f4",
+        "2e8f884b-77c0-4ee5-b3fd-02b2d06e03bb",
+        "fa9807a1-57b1-41ae-bc5e-46ccff2565c4"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
