@@ -1,12 +1,3 @@
-/*
- * ------------------------------------------------------------
- * IMPORTANT: The contents of this file are auto-generated.
- *
- * This file may be updated by the Shopify admin theme editor
- * or related systems. Please exercise caution as any changes
- * made to this file may be overwritten.
- * ------------------------------------------------------------
- */
 {
   "sections": {
     "homepage_hero_DBgqAw": {
@@ -15,8 +6,7 @@
         "slide_WQVfxm": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/Desktop_Hero_Banner_1a.png",
-            "mobile_image": "shopify://shop_images/Mobile_Hero_Banner_1a.png",
+            "image": "shopify://shop_images/homepage2023.webp",
             "title": "",
             "text": "",
             "link": "shopify://collections/high-summer-26"
@@ -25,8 +15,7 @@
         "slide_GRapT9": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/Desktop_Hero_Banner_1b.png",
-            "mobile_image": "shopify://shop_images/Mobile_Hero_Banner_1b.png",
+            "image": "shopify://shop_images/Detail_4.jpg",
             "title": "",
             "text": "",
             "link": "shopify://collections/high-summer-26"
@@ -35,8 +24,7 @@
         "slide_UpWV6k": {
           "type": "slide",
           "settings": {
-            "image": "shopify://shop_images/Desktop_Hero_Banner_1c.png",
-            "mobile_image": "shopify://shop_images/Mobile_Hero_Banner_1c.png",
+            "image": "shopify://shop_images/05_04_SolaceLondon_PF21_17_024_v1.jpg",
             "title": "",
             "text": "",
             "link": "shopify://collections/high-summer-26"
@@ -66,8 +54,7 @@
           "settings": {
             "size": "full",
             "link": "shopify://collections/high-summer-26",
-            "image": "shopify://shop_images/Untitled_design-5.png",
-            "mobile_image": "shopify://shop_images/Homepage_Hero_Block_Template_Mobile.png",
+            "image": "shopify://shop_images/211209_SolaceLondon_RS22_Look_06_113.jpg",
             "video_aspect_ratio": "56.25%",
             "video_url": "",
             "video_autoplay": false,
@@ -119,8 +106,7 @@
           "settings": {
             "size": "half",
             "link": "shopify://products/the-faro-maxi-dress-in-black",
-            "image": "shopify://shop_images/Desktop_Secondary_Banner_2a.png",
-            "mobile_image": "shopify://shop_images/Mobile_Secondary_Banner_1a.png",
+            "image": "shopify://shop_images/05_04_SolaceLondon_PF21_14_030_v1.jpg",
             "video_aspect_ratio": "56.25%",
             "video_url": "",
             "video_autoplay": false,
@@ -172,8 +158,7 @@
           "settings": {
             "size": "half",
             "link": "shopify://collections/high-summer-26",
-            "image": "shopify://shop_images/Desktop_Secondary_Banner_2b.png",
-            "mobile_image": "shopify://shop_images/Mobile_Secondary_Banner_1b.png",
+            "image": "shopify://shop_images/05_04_SolaceLondon_PF21_17_024_v1.jpg",
             "video_aspect_ratio": "56.25%",
             "video_url": "",
             "video_autoplay": false,
@@ -225,8 +210,7 @@
           "settings": {
             "size": "full",
             "link": "shopify://collections/high-summer-26",
-            "image": "shopify://shop_images/Desktop_Secondary_Banner_3.png",
-            "mobile_image": "shopify://shop_images/Mobile_Hero_Banner_1a-1.png",
+            "image": "shopify://shop_images/05_04_SolaceLondon_PF21_17_003_v1.jpg",
             "video_aspect_ratio": "56.25%",
             "video_url": "",
             "video_autoplay": false,
@@ -278,8 +262,7 @@
           "settings": {
             "size": "half",
             "link": "shopify://collections/pre-fall-26",
-            "image": "shopify://shop_images/Desktop_Secondary_Banner_4a.png",
-            "mobile_image": "shopify://shop_images/Mobile_Secondary_Banner_4a.png",
+            "image": "shopify://shop_images/Screenshot2021-02-18at14.55.22.png",
             "video_aspect_ratio": "156.25%",
             "video_url": "",
             "video_autoplay": true,
@@ -331,8 +314,7 @@
           "settings": {
             "size": "half",
             "link": "shopify://collections/pre-fall-26",
-            "image": "shopify://shop_images/Desktop_Secondary_Banner_4b.png",
-            "mobile_image": "shopify://shop_images/Mobile_Secondary_Banner_4b.png",
+            "image": "shopify://shop_images/020_014.jpg",
             "video_aspect_ratio": "156.25%",
             "video_url": "",
             "video_autoplay": true,
