@@ -1,0 +1,57 @@
+<section class="pg-Page lyt-Container">
+  <div class="pg-Page_Inner">
+    <header class="pg-Page_Header">
+      <h1 class="pg-Page_Title fz-25_33">{{ page.title }}</h1>
+    </header>
+
+    {%- if page.content != blank -%}
+      <div class="pg-Page_Body">
+        <div class="pg-Page_Text rte-RichText">
+          {{ page.content }}
+        </div>
+      </div>
+    {%- endif -%}
+
+    <div class="pg-Page_Nav">
+      {%- liquid
+  assign should_show = false
+
+  if section.settings.navigation != blank
+    assign should_show = true
+  endif
+-%}
+
+{%- if should_show -%}
+  <div class="pg-Nav fz-12_12">
+    <nav class="pg-Nav_Items">
+      {%- for link in linklists[section.settings.navigation].links -%}
+        <div class="pg-Nav_Item">
+          <a
+            class="pg-Nav_Link"
+            href="{{ link.url }}"
+            {% if link.active %} aria-current="page"{% endif %}
+          >
+            {{ link.title }}
+          </a>
+        </div>
+      {%- endfor -%}
+    </nav>
+  </div>
+{%- endif -%}
+    </div>
+  </div>
+</section>
+
+
+{% schema %}
+{
+  "name": "Main page",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "navigation",
+      "label": "Navigation"
+    }
+  ]
+}
+{% endschema %}
