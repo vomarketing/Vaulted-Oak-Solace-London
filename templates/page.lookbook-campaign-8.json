@@ -1,0 +1,14 @@
+{
+  "sections": {
+    "main": {
+      "type": "lookbook-campaign-8",
+      "settings": {
+        "lookbook_link": "",
+        "lookbook_link_text": ""
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
