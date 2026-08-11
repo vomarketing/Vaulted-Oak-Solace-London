@@ -1,0 +1,13 @@
+{
+  "sections": {
+    "main": {
+      "type": "media-grid-2",
+      "settings": {
+        "show_page_title": true
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
