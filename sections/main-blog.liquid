@@ -1,0 +1,53 @@
+{%- assign pagination_amount = 10 -%}
+
+{%- paginate blog.articles by pagination_amount -%}
+    <section class="blg-Blog">
+        <div class="blg-Blog_Inner lyt-Container">
+            <div class="blg-Blog_Body">
+                {%- if blog.articles.size > 0 -%}
+                    <div class="art-List">
+                        <ul class="art-List_Items">
+                            {%- for article in blog.articles -%}
+                                <li class="art-List_Item {% cycle 'art-List_Item-a', 'art-List_Item-b', 'art-List_Item-c', 'art-List_Item-d', 'art-List_Item-e', 'art-List_Item-f' %}">
+                                    {%- capture orientation -%}
+                                        {%- cycle '--landscape', '--portrait', '--portrait', '--portrait', '--landscape', '--portrait' -%}
+                                    {%- endcapture -%}
+                                    {%- if orientation == '--landscape' -%}
+                                        {%- render 'article-card',
+                                                article: article,
+                                                width: 2880,
+                                                size_by_width: true,
+                                                use_metafields: false
+                                        -%}
+                                    {%- else -%}
+                                        {%- render 'article-card',
+                                                article: article,
+                                                width: 2880,
+                                                size_by_width: true,
+                                                use_metafields: true
+                                        -%}
+                                    {%- endif -%}
+                                </li>
+                            {%- endfor -%}
+                        </ul>
+                    </div>
+                {%- else -%}
+                    <p class="blg-Blog_Text">{{ 'blog.blog.empty' | t }}</p>
+                {%- endif -%}
+            </div>
+
+            {%- if paginate.pages > 1 -%}
+                <footer class="blg-Blog_Footer">
+                    {%- render 'pagination', paginate: paginate -%}
+                </footer>
+            {%- endif -%}
+        </div>
+    </section>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Main blog",
+  "settings": []
+}
+{% endschema %}
