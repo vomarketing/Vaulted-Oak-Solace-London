@@ -1,4 +1,4 @@
-{% section 'product-gift-card' %}
+{%- render 'section-product' with product, section -%}
 
 {%- if product.metafields.Detail.Recommended_Products != blank -%}
   <section class="sec-Section sec-Section-flushUntilMd">
@@ -192,3 +192,12 @@ if (typeof(BIS) !== 'undefined') {
   }
 }
 </script>
+
+
+{% schema %}
+{
+  "name": "Main product gift card",
+  "settings": []
+}
+{% endschema %}
+
