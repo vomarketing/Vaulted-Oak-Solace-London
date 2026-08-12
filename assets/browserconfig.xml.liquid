@@ -1,8 +1,7 @@
-<?xml version="1.0" encoding="utf-8"?>
 <browserconfig>
   <msapplication>
     <tile>
-      <square150x150logo src="{{ settings.ms_tile_icon | img_url: '150x150' }}" />
+      <square150x150logo src="{{ settings.ms_tile_icon | image_url: width: 150, height: 150 }}" />
       <TileColor>{{ settings.favicons_color }}</TileColor>
     </tile>
   </msapplication>

@@ -410,6 +410,11 @@
     "month_day_year": "%B %d, %Y",
     "day_month_year": "%d %B %Y"
   },
+  "bespoke": {
+    "checkout": {
+      "price_title": ""
+    }
+  },
   "shopify": {
     "checkout": {
       "general": {
