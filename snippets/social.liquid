@@ -1,11 +1,10 @@
 <div class="soc-Social">
   <ul class="soc-Social_Items">
-    {%- assign social_accounts = 'Facebook, Twitter, Pinterest, Instagram, Snapchat, Tumblr, YouTube, Vimeo,' | split: ', ' -%}
+    {%- assign social_accounts = 'Facebook, Twitter, Pinterest, Instagram, Snapchat, Tumblr, YouTube, Vimeo' | split: ', ' -%}
 
     {%- for social in social_accounts -%}
       {%- assign social_handle = social | handleize -%}
-      {%- capture social_link %}social_{{ social_handle }}_link{%- endcapture -%}
-      {%- capture social_icon %}icon-{{ social_handle }}{%- endcapture -%}
+      {%- capture social_link -%}social_{{ social_handle }}_link{%- endcapture -%}
 
       {%- if settings[social_link] != blank -%}
         <li class="soc-Social_Item">
@@ -13,7 +12,27 @@
             href="{{ settings[social_link] }}"
             title="{{ 'layout.footer.social_platform' | t: name: shop.name, platform: social }}"
           >
-            <span class="soc-Social_Icon">{%- include social_icon -%}</span>
+            <span class="soc-Social_Icon">
+              {%- case social_handle -%}
+                {%- when 'facebook' -%}
+                  {%- render 'icon-facebook' -%}
+                {%- when 'twitter' -%}
+                  {%- render 'icon-twitter' -%}
+                {%- when 'pinterest' -%}
+                  {%- render 'icon-pinterest' -%}
+                {%- when 'instagram' -%}
+                  {%- render 'icon-instagram' -%}
+                {%- when 'snapchat' -%}
+                  {%- render 'icon-snapchat' -%}
+                {%- when 'tumblr' -%}
+                  {%- render 'icon-tumblr' -%}
+                {%- when 'youtube' -%}
+                  {%- render 'icon-youtube' -%}
+                {%- when 'vimeo' -%}
+                  {%- render 'icon-vimeo' -%}
+              {%- endcase -%}
+            </span>
+
             <span class="soc-Social_Text">{{ social }}</span>
           </a>
         </li>

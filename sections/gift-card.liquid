@@ -48,14 +48,14 @@
     <div class="prd-GiftCard_Container">
       <div class="prd-GiftCard_ImageContainer">
         <div class="prd-GiftCard_Image-desktop">
-          {%- include 'responsive-image',
+          {%- render 'responsive-image',
             image: section.settings.image_desktop,
             width: 900,
             height: 544 -%}
         </div>
 
         <div class="prd-GiftCard_Image-mobile">
-          {%- include 'responsive-image',
+          {%- render 'responsive-image',
             image: section.settings.image_mobile,
             width: 450,
             height: 277 -%}

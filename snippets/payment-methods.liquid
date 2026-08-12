@@ -2,16 +2,60 @@
   {%- assign payment_icons_available = 'amazon_payments,american_express,apple_pay,bitcoin,cirrus,dankort,diners_club,discover,dogecoin,dwolla,forbrugsforeningen,google_pay,interac,jcb,litecoin,maestro,master,paypal,visa' | split: ',' -%}
 
   <div class="pay-Payments">
-    <h4 class="pay-Payments_Title util-ScreenReaderOnly">{{ 'layout.footer.payment_methods' | t }}</h4>
+    <h4 class="pay-Payments_Title util-ScreenReaderOnly">
+      {{ 'layout.footer.payment_methods' | t }}
+    </h4>
 
     <ul class="pay-Payments_Items">
       {%- for type in shop.enabled_payment_types -%}
         {%- if payment_icons_available contains type -%}
           <li class="pay-Payments_Item">
-            {%- assign icon_name = type | prepend: 'icon-' -%}
+            <span class="pay-Payments_Icon">
+              {%- case type -%}
+                {%- when 'amazon_payments' -%}
+                  {%- render 'icon-amazon_payments' -%}
+                {%- when 'american_express' -%}
+                  {%- render 'icon-american_express' -%}
+                {%- when 'apple_pay' -%}
+                  {%- render 'icon-apple_pay' -%}
+                {%- when 'bitcoin' -%}
+                  {%- render 'icon-bitcoin' -%}
+                {%- when 'cirrus' -%}
+                  {%- render 'icon-cirrus' -%}
+                {%- when 'dankort' -%}
+                  {%- render 'icon-dankort' -%}
+                {%- when 'diners_club' -%}
+                  {%- render 'icon-diners_club' -%}
+                {%- when 'discover' -%}
+                  {%- render 'icon-discover' -%}
+                {%- when 'dogecoin' -%}
+                  {%- render 'icon-dogecoin' -%}
+                {%- when 'dwolla' -%}
+                  {%- render 'icon-dwolla' -%}
+                {%- when 'forbrugsforeningen' -%}
+                  {%- render 'icon-forbrugsforeningen' -%}
+                {%- when 'google_pay' -%}
+                  {%- render 'icon-google_pay' -%}
+                {%- when 'interac' -%}
+                  {%- render 'icon-interac' -%}
+                {%- when 'jcb' -%}
+                  {%- render 'icon-jcb' -%}
+                {%- when 'litecoin' -%}
+                  {%- render 'icon-litecoin' -%}
+                {%- when 'maestro' -%}
+                  {%- render 'icon-maestro' -%}
+                {%- when 'master' -%}
+                  {%- render 'icon-master' -%}
+                {%- when 'paypal' -%}
+                  {%- render 'icon-paypal' -%}
+                {%- when 'visa' -%}
+                  {%- render 'icon-visa' -%}
+              {%- endcase -%}
+            </span>
 
-            <span class="pay-Payments_Icon">{%- include icon_name -%}</span>
-            <span class="pay-Payments_Text util-ScreenReaderOnly">{{ type | capitalize | replace: '_', ' ' }}</span>
+            <span class="pay-Payments_Text util-ScreenReaderOnly">
+              {{ type | capitalize | replace: '_', ' ' }}
+            </span>
           </li>
         {%- endif -%}
       {%- endfor -%}
