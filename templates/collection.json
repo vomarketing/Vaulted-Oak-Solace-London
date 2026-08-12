@@ -2,10 +2,6 @@
   "sections": {
     "main": {
       "type": "main-collection",
-      "settings": {}
-    },
-    "collection_filters": {
-      "type": "collection-filters",
       "blocks": {
         "dd79c211-c9f5-4aa9-9e3d-e7b8c5559d75": {
           "type": "filter",
@@ -43,7 +39,6 @@
     }
   },
   "order": [
-    "main",
-    "collection_filters"
+    "main"
   ]
 }

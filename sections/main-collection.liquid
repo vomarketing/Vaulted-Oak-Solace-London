@@ -213,7 +213,7 @@
         </header>
 
         <div class="drw-Drawer_Body">
-          {% comment %} Collection filters are rendered as a separate OS 2.0 section from collection.json {% endcomment %}
+          {%- render 'collection-filters' -%}
         </div>
       </div>
     </div>
@@ -300,6 +300,38 @@
 {% schema %}
 {
   "name": "Main collection",
-  "settings": []
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "label": "Enable sort by filters"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "filter",
+      "name": "filter",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Filter By",
+          "info": "e.g. By Type"
+        },
+        {
+          "type": "text",
+          "id": "filter_all_text",
+          "label": "Filter All Text",
+          "info": "e.g. All Types"
+        },
+        {
+          "type": "text",
+          "id": "filter_key",
+          "label": "Filter Key",
+          "info": "This is the part that will appear where the \"filter-{key}: {label}\" key part is. e.g. type"
+        }
+      ]
+    }
+  ]
 }
 {% endschema %}
