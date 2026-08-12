@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-page-hidden",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}
