@@ -45,13 +45,13 @@
     <div id="app">
       <a class="util-ScreenReaderOnly" href="#MainContent">{{ 'general.accessibility.skip_to_content' | t }}</a>
 
-      {%- section 'header' -%}
+      {%- sections 'header-group' -%}
 
       <main role="main" id="MainContent">
         {{ content_for_layout }}
       </main>
 
-      {%- section 'footer' -%}
+      {%- sections 'footer-group' -%}
       {%- render 'drawers' -%}
     </div>
   </body>

@@ -94,8 +94,7 @@
     {% comment %} {%- render 'cookie-banner' -%} {% endcomment %}
 
     <div class="lyt-Header">
-      {%- section 'announcement-bar' -%}
-      {%- section 'header' -%}
+      {%- sections 'header-group' -%}
     </div>
 
     <main role="main" id="MainContent">
@@ -104,9 +103,7 @@
 
     </main>
 
-    {%- section 'footer' -%}
-
-    {%- section 'store-switcher' -%}
+    {%- sections 'footer-group' -%}
 
     {%- render 'newsletter-modal' -%}
 
