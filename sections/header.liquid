@@ -303,7 +303,7 @@
     "@context": "http://schema.org",
     "@type": "Organization",
     "name": "{{ shop.name }}",
-    "logo": "{{ section.settings.logo | img_url: '200x' }}",
+    "logo": "{{ section.settings.logo | image_url: width: 200 }}",
     {% if same_as != blank %}
     "sameAs": [
       {% for item in same_as %}

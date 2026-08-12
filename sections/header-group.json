@@ -1,0 +1,29 @@
+{
+  "type": "header",
+  "name": "Header group",
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "settings": {
+        "title": "",
+        "link": ""
+      }
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "left_navigation": "desktop-left",
+        "right_navigation": "desktop-right",
+        "header_background_style": "transparent",
+        "transparent_homepage_only": true,
+        "transparent_color_scheme": "light",
+        "solid_background_color": "#ffffff",
+        "solid_color_scheme": "dark"
+      }
+    }
+  },
+  "order": [
+    "announcement-bar",
+    "header"
+  ]
+}
