@@ -31,7 +31,7 @@
               {%- for line_item in order.line_items -%}
                 <li class="acc-Order_Item">
                   <a class="acc-Order_Image" href="{{ line_item.product.url }}">
-                    {%- include 'responsive-image' with
+                    {%- render 'responsive-image',
                       image: line_item.image,
                       width: 520,
                       height: 774
@@ -170,3 +170,10 @@
     </div>
   </div>
 </section>
+
+{% schema %}
+{
+  "name": "Main order",
+  "settings": []
+}
+{% endschema %}

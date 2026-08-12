@@ -19,83 +19,85 @@
                 <div class="acc-Account_Items acc-Account_Items-orders"
                      data-el="account-overview.orders">
                   <div class="acc-Account_Item acc-Account_Item-orders">
-                      {%- if customer.orders.size > 0 -%}
-                        <div class="acc-Section">
-                          <div class="acc-Section_Body">
-                            <div class="acc-Orders">
-                              {%- for order in customer.orders -%}
-                                <div class="acc-Orders_Order">
-                                  <div class="acc-Orders_Wrapper">
-                                    <div class="acc-Orders_Images">
-                                      {%- for line_item in order.line_items limit: 1 -%}
-                                        <a class="acc-Orders_Image" href="{{ order.customer_url }}">
-                                          {%- include 'responsive-image' with
-                                            image: line_item.image,
-                                            width: 200,
-                                            height: 297 -%}
-                                        </a>
-                                      {%- endfor -%}
-                                    </div>
-
-                                    <div class="acc-Orders_Status">
-                                      <a class="acc-Orders_Header" href="{{ order.customer_url }}">
-                                        <h3
-                                          class="acc-Orders_Title fz-14_18">{{ 'customer.order.order_name' | t: name: order.name }}
-                                          <span
-                                            class="acc-Orders_Date"> ({{ order.created_at | date: "%d %b %Y" }})</span>
-                                        </h3>
-                                        <p class="acc-Orders_Price fz-14_18">{{ 'customer.order.total' | t }}
-                                          : {{ order.total_price | money }}</p>
-
-                                        {%- if order.cancelled -%}
-                                          {%- assign cancelled_at = order.cancelled_at | date: '%d/%m/%y' -%}
-                                          <p
-                                            class="acc-Orders_Cancelled">{{ 'customer.order.cancelled' | t: date: cancelled_at }}</p>
-                                        {%- endif -%}
+                    {%- if customer.orders.size > 0 -%}
+                      <div class="acc-Section">
+                        <div class="acc-Section_Body">
+                          <div class="acc-Orders">
+                            {%- for order in customer.orders -%}
+                              <div class="acc-Orders_Order">
+                                <div class="acc-Orders_Wrapper">
+                                  <div class="acc-Orders_Images">
+                                    {%- for line_item in order.line_items limit: 1 -%}
+                                      <a class="acc-Orders_Image" href="{{ order.customer_url }}">
+                                        {%- render 'responsive-image',
+                                          image: line_item.image,
+                                          width: 200,
+                                          height: 297 -%}
                                       </a>
-
-                                      <p class="acc-Orders_Text">
-                                        {{ 'customer.orders.payment_status' | t }}: {{ order.financial_status_label }}<br />
-                                        {{ 'customer.orders.order_status' | t }}: {{ order.fulfillment_status_label }}<br />
-                                        {{ 'customer.orders.delivery' | t }}: {{ shipping_method.title }} <br />
-                                      </p>
-                                    </div>
+                                    {%- endfor -%}
                                   </div>
 
-                                  <div class="acc-Orders_Buttons">
-                                    <a
-                                      class="acc-Orders_Button btn-Button btn-Button-arrow btn-Button-wide btn-Button-secondary"
-                                      href="{{ order.customer_url }}">
-                                      <span class="btn-Button_Text">{{ "customer.order.view_order_button" | t }}</span>
+                                  <div class="acc-Orders_Status">
+                                    <a class="acc-Orders_Header" href="{{ order.customer_url }}">
+                                      <h3
+                                        class="acc-Orders_Title fz-14_18">{{ 'customer.order.order_name' | t: name: order.name }}
+                                        <span
+                                          class="acc-Orders_Date"> ({{ order.created_at | date: "%d %b %Y" }})</span>
+                                      </h3>
+                                      <p class="acc-Orders_Price fz-14_18">{{ 'customer.order.total' | t }}
+                                        : {{ order.total_price | money }}</p>
 
-                                      <span class="btn-Button_Arrow">
-                                        {%- render 'bao-arrow' -%}
-                                      </span>
+                                      {%- if order.cancelled -%}
+                                        {%- assign cancelled_at = order.cancelled_at | date: '%d/%m/%y' -%}
+                                        <p
+                                          class="acc-Orders_Cancelled">{{ 'customer.order.cancelled' | t: date: cancelled_at }}</p>
+                                      {%- endif -%}
                                     </a>
+
+                                    <p class="acc-Orders_Text">
+                                      {{ 'customer.orders.payment_status' | t }}: {{ order.financial_status_label }}
+                                      <br/>
+                                      {{ 'customer.orders.order_status' | t }}: {{ order.fulfillment_status_label }}
+                                      <br/>
+                                      {{ 'customer.orders.delivery' | t }}: {{ shipping_method.title }} <br/>
+                                    </p>
                                   </div>
                                 </div>
-                              {%- endfor -%}
-                            </div>
+
+                                <div class="acc-Orders_Buttons">
+                                  <a
+                                    class="acc-Orders_Button btn-Button btn-Button-arrow btn-Button-wide btn-Button-secondary"
+                                    href="{{ order.customer_url }}">
+                                    <span class="btn-Button_Text">{{ "customer.order.view_order_button" | t }}</span>
+
+                                    <span class="btn-Button_Arrow">
+                                        {%- render 'bao-arrow' -%}
+                                      </span>
+                                  </a>
+                                </div>
+                              </div>
+                            {%- endfor -%}
                           </div>
                         </div>
-                      {%- else -%}
-                        <div class="acc-Section">
-                          <div class="acc-Section_Header">
-                            <h2
-                              class="acc-Section_Title">{{ 'customer.account.your_orders' | t }}</h2>
-                          </div>
-
-                          <div class="acc-Section_Body">
-                            <p class="acc-Section_Text">{{ 'customer.account.no_orders' | t }}</p>
-
-                            <a
-                              class="acc-Section_Button btn-Button btn-Button-secondary btn-Button-wide btn-Button-spacy"
-                              href="/">
-                              {{ 'customer.account.shop_now' | t }}
-                            </a>
-                          </div>
+                      </div>
+                    {%- else -%}
+                      <div class="acc-Section">
+                        <div class="acc-Section_Header">
+                          <h2
+                            class="acc-Section_Title">{{ 'customer.account.your_orders' | t }}</h2>
                         </div>
-                      {%- endif -%}
+
+                        <div class="acc-Section_Body">
+                          <p class="acc-Section_Text">{{ 'customer.account.no_orders' | t }}</p>
+
+                          <a
+                            class="acc-Section_Button btn-Button btn-Button-secondary btn-Button-wide btn-Button-spacy"
+                            href="/">
+                            {{ 'customer.account.shop_now' | t }}
+                          </a>
+                        </div>
+                      </div>
+                    {%- endif -%}
                   </div>
                 </div>
               </div>
@@ -172,7 +174,8 @@
                 <a
                   class="acc-Section_Button btn-Button btn-Button-arrow btn-Button-wide btn-Button-secondary btn-Button-spacy"
                   href="/account/addresses">
-                  <span class="btn-Button_Text">{{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})</span>
+                  <span
+                    class="btn-Button_Text">{{ 'customer.account.view_addresses' | t }} ({{ customer.addresses_count }})</span>
 
                   <span class="btn-Button_Arrow">
                     {%- render 'bao-arrow' -%}
@@ -199,3 +202,10 @@
     </div>
   </div>
 </section>
+
+{% schema %}
+{
+  "name": "Main account",
+  "settings": []
+}
+{% endschema %}

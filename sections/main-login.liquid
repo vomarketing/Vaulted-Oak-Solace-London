@@ -76,19 +76,19 @@
             </div>
 
             {%- if form.errors and template.name == 'login' -%}
-            <div class="val-Validation val-Validation-error val-Validation-spacer">
-              {%- for field in form.errors -%}
-                <p class="val-Validation_Text">{{ form.errors.messages[field] }}</p>
-              {%- endfor -%}
-            </div>
+              <div class="val-Validation val-Validation-error val-Validation-spacer">
+                {%- for field in form.errors -%}
+                  <p class="val-Validation_Text">{{ form.errors.messages[field] }}</p>
+                {%- endfor -%}
+              </div>
             {%- else -%}
-            <div class="frm-Form_Row frm-Form_Row-spacer">              
-              <span class="frm-Form_Spacer"></span>
-            </div>
+              <div class="frm-Form_Row frm-Form_Row-spacer">
+                <span class="frm-Form_Spacer"></span>
+              </div>
             {%- endif -%}
             <div class="frm-Form_Row frm-Form_Row-spacer">
               <span class="frm-Form_Spacer"></span>
-            </div>            
+            </div>
 
             <div class="frm-Form_Row frm-Form_Row-gappy">
               <button class="frm-Form_Button frm-Form_Button-blkBorder" type="submit">
@@ -101,7 +101,8 @@
             </div>
 
             <div class="frm-Form_Row frm-Form_Row-gappyish">
-              <a class="frm-Form_Link" href="#recover" data-recover-toggle>{{ 'customer.login.forgot_password' | t }}</a>
+              <a class="frm-Form_Link" href="#recover"
+                 data-recover-toggle>{{ 'customer.login.forgot_password' | t }}</a>
             </div>
           {%- endform -%}
         </div>
@@ -125,20 +126,23 @@
             {%- endif -%}
 
             <div class="frm-Form_Row">
-              <label class="frm-Form_Label util-ScreenReaderOnly" for="RecoverEmail">{{ 'customer.login.email_address' | t }}</label>
-              <input class="frm-Form_Input frm-Form_Input-whiteLogin" type="email" name="email" id="RecoverEmail" placeholder="{{ 'customer.login.email_address' | t }}" spellcheck="false" autocomplete="off" autocapitalize="off" required />
+              <label class="frm-Form_Label util-ScreenReaderOnly"
+                     for="RecoverEmail">{{ 'customer.login.email_address' | t }}</label>
+              <input class="frm-Form_Input frm-Form_Input-whiteLogin" type="email" name="email" id="RecoverEmail"
+                     placeholder="{{ 'customer.login.email_address' | t }}" spellcheck="false" autocomplete="off"
+                     autocapitalize="off" required/>
             </div>
 
             {%- if form.errors -%}
-            <div class="val-Validation val-Validation-error val-Validation-spacer">
-              {%- for field in form.errors -%}
-                <p class="val-Validation_Text">{{ form.errors.messages[field] }}</p>
-              {%- endfor -%}
-            </div>
+              <div class="val-Validation val-Validation-error val-Validation-spacer">
+                {%- for field in form.errors -%}
+                  <p class="val-Validation_Text">{{ form.errors.messages[field] }}</p>
+                {%- endfor -%}
+              </div>
             {%- else -%}
-            <div class="frm-Form_Row frm-Form_Row-spacer">
-              <span class="frm-Form_Spacer"></span>
-            </div>
+              <div class="frm-Form_Row frm-Form_Row-spacer">
+                <span class="frm-Form_Spacer"></span>
+              </div>
             {%- endif -%}
 
             <div class="frm-Form_Row frm-Form_Row-spacer">
@@ -149,7 +153,8 @@
             </div>
 
             <div class="frm-Form_Row frm-Form_Row-gappy">
-              <button class="frm-Form_Button frm-Form_Button-blkBorder" type="Submit" value="{{ 'customer.login.reset' | t }}">
+              <button class="frm-Form_Button frm-Form_Button-blkBorder" type="Submit"
+                      value="{{ 'customer.login.reset' | t }}">
                 <span class="frm-Form_ButtonText">{{ 'customer.login.reset' | t }}</span>
 
                 <span class="frm-Form_ButtonIcon">
@@ -159,7 +164,8 @@
             </div>
 
             <div class="frm-Form_Row frm-Form_Row-gappyish">
-              <a class="frm-Form_Link btn-Button btn-Button-tertiary" href="#cancel" data-recover-toggle>{{ 'customer.login.cancel' | t }}</a>
+              <a class="frm-Form_Link btn-Button btn-Button-tertiary" href="#cancel"
+                 data-recover-toggle>{{ 'customer.login.cancel' | t }}</a>
             </div>
 
           {%- endform -%}
@@ -191,3 +197,10 @@
     </div>
   </div>
 </section>
+
+{% schema %}
+{
+  "name": "Main login",
+  "settings": []
+}
+{% endschema %}
