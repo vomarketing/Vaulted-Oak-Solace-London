@@ -33,13 +33,18 @@
     "cookies_button_text": "our cookies policy.",
     "content_for_index": [],
     "blocks": {
+      "855628211100114053": {
+        "type": "shopify://apps/klaviyo-email-marketing-sms/blocks/klaviyo-onsite-embed/2632fe16-c075-4321-a88b-50b567f42507",
+        "disabled": true,
+        "settings": {}
+      },
       "9864028433945474133": {
         "type": "shopify://apps/revoq-eu-withdrawal-button/blocks/widerrufsbutton-floating-button/019c3356-2775-7d52-b915-4b0f965005ae",
         "disabled": false,
         "settings": {
           "trigger_label": "-",
-          "hide_trigger": false,
-          "floating_position": "right",
+          "hide_trigger": true,
+          "floating_position": "left",
           "floating_bottom_offset": 20,
           "floating_side_offset": 20,
           "trigger_button_size": "medium",
@@ -62,11 +67,6 @@
           "button_color": "#111827",
           "button_text_color": "#ffffff"
         }
-      },
-      "855628211100114053": {
-        "type": "shopify://apps/klaviyo-email-marketing-sms/blocks/klaviyo-onsite-embed/2632fe16-c075-4321-a88b-50b567f42507",
-        "disabled": false,
-        "settings": {}
       }
     }
   }
