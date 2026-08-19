@@ -1,9 +1,3 @@
-/**
- * -----------------------------------------------------------------------------
- * Module Custom: Footer
- * -----------------------------------------------------------------------------
- */
-
 .ft-Footer {
   padding: 30px 0;
 
@@ -13,19 +7,17 @@
     font-size: var(--type-14-size);
     font-weight: var(--font-weight-medium);
     line-height: var(--type-14-line-height);
-
     text-transform: capitalize;
   }
 
   .ft-Footer_Items {
     gap: 30px;
   }
-}
 
-@media (min-width: 901px) {
-  .ft-Footer {
-    .ft-Footer_Navigation {
-      margin-bottom: 0;
+  .ft-Footer_Navigation,
+  .ft-Footer_Text {
+    @media (min-width: 901px) {
+      margin-top: 0;
     }
   }
 }

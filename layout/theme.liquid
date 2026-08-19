@@ -50,6 +50,7 @@
 
     {%- render 'hreflang' -%}
     {%- render 'social-meta-tags' -%}
+    {%- render 'variables' -%}
     {%- render 'style-tags', layout: 'theme' -%}
     {%- render 'typography' -%}
 
@@ -62,7 +63,7 @@
     {%- render 'script-tags', layout: 'theme' -%}
 
     <link href="https://vjs.zencdn.net/7.10.2/video-js.css" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
     {{ content_for_header }}
 
@@ -94,7 +95,7 @@
 
     {% comment %} {%- render 'cookie-banner' -%} {% endcomment %}
 
-    <div class="lyt-Header">
+    <div class="lyt-Header js-header-wrapper">
       {%- sections 'header-group' -%}
     </div>
 

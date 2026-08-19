@@ -82,14 +82,16 @@
 </style>
 
 {{ 'custom-header.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'custom-header.js' | asset_url }}" defer="defer"></script>
 
 <header
-  class="hd-Header{% if use_transparent_header %} hd-Header-transparent{% else %} hd-Header-solid{% endif %}"
+  class="hd-Header js-header{% if use_transparent_header %} hd-Header-transparent{% else %} hd-Header-solid{% endif %}"
   role="banner"
   data-section-id="{{ section.id }}"
   data-section-type="header"
   data-module="header"
   data-module-lazy
+  data-sticky="{%- if section.settings.enable_sticky_header -%}true{%- else -%}false{%- endif -%}"
   data-header-active-class="hd-Header-dropdownActive"
   data-header-item-active-class="hd-Nav_Item-dropdownActive"
 >
@@ -491,15 +493,24 @@
       "options": [
         {
           "value": "light",
-          "label": "Light text / white logo"
+          "label": "Light"
         },
         {
           "value": "dark",
-          "label": "Dark text / black logo"
+          "label": "Dark"
         }
       ]
     },
-   
+    {
+      "type": "header",
+      "content": "Sticky header"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_header",
+      "label": "Enable sticky header",
+      "default": true
+    }
   ]
 }
 {% endschema %}
