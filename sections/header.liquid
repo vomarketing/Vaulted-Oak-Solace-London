@@ -80,6 +80,9 @@
     }
   {% endif %}
 </style>
+
+{{ 'custom-header.css' | asset_url | stylesheet_tag }}
+
 <header
   class="hd-Header{% if use_transparent_header %} hd-Header-transparent{% else %} hd-Header-solid{% endif %}"
   role="banner"

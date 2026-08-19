@@ -1,0 +1,28 @@
+/**
+ * -----------------------------------------------------------------------------
+ * Module Custom: Header
+ * -----------------------------------------------------------------------------
+ */
+
+.hd-Header {
+  /* Custom overrides for header spacing, typography, and contrast */
+  .hd-Nav_Link {
+    font-family: var(--font-family-primary);
+    font-size: var(--type-14-size);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--type-14-line-height);
+
+    text-transform: capitalize;
+  }
+}
+
+.ft-Footer {
+  .ft-Footer_Link {
+    font-family: var(--font-family-primary);
+    font-size: var(--type-14-size);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--type-14-line-height);
+
+    text-transform: capitalize;
+  }
+}
