@@ -1,0 +1,38 @@
+{%- liquid
+  assign image_desktop = image_desktop
+  assign image_mobile = image_mobile
+  assign class = class | default: ''
+  assign loading = loading | default: 'lazy'
+  assign fetchpriority = fetchpriority | default: 'auto'
+  assign alt = alt | default: image_desktop.alt | default: shop.name | escape
+  assign breakpoint = breakpoint | default: '900px'
+-%}
+
+{%- if image_desktop != blank -%}
+  <picture>
+    {%- if image_mobile != blank -%}
+      <source
+        media="(max-width: {{ breakpoint }})"
+        srcset="
+          {{ image_mobile | image_url: width: 600 }} 600w,
+          {{ image_mobile | image_url: width: 800 }} 800w,
+          {{ image_mobile | image_url: width: 1000 }} 1000w,
+          {{ image_mobile | image_url: width: 1200 }} 1200w
+        "
+        sizes="100vw"
+      >
+    {%- endif -%}
+
+    {{
+      image_desktop
+      | image_url: width: 2400
+      | image_tag:
+        loading: loading,
+        fetchpriority: fetchpriority,
+        class: class,
+        alt: alt,
+        widths: '1200, 1600, 2000, 2400, 2800, 3200',
+        sizes: '100vw'
+    }}
+  </picture>
+{%- endif -%}
