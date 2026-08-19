@@ -1,0 +1,47 @@
+.rich-text {
+  width: 100%;
+  min-height: 100dvh;
+  display: flex;
+  justify-content: center;
+}
+
+.rich-text__inner {
+  position: relative;
+  width: 100%;
+  max-width: 910px;
+  min-height: 100dvh;
+  padding: 40px 25px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-family-primary);
+  font-size: var(--type-14-size);
+  font-weight: var(--font-weight-regular);
+  line-height: var(--type-14-line-height);
+  text-align: center;
+
+  a:hover {
+    text-decoration: underline;
+  }
+}
+
+.rich-text__content {
+  width: 100%;
+}
+
+.rich-text__link {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+@media screen and (max-width: 768px) {
+  .rich-text__inner {
+    max-width: 598px;
+  }
+}

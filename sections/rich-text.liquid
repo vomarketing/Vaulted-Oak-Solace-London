@@ -1,0 +1,60 @@
+{{ 'rich-text.css' | asset_url | stylesheet_tag }}
+
+<section
+  class="rich-text"
+  id="RichText-{{ section.id }}"
+>
+  <div class="rich-text__inner">
+    {% if section.settings.text != blank %}
+      <div class="rich-text__content rte">
+        {{ section.settings.text }}
+      </div>
+    {% endif %}
+
+    {% if section.settings.link_text != blank %}
+      {% if section.settings.link != blank %}
+        <a
+          href="{{ section.settings.link }}"
+          class="rich-text__link"
+        >
+          {{ section.settings.link_text }}
+        </a>
+      {% else %}
+        <span class="rich-text__link">
+          {{ section.settings.link_text }}
+        </span>
+      {% endif %}
+    {% endif %}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Rich text",
+  "tag": "section",
+  "class": "section-rich-text",
+  "settings": [
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Text"
+    },
+    {
+      "type": "text",
+      "id": "link_text",
+      "label": "Link text",
+      "default": "Shop Collection"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Rich text"
+    }
+  ]
+}
+{% endschema %}
