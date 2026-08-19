@@ -1,5 +1,30 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
+    "hero_fullscreen_8gXhRJ": {
+      "type": "hero-fullscreen",
+      "name": "Hero Fullscreen",
+      "settings": {
+        "media_type": "image",
+        "image_desktop": "shopify://shop_images/03a48d106dae488ca858875dcb4be083d9d6f13d.jpg",
+        "video_url_desktop": "",
+        "video_url_mobile": "",
+        "show_overlay": false,
+        "header_contrast_mode": "light",
+        "text_color": "white",
+        "heading": "Resort 2027",
+        "cta_text": "Shop Collection",
+        "cta_link": "shopify://collections"
+      }
+    },
     "homepage_hero_DBgqAw": {
       "type": "homepage-hero",
       "blocks": {
@@ -385,6 +410,7 @@
     }
   },
   "order": [
+    "hero_fullscreen_8gXhRJ",
     "homepage_hero_DBgqAw",
     "homepage_media_grid_mQdhnJ"
   ]
