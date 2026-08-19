@@ -1,0 +1,141 @@
+{{ 'featured-image.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  assign desktop_image = section.settings.desktop_image
+  assign mobile_image = section.settings.mobile_image
+
+  if mobile_image == blank
+    assign mobile_image = desktop_image
+  endif
+%}
+
+<section class="featured-image">
+  <div class="featured-image__inner">
+    {% if section.settings.text_left != blank %}
+      <div class="featured-image__text featured-image__text--mobile-top">
+        {% if section.settings.text_left_link != blank %}
+          <a href="{{ section.settings.text_left_link }}">
+            {{ section.settings.text_left }}
+          </a>
+        {% else %}
+          {{ section.settings.text_left }}
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if desktop_image != blank %}
+  {% if section.settings.image_link != blank %}
+    <a href="{{ section.settings.image_link }}" class="featured-image__media">
+      {% else %}
+      <div class="featured-image__media">
+        {% endif %}
+
+        <picture>
+          {% if mobile_image != blank %}
+            <source
+              media="(max-width: 767px)"
+              srcset="
+                {{ mobile_image | image_url: width: 500 }} 500w,
+                {{ mobile_image | image_url: width: 750 }} 750w,
+                {{ mobile_image | image_url: width: 1000 }} 1000w
+              "
+            >
+          {% endif %}
+
+          {{
+          desktop_image
+          | image_url: width: 2000
+          | image_tag:
+          class: 'featured-image__image',
+          loading: 'lazy',
+          widths: '750, 1000, 1200, 1600, 2000'
+          }}
+        </picture>
+
+        {% if section.settings.image_link != blank %}
+    </a>
+    {% else %}
+  </div>
+  {% endif %}
+  {% endif %}
+
+  <div class="featured-image__content">
+    {% if section.settings.text_left != blank %}
+      <div class="featured-image__text featured-image__text--desktop">
+        {% if section.settings.text_left_link != blank %}
+          <a href="{{ section.settings.text_left_link }}">
+            {{ section.settings.text_left }}
+          </a>
+        {% else %}
+          {{ section.settings.text_left }}
+        {% endif %}
+      </div>
+    {% endif %}
+
+    {% if section.settings.text_right != blank %}
+      <div class="featured-image__text">
+        {% if section.settings.text_right_link != blank %}
+          <a href="{{ section.settings.text_right_link }}">
+            {{ section.settings.text_right }}
+          </a>
+        {% else %}
+          {{ section.settings.text_right }}
+        {% endif %}
+      </div>
+    {% endif %}
+  </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Featured Image",
+  "tag": "section",
+  "class": "section-featured-image",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "desktop_image",
+      "label": "Desktop image"
+    },
+    {
+      "type": "image_picker",
+      "id": "mobile_image",
+      "label": "Mobile image",
+      "info": "Uses desktop image when left empty."
+    },
+    {
+      "type": "url",
+      "id": "image_link",
+      "label": "Image link"
+    },
+    {
+      "type": "text",
+      "id": "text_left",
+      "label": "First text",
+      "default": "The Annie"
+    },
+    {
+      "type": "url",
+      "id": "text_left_link",
+      "label": "First text link"
+    },
+    {
+      "type": "text",
+      "id": "text_right",
+      "label": "Second text",
+      "default": "Shop Now"
+    },
+    {
+      "type": "url",
+      "id": "text_right_link",
+      "label": "Second text link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Featured Image"
+    }
+  ]
+}
+{% endschema %}
