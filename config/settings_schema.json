@@ -308,6 +308,21 @@
     ]
   },
   {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Typography"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_primary_font",
+        "label": "Primary Font",
+        "default": "inter_n4"
+      }
+    ]
+  },
+  {
     "name": "Site",
     "settings": [
       {
