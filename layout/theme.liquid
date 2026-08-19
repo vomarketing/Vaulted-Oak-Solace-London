@@ -53,6 +53,7 @@
     {%- render 'variables' -%}
     {%- render 'style-tags', layout: 'theme' -%}
     {%- render 'typography' -%}
+    {{ 'custom-global.css' | asset_url | stylesheet_tag }}
 
     {%- render 'head-script' -%}
 
@@ -63,6 +64,7 @@
     {%- render 'script-tags', layout: 'theme' -%}
 
     <link href="https://vjs.zencdn.net/7.10.2/video-js.css" rel="stylesheet" />
+    <script src="{{ 'custom-fullpage-scroll.js' | asset_url }}" defer="defer"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
     {{ content_for_header }}
