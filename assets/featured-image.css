@@ -1,12 +1,21 @@
 .featured-image {
   width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
 }
 
 .featured-image__inner {
   width: 100%;
   max-width: 1440px;
+  min-height: 100dvh;
   margin: 0 auto;
-  padding: 163px 50px 100px 50px;
+  padding:
+    clamp(100px, 11.5vh, 163px)
+    50px
+    clamp(70px, 7vh, 100px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 .featured-image__media {
@@ -14,20 +23,12 @@
   width: 100%;
   max-width: 1180px;
   margin: 0 auto;
-}
-
-.featured-image__media,
-.featured-image__text a {
   color: inherit;
   text-decoration: none;
-
-  &:hover {
-    text-decoration: underline;
-  }
 }
 
-.featured-image__media {
-  display: block;
+.featured-image__media:hover {
+  text-decoration: none;
 }
 
 .featured-image__image {
@@ -52,13 +53,25 @@
   text-align: center;
 }
 
+.featured-image__text a {
+  color: inherit;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
 .featured-image__text--mobile-top {
   display: none;
 }
 
 @media screen and (max-width: 1440px) {
   .featured-image__inner {
-    padding: 200px 30px 137px 30px;
+    padding:
+      clamp(100px, 13vh, 200px)
+      30px
+      clamp(80px, 9vh, 137px);
   }
 
   .featured-image__media,
@@ -67,10 +80,12 @@
   }
 }
 
-@media screen and (max-width: 767px) {
+@media screen and (max-width: 768px) {
   .featured-image__inner {
     max-width: none;
-    padding: 70px 40px;
+    padding:
+      clamp(50px, 8vh, 70px)
+      40px;
   }
 
   .featured-image__text--desktop {
@@ -79,7 +94,7 @@
 
   .featured-image__text--mobile-top {
     display: block;
-    margin-bottom: 86px;
+    margin-bottom: clamp(40px, 9vh, 86px);
     text-align: center;
   }
 
@@ -93,7 +108,7 @@
     display: block;
     width: 100%;
     max-width: 596px;
-    margin: 81px auto 0;
+    margin: clamp(40px, 8vh, 81px) auto 0;
   }
 
   .featured-image__content .featured-image__text {
@@ -103,14 +118,16 @@
 
 @media screen and (max-width: 480px) {
   .featured-image__inner {
-    padding: 50px 25px;
+    padding:
+      clamp(40px, 7vh, 50px)
+      25px;
   }
 
   .featured-image__text--mobile-top {
-    margin-bottom: 40px;
+    margin-bottom: clamp(32px, 6vh, 40px);
   }
 
   .featured-image__content {
-    margin-top: 40px;
+    margin-top: clamp(32px, 6vh, 40px);
   }
 }
