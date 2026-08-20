@@ -1,0 +1,13 @@
+{
+  "name": "solace-london",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev": "shopify theme dev --store=solace-london-development-store",
+    "dev-prod": "shopify theme dev --store=solace-london",
+    "check": "shopify theme check"
+  },
+  "devDependencies": {
+    "husky": "^9.0.0"
+  }
+}
