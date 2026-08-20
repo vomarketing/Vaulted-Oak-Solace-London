@@ -10,9 +10,45 @@
         "size_guide_page": "",
         "contact_page": "contact"
       }
+    },
+    "three_up_Bwqyrf": {
+      "type": "three-up",
+      "blocks": {
+        "image_NwaTwC": {
+          "type": "image",
+          "settings": {
+            "image_desktop": "shopify://shop_images/Image.jpg",
+            "image_mobile": "shopify://shop_images/Image.jpg",
+            "title": "Fabric lorem Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim."
+          }
+        },
+        "image_9cR86X": {
+          "type": "image",
+          "settings": {
+            "image_desktop": "shopify://shop_images/Image_1.jpg",
+            "image_mobile": "shopify://shop_images/Image_1.jpg",
+            "title": "Sleeve Construction lorem Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          }
+        }
+      },
+      "block_order": [
+        "image_NwaTwC",
+        "image_9cR86X"
+      ],
+      "name": "Three Up",
+      "settings": {
+        "media_type": "video",
+        "image_desktop": "shopify://shop_images/Image_2.jpg",
+        "image_mobile": "shopify://shop_images/Image_3.jpg",
+        "video_desktop": "shopify://files/videos/tripic3_no_bleed3.mp4",
+        "video_mobile": "shopify://files/videos/jca_edit2.mp4",
+        "media_description": "Resort 2027 lorem Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim.",
+        "header_contrast_mode": "dark"
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "three_up_Bwqyrf"
   ]
 }
