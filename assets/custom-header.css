@@ -52,13 +52,26 @@
   }
 
   .hd-Nav_Link,
+  .hd-MobileNav_Icon,
   .hd-Header_Logo svg {
     color: var(--Header_TextColor);
     fill: var(--Header_TextColor);
   }
 
-  .hd-Nav_CartCount {
+  .hd-Nav_Cart {
+    background-color: var(--Color_Primary);
+  }
+
+  .hd-Nav_CartCount,
+  .hd-MobileNav_Cart {
     color: var(--Header_CountTextColor);
+  }
+
+  .hd-Nav_CartCount {
+    font-family: var(--font-family-primary);
+    font-size: var(--type-10-size);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--type-10-line-height);
   }
 
   &[data-sticky="true"] {

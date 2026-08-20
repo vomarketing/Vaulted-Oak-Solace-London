@@ -72,7 +72,7 @@ if (!window.SolaceHeaderContrast) {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
               const target = entry.target;
-              const mode = target.getAttribute('data-header-mode') || target.querySelector('[data-header-mode]')?.getAttribute('data-header-mode') || 'dark';
+              const mode = target.getAttribute('data-header-mode') || target.querySelector('[data-header-mode]')?.getAttribute('data-header-mode') || 'light';
               this.setMode(mode);
             }
           });
