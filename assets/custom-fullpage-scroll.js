@@ -6,19 +6,81 @@ if (!window.SolaceFullpageScroll) {
         sections: '#MainContent > .shopify-section'
       };
 
-      this.classes = {
-        isLocked: 'is-scroll-locked'
-      };
-
       this.sections = [];
       this.currentIndex = 0;
+
+      // --- Animation state ---
       this.isAnimating = false;
-      this.lastAnimationTime = 0;
+      this.animationRaf = null;
+      this.animationStart = null;
+      this.animationFrom = 0;
+      this.animationTo = 0;
+
+      // --- Swiper-matching config ---
+      this.DURATION = 700;
+      this.COOLDOWN = 800;
+      this.lastAnimationEnd = 0;
+      this.TOUCH_THRESHOLD = 40;
+      this.WHEEL_THRESHOLD = 20;
+
+      this._wheelAccum = 0;
+      this._wheelResetTimer = null;
+
       this.touchStartY = 0;
+
       this.abortController = null;
-      this.unlockTimeout = null;
 
       this.init();
+    }
+
+    _easeOutCubic(t) {
+      return 1 - Math.pow(1 - t, 3);
+    }
+    _scrollTo(targetY) {
+      if (this.animationRaf !== null) {
+        cancelAnimationFrame(this.animationRaf);
+        this.animationRaf = null;
+      }
+
+      const startY = window.scrollY;
+
+      if (Math.abs(startY - targetY) < 2) {
+        this._onAnimationComplete();
+        return;
+      }
+
+      this.animationFrom = startY;
+      this.animationTo = targetY;
+      this.animationStart = null;
+
+      const step = (timestamp) => {
+        if (this.animationStart === null) {
+          this.animationStart = timestamp;
+        }
+
+        const elapsed = timestamp - this.animationStart;
+        const progress = Math.min(elapsed / this.DURATION, 1);
+        const eased = this._easeOutCubic(progress);
+        const current = this.animationFrom + (this.animationTo - this.animationFrom) * eased;
+
+        window.scrollTo(0, current);
+
+        if (progress < 1) {
+          this.animationRaf = requestAnimationFrame(step);
+        } else {
+          this.animationRaf = null;
+          window.scrollTo(0, this.animationTo);
+          this._onAnimationComplete();
+        }
+      };
+
+      this.animationRaf = requestAnimationFrame(step);
+    }
+
+    _onAnimationComplete() {
+      this.isAnimating = false;
+      this.lastAnimationEnd = performance.now();
+      this.animationRaf = null;
     }
 
     init() {
@@ -44,8 +106,8 @@ if (!window.SolaceFullpageScroll) {
       let minDistance = Infinity;
 
       this.sections.forEach((section, index) => {
-        const top = section.getBoundingClientRect().top + scrollY;
-        const distance = Math.abs(top - scrollY);
+        const sectionTop = this._getAbsoluteTop(section);
+        const distance = Math.abs(sectionTop - scrollY);
         if (distance < minDistance) {
           minDistance = distance;
           closestIndex = index;
@@ -61,25 +123,39 @@ if (!window.SolaceFullpageScroll) {
       const { signal } = this.abortController;
 
       const handleWheel = (e) => {
-        const now = performance.now();
-        if (this.isAnimating || now - this.lastAnimationTime < 800) {
+        if (this.isAnimating) {
+          e.preventDefault();
+          return;
+        }
+
+        if (performance.now() - this.lastAnimationEnd < this.COOLDOWN) {
           e.preventDefault();
           return;
         }
 
         const delta = e.deltaY;
-        if (Math.abs(delta) < 20) return;
+        if (Math.abs(delta) < 1) return;
 
-        if (delta > 0) {
-          if (this.currentIndex < this.sections.length - 1) {
-            e.preventDefault();
-            this.goToSection(this.currentIndex + 1);
-          }
+        const isTrackpad = e.deltaMode === 0 && Math.abs(delta) < 50;
+
+        if (isTrackpad) {
+          clearTimeout(this._wheelResetTimer);
+          this._wheelAccum += delta;
+          this._wheelResetTimer = setTimeout(() => {
+            this._wheelAccum = 0;
+          }, 200);
+
+          if (Math.abs(this._wheelAccum) < this.WHEEL_THRESHOLD) return;
+
+          const direction = this._wheelAccum > 0 ? 1 : -1;
+          this._wheelAccum = 0;
+          clearTimeout(this._wheelResetTimer);
+
+          e.preventDefault();
+          this._navigate(direction);
         } else {
-          if (this.currentIndex > 0) {
-            e.preventDefault();
-            this.goToSection(this.currentIndex - 1);
-          }
+          e.preventDefault();
+          this._navigate(delta > 0 ? 1 : -1);
         }
       };
 
@@ -90,38 +166,31 @@ if (!window.SolaceFullpageScroll) {
       };
 
       const handleTouchEnd = (e) => {
-        const now = performance.now();
-        if (this.isAnimating || now - this.lastAnimationTime < 800 || !this.touchStartY) return;
+        if (this.isAnimating) return;
+        if (performance.now() - this.lastAnimationEnd < this.COOLDOWN) return;
+        if (!this.touchStartY) return;
         if (!e.changedTouches || e.changedTouches.length === 0) return;
 
         const touchEndY = e.changedTouches[0].clientY;
         const deltaY = this.touchStartY - touchEndY;
 
-        if (Math.abs(deltaY) > 40) {
-          if (deltaY > 0 && this.currentIndex < this.sections.length - 1) {
-            this.goToSection(this.currentIndex + 1);
-          } else if (deltaY < 0 && this.currentIndex > 0) {
-            this.goToSection(this.currentIndex - 1);
-          }
+        if (Math.abs(deltaY) > this.TOUCH_THRESHOLD) {
+          this._navigate(deltaY > 0 ? 1 : -1);
         }
 
         this.touchStartY = 0;
       };
 
       const handleKey = (e) => {
-        const now = performance.now();
-        if (this.isAnimating || now - this.lastAnimationTime < 800) return;
+        if (this.isAnimating) return;
+        if (performance.now() - this.lastAnimationEnd < this.COOLDOWN) return;
 
         if (e.key === 'ArrowDown' || e.key === 'PageDown' || (e.key === ' ' && !e.shiftKey)) {
-          if (this.currentIndex < this.sections.length - 1) {
-            e.preventDefault();
-            this.goToSection(this.currentIndex + 1);
-          }
+          e.preventDefault();
+          this._navigate(1);
         } else if (e.key === 'ArrowUp' || e.key === 'PageUp' || (e.key === ' ' && e.shiftKey)) {
-          if (this.currentIndex > 0) {
-            e.preventDefault();
-            this.goToSection(this.currentIndex - 1);
-          }
+          e.preventDefault();
+          this._navigate(-1);
         }
       };
 
@@ -137,43 +206,42 @@ if (!window.SolaceFullpageScroll) {
         this.syncCurrentIndex();
       };
 
-      const handleScrollEnd = () => {
-        this.isAnimating = false;
-        clearTimeout(this.unlockTimeout);
-      };
-
       window.addEventListener('wheel', handleWheel, { passive: false, signal });
       window.addEventListener('touchstart', handleTouchStart, { passive: true, signal });
       window.addEventListener('touchend', handleTouchEnd, { passive: true, signal });
       window.addEventListener('keydown', handleKey, { signal });
       window.addEventListener('resize', handleResize, { passive: true, signal });
 
-      if ('onscrollend' in window) {
-        window.addEventListener('scrollend', handleScrollEnd, { passive: true, signal });
-      }
-
       document.addEventListener('shopify:section:load', handleShopifyChange, { signal });
       document.addEventListener('shopify:section:reorder', handleShopifyChange, { signal });
       document.addEventListener('shopify:section:select', handleShopifyChange, { signal });
     }
 
+    _navigate(direction) {
+      const nextIndex = this.currentIndex + direction;
+      if (nextIndex < 0 || nextIndex >= this.sections.length) return;
+      this.goToSection(nextIndex);
+    }
+
     goToSection(index) {
       if (index < 0 || index >= this.sections.length) return;
 
-      this.isAnimating = true;
-      this.lastAnimationTime = performance.now();
       this.currentIndex = index;
+      this.isAnimating = true;
 
       const target = this.sections[index];
-      target.scrollIntoView({
-        behavior: 'smooth',
-        block: 'start'
-      });
+      const targetY = this._getAbsoluteTop(target);
+      this._scrollTo(targetY);
+    }
 
-      clearTimeout(this.unlockTimeout);
-      this.unlockTimeout = setTimeout(() => {
-        this.isAnimating = false;
-      }, 750);
+    _getAbsoluteTop(el) {
+      let top = 0;
+      let node = el;
+      while (node) {
+        top += node.offsetTop;
+        node = node.offsetParent;
+      }
+      return top;
     }
 
     destroy() {
@@ -181,10 +249,12 @@ if (!window.SolaceFullpageScroll) {
         this.abortController.abort();
         this.abortController = null;
       }
-      if (this.unlockTimeout) {
-        clearTimeout(this.unlockTimeout);
-        this.unlockTimeout = null;
+      if (this.animationRaf !== null) {
+        cancelAnimationFrame(this.animationRaf);
+        this.animationRaf = null;
       }
+      clearTimeout(this._wheelResetTimer);
+      this._wheelAccum = 0;
     }
   }
 
@@ -196,3 +266,4 @@ if (!window.SolaceFullpageScroll) {
     new FullpageScrollController();
   }
 }
+
