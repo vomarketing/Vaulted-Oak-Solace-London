@@ -55,8 +55,8 @@
 
         <button
           type="button"
-          class="hero-fullscreen__sound-toggle js-sound-toggle"
-          aria-label="Toggle sound"
+          class="hero-fullscreen__sound-toggle js-sound-toggle is-muted"
+          aria-label="Unmute sound"
         >
           {%- render 'icons', icon: 'sound-muted', class: 'icon-muted js-icon-muted' -%}
           {%- render 'icons', icon: 'sound-unmuted', class: 'icon-unmuted js-icon-unmuted' -%}
@@ -79,7 +79,14 @@
   </div>
 
   {%- if section.settings.show_overlay -%}
-    <div class="hero-fullscreen__overlay global-overlay"></div>
+    {%- liquid
+      assign overlay_opacity = section.settings.overlay_opacity | default: 40 | divided_by: 100.0
+      assign overlay_color = section.settings.overlay_color | default: '#000000'
+    -%}
+    <div
+      class="hero-fullscreen__overlay"
+      style="background: linear-gradient(0deg, {{ overlay_color | color_modify: 'alpha', overlay_opacity }} 0%, {{ overlay_color | color_modify: 'alpha', overlay_opacity }} 100%);"
+    ></div>
   {%- endif -%}
 
   <div class="hero-fullscreen__content">
@@ -166,10 +173,32 @@
       "visible_if": "{{ section.settings.media_type == 'video' }}"
     },
     {
+      "type": "header",
+      "content": "Overlay Settings"
+    },
+    {
       "type": "checkbox",
       "id": "show_overlay",
-      "label": "Show subtle gradient overlay",
-      "default": false
+      "label": "Show overlay",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 40,
+      "visible_if": "{{ section.settings.show_overlay == true }}"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#000000",
+      "visible_if": "{{ section.settings.show_overlay == true }}"
     },
     {
       "type": "header",

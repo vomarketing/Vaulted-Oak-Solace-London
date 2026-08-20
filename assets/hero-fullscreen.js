@@ -5,9 +5,11 @@ if (!customElements.get('hero-fullscreen')) {
 
       this.selectors = {
         video: '.js-hero-video',
-        soundBtn: '.js-sound-toggle',
-        iconMuted: '.js-icon-muted',
-        iconUnmuted: '.js-icon-unmuted'
+        soundBtn: '.js-sound-toggle'
+      };
+
+      this.classes = {
+        isMuted: 'is-muted'
       };
 
       this.video = null;
@@ -27,27 +29,27 @@ if (!customElements.get('hero-fullscreen')) {
     initSoundToggle() {
       if (!this.soundBtn || !this.video) return;
 
+      this.setSoundState(true);
+
       this.soundHandler = (event) => {
         event.preventDefault();
         event.stopPropagation();
 
-        this.video.muted = !this.video.muted;
-
-        const iconMuted = this.soundBtn.querySelector(this.selectors.iconMuted);
-        const iconUnmuted = this.soundBtn.querySelector(this.selectors.iconUnmuted);
-
-        if (this.video.muted) {
-          if (iconMuted) iconMuted.style.display = 'block';
-          if (iconUnmuted) iconUnmuted.style.display = 'none';
-          this.soundBtn.setAttribute('aria-label', 'Unmute sound');
-        } else {
-          if (iconMuted) iconMuted.style.display = 'none';
-          if (iconUnmuted) iconUnmuted.style.display = 'block';
-          this.soundBtn.setAttribute('aria-label', 'Mute sound');
-        }
+        this.setSoundState(!this.video.muted);
       };
 
       this.soundBtn.addEventListener('click', this.soundHandler);
+    }
+
+    setSoundState(isMuted) {
+      if (!this.video || !this.soundBtn) return;
+
+      this.video.muted = isMuted;
+      this.soundBtn.classList.toggle(this.classes.isMuted, isMuted);
+      this.soundBtn.setAttribute(
+        'aria-label',
+        isMuted ? 'Unmute sound' : 'Mute sound'
+      );
     }
 
     initIntersection() {

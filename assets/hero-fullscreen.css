@@ -13,7 +13,14 @@
   }
 
   .hero-fullscreen__overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
     z-index: 2;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.40) 0%, rgba(0, 0, 0, 0.40) 100%);
   }
 
   .hero-fullscreen__content {
@@ -82,6 +89,24 @@
       width: 20px;
       height: 20px;
       fill: currentColor;
+    }
+
+    .icon-unmuted {
+      display: block;
+    }
+
+    .icon-muted {
+      display: none;
+    }
+
+    &.is-muted {
+      .icon-muted {
+        display: block;
+      }
+
+      .icon-unmuted {
+        display: none;
+      }
     }
   }
 
