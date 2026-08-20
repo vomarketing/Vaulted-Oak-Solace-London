@@ -22,6 +22,7 @@
 
   a:hover {
     text-decoration: underline;
+    text-underline-offset: 4px;
   }
 }
 
@@ -34,10 +35,6 @@
   bottom: 40px;
   left: 50%;
   transform: translateX(-50%);
-
-  &:hover {
-    text-decoration: underline;
-  }
 }
 
 @media screen and (max-width: 768px) {

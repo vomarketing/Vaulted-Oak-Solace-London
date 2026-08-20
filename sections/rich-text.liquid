@@ -1,8 +1,13 @@
 {{ 'rich-text.css' | asset_url | stylesheet_tag }}
 
-<section
+{%- liquid
+  assign header_mode = section.settings.header_contrast_mode | default: 'dark'
+-%}
+
+<rich-text
   class="rich-text"
   id="RichText-{{ section.id }}"
+  data-header-mode="{{ header_mode }}"
 >
   <div class="rich-text__inner">
     {% if section.settings.text != blank %}
@@ -26,14 +31,38 @@
       {% endif %}
     {% endif %}
   </div>
-</section>
+</rich-text>
 
 {% schema %}
 {
   "name": "Rich text",
   "tag": "section",
-  "class": "section-rich-text",
+  "class": "section-rich-text js-section-header-contrast",
   "settings": [
+    {
+      "type": "header",
+      "content": "Color & Contrast"
+    },
+    {
+      "type": "select",
+      "id": "header_contrast_mode",
+      "label": "Header colour scheme over this section",
+      "options": [
+        {
+          "value": "light",
+          "label": "Light"
+        },
+        {
+          "value": "dark",
+          "label": "Dark"
+        }
+      ],
+      "default": "dark"
+    },
+    {
+      "type": "header",
+      "content": "Content"
+    },
     {
       "type": "richtext",
       "id": "text",
