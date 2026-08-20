@@ -1,10 +1,10 @@
-node_modules/
+node_modules/*
 package.json
 package-lock.json
-.husky/
+.husky/*
 .DS_Store
-.vscode/
-.idea/
+.vscode/*
+.idea/*
 README.md
 
 # Environment-specific assets — manage per store
