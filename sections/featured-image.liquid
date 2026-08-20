@@ -3,13 +3,18 @@
 {% liquid
   assign desktop_image = section.settings.desktop_image
   assign mobile_image = section.settings.mobile_image
+  assign header_mode = section.settings.header_contrast_mode | default: 'dark'
 
   if mobile_image == blank
     assign mobile_image = desktop_image
   endif
 %}
 
-<section class="featured-image">
+<featured-image
+  class="featured-image"
+  id="FeaturedImage-{{ section.id }}"
+  data-header-mode="{{ header_mode }}"
+>
   <div class="featured-image__inner">
     {% if section.settings.text_left != blank %}
       <div class="featured-image__text featured-image__text--mobile-top">
@@ -25,7 +30,10 @@
 
     {% if desktop_image != blank %}
   {% if section.settings.image_link != blank %}
-    <a href="{{ section.settings.image_link }}" class="featured-image__media">
+    <a
+      href="{{ section.settings.image_link }}"
+      class="featured-image__media"
+    >
       {% else %}
       <div class="featured-image__media">
         {% endif %}
@@ -85,14 +93,38 @@
     {% endif %}
   </div>
   </div>
-</section>
+</featured-image>
 
 {% schema %}
 {
   "name": "Featured Image",
   "tag": "section",
-  "class": "section-featured-image",
+  "class": "section-featured-image js-section-header-contrast",
   "settings": [
+    {
+      "type": "header",
+      "content": "Color & Contrast"
+    },
+    {
+      "type": "select",
+      "id": "header_contrast_mode",
+      "label": "Header colour scheme over this section",
+      "options": [
+        {
+          "value": "light",
+          "label": "Light"
+        },
+        {
+          "value": "dark",
+          "label": "Dark"
+        }
+      ],
+      "default": "dark"
+    },
+    {
+      "type": "header",
+      "content": "Image"
+    },
     {
       "type": "image_picker",
       "id": "desktop_image",
@@ -108,6 +140,10 @@
       "type": "url",
       "id": "image_link",
       "label": "Image link"
+    },
+    {
+      "type": "header",
+      "content": "Content"
     },
     {
       "type": "text",
