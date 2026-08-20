@@ -1,0 +1,222 @@
+{%- liquid
+  assign header_mode = section.settings.header_contrast_mode | default: 'light'
+
+  assign media_type = section.settings.media_type
+  assign image_desktop = section.settings.image_desktop
+  assign image_mobile = section.settings.image_mobile
+  assign video_desktop = section.settings.video_desktop
+  assign video_mobile = section.settings.video_mobile | default: video_desktop
+  assign media_description = section.settings.media_description
+
+  assign has_section_media = false
+  if media_type == 'image' and image_desktop != blank
+    assign has_section_media = true
+  elsif media_type == 'video' and video_desktop != blank
+    assign has_section_media = true
+  endif
+
+  assign valid_block_count = 0
+  for block in section.blocks
+    if block.settings.image_desktop != blank
+      assign valid_block_count = valid_block_count | plus: 1
+    endif
+  endfor
+-%}
+
+{%- if has_section_media or valid_block_count > 0 -%}
+  {{- 'three-up.css' | asset_url | stylesheet_tag -}}
+  <script src="{{ 'three-up.js' | asset_url }}" defer="defer"></script>
+
+  <three-up
+    class="three-up"
+    data-header-mode="{{ header_mode }}"
+  >
+    {%- if valid_block_count > 0 -%}
+      <div class="js-swiper three-up__swiper swiper lyt-Container">
+        <div class="swiper-wrapper">
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign block_image_desktop = block.settings.image_desktop
+              assign block_image_mobile = block.settings.image_mobile
+              assign block_title = block.settings.title
+
+              if block_image_desktop == blank
+                continue
+              endif
+            -%}
+            <div class="js-slide swiper-slide">
+              {%- render 'picture',
+                image_desktop: block_image_desktop,
+                image_mobile: block_image_mobile,
+                class: 'three-up__slide-image'
+              -%}
+
+              {%- if block_title != blank -%}
+                <p class="three-up__slide-title text-reg-14">{{ block_title }}</p>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+    {%- if has_section_media -%}
+      <div class="three-up__section-media lyt-Container">
+        {%- if media_type == 'image' -%}
+          {%- render 'picture',
+            image_desktop: image_desktop,
+            image_mobile: image_mobile,
+            class: 'three-up__section-image'
+          -%}
+        {%- else -%}
+          {%- liquid
+            assign video_desktop_url = video_desktop.sources[1].url | default: video_desktop.sources[0].url
+            assign video_mobile_url = video_mobile.sources[1].url | default: video_mobile.sources[0].url
+          -%}
+          <div class="three-up__section-video-wrapper">
+            <video
+              class="three-up__section-video js-section-video"
+              autoplay
+              loop
+              muted
+              playsinline
+              preload="metadata"
+            >
+              <source src="{{ video_mobile_url }}" media="(max-width: 767px)" type="video/mp4">
+              <source src="{{ video_desktop_url }}" type="video/mp4">
+            </video>
+          </div>
+        {%- endif -%}
+        {%- if media_description != blank -%}
+          <p class="three-up__media-description text-reg-14">{{ media_description }}</p>
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  </three-up>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Three Up",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "media_type",
+      "label": "Media type",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_desktop",
+      "label": "Desktop image",
+      "visible_if": "{{ section.settings.media_type == 'image' }}"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Mobile image",
+      "visible_if": "{{ section.settings.media_type == 'image' }}"
+    },
+    {
+      "type": "video",
+      "id": "video_desktop",
+      "label": "Desktop video",
+      "visible_if": "{{ section.settings.media_type == 'video' }}"
+    },
+    {
+      "type": "video",
+      "id": "video_mobile",
+      "label": "Mobile video",
+      "visible_if": "{{ section.settings.media_type == 'video' }}"
+    },
+    {
+      "type": "text",
+      "id": "media_description",
+      "label": "Media description"
+    },
+    {
+      "type": "select",
+      "id": "header_contrast_mode",
+      "label": "Header contrast mode",
+      "options": [
+        {
+          "value": "light",
+          "label": "Light Header (White text for dark background)"
+        },
+        {
+          "value": "dark",
+          "label": "Dark Header (Black text for light background)"
+        }
+      ],
+      "default": "light"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image_desktop",
+          "label": "Desktop image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Mobile image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Description"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Three Up",
+      "settings": {
+        "media_type": "video",
+        "image_desktop": "shopify://shop_images/Image_2.jpg",
+        "image_mobile": "shopify://shop_images/Image_3.jpg",
+        "video_desktop": "shopify://files/videos/tripic3_no_bleed3.mp4",
+        "video_mobile": "shopify://files/videos/jca_edit2.mp4",
+        "media_description": "Resort 2027 lorem Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim.",
+        "header_contrast_mode": "dark"
+      },
+      "blocks": [
+        {
+          "type": "image",
+          "settings": {
+            "image_desktop": "shopify://shop_images/Image.jpg",
+            "image_mobile": "shopify://shop_images/Image.jpg",
+            "title": "Fabric lorem Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim."
+          }
+        },
+        {
+          "type": "image",
+          "settings": {
+            "image_desktop": "shopify://shop_images/Image_1.jpg",
+            "image_mobile": "shopify://shop_images/Image_1.jpg",
+            "title": "Sleeve Construction lorem Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
