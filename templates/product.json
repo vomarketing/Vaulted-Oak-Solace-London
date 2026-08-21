@@ -35,24 +35,16 @@
       "blocks": {
         "image_NwaTwC": {
           "type": "image",
+          "repeater": "{{ product.metafields.custom.three_up_slider.value }}",
           "settings": {
-            "image_desktop": "shopify://shop_images/Image.jpg",
-            "image_mobile": "shopify://shop_images/Image.jpg",
-            "title": "Fabric lorem Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim."
-          }
-        },
-        "image_9cR86X": {
-          "type": "image",
-          "settings": {
-            "image_desktop": "shopify://shop_images/Image_1.jpg",
-            "image_mobile": "shopify://shop_images/Image_1.jpg",
-            "title": "Sleeve Construction lorem Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+            "image_desktop": "{{ block.repeater.desktop_image.value }}",
+            "image_mobile": "{{ block.repeater.mobile_image.value }}",
+            "title": "{{ block.repeater.description.value }}"
           }
         }
       },
       "block_order": [
-        "image_NwaTwC",
-        "image_9cR86X"
+        "image_NwaTwC"
       ],
       "name": "Three Up Slider",
       "settings": {
@@ -64,11 +56,13 @@
       "name": "Three Up Media",
       "settings": {
         "media_type": "video",
-        "image_desktop": "shopify://shop_images/Image_2.jpg",
-        "image_mobile": "shopify://shop_images/Image_3.jpg",
-        "video_desktop": "shopify://files/videos/tripic3_no_bleed3.mp4",
-        "video_mobile": "shopify://files/videos/jca_edit2.mp4",
-        "media_description": "Resort 2027 lorem Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim.",
+        "image_desktop": "{{ product.metafields.custom.three_up_media.value.desktop_image.value }}",
+        "image_mobile": "{{ product.metafields.custom.three_up_media.value.mobile_image.value }}",
+        "video_desktop": "{{ product.metafields.custom.three_up_media.value.desktop_video_shopify.value }}",
+        "video_mobile": "{{ product.metafields.custom.three_up_media.value.mobile_video_shopify.value }}",
+        "video_desktop_url": "{{ product.metafields.custom.three_up_media.value.desktop_video_external.value }}",
+        "video_mobile_url": "{{ product.metafields.custom.three_up_media.value.mobile_video_external.value }}",
+        "media_description": "{{ product.metafields.custom.three_up_media.value.description.value }}",
         "header_contrast_mode": "dark"
       }
     },
