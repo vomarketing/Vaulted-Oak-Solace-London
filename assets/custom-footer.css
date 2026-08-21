@@ -8,11 +8,7 @@
   box-sizing: border-box;
   background-color: var(--Color_Primary, #ffffff);
   color: var(--Color_Secondary, #000000);
-  padding: 0;
-
-  @media (min-width: 901px) {
-    padding-top: 100px;
-  }
+  padding: 100px 0 0;
 
   .ft-Footer_Inner {
     width: 100%;
