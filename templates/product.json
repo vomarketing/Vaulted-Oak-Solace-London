@@ -66,6 +66,15 @@
         "header_contrast_mode": "dark"
       }
     },
+    "related_products_3tzxLK": {
+      "type": "related-products",
+      "name": "Related Products",
+      "settings": {
+        "title": "shop resort 2027",
+        "products": "{{ product.metafields.custom.related_products.value }}",
+        "header_contrast_mode": "dark"
+      }
+    },
     "rich_text_qGAkrF": {
       "type": "rich-text",
       "name": "Rich text",
@@ -82,6 +91,7 @@
     "rich_text_NHU7La",
     "three_up_slider_Bwqyrf",
     "three_up_media_Bwqyrf",
+    "related_products_3tzxLK",
     "rich_text_qGAkrF"
   ]
 }
