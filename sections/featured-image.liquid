@@ -41,12 +41,8 @@
         <picture>
           {% if mobile_image != blank %}
             <source
-              media="(max-width: 768px)"
-              srcset="
-                {{ mobile_image | image_url: width: 500 }} 500w,
-                {{ mobile_image | image_url: width: 750 }} 750w,
-                {{ mobile_image | image_url: width: 1000 }} 1000w
-              "
+              media="(max-width: 1199px)"
+              srcset="{{ mobile_image | image_url: width: 1200 }}"
             >
           {% endif %}
 
@@ -55,8 +51,7 @@
           | image_url: width: 2000
           | image_tag:
           class: 'featured-image__image',
-          loading: 'lazy',
-          widths: '750, 1000, 1200, 1600, 2000'
+          loading: 'lazy'
           }}
         </picture>
 
