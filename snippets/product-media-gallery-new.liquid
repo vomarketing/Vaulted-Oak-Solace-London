@@ -6,8 +6,8 @@
   assign default_header_mode = section.settings.header_contrast_mode | default: 'light'
 -%}
 
-<div class="pdp-media-gallery js-pdp-media-gallery" data-media-count="{{ product.media.size }}">
-  <div class="pdp-media-gallery__list js-pdp-media-list">
+<div class="pdp-media-gallery js-pdp-media-gallery swiper js-pdp-swiper" data-media-count="{{ product.media.size }}">
+  <div class="pdp-media-gallery__list js-pdp-media-list swiper-wrapper">
     {%- if product.media.size > 0 -%}
       {%- for media in product.media -%}
         {%- liquid
@@ -26,7 +26,7 @@
         -%}
 
         <div
-          class="pdp-media-item js-pdp-media-item js-section-header-contrast{% if is_video %} pdp-media-item--video{% else %} pdp-media-item--image{% endif %}"
+          class="pdp-media-item js-pdp-media-item swiper-slide js-pdp-slide js-section-header-contrast{% if is_video %} pdp-media-item--video{% else %} pdp-media-item--image{% endif %}"
           data-media-id="{{ media.id }}"
           data-media-index="{{ forloop.index0 }}"
           data-media-type="{{ media.media_type }}"
@@ -84,7 +84,7 @@
         </div>
       {%- endfor -%}
     {%- else -%}
-      <div class="pdp-media-item pdp-media-item--placeholder js-pdp-media-item js-section-header-contrast" data-header-mode="dark">
+      <div class="pdp-media-item pdp-media-item--placeholder js-pdp-media-item swiper-slide js-pdp-slide js-section-header-contrast" data-header-mode="dark">
         {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
       </div>
     {%- endif -%}
