@@ -4,34 +4,36 @@
   assign header_mode = section.settings.header_contrast_mode | default: 'dark'
 -%}
 
-<rich-text
-  class="rich-text"
-  id="RichText-{{ section.id }}"
-  data-header-mode="{{ header_mode }}"
->
-  <div class="rich-text__inner">
-    {% if section.settings.text != blank %}
-      <div class="rich-text__content rte">
-        {{ section.settings.text }}
-      </div>
-    {% endif %}
-
-    {% if section.settings.link_text != blank %}
-      {% if section.settings.link != blank %}
-        <a
-          href="{{ section.settings.link }}"
-          class="rich-text__link"
-        >
-          {{ section.settings.link_text }}
-        </a>
-      {% else %}
-        <span class="rich-text__link">
-          {{ section.settings.link_text }}
-        </span>
+{%- if section.settings.text != blank -%}
+  <rich-text
+    class="rich-text"
+    id="RichText-{{ section.id }}"
+    data-header-mode="{{ header_mode }}"
+  >
+    <div class="rich-text__inner">
+      {% if section.settings.text != blank %}
+        <div class="rich-text__content rte">
+          {{ section.settings.text }}
+        </div>
       {% endif %}
-    {% endif %}
-  </div>
-</rich-text>
+
+      {% if section.settings.link_text != blank %}
+        {% if section.settings.link != blank %}
+          <a
+            href="{{ section.settings.link }}"
+            class="rich-text__link"
+          >
+            {{ section.settings.link_text }}
+          </a>
+        {% else %}
+          <span class="rich-text__link">
+            {{ section.settings.link_text }}
+          </span>
+        {% endif %}
+      {% endif %}
+    </div>
+  </rich-text>
+{%- endif -%}
 
 {% schema %}
 {
