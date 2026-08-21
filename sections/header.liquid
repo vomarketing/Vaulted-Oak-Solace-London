@@ -211,7 +211,7 @@
             {%- if shop.customer_accounts_enabled -%}
               <li class="hd-Nav_Item">
                 <a
-                  class="hd-Nav_Link"
+                  class="hd-Nav_Link hd-Nav_Link--account"
                   href="{{ routes.account_url }}"
                   {% if request.page_type contains 'customers' %} aria-current="page"{% endif %}
                 >

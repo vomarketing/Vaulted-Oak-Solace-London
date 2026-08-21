@@ -80,5 +80,60 @@
     left: 0;
     width: 100%;
     z-index: var(--z-header, 90);
+    background-color: transparent;
   }
 }
+
+.template-product .hd-Header {
+  @media (min-width: 901px) {
+    &[data-header-split="true"] {
+      &[data-header-mode="light"] {
+        .hd-Header_Nav-left .hd-Nav_Link,
+        .hd-Header_Logo svg {
+          color: var(--color-white);
+          fill: var(--color-white);
+        }
+      }
+
+      &[data-header-mode="dark"] {
+        .hd-Header_Nav-left .hd-Nav_Link,
+        .hd-Header_Logo svg {
+          color: var(--color-black);
+          fill: var(--color-black);
+        }
+      }
+
+      .hd-Header_Nav-right {
+        .hd-Nav_Link,
+        .hd-Nav_Link--account,
+        .hd-Nav_Link[data-module-drawers-trigger="search"] {
+          color: var(--color-black);
+        }
+
+        .hd-Nav_Cart {
+          background-color: var(--color-black);
+        }
+
+        .hd-Nav_CartCount {
+          color: var(--color-white);
+        }
+      }
+    }
+
+    &:not([data-header-split="true"]) {
+      &[data-header-mode="light"] {
+        --Header_TextColor: var(--color-white);
+        --Header_CountTextColor: var(--color-black);
+        --Color_Primary: var(--color-white);
+      }
+
+      &[data-header-mode="dark"] {
+        --Header_TextColor: var(--color-black);
+        --Header_CountTextColor: var(--color-white);
+        --Color_Primary: var(--color-black);
+      }
+    }
+  }
+}
+
+

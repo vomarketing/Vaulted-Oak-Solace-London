@@ -70,8 +70,9 @@
     {%- render 'script-tags', layout: 'theme' -%}
 
     <link href="https://vjs.zencdn.net/7.10.2/video-js.css" rel="stylesheet" />
+    <script src="{{ 'scroll-engine.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'custom-fullpage-scroll.js' | asset_url }}" defer="defer"></script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer="defer"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
 
     {{ content_for_header }}
@@ -98,6 +99,7 @@
   <body
     id="{{ page_title | handle }}"
     class="lyt-Site template-{{ template.name | handle }} thm-{{ settings.theme }} {% if settings.bar_enabled %}thm-AnnouncementBar{% endif %}"
+    {%- if template.name == 'index' or template.name == 'product' %}data-fullpage-scroll{%- endif -%}
   >
     <a
       class="util-ScreenReaderOnly"
@@ -132,7 +134,7 @@
 
     {%- render 'drawers' -%}
 
-    <script src="https://vjs.zencdn.net/7.10.2/video.min.js"></script>
+    <script src="https://vjs.zencdn.net/7.10.2/video.min.js" defer="defer"></script>
 
     {%- render 'klevu-foot' -%}
 

@@ -73,6 +73,8 @@ if (!window.SolaceHeaderContrast) {
             if (entry.isIntersecting) {
               const target = entry.target;
               const mode = target.getAttribute('data-header-mode') || target.querySelector('[data-header-mode]')?.getAttribute('data-header-mode') || 'light';
+              const isSplit = !!target.closest('.pdp-new__main, .pdp-new__gallery-column');
+              this.setSplit(isSplit);
               this.setMode(mode);
             }
           });
@@ -93,25 +95,41 @@ if (!window.SolaceHeaderContrast) {
       const allSections = document.querySelectorAll(this.selectors.sections);
 
       if (!allSections.length) {
+        this.setSplit(false);
         this.setMode('dark');
         return;
       }
 
       let activeMode = null;
+      let activeSection = null;
 
       for (let i = 0; i < allSections.length; i++) {
         const rect = allSections[i].getBoundingClientRect();
         if (rect.top <= triggerY && rect.bottom > triggerY) {
           activeMode = allSections[i].getAttribute('data-header-mode') || allSections[i].querySelector('[data-header-mode]')?.getAttribute('data-header-mode') || 'dark';
+          activeSection = allSections[i];
           break;
         }
       }
 
       if (!activeMode && window.scrollY === 0 && allSections.length > 0) {
         activeMode = allSections[0].getAttribute('data-header-mode') || allSections[0].querySelector('[data-header-mode]')?.getAttribute('data-header-mode') || 'dark';
+        activeSection = allSections[0];
       }
 
+      const isSplit = activeSection ? !!activeSection.closest('.pdp-new__main, .pdp-new__gallery-column') : false;
+      this.setSplit(isSplit);
       this.setMode(activeMode || 'dark');
+    }
+
+    setSplit(isSplit) {
+      const splitValue = isSplit ? 'true' : 'false';
+      if (this.header.getAttribute('data-header-split') === splitValue) return;
+
+      this.header.setAttribute('data-header-split', splitValue);
+      if (this.headerWrapper) {
+        this.headerWrapper.setAttribute('data-header-split', splitValue);
+      }
     }
 
     setMode(mode) {
