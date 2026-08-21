@@ -176,11 +176,17 @@ if (!window.FullpageScrollController) {
     initSwiperInstance(targetElement) {
       if (!window.Swiper || !targetElement) return;
 
+      if ('scrollRestoration' in history) {
+        history.scrollRestoration = 'manual';
+      }
+
+      let wheelCooldownTimer = null;
+
       this.swiper = new window.Swiper(targetElement, {
         direction: 'vertical',
         slidesPerView: 1,
         spaceBetween: 0,
-        speed: 500,
+        speed: 700,
         effect: 'creative',
         creativeEffect: {
           prev: {
@@ -193,9 +199,9 @@ if (!window.FullpageScrollController) {
         },
         mousewheel: {
           releaseOnEdges: true,
-          sensitivity: 0.8,
-          thresholdDelta: 10,
-          thresholdTime: 400,
+          sensitivity: 0.5,
+          thresholdDelta: 25,
+          thresholdTime: 700,
           forceToAxis: true
         },
         touchReleaseOnEdges: true,
@@ -228,6 +234,9 @@ if (!window.FullpageScrollController) {
             }
           },
           slideChangeTransitionStart: (sw) => {
+            if (sw.mousewheel && sw.mousewheel.enabled) {
+              sw.mousewheel.disable();
+            }
             this.handleSlideChange(sw);
           },
           slideChangeTransitionEnd: (sw) => {
@@ -235,6 +244,13 @@ if (!window.FullpageScrollController) {
             if (activeSlide) {
               this.updateHeaderContrast(activeSlide);
             }
+
+            clearTimeout(wheelCooldownTimer);
+            wheelCooldownTimer = setTimeout(() => {
+              if (sw && sw.mousewheel && !sw.mousewheel.enabled) {
+                sw.mousewheel.enable();
+              }
+            }, 200);
           }
         }
       });
@@ -255,7 +271,6 @@ if (!window.FullpageScrollController) {
         const currentScrollY = window.scrollY;
         const viewportBottom = currentScrollY + window.innerHeight;
 
-        // 1. Scrolling Down from PDP into Editorial
         if (e.deltaY > 20 && viewportBottom >= pdpBottom - 15 && viewportBottom < pdpBottom + 50) {
           if (this.swiper && this.swiper.activeIndex === 0) {
             isTransitioning = true;
@@ -269,7 +284,6 @@ if (!window.FullpageScrollController) {
           }
         }
 
-        // 2. Scrolling Up from Editorial Slide 0 back into PDP
         if (e.deltaY < -20 && this.swiper && this.swiper.activeIndex === 0 && currentScrollY >= pdpBottom - 20) {
           isTransitioning = true;
           window.scrollTo({
@@ -284,10 +298,6 @@ if (!window.FullpageScrollController) {
 
       window.addEventListener('wheel', handleWheel, { passive: true, signal });
     }
-
-    /* =========================================================================
-       4. Header Contrast & Video Optimization
-       ========================================================================= */
 
     handleSlideChange(swiperInstance) {
       const activeSlide = swiperInstance.slides[swiperInstance.activeIndex];
