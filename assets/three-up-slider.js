@@ -1,5 +1,5 @@
-if (!customElements.get('three-up')) {
-  class ThreeUp extends HTMLElement {
+if (!customElements.get('three-up-slider')) {
+  class ThreeUpSlider extends HTMLElement {
     constructor() {
       super();
 
@@ -67,5 +67,5 @@ if (!customElements.get('three-up')) {
     }
   }
 
-  customElements.define('three-up', ThreeUp);
+  customElements.define('three-up-slider', ThreeUpSlider);
 }

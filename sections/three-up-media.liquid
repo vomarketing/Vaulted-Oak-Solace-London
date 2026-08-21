@@ -1,0 +1,163 @@
+{%- liquid
+  assign header_mode = section.settings.header_contrast_mode | default: 'light'
+
+  assign media_type = section.settings.media_type
+  assign image_desktop = section.settings.image_desktop
+  assign image_mobile = section.settings.image_mobile
+  assign video_desktop = section.settings.video_desktop
+  assign video_mobile = section.settings.video_mobile | default: video_desktop
+  assign media_description = section.settings.media_description
+
+  assign has_section_media = false
+  if media_type == 'image' and image_desktop != blank
+    assign has_section_media = true
+  elsif media_type == 'video' and video_desktop != blank
+    assign has_section_media = true
+  endif
+-%}
+
+{%- if has_section_media -%}
+  {{- 'three-up-media.css' | asset_url | stylesheet_tag -}}
+
+  <div
+    class="three-up-media"
+    data-header-mode="{{ header_mode }}"
+  >
+    <div class="three-up-media__inner">
+      {%- if media_type == 'image' -%}
+        {%- render 'picture',
+          image_desktop: image_desktop,
+          image_mobile: image_mobile,
+          class: 'three-up-media__image'
+        -%}
+      {%- else -%}
+        {%- liquid
+          assign video_desktop_url = blank
+          assign video_mobile_url = blank
+          if video_desktop != blank
+            assign video_desktop_url = video_desktop.sources[1].url | default: video_desktop.sources[0].url
+          elsif section.settings.video_desktop_url != blank
+            assign video_desktop_url = section.settings.video_desktop_url
+          endif
+
+          if video_mobile != blank
+            assign video_mobile_url = video_mobile.sources[1].url | default: video_mobile.sources[0].url
+          elsif section.settings.video_mobile_url != blank
+            assign video_mobile_url = section.settings.video_mobile_url
+          else
+            assign video_mobile_url = video_desktop_url
+          endif
+        -%}
+        <div class="three-up-media__video-wrapper">
+          <video
+            class="three-up-media__video js-section-video"
+            autoplay
+            loop
+            muted
+            playsinline
+            preload="metadata"
+            {% if image_desktop != blank %}
+              poster="{{ image_desktop | image_url: width: 1200 }}"
+            {% endif %}
+          >
+            <source src="{{ video_mobile_url }}" media="(max-width: 767px)" type="video/mp4">
+            <source src="{{ video_desktop_url }}" type="video/mp4">
+          </video>
+        </div>
+      {%- endif -%}
+      {%- if media_description != blank -%}
+        <p class="three-up-media__description text-reg-14">{{ media_description }}</p>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Three Up Media",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "media_type",
+      "label": "Media type",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_desktop",
+      "label": "Desktop image",
+      "info": "Used as the image or optional video poster."
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Mobile image",
+      "info": "Uses desktop image when left empty."
+    },
+    {
+      "type": "video",
+      "id": "video_desktop",
+      "label": "Desktop video",
+      "visible_if": "{{ section.settings.media_type == 'video' }}"
+    },
+    {
+      "type": "video",
+      "id": "video_mobile",
+      "label": "Mobile video",
+      "info": "Uses desktop video when left empty.",
+      "visible_if": "{{ section.settings.media_type == 'video' }}"
+    },
+    {
+      "type": "text",
+      "id": "video_desktop_url",
+      "label": "Desktop external MP4 URL",
+      "info": "Used when no desktop Shopify video is selected.",
+      "visible_if": "{{ section.settings.media_type == 'video' }}"
+    },
+    {
+      "type": "text",
+      "id": "video_mobile_url",
+      "label": "Mobile external MP4 URL",
+      "info": "Used when no mobile Shopify video is selected. Falls back to desktop video when empty.",
+      "visible_if": "{{ section.settings.media_type == 'video' }}"
+    },
+    {
+      "type": "text",
+      "id": "media_description",
+      "label": "Media description"
+    },
+    {
+      "type": "select",
+      "id": "header_contrast_mode",
+      "label": "Header contrast mode",
+      "options": [
+        {
+          "value": "light",
+          "label": "Light Header (White text for dark background)"
+        },
+        {
+          "value": "dark",
+          "label": "Dark Header (Black text for light background)"
+        }
+      ],
+      "default": "light"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Three Up Media"
+    }
+  ]
+}
+{% endschema %}
