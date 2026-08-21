@@ -212,6 +212,7 @@ if (!customElements.get('product-fullscreen')) {
       zoomModal.classList.add(this.classes.modalActive);
       zoomModal.setAttribute('aria-hidden', 'false');
       document.body.classList.add(this.classes.scrollLocked);
+      document.body.classList.add('is-zoom-modal-active');
 
       if (window.lazySizes && typeof window.lazySizes.loader.checkElems === 'function') {
         window.lazySizes.loader.checkElems();
@@ -235,6 +236,7 @@ if (!customElements.get('product-fullscreen')) {
       zoomModal.classList.remove(this.classes.modalActive);
       zoomModal.setAttribute('aria-hidden', 'true');
       document.body.classList.remove(this.classes.scrollLocked);
+      document.body.classList.remove('is-zoom-modal-active');
     }
 
     isZoomOpen() {
