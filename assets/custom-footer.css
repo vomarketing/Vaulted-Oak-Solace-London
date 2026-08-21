@@ -4,11 +4,15 @@
   height: 100dvh;
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
+  justify-content: flex-start;
   box-sizing: border-box;
   background-color: var(--Color_Primary, #ffffff);
   color: var(--Color_Secondary, #000000);
   padding: 0;
+
+  @media (min-width: 901px) {
+    padding-top: 100px;
+  }
 
   .ft-Footer_Inner {
     width: 100%;

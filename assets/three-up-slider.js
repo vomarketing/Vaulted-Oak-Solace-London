@@ -40,6 +40,18 @@ if (!customElements.get('three-up-slider')) {
         touchEventsTarget: 'container',
         watchOverflow: true,
         allowTouchMove: !isSingle,
+        a11y: {
+          enabled: true,
+          prevSlideMessage: 'Previous slide',
+          nextSlideMessage: 'Next slide',
+          slideLabelMessage: '{{index}} of {{slidesLength}}',
+          itemRoleDescriptionMessage: 'slide',
+          containerRoleDescriptionMessage: 'image carousel'
+        },
+        keyboard: {
+          enabled: true,
+          onlyInViewport: true
+        },
 
         breakpoints: {
           768: {

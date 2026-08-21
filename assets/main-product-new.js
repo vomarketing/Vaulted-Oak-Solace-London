@@ -95,6 +95,20 @@ if (!customElements.get('product-fullscreen')) {
           touchReleaseOnEdges: true,
           resistanceRatio: 0.7,
           watchOverflow: true,
+          a11y: {
+            enabled: true,
+            prevSlideMessage: 'Previous media',
+            nextSlideMessage: 'Next media',
+            firstSlideMessage: 'This is the first media item',
+            lastSlideMessage: 'This is the last media item',
+            slideLabelMessage: 'Media {{index}} of {{slidesLength}}',
+            itemRoleDescriptionMessage: 'media item',
+            containerRoleDescriptionMessage: 'product media gallery'
+          },
+          keyboard: {
+            enabled: true,
+            onlyInViewport: true
+          },
           on: {
             init: (swiper) => {
               this.handleSlideChange(swiper);

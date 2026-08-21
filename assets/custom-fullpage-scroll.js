@@ -202,9 +202,20 @@ if (!window.FullpageScrollController) {
         resistanceRatio: 0.85,
         watchOverflow: true,
         nested: true,
+        a11y: {
+          enabled: true,
+          prevSlideMessage: 'Previous section',
+          nextSlideMessage: 'Next section',
+          firstSlideMessage: 'This is the first section',
+          lastSlideMessage: 'This is the last section',
+          slideLabelMessage: 'Section {{index}} of {{slidesLength}}',
+          itemRoleDescriptionMessage: 'section',
+          containerRoleDescriptionMessage: 'fullpage scroll'
+        },
         keyboard: {
           enabled: true,
-          onlyInViewport: true
+          onlyInViewport: true,
+          pageUpDown: true
         },
         followFinger: true,
         passiveListeners: false,
