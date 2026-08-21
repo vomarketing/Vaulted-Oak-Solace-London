@@ -11,6 +11,7 @@
   "sections": {
     "main": {
       "type": "main-product",
+      "disabled": true,
       "settings": {
         "delivery_note": "All items are shipped from our UK warehouse and the shipping times quoted are estimates. International customs procedures may apply which can cause delays beyond original delivery estimates. Customs clearance charges are payable by the customer, Solace London has no control over these and will not pay them on your behalf.",
         "stock_note": "Only a few left in stock",
@@ -84,10 +85,71 @@
         "link_text": "",
         "link": ""
       }
+    },
+    "main_product_new_qVcUWX": {
+      "type": "main-product-new",
+      "blocks": {
+        "title_9BKNBY": {
+          "type": "title",
+          "settings": {}
+        },
+        "description_jt7ddV": {
+          "type": "description",
+          "settings": {}
+        },
+        "variant_picker_i8m7PA": {
+          "type": "variant_picker",
+          "settings": {
+            "show_size_guide": true
+          }
+        },
+        "buy_buttons_VGTxwz": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_wishlist": true
+          }
+        },
+        "duties_taxes_d76MTJ": {
+          "type": "duties_taxes",
+          "settings": {
+            "text": "Prices now include customs duties, import fees and taxes. No additional charges will be incurred upon delivery."
+          }
+        },
+        "colorways_UnqVeT": {
+          "type": "colorways",
+          "settings": {
+            "title": "Also available in"
+          }
+        },
+        "drawers_links_Vnywyi": {
+          "type": "drawers_links",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "title_9BKNBY",
+        "description_jt7ddV",
+        "variant_picker_i8m7PA",
+        "buy_buttons_VGTxwz",
+        "duties_taxes_d76MTJ",
+        "colorways_UnqVeT",
+        "drawers_links_Vnywyi"
+      ],
+      "name": "Main Product (New)",
+      "settings": {
+        "header_contrast_mode": "light",
+        "delivery_note": "Order by 4pm for Next Day Delivery",
+        "stock_note": "Only a few left in stock",
+        "wishlist_enable": true,
+        "delivery_and_returns_page": "",
+        "contact_url": "",
+        "recommended_title": "You May Also Like"
+      }
     }
   },
   "order": [
     "main",
+    "main_product_new_qVcUWX",
     "rich_text_NHU7La",
     "three_up_slider_Bwqyrf",
     "three_up_media_Bwqyrf",
