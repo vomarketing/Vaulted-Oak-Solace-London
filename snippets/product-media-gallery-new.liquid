@@ -1,0 +1,143 @@
+{%- doc -%}
+  Product Media Gallery Component (New PDP)
+{%- enddoc -%}
+
+{%- liquid
+  assign default_header_mode = section.settings.header_contrast_mode | default: 'light'
+-%}
+
+<div class="pdp-media-gallery js-pdp-media-gallery" data-media-count="{{ product.media.size }}">
+  <div class="pdp-media-gallery__list js-pdp-media-list">
+    {%- if product.media.size > 0 -%}
+      {%- for media in product.media -%}
+        {%- liquid
+          assign header_mode = default_header_mode
+          assign alt_lower = media.alt | downcase
+          if alt_lower contains 'header:dark' or alt_lower contains 'white-bg' or alt_lower contains 'light-bg'
+            assign header_mode = 'dark'
+          elsif alt_lower contains 'header:light' or alt_lower contains 'dark-bg'
+            assign header_mode = 'light'
+          endif
+
+          assign is_video = false
+          if media.media_type == 'video' or media.media_type == 'external_video'
+            assign is_video = true
+          endif
+        -%}
+
+        <div
+          class="pdp-media-item js-pdp-media-item js-section-header-contrast{% if is_video %} pdp-media-item--video{% else %} pdp-media-item--image{% endif %}"
+          data-media-id="{{ media.id }}"
+          data-media-index="{{ forloop.index0 }}"
+          data-media-type="{{ media.media_type }}"
+          data-header-mode="{{ header_mode }}"
+        >
+          <div class="pdp-media-item__inner js-pdp-media-zoom-trigger" data-media-index="{{ forloop.index0 }}" role="button" tabindex="0" aria-label="Zoom media {{ forloop.index }}">
+            {%- case media.media_type -%}
+              {%- when 'image' -%}
+                <picture class="pdp-media-item__picture">
+                  <source
+                    media="(max-width: 900px)"
+                    srcset="{{ media | image_url: width: 900 }} 1x, {{ media | image_url: width: 1800 }} 2x"
+                  >
+                  <img
+                    src="{{ media | image_url: width: 1400 }}"
+                    srcset="{{ media | image_url: width: 1000 }} 1000w, {{ media | image_url: width: 1400 }} 1400w, {{ media | image_url: width: 2000 }} 2000w"
+                    sizes="(min-width: 901px) 60vw, 100vw"
+                    alt="{{ media.alt | escape | default: product.title }}"
+                    width="{{ media.width }}"
+                    height="{{ media.height }}"
+                    loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
+                    fetchpriority="{% if forloop.first %}high{% else %}auto{% endif %}"
+                    class="pdp-media-item__image"
+                  >
+                </picture>
+
+              {%- when 'video' -%}
+                <div class="pdp-media-item__video-wrapper">
+                  <video
+                    class="pdp-media-item__video js-pdp-video"
+                    autoplay
+                    loop
+                    muted
+                    playsinline
+                    preload="metadata"
+                    {% if media.preview_image %}
+                      poster="{{ media.preview_image | image_url: width: 1400 }}"
+                    {% endif %}
+                  >
+                    {%- for source in media.sources -%}
+                      <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                    {%- endfor -%}
+                  </video>
+                </div>
+
+              {%- when 'external_video' -%}
+                <div class="pdp-media-item__video-wrapper">
+                  {{ media | external_video_tag: class: 'pdp-media-item__video', autoplay: true, loop: true, muted: true }}
+                </div>
+
+              {%- else -%}
+                {{ media | media_tag: class: 'pdp-media-item__fallback' }}
+            {%- endcase -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    {%- else -%}
+      <div class="pdp-media-item pdp-media-item--placeholder js-pdp-media-item js-section-header-contrast" data-header-mode="dark">
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div
+    class="pdp-zoom-modal js-pdp-zoom-modal"
+    id="pdp-zoom-modal"
+    role="dialog"
+    aria-modal="true"
+    aria-label="Fullscreen Product Media Zoom"
+    aria-hidden="true"
+  >
+    <button
+      type="button"
+      class="pdp-zoom-modal__close js-pdp-zoom-close text-med-14"
+      aria-label="Close fullscreen zoom"
+    >
+      close
+    </button>
+
+    <div class="pdp-zoom-modal__container js-pdp-zoom-container">
+      {%- for media in product.media -%}
+        <div
+          class="pdp-zoom-modal__item js-pdp-zoom-item"
+          id="pdp-zoom-item-{{ forloop.index0 }}"
+          data-zoom-index="{{ forloop.index0 }}"
+        >
+          {%- if media.media_type == 'image' -%}
+            {%- render 'responsive-image',
+              image: media,
+              width: 3304,
+              height: 4472,
+              wrapper_class: 'pdp-zoom-modal__rsp-image',
+              img_class: 'pdp-zoom-modal__img' -%}
+          {%- elsif media.media_type == 'video' -%}
+            <div class="pdp-zoom-modal__video-wrapper" style="aspect-ratio: {{ media.aspect_ratio | default: 0.68 }};">
+              <video
+                class="pdp-zoom-modal__video js-pdp-zoom-video"
+                autoplay
+                loop
+                muted
+                playsinline
+                preload="metadata"
+              >
+                {%- for source in media.sources -%}
+                  <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                {%- endfor -%}
+              </video>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>

@@ -1,0 +1,476 @@
+{{ 'main-product-new.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'main-product-new.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign has_size_option = false
+
+  for option in product.options
+    assign downcased_name = option | downcase
+    if downcased_name contains 'size'
+      assign has_size_option = true
+      break
+    endif
+  endfor
+-%}
+
+<product-fullscreen
+  class="pdp-new js-pdp-new prd-Detail"
+  id="Product-{{ section.id }}"
+  data-section-id="{{ section.id }}"
+  data-section-type="product"
+  data-product-handle="{{ product.handle }}"
+  data-has-size-option="{{ has_size_option }}"
+  data-size-chosen="{% if has_size_option %}false{% else %}true{% endif %}"
+>
+  <!-- 1. Main 2-Column Section (Gallery + Sticky Content) -->
+  <div class="pdp-new__main prd-Detail_Inner">
+    <div class="pdp-new__gallery-column prd-Detail_Column prd-Detail_Column-image">
+      {%- render 'product-media-gallery-new', product: product, section: section -%}
+    </div>
+
+    <div class="pdp-new__content-column prd-Detail_Column prd-Detail_Column-content">
+      {%- render 'product-content-new', product: product, section: section, current_variant: current_variant -%}
+    </div>
+  </div>
+
+  <!-- 2. Recommended Products Scroller (Below Main 2 Columns) -->
+  {%- assign recommended_handles_str = product.metafields.Detail.Recommended_Products | default: product.metafields.custom.related_products.value -%}
+  {%- if recommended_handles_str != blank -%}
+    {%- assign recommended_handles = recommended_handles_str | split: '|' -%}
+    {%- if recommended_handles.size > 0 -%}
+      <section class="sec-Section sec-Section-flushUntilMd pdp-recommended-section">
+        <div class="sec-Section_Inner lyt-Container">
+          <header class="sec-Section_Header">
+            {%- capture recommended_title -%}
+              {%- if product.metafields.Detail.Recommended_Title != blank -%}
+                {{ product.metafields.Detail.Recommended_Title }}
+              {%- elsif section.settings.recommended_title != blank -%}
+                {{ section.settings.recommended_title }}
+              {%- else -%}
+                {{ 'products.product.recommended_products' | t | default: 'You May Also Like' }}
+              {%- endif -%}
+            {%- endcapture -%}
+
+            <h2 class="sec-Section_Title text-med-14 uppercase">{{ recommended_title }}</h2>
+          </header>
+
+          <div class="sec-Section_Body">
+            <div
+              class="prd-Recommended css-Scroller"
+              data-module="css-scroller"
+              data-css-scroller-remove-at-breakpoint="md"
+            >
+              <div class="prd-Recommended_Items css-Scroller_Items" data-el="css-scroller.track">
+                <div class="prd-Recommended_Item css-Scroller_Spacer"></div>
+
+                {%- for recommended_handle in recommended_handles -%}
+                  {%- assign recommended_product = all_products[recommended_handle] -%}
+                  {%- if recommended_product != blank -%}
+                    <div
+                      class="prd-Recommended_Item css-Scroller_Item js-Animate"
+                      data-animation="Fade"
+                      {% if forloop.last %} style="--Item_HorizontalSpacing: 0;"{% endif %}
+                    >
+                      {%- render 'product-card', product: recommended_product -%}
+                    </div>
+                  {%- endif -%}
+                {%- endfor -%}
+
+                <div class="prd-Recommended_Item css-Scroller_Spacer"></div>
+              </div>
+
+              <div
+                class="prd-Recommended_Scroller css-Scroller_Scroller"
+                data-el="css-scroller.scroller"
+              >
+                <div
+                  class="prd-Recommended_Thumb css-Scroller_Thumb"
+                  data-el="css-scroller.thumb"
+                ></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+    {%- endif -%}
+  {%- endif -%}
+
+  <!-- 3. Back to Collection Link -->
+  {%- if collection -%}
+    <div class="pg-Back">
+      <div class="pg-Back_Inner lyt-Container">
+        <div class="pg-Back_Body">
+          <a class="pg-Back_Link text-med-10 uppercase" href="{{ collection.url }}">
+            <span class="pg-Back_Icon">{%- render 'bao-chevron-left' -%}</span>
+            <span class="pg-Back_Text">{{ 'products.product.back' | t | default: 'Back' }}</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  {%- endif -%}
+</product-fullscreen>
+
+<!-- =============================================================================
+     SEO JSON-LD Structured Data
+     ============================================================================= -->
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org/",
+  "@type": "Product",
+  "name": {{ product.title | json }},
+  "url": "{{ shop.url }}{{ product.url }}",
+  {%- if product.featured_media -%}
+    "image": [
+      "https:{{ product.featured_media | image_url: width: 1400 }}"
+    ],
+  {%- endif -%}
+  "description": {{ product.description | strip_html | json }},
+  {%- if current_variant.sku != blank -%}
+    "sku": {{ current_variant.sku | json }},
+  {%- endif -%}
+  "brand": {
+    "@type": "Thing",
+    "name": {{ product.vendor | default: shop.name | json }}
+  },
+  {%- if product.variants.size > 0 -%}
+    "offers": [
+      {%- for variant in product.variants -%}
+        {
+          "@type" : "Offer",
+          "availability" : "http://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
+          "price" : "{{ variant.price | divided_by: 100.00 }}",
+          "priceCurrency" : "{{ shop.currency }}",
+          "url" : "{{ shop.url }}{{ variant.url }}",
+          "itemOffered" : {
+            "@type" : "Product",
+            {%- if variant.image -%}
+              "image": "http:{{ variant.image | image_url: width: 1000 }}",
+            {%- endif -%}
+            "name" : {{ variant.title | json }},
+            {%- if variant.sku != blank -%}
+              "sku": {{ variant.sku | json }},
+            {%- endif -%}
+            "url": "{{ shop.url }}{{ variant.url }}"
+          }
+        }{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ]
+  {%- endif -%}
+}
+</script>
+
+<!-- =============================================================================
+     Back-in-Stock (BIS) Popover Integration
+     ============================================================================= -->
+<script type="text/javascript">
+if (typeof(BIS) !== 'undefined') {
+  if (BIS.urlIsProductPage()) {
+    BISPopover.ready.then(function() {
+      var variant_id;
+      var reload = function() {
+        try {
+          var variant = BIS.detectVariant(BIS.popup);
+          if (variant && BIS.popup.variantIsUnavailable(variant)) {
+            variant_id = variant.id;
+          }
+        } catch (e) {};
+      };
+
+      var elm = $('.js-pdp-master-select');
+      if (elm[0]) {
+        elm.on('change', reload);
+      }
+    });
+  }
+}
+</script>
+
+<!-- =============================================================================
+     Klaviyo Product & Add to Cart Tracking
+     ============================================================================= -->
+<script type="text/javascript">
+  var _learnq = _learnq || [];
+  var klaviyoItem = {
+    Name: {{ product.title | json }},
+    ProductID: {{ product.id | json }},
+    Categories: {{ product.collections | map: 'title' | json }},
+    ImageURL: "https:{{ product.featured_media | image_url: width: 600 }}",
+    URL: "{{ shop.secure_url }}{{ product.url }}",
+    Brand: {{ product.vendor | json }},
+    Price: {{ product.price | money | json }},
+    CompareAtPrice: {{ product.compare_at_price_max | money | json }}
+  };
+  _learnq.push(['track', 'Viewed Product', klaviyoItem]);
+  _learnq.push(['trackViewedItem', {
+    Title: klaviyoItem.Name,
+    ItemId: klaviyoItem.ProductID,
+    Categories: klaviyoItem.Categories,
+    ImageUrl: klaviyoItem.ImageURL,
+    Url: klaviyoItem.URL,
+    Metadata: {
+      Brand: klaviyoItem.Brand,
+      Price: klaviyoItem.Price,
+      CompareAtPrice: klaviyoItem.CompareAtPrice
+    }
+  }]);
+
+  document.addEventListener('DOMContentLoaded', function() {
+    var submitBtn = document.querySelector('.js-pdp-submit');
+    if (submitBtn) {
+      submitBtn.addEventListener('click', function() {
+        _learnq.push(['track', 'Added to Cart', klaviyoItem]);
+      });
+    }
+  });
+</script>
+
+{% schema %}
+{
+  "name": "Main Product (New)",
+  "tag": "section",
+  "class": "shopify-section-main-product-new",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header Contrast Default"
+    },
+    {
+      "type": "select",
+      "id": "header_contrast_mode",
+      "label": "Header Scheme",
+      "info": "Default header contrast mode over media gallery",
+      "options": [
+        {
+          "value": "light",
+          "label": "Light"
+        },
+        {
+          "value": "dark",
+          "label": "Dark"
+        }
+      ],
+      "default": "light"
+    },
+    {
+      "type": "header",
+      "content": "Product Notes"
+    },
+    {
+      "type": "text",
+      "id": "delivery_note",
+      "label": "Delivery Note",
+      "default": "Order by 4pm for Next Day Delivery"
+    },
+    {
+      "type": "text",
+      "id": "stock_note",
+      "label": "Stock Note",
+      "info": "Only shown if inventory is below 10",
+      "default": "Only a few left in stock"
+    },
+    {
+      "type": "checkbox",
+      "id": "wishlist_enable",
+      "label": "Enable Wishlist",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Supporting Content"
+    },
+    {
+      "type": "page",
+      "id": "delivery_and_returns_page",
+      "label": "Delivery & Returns Page",
+      "info": "Content for Delivery & Returns drawer"
+    },
+    {
+      "type": "url",
+      "id": "contact_url",
+      "label": "Contact Page URL"
+    },
+    {
+      "type": "header",
+      "content": "Recommendations Section"
+    },
+    {
+      "type": "text",
+      "id": "recommended_title",
+      "label": "Recommendations Title",
+      "default": "You May Also Like"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1
+    },
+    {
+      "type": "price",
+      "name": "Price",
+      "limit": 1
+    },
+    {
+      "type": "description",
+      "name": "Short Description",
+      "limit": 1
+    },
+    {
+      "type": "variant_picker",
+      "name": "Variant Picker",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_size_guide",
+          "label": "Show Size Guide Link",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "contact_question",
+      "name": "Contact Question",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "question_text",
+          "label": "Question Text",
+          "default": "Questions about size, fit or fabric? "
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link Text",
+          "default": "Contact us"
+        },
+        {
+          "type": "url",
+          "id": "contact_link",
+          "label": "Contact Link",
+          "info": "Optional link override"
+        }
+      ]
+    },
+    {
+      "type": "buy_buttons",
+      "name": "Buy Buttons & Wishlist",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_wishlist",
+          "label": "Show Wishlist Button",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "duties_taxes",
+      "name": "Duties & Taxes",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Disclaimer Text",
+          "default": "Prices now include customs duties, import fees and taxes. No additional charges will be incurred upon delivery."
+        }
+      ]
+    },
+    {
+      "type": "status_notes",
+      "name": "Status Notes",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Note Text",
+          "info": "Optional override for status and delivery notes"
+        }
+      ]
+    },
+    {
+      "type": "colorways",
+      "name": "Also Available In",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Also available in"
+        }
+      ]
+    },
+    {
+      "type": "drawers_links",
+      "name": "Drawer Links",
+      "limit": 1
+    },
+    {
+      "type": "accordion_tabs",
+      "name": "Drawer Links (Legacy)",
+      "limit": 1
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Share information about your brand or products.</p>"
+        }
+      ]
+    },
+    {
+      "type": "custom_liquid",
+      "name": "Custom Liquid",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "custom_liquid",
+          "label": "Custom Liquid"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Main Product (New)",
+      "blocks": [
+        {
+          "type": "title"
+        },
+        {
+          "type": "description"
+        },
+        {
+          "type": "variant_picker"
+        },
+        {
+          "type": "buy_buttons"
+        },
+        {
+          "type": "duties_taxes"
+        },
+        {
+          "type": "colorways"
+        },
+        {
+          "type": "drawers_links"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

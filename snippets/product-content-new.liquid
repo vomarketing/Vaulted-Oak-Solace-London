@@ -1,0 +1,881 @@
+{%- doc -%}
+  Product Content Component (New PDP)
+{%- enddoc -%}
+
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+  assign has_size_option = false
+
+  for option in product.options_with_values
+    assign downcased_name = option.name | downcase
+    if downcased_name contains 'size'
+      assign has_size_option = true
+      break
+    endif
+  endfor
+
+  # Metafield & Content Fallbacks
+  assign short_desc = product.metafields.custom.short_description.value | default: product.metafields.Detail.Short_Description | default: product.description | newline_to_br | split: '<br />' | first
+  assign details_content = product.metafields.Detail.Description | default: product.description
+  assign size_guide_table = product.metafields.Detail.Size_Guide_Table
+  assign delivery_returns_content = pages[section.settings.delivery_and_returns_page].content | default: section.settings.delivery_note
+  assign contact_page_url = section.settings.contact_url
+  assign related_color_handles = product.metafields.custom.related_products.value | default: product.metafields.Detail.Related_Products | split: '|'
+
+  # Detect if content blocks exist in section.blocks
+  assign has_content_blocks = false
+  if section.blocks.size > 0
+    assign has_content_blocks = true
+  endif
+-%}
+
+<div class="pdp-content js-pdp-content prd-Detail_Column prd-Detail_Column-content">
+  <div class="pdp-content__wrapper">
+    <div class="pdp-content__top">
+      {%- assign product_form_id = 'product-form-' | append: section.id -%}
+      {%- form 'product',
+        product,
+        id: product_form_id,
+        class: 'pdp-form js-pdp-form prd-Offers_Form',
+        data-push-cart-form: '',
+        data-product-detail-form: ''
+      -%}
+        <input type="hidden" name="quantity" value="1">
+
+        {%- if has_content_blocks -%}
+          {%- for block in section.blocks -%}
+            {%- case block.type -%}
+              {%- when '@app' -%}
+                <div class="pdp-block pdp-block--app" {{ block.shopify_attributes }}>
+                  {% render block %}
+                </div>
+
+              {%- when 'title' -%}
+                <div class="pdp-block pdp-block--title" {{ block.shopify_attributes }}>
+                  <h1 class="pdp-content__title prd-Detail_Title text-med-14">
+                    {{ product.title }}
+                  </h1>
+                </div>
+
+              {%- when 'price' -%}
+                <div class="pdp-block pdp-block--price pdp-content__price-row text-med-14" {{ block.shopify_attributes }}>
+                  {%- if current_variant.compare_at_price > current_variant.price -%}
+                    {%- assign discount_percent = current_variant.compare_at_price | minus: current_variant.price | times: 100.0 | divided_by: current_variant.compare_at_price | round -%}
+                    <s class="pdp-content__price-compare prd-Price_Compare text-reg-14">{{ current_variant.compare_at_price | money }}</s>
+                    <span class="pdp-content__price-sale prd-Card_Kicker-red text-med-14">{{ current_variant.price | money }}</span>
+                    <span class="pdp-content__price-discount prd-Card_Kicker-red text-reg-14">{{ discount_percent }}% off</span>
+                  {%- else -%}
+                    <span class="pdp-content__price-regular text-med-14">{{ current_variant.price | money }}</span>
+                  {%- endif -%}
+                </div>
+
+              {%- when 'description' -%}
+                {%- if short_desc != blank -%}
+                  <div class="pdp-block pdp-block--desc pdp-content__short-desc prd-Detail_Text text-reg-14" {{ block.shopify_attributes }}>
+                    {{ short_desc }}
+                  </div>
+                {%- endif -%}
+
+                {%- if product.compare_at_price > product.price -%}
+                  <div class="pdp-block pdp-block--final-sale pdp-final-sale final-sale text-reg-10">
+                    <div class="pdp-final-sale__content" style="color: var(--Color_Error, #c20000); margin-top: 15px;">
+                      <strong>Archive Sale – Final Sale</strong><br>
+                      This item is final sale. No returns or exchanges. If you need assistance with sizing, contact
+                      <a href="mailto:help@solacelondon.com" class="underline" style="color: inherit;">help@solacelondon.com</a> prior to purchasing. Our team are available daily between 9am - 5pm GMT.
+                    </div>
+                  </div>
+                {%- endif -%}
+
+              {%- when 'variant_picker' -%}
+                <div class="pdp-block pdp-block--variants prd-Offers_Options" {{ block.shopify_attributes }}>
+                  {%- unless product.has_only_default_variant -%}
+                    {%- for option in product.options_with_values -%}
+                      {%- assign downcased_name = option.name | downcase -%}
+                      {%- if downcased_name contains 'size' -%}
+                        <div class="pdp-size-row prd-OffersOption" data-option-index="{{ forloop.index0 }}" data-product-detail-size-option>
+                          <header class="pdp-size-row__header prd-OffersOption_Header">
+                            <span class="pdp-size-row__label prd-OffersOption_Label text-reg-14">
+                              {{ option.name }}
+                            </span>
+
+                            {%- if block.settings.show_size_guide != false and size_guide_table != blank or section.settings.size_guide_page != blank -%}
+                              <button
+                                type="button"
+                                class="pdp-size-row__guide-link prd-OffersOption_Link text-reg-14 underline js-size-guide-trigger"
+                                data-module-drawers-trigger="pdp-size-guide"
+                                aria-label="Open Size Guide"
+                              >
+                                {{ 'products.product.size_guide' | t | default: 'Size Guide' }}
+                              </button>
+                            {%- endif -%}
+                          </header>
+
+                          <div class="pdp-size-row__list prd-OffersOption_Items" data-module="product-stock-status" data-product-detail-choices>
+                            {%- for value in option.values -%}
+                              {%- liquid
+                                assign variant_for_value = null
+                                for v in product.variants
+                                  if v.options[forloop.parentloop.index0] == value
+                                    assign variant_for_value = v
+                                    break
+                                  endif
+                                endfor
+
+                                assign is_avail = true
+                                assign inventory_qty = 0
+                                if variant_for_value != null
+                                  assign is_avail = variant_for_value.available
+                                  assign inventory_qty = variant_for_value.inventory_quantity
+                                endif
+
+                                assign is_selected = false
+                                if current_variant.options[forloop.parentloop.index0] == value
+                                  assign is_selected = true
+                                endif
+                              -%}
+
+                              <div
+                                class="prd-OffersOption_Item"
+                                data-el="product-stock-status.option"
+                                data-stock="{{ inventory_qty }}"
+                              >
+                                <button
+                                  type="button"
+                                  class="prd-OffersOption_Button pdp-size-row__btn text-reg-14 js-pdp-size-btn{% unless is_avail %} disabled-btn is-soldout{% endunless %}{% if is_selected %} is-selected{% endif %}"
+                                  data-value="{{ value | escape }}"
+                                  data-variant-id="{{ variant_for_value.id }}"
+                                  data-available="{{ is_avail }}"
+                                  data-stock="{{ inventory_qty }}"
+                                  data-index="option{{ option.position }}"
+                                  aria-current="{% if is_selected %}true{% else %}false{% endif %}"
+                                  {% unless is_avail %}data-module-drawers-trigger="bis"{% endunless %}
+                                  data-product-detail-choice
+                                >
+                                  <span class="prd-OffersOption_ButtonText">{{ value }}</span>
+                                </button>
+                              </div>
+                            {%- endfor -%}
+                          </div>
+
+                          <select
+                            class="util-ScreenReaderOnly js-pdp-option-select"
+                            id="SingleOptionSelector-{{ forloop.index0 }}"
+                            data-single-option-selector
+                            data-index="option{{ option.position }}"
+                            name="options[{{ option.name | escape }}]"
+                            data-product-detail-select
+                          >
+                            {%- for value in option.values -%}
+                              <option
+                                value="{{ value | escape }}"
+                                {%- if option.selected_value == value -%}selected="selected"{%- endif -%}
+                              >
+                                {{ value }}
+                              </option>
+                            {%- endfor -%}
+                          </select>
+                        </div>
+
+                      {%- else -%}
+                        <!-- Non-size options (e.g. Gift Card values, Color) -->
+                        <div class="pdp-option-row prd-OffersOption">
+                          <header class="prd-OffersOption_Header">
+                            <label class="pdp-option-label prd-OffersOption_Label text-reg-14" for="SingleOptionSelector-{{ forloop.index0 }}">
+                              {{ option.name }}
+                            </label>
+                          </header>
+                          <select
+                            class="prd-Offers_OptionSelect text-reg-14 js-pdp-option-select {% if product.handle == 'gift-card' %} prd-GiftCard_Select {% endif %}"
+                            id="SingleOptionSelector-{{ forloop.index0 }}"
+                            data-single-option-selector
+                            name="options[{{ option.name | escape }}]"
+                            data-index="option{{ option.position }}"
+                          >
+                            {%- for value in option.values -%}
+                              <option
+                                value="{{ value | escape }}"
+                                {%- if option.selected_value == value -%}selected="selected"{%- endif -%}
+                              >
+                                {{ value | replace: '.00', '' }}
+                              </option>
+                            {%- endfor -%}
+                          </select>
+                        </div>
+                      {%- endif -%}
+                    {%- endfor -%}
+                  {%- endunless -%}
+
+                  <select
+                    name="id"
+                    class="util-ScreenReaderOnly js-pdp-master-select"
+                    data-product-select
+                  >
+                    {%- for variant in product.variants -%}
+                      <option
+                        {% if variant == current_variant %}selected="selected"{% endif %}
+                        {% unless variant.available %}data-soldout="true" disabled="disabled"{% endunless %}
+                        value="{{ variant.id }}"
+                        data-price="{{ variant.price | money }}"
+                        data-price-no-decimals="{{ variant.price | money_without_trailing_zeros }}"
+                        data-compare-price="{{ variant.compare_at_price | money }}"
+                        data-available="{{ variant.available }}"
+                        data-stock="{{ variant.inventory_quantity }}"
+                      >
+                        {{ variant.title }}
+                      </option>
+                    {%- endfor -%}
+                  </select>
+                </div>
+
+                <!-- Size Guide Drawer Container -->
+                {%- if size_guide_table != blank or section.settings.size_guide_page != blank -%}
+                  <div
+                    class="drw-Drawer drw-Drawer-fromRight pdp-size-guide-drawer"
+                    data-module-drawers-drawer="pdp-size-guide"
+                    data-module-drawers-move-me="root"
+                  >
+                    <button
+                      type="button"
+                      class="drw-Drawer_Close"
+                      data-module-drawers-close="pdp-size-guide"
+                      aria-label="Close Size Guide"
+                    >
+                      {%- render 'bao-close' -%}
+                    </button>
+                    <div class="drw-Drawer_Inner">
+                      <div class="drw-Drawer_Body">
+                        <div class="drw-Drawer_Header">
+                          <h2 class="drw-Drawer_Title text-med-14 uppercase">
+                            {{ 'products.product.size_guide' | t | default: 'Size Guide' }}
+                          </h2>
+                          <p class="drw-Drawer_Product text-reg-10 uppercase">
+                            {{ product.title }}
+                          </p>
+                        </div>
+                        <div class="drw_Drawer_Content rte-RichText text-reg-14">
+                          {%- if size_guide_table != blank -%}
+                            {{ size_guide_table }}
+                          {%- elsif section.settings.size_guide_page != blank -%}
+                            {{ pages[section.settings.size_guide_page].content }}
+                          {%- endif -%}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                {%- endif -%}
+
+              {%- when 'contact_question' -%}
+                <div class="pdp-block pdp-block--contact pdp-content__contact-question text-reg-14" {{ block.shopify_attributes }}>
+                  <span>{{ block.settings.question_text | default: "Questions about size, fit or fabric? " }}</span>
+                  {%- assign contact_target = block.settings.contact_link | default: contact_page_url -%}
+                  {%- if contact_target != blank -%}
+                    <a href="{{ contact_target }}" class="pdp-content__contact-link underline">{{ block.settings.link_text | default: "Contact us" }}</a>
+                  {%- else -%}
+                    <a href="mailto:{{ shop.email }}" class="pdp-content__contact-link underline">{{ block.settings.link_text | default: "Contact us" }}</a>
+                  {%- endif -%}
+                </div>
+
+              {%- when 'buy_buttons' -%}
+                <div class="pdp-block pdp-block--buy-buttons" {{ block.shopify_attributes }}>
+                  <div class="prd-Offers_Footer pdp-cta-row">
+                    <button
+                      class="prd-Offers_Submit pdp-cta-submit text-med-14 js-pdp-submit {% if product.handle == 'gift-card' %} prd-GiftCard_Submit {% endif %}"
+                      type="submit"
+                      name="add"
+                      {% if has_size_option and current_variant == blank %}
+                        disabled
+                      {% endif %}
+                      {% unless current_variant.available %}
+                        disabled
+                        data-module-drawers-trigger="bis"
+                      {% endunless %}
+                      data-product-detail-submit
+                    >
+                      {%- if has_size_option -%}
+                        <span class="prd-Offers_Choose js-pdp-submit-choose text-med-14 uppercase">
+                          {{ 'products.product.please_choose' | t | default: 'Please Choose' }}
+                        </span>
+                      {%- endif -%}
+
+                      <span
+                        class="prd-Offers_SubmitText js-pdp-submit-text text-med-14 uppercase"
+                        data-product-detail-submit-text
+                        data-translation-add-to-cart="{{ 'products.product.add_to_cart' | t | default: 'Add To Bag' }}"
+                        data-translation-sold-out="{{ 'products.product.sold_out' | t | default: 'Sold Out' }}"
+                      >
+                        {%- if current_variant.available -%}
+                          {{ 'products.product.add_to_cart' | t | default: 'Add To Bag' }}
+                        {%- else -%}
+                          {{ 'products.product.sold_out' | t | default: 'Sold Out' }}
+                        {%- endif -%}
+                      </span>
+
+                      <div class="price-wrapper js-pdp-price-wrapper">
+                        <span
+                          class="prd-Offers_SubmitPrice text-med-14"
+                          data-product-detail-button-price
+                          aria-current="false"
+                        >
+                          {%- if current_variant.compare_at_price > current_variant.price -%}
+                            <s class="prd-Price_Compare text-reg-14">{{ current_variant.compare_at_price | money }}</s>
+                          {%- endif %}
+                          {{ current_variant.price | money_without_trailing_zeros }}
+                        </span>
+
+                        <span
+                          class="prd-Offers_SubmitPrice text-med-14"
+                          data-product-detail-button-price
+                          aria-current="true"
+                        >
+                          {%- if current_variant.compare_at_price > current_variant.price -%}
+                            <s class="prd-Price_Compare text-reg-14">{{ current_variant.compare_at_price | money }}</s>
+                            <span class="prd-Card_Kicker prd-Card_Kicker-red text-reg-14" style="margin-right: 2px;">Sale</span>
+                          {%- endif -%}
+                          <span {% if current_variant.compare_at_price > current_variant.price %}class="prd-Card_Kicker-red"{% endif %}>
+                            {{ current_variant.price | money_without_trailing_zeros }}
+                          </span>
+                        </span>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+
+              {%- when 'duties_taxes', 'status_notes' -%}
+                {%- if section.settings.stock_note != blank or section.settings.delivery_note != blank or block.settings.text != blank or section.settings.wishlist_enable -%}
+                  <div class="pdp-block pdp-block--status prd-Detail_Status" {{ block.shopify_attributes }}>
+                    <div class="prd-Status">
+                      {%- if section.settings.stock_note != blank -%}
+                        <div
+                          class="prd-Status_Stock js-pdp-stock-status text-reg-14"
+                          data-stock-note="{{ section.settings.stock_note }}"
+                          aria-hidden="{% if current_variant.inventory_quantity > 0 and current_variant.inventory_quantity < 10 %}false{% else %}true{% endif %}"
+                        >
+                          {{ section.settings.stock_note }}
+                        </div>
+                      {%- endif -%}
+
+                      {%- assign delivery_msg = block.settings.text | default: section.settings.delivery_note -%}
+                      {%- if delivery_msg != blank -%}
+                        <div class="prd-Status_Delivery text-reg-10 italic">
+                          {{ delivery_msg }}
+                        </div>
+                      {%- endif -%}
+                    </div>
+
+                    {%- if section.settings.wishlist_enable -%}
+                      <div class="pdp-wishlist-wrapper">
+                        {%- render 'iwish_v2',
+                          component: 'add-to-wishlist',
+                          product: product,
+                          variant: current_variant,
+                          page_type: 'product'
+                        -%}
+                      </div>
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
+
+              {%- when 'colorways' -%}
+                {%- if related_color_handles.size > 0 -%}
+                  <div class="pdp-block pdp-block--colorways prd-Detail_Related" {{ block.shopify_attributes }}>
+                    <header class="prd-Related_Header">
+                      <h4 class="prd-Related_Title text-reg-14">
+                        {{ block.settings.title | default: product.metafields.Detail.Related_Title | default: 'Also available in' }}
+                      </h4>
+                    </header>
+
+                    <div class="prd-Related_Body">
+                      <div class="prd-Related_Items">
+                        {%- for handle in related_color_handles -%}
+                          {%- assign rel_prod = all_products[handle] -%}
+                          {%- if rel_prod != blank -%}
+                            <div class="prd-Related_Item">
+                              <a
+                                class="prd-Related_Link"
+                                href="{{ rel_prod.url }}"
+                                title="{{ rel_prod.title }}"
+                              >
+                                {%- render 'responsive-image',
+                                  image: rel_prod.featured_image,
+                                  width: 220,
+                                  size_by_width: true
+                                -%}
+                              </a>
+                            </div>
+                          {%- endif -%}
+                        {%- endfor -%}
+                      </div>
+                    </div>
+                  </div>
+                {%- endif -%}
+
+              {%- when 'drawers_links', 'accordion_tabs' -%}
+                <div class="pdp-block pdp-block--links prd-Detail_Links text-reg-14" {{ block.shopify_attributes }}>
+                  <div class="prd-Detail_LinksItem">
+                    <button
+                      class="prd-Detail_Link text-reg-14 underline"
+                      type="button"
+                      data-module-drawers-trigger="pdp-details"
+                    >
+                      {{ 'products.product.details' | t | default: 'Details' }}
+                    </button>
+
+                    <div
+                      class="drw-Drawer drw-Drawer-fromRight"
+                      data-module-drawers-drawer="pdp-details"
+                      data-module-drawers-move-me="root"
+                    >
+                      <button
+                        type="button"
+                        class="drw-Drawer_Close"
+                        data-module-drawers-close="pdp-details"
+                        aria-label="Close Details"
+                      >
+                        {%- render 'bao-close' -%}
+                      </button>
+                      <div class="drw-Drawer_Inner">
+                        <header class="drw-Drawer_Header">
+                          <h2 class="drw-Drawer_Title text-med-14 uppercase">{{ 'products.product.details' | t | default: 'Details' }}</h2>
+                          <p class="drw-Drawer_Product text-reg-10 uppercase">{{ product.title }}</p>
+                        </header>
+
+                        <div class="drw-Drawer_Body">
+                          <div class="rte-RichText text-reg-14">
+                            {{ details_content }}
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {%- if delivery_returns_content != blank -%}
+                    <div class="prd-Detail_LinksItem">
+                      <button
+                        class="prd-Detail_Link text-reg-14 underline"
+                        type="button"
+                        data-module-drawers-trigger="pdp-delivery"
+                      >
+                        {{ 'products.product.delivery_and_returns' | t | default: 'Delivery and returns' }}
+                      </button>
+
+                      <div
+                        class="drw-Drawer drw-Drawer-fromRight"
+                        data-module-drawers-drawer="pdp-delivery"
+                        data-module-drawers-move-me="root"
+                      >
+                        <button
+                          type="button"
+                          class="drw-Drawer_Close"
+                          data-module-drawers-close="pdp-delivery"
+                          aria-label="Close Delivery and returns"
+                        >
+                          {%- render 'bao-close' -%}
+                        </button>
+                        <div class="drw-Drawer_Inner">
+                          <header class="drw-Drawer_Header">
+                            <h2 class="drw-Drawer_Title text-med-14 uppercase">{{ 'products.product.delivery_and_returns' | t | default: 'Delivery and returns' }}</h2>
+                          </header>
+
+                          <div class="drw-Drawer_Body">
+                            <div class="rte-RichText text-reg-14">
+                              {{ delivery_returns_content }}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  {%- endif -%}
+
+                  <div class="prd-Detail_LinksItem">
+                    {%- if contact_page_url != blank -%}
+                      <a class="prd-Detail_Link text-reg-14 underline" href="{{ contact_page_url }}">
+                        {{ 'products.product.contact_us' | t | default: 'Contact us' }}
+                      </a>
+                    {%- else -%}
+                      <a class="prd-Detail_Link text-reg-14 underline" href="mailto:{{ shop.email }}">
+                        {{ 'products.product.contact_us' | t | default: 'Contact us' }}
+                      </a>
+                    {%- endif -%}
+                  </div>
+                </div>
+
+              {%- when 'text' -%}
+                {%- if block.settings.text != blank -%}
+                  <div class="pdp-block pdp-block--text text-reg-14" {{ block.shopify_attributes }}>
+                    {{ block.settings.text }}
+                  </div>
+                {%- endif -%}
+
+              {%- when 'custom_liquid' -%}
+                {%- if block.settings.custom_liquid != blank -%}
+                  <div class="pdp-block pdp-block--custom-liquid" {{ block.shopify_attributes }}>
+                    {{ block.settings.custom_liquid }}
+                  </div>
+                {%- endif -%}
+
+            {%- endcase -%}
+          {%- endfor -%}
+
+        {%- else -%}
+          <!-- Default Fallback Static Rendering when no blocks exist -->
+          <div class="pdp-block pdp-block--title">
+            <h1 class="pdp-content__title prd-Detail_Title text-med-14">
+              {{ product.title }}
+            </h1>
+          </div>
+
+          {%- if short_desc != blank -%}
+            <div class="pdp-block pdp-block--desc pdp-content__short-desc prd-Detail_Text text-reg-14">
+              {{ short_desc }}
+            </div>
+          {%- endif -%}
+
+          {%- if product.compare_at_price > product.price -%}
+            <div class="pdp-block pdp-block--final-sale pdp-final-sale final-sale text-reg-10">
+              <div class="pdp-final-sale__content" style="color: var(--Color_Error, #c20000); margin-top: 15px;">
+                <strong>Archive Sale – Final Sale</strong><br>
+                This item is final sale. No returns or exchanges. If you need assistance with sizing, contact
+                <a href="mailto:help@solacelondon.com" class="underline" style="color: inherit;">help@solacelondon.com</a> prior to purchasing. Our team are available daily between 9am - 5pm GMT.
+              </div>
+            </div>
+          {%- endif -%}
+
+          <div class="pdp-block pdp-block--variants prd-Offers_Options">
+            {%- unless product.has_only_default_variant -%}
+              {%- for option in product.options_with_values -%}
+                {%- assign downcased_name = option.name | downcase -%}
+                {%- if downcased_name contains 'size' -%}
+                  <div class="pdp-size-row prd-OffersOption" data-option-index="{{ forloop.index0 }}" data-product-detail-size-option>
+                    <header class="pdp-size-row__header prd-OffersOption_Header">
+                      <span class="pdp-size-row__label prd-OffersOption_Label text-reg-14">
+                        {{ option.name }}
+                      </span>
+
+                      {%- if size_guide_table != blank or section.settings.size_guide_page != blank -%}
+                        <button
+                          type="button"
+                          class="pdp-size-row__guide-link prd-OffersOption_Link text-reg-14 underline js-size-guide-trigger"
+                          data-module-drawers-trigger="pdp-size-guide"
+                          aria-label="Open Size Guide"
+                        >
+                          {{ 'products.product.size_guide' | t | default: 'Size Guide' }}
+                        </button>
+                      {%- endif -%}
+                    </header>
+
+                    <div class="pdp-size-row__list prd-OffersOption_Items" data-module="product-stock-status" data-product-detail-choices>
+                      {%- for value in option.values -%}
+                        {%- liquid
+                          assign variant_for_value = null
+                          for v in product.variants
+                            if v.options[forloop.parentloop.index0] == value
+                              assign variant_for_value = v
+                              break
+                            endif
+                          endfor
+
+                          assign is_avail = true
+                          assign inventory_qty = 0
+                          if variant_for_value != null
+                            assign is_avail = variant_for_value.available
+                            assign inventory_qty = variant_for_value.inventory_quantity
+                          endif
+
+                          assign is_selected = false
+                          if current_variant.options[forloop.parentloop.index0] == value
+                            assign is_selected = true
+                          endif
+                        -%}
+
+                        <div
+                          class="prd-OffersOption_Item"
+                          data-el="product-stock-status.option"
+                          data-stock="{{ inventory_qty }}"
+                        >
+                          <button
+                            type="button"
+                            class="prd-OffersOption_Button pdp-size-row__btn text-reg-14 js-pdp-size-btn{% unless is_avail %} disabled-btn is-soldout{% endunless %}{% if is_selected %} is-selected{% endif %}"
+                            data-value="{{ value | escape }}"
+                            data-variant-id="{{ variant_for_value.id }}"
+                            data-available="{{ is_avail }}"
+                            data-stock="{{ inventory_qty }}"
+                            data-index="option{{ option.position }}"
+                            aria-current="{% if is_selected %}true{% else %}false{% endif %}"
+                            {% unless is_avail %}data-module-drawers-trigger="bis"{% endunless %}
+                            data-product-detail-choice
+                          >
+                            <span class="prd-OffersOption_ButtonText">{{ value }}</span>
+                          </button>
+                        </div>
+                      {%- endfor -%}
+                    </div>
+
+                    <select
+                      class="util-ScreenReaderOnly js-pdp-option-select"
+                      id="SingleOptionSelector-{{ forloop.index0 }}"
+                      data-single-option-selector
+                      data-index="option{{ option.position }}"
+                      name="options[{{ option.name | escape }}]"
+                      data-product-detail-select
+                    >
+                      {%- for value in option.values -%}
+                        <option
+                          value="{{ value | escape }}"
+                          {% if option.selected_value == value %}selected="selected"{% endif %}
+                        >
+                          {{ value }}
+                        </option>
+                      {%- endfor -%}
+                    </select>
+                  </div>
+                {%- endif -%}
+              {%- endfor -%}
+            {%- endunless -%}
+
+            <select
+              name="id"
+              class="util-ScreenReaderOnly js-pdp-master-select"
+              data-product-select
+            >
+              {%- for variant in product.variants -%}
+                <option
+                  {% if variant == current_variant %}selected="selected"{% endif %}
+                  {% unless variant.available %}data-soldout="true" disabled="disabled"{% endunless %}
+                  value="{{ variant.id }}"
+                  data-price="{{ variant.price | money }}"
+                  data-price-no-decimals="{{ variant.price | money_without_trailing_zeros }}"
+                  data-compare-price="{{ variant.compare_at_price | money }}"
+                  data-available="{{ variant.available }}"
+                  data-stock="{{ variant.inventory_quantity }}"
+                >
+                  {{ variant.title }}
+                </option>
+              {%- endfor -%}
+            </select>
+          </div>
+
+          <!-- Default Buy Buttons & Price -->
+          <div class="pdp-block pdp-block--buy-buttons">
+            <div class="prd-Offers_Footer pdp-cta-row">
+              <button
+                class="prd-Offers_Submit pdp-cta-submit text-med-14 js-pdp-submit"
+                type="submit"
+                name="add"
+                {% if has_size_option and current_variant == blank %}
+                  disabled
+                {% endif %}
+                {% unless current_variant.available %}
+                  disabled
+                  data-module-drawers-trigger="bis"
+                {% endunless %}
+                data-product-detail-submit
+              >
+                {%- if has_size_option -%}
+                  <span class="prd-Offers_Choose js-pdp-submit-choose text-med-14 uppercase">
+                    {{ 'products.product.please_choose' | t | default: 'Please Choose' }}
+                  </span>
+                {%- endif -%}
+
+                <span
+                  class="prd-Offers_SubmitText js-pdp-submit-text text-med-14 uppercase"
+                  data-product-detail-submit-text
+                  data-translation-add-to-cart="{{ 'products.product.add_to_cart' | t | default: 'Add To Bag' }}"
+                  data-translation-sold-out="{{ 'products.product.sold_out' | t | default: 'Sold Out' }}"
+                >
+                  {%- if current_variant.available -%}
+                    {{ 'products.product.add_to_cart' | t | default: 'Add To Bag' }}
+                  {%- else -%}
+                    {{ 'products.product.sold_out' | t | default: 'Sold Out' }}
+                  {%- endif -%}
+                </span>
+
+                <div class="price-wrapper js-pdp-price-wrapper">
+                  <span
+                    class="prd-Offers_SubmitPrice text-med-14"
+                    data-product-detail-button-price
+                    aria-current="false"
+                  >
+                    {%- if current_variant.compare_at_price > current_variant.price -%}
+                      <s class="prd-Price_Compare text-reg-14">{{ current_variant.compare_at_price | money }}</s>
+                    {%- endif %}
+                    {{ current_variant.price | money_without_trailing_zeros }}
+                  </span>
+
+                  <span
+                    class="prd-Offers_SubmitPrice text-med-14"
+                    data-product-detail-button-price
+                    aria-current="true"
+                  >
+                    {%- if current_variant.compare_at_price > current_variant.price -%}
+                      <s class="prd-Price_Compare text-reg-14">{{ current_variant.compare_at_price | money }}</s>
+                      <span class="prd-Card_Kicker prd-Card_Kicker-red text-reg-14" style="margin-right: 2px;">Sale</span>
+                    {%- endif -%}
+                    <span {% if current_variant.compare_at_price > current_variant.price %}class="prd-Card_Kicker-red"{% endif %}>
+                      {{ current_variant.price | money_without_trailing_zeros }}
+                    </span>
+                  </span>
+                </div>
+              </button>
+            </div>
+          </div>
+
+          <!-- Default Status Notes & Wishlist -->
+          <div class="pdp-block pdp-block--status prd-Detail_Status">
+            <div class="prd-Status">
+              {%- if section.settings.stock_note != blank -%}
+                <div
+                  class="prd-Status_Stock js-pdp-stock-status text-reg-14"
+                  data-stock-note="{{ section.settings.stock_note }}"
+                  aria-hidden="{% if current_variant.inventory_quantity > 0 and current_variant.inventory_quantity < 10 %}false{% else %}true{% endif %}"
+                >
+                  {{ section.settings.stock_note }}
+                </div>
+              {%- endif -%}
+
+              {%- if section.settings.delivery_note != blank -%}
+                <div class="prd-Status_Delivery text-reg-10 italic">
+                  {{ section.settings.delivery_note }}
+                </div>
+              {%- endif -%}
+            </div>
+
+            {%- if section.settings.wishlist_enable -%}
+              <div class="pdp-wishlist-wrapper">
+                {%- render 'iwish_v2',
+                  component: 'add-to-wishlist',
+                  product: product,
+                  variant: current_variant,
+                  page_type: 'product'
+                -%}
+              </div>
+            {%- endif -%}
+          </div>
+
+          <!-- Default Colorways -->
+          {%- if related_color_handles.size > 0 -%}
+            <div class="pdp-block pdp-block--colorways prd-Detail_Related">
+              <header class="prd-Related_Header">
+                <h4 class="prd-Related_Title text-reg-14">
+                  {{ product.metafields.Detail.Related_Title | default: 'Also available in' }}
+                </h4>
+              </header>
+
+              <div class="prd-Related_Body">
+                <div class="prd-Related_Items">
+                  {%- for handle in related_color_handles -%}
+                    {%- assign rel_prod = all_products[handle] -%}
+                    {%- if rel_prod != blank -%}
+                      <div class="prd-Related_Item">
+                        <a
+                          class="prd-Related_Link"
+                          href="{{ rel_prod.url }}"
+                          title="{{ rel_prod.title }}"
+                        >
+                          {%- render 'responsive-image',
+                            image: rel_prod.featured_image,
+                            width: 220,
+                            size_by_width: true
+                          -%}
+                        </a>
+                      </div>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              </div>
+            </div>
+          {%- endif -%}
+
+          <!-- Default Drawer Links -->
+          <div class="pdp-block pdp-block--links prd-Detail_Links text-reg-14">
+            <div class="prd-Detail_LinksItem">
+              <button
+                class="prd-Detail_Link text-reg-14 underline"
+                type="button"
+                data-module-drawers-trigger="pdp-details"
+              >
+                {{ 'products.product.details' | t | default: 'Details' }}
+              </button>
+
+              <div
+                class="drw-Drawer drw-Drawer-fromRight"
+                data-module-drawers-drawer="pdp-details"
+                data-module-drawers-move-me="root"
+              >
+                <button
+                  type="button"
+                  class="drw-Drawer_Close"
+                  data-module-drawers-close="pdp-details"
+                  aria-label="Close Details"
+                >
+                  {%- render 'bao-close' -%}
+                </button>
+                <div class="drw-Drawer_Inner">
+                  <header class="drw-Drawer_Header">
+                    <h2 class="drw-Drawer_Title text-med-14 uppercase">{{ 'products.product.details' | t | default: 'Details' }}</h2>
+                    <p class="drw-Drawer_Product text-reg-10 uppercase">{{ product.title }}</p>
+                  </header>
+
+                  <div class="drw-Drawer_Body">
+                    <div class="rte-RichText text-reg-14">
+                      {{ details_content }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            {%- if delivery_returns_content != blank -%}
+              <div class="prd-Detail_LinksItem">
+                <button
+                  class="prd-Detail_Link text-reg-14 underline"
+                  type="button"
+                  data-module-drawers-trigger="pdp-delivery"
+                >
+                  {{ 'products.product.delivery_and_returns' | t | default: 'Delivery and returns' }}
+                </button>
+
+                <div
+                  class="drw-Drawer drw-Drawer-fromRight"
+                  data-module-drawers-drawer="pdp-delivery"
+                  data-module-drawers-move-me="root"
+                >
+                  <button
+                    type="button"
+                    class="drw-Drawer_Close"
+                    data-module-drawers-close="pdp-delivery"
+                    aria-label="Close Delivery and returns"
+                  >
+                    {%- render 'bao-close' -%}
+                  </button>
+                  <div class="drw-Drawer_Inner">
+                    <header class="drw-Drawer_Header">
+                      <h2 class="drw-Drawer_Title text-med-14 uppercase">{{ 'products.product.delivery_and_returns' | t | default: 'Delivery and returns' }}</h2>
+                    </header>
+
+                    <div class="drw-Drawer_Body">
+                      <div class="rte-RichText text-reg-14">
+                        {{ delivery_returns_content }}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            {%- endif -%}
+
+            <div class="prd-Detail_LinksItem">
+              {%- if contact_page_url != blank -%}
+                <a class="prd-Detail_Link text-reg-14 underline" href="{{ contact_page_url }}">
+                  {{ 'products.product.contact_us' | t | default: 'Contact us' }}
+                </a>
+              {%- else -%}
+                <a class="prd-Detail_Link text-reg-14 underline" href="mailto:{{ shop.email }}">
+                  {{ 'products.product.contact_us' | t | default: 'Contact us' }}
+                </a>
+              {%- endif -%}
+            </div>
+          </div>
+        {%- endif -%}
+      {%- endform -%}
+    </div>
+  </div>
+</div>
