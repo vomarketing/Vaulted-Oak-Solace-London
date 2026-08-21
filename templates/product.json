@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -9,6 +18,16 @@
         "delivery_and_returns_page": "delivery-returns-product-drawer",
         "size_guide_page": "",
         "contact_page": "contact"
+      }
+    },
+    "rich_text_NHU7La": {
+      "type": "rich-text",
+      "name": "Rich text",
+      "settings": {
+        "header_contrast_mode": "dark",
+        "text": "{{ product.metafields.custom.richtext_content_1 | metafield_tag }}",
+        "link_text": "",
+        "link": ""
       }
     },
     "three_up_slider_Bwqyrf": {
@@ -52,11 +71,23 @@
         "media_description": "Resort 2027 lorem Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim.",
         "header_contrast_mode": "dark"
       }
+    },
+    "rich_text_qGAkrF": {
+      "type": "rich-text",
+      "name": "Rich text",
+      "settings": {
+        "header_contrast_mode": "dark",
+        "text": "{{ product.metafields.custom.richtext_content_2 | metafield_tag }}",
+        "link_text": "",
+        "link": ""
+      }
     }
   },
   "order": [
     "main",
+    "rich_text_NHU7La",
     "three_up_slider_Bwqyrf",
-    "three_up_media_Bwqyrf"
+    "three_up_media_Bwqyrf",
+    "rich_text_qGAkrF"
   ]
 }
