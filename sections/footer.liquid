@@ -1,6 +1,6 @@
 {{- 'custom-footer.css' | asset_url | stylesheet_tag -}}
 
-<footer class="ft-Footer" aria-label="Footer">
+<footer class="ft-Footer" aria-label="Footer" data-header-mode="dark">
   <div class="ft-Footer_Inner lyt-Container">
     <div class="ft-Footer_Body">
       {%- if section.settings.navigation != blank -%}
@@ -27,6 +27,7 @@
 {% schema %}
 {
   "name": "Footer",
+  "class": "js-section-header-contrast",
   "settings": [
     {
       "type": "link_list",

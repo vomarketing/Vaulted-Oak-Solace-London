@@ -1,5 +1,36 @@
 .ft-Footer {
-  padding: 30px 0;
+  width: 100%;
+  height: 100vh;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  box-sizing: border-box;
+  background-color: var(--Color_Primary, #ffffff);
+  color: var(--Color_Secondary, #000000);
+  padding: 0;
+
+  .ft-Footer_Inner {
+    width: 100%;
+    padding-bottom: 30px;
+
+    @media (min-width: 901px) {
+      padding-bottom: 40px;
+    }
+  }
+
+  .ft-Footer_Body {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+
+    @media (min-width: 901px) {
+      flex-direction: row;
+      align-items: center;
+      justify-content: space-between;
+      gap: 30px;
+    }
+  }
 
   .ft-Footer_Link,
   .ft-Footer_Text {
@@ -11,13 +42,18 @@
   }
 
   .ft-Footer_Items {
-    gap: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+
+    @media (min-width: 901px) {
+      flex-direction: row;
+      gap: 30px;
+    }
   }
 
   .ft-Footer_Navigation,
   .ft-Footer_Text {
-    @media (min-width: 901px) {
-      margin-top: 0;
-    }
+    margin: 0;
   }
 }

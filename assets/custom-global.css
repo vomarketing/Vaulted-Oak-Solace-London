@@ -32,3 +32,71 @@
     rgba(0, 0, 0, 0.35) 100%
   );
 }
+
+/* =============================================================================
+   Fullpage Scroll Swiper System
+   ============================================================================= */
+
+body.template-index[data-fullpage-scroll] {
+  overflow: hidden;
+  height: 100vh;
+  height: 100dvh;
+
+  #MainContent {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    position: relative;
+  }
+}
+
+body.template-product[data-fullpage-scroll] {
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: auto;
+  min-height: 100vh;
+  scroll-behavior: smooth;
+
+  #MainContent {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    position: relative;
+  }
+
+  .pdp-editorial-swiper {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+  }
+}
+
+.fullpage-swiper {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.fullpage-swiper > .swiper-wrapper {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.fullpage-swiper > .swiper-wrapper > .swiper-slide {
+  width: 100vw !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  overflow: hidden;
+  position: relative;
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.shopify-section {
+  background-color: var(--color-white);
+}

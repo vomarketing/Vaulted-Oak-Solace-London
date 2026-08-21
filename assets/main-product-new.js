@@ -98,9 +98,13 @@ if (!customElements.get('product-fullscreen')) {
           on: {
             init: (swiper) => {
               this.handleSlideChange(swiper);
+              this.updateHeaderContrast(swiper);
             },
-            slideChange: (swiper) => {
+            slideChangeTransitionStart: (swiper) => {
               this.handleSlideChange(swiper);
+            },
+            slideChangeTransitionEnd: (swiper) => {
+              this.updateHeaderContrast(swiper);
             }
           }
         });
@@ -125,6 +129,12 @@ if (!customElements.get('product-fullscreen')) {
       if (activeVideo) {
         activeVideo.play().catch(() => {});
       }
+    }
+
+    updateHeaderContrast(swiper) {
+      if (!swiper || !swiper.slides) return;
+      const activeSlide = swiper.slides[swiper.activeIndex];
+      if (!activeSlide) return;
 
       const headerMode = activeSlide.getAttribute('data-header-mode');
       if (headerMode && window.headerContrastController && typeof window.headerContrastController.updateContrast === 'function') {

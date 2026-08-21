@@ -1,15 +1,18 @@
 if (!window.SolaceHeaderContrast) {
   class HeaderContrastController {
-    constructor() {
-      this.selectors = {
-        headerWrapper: '.js-header-wrapper',
-        header: '.js-header',
-        sections: '.js-section-header-contrast'
-      };
+    static selectors = {
+      headerWrapper: '.js-header-wrapper',
+      header: '.js-header',
+      sections: '.js-section-header-contrast'
+    };
 
-      this.classes = {
-        isScrolled: 'is-scrolled'
-      };
+    static classes = {
+      isScrolled: 'is-scrolled'
+    };
+
+    constructor() {
+      this.selectors = HeaderContrastController.selectors;
+      this.classes = HeaderContrastController.classes;
 
       this.headerWrapper = document.querySelector(this.selectors.headerWrapper);
       this.header = document.querySelector(this.selectors.header);
@@ -143,6 +146,10 @@ if (!window.SolaceHeaderContrast) {
       }
     }
 
+    updateContrast(mode) {
+      this.setMode(mode);
+    }
+
     bindEvents() {
       window.addEventListener('scroll', () => {
         if (!this.isTicking) {
@@ -182,9 +189,29 @@ if (!window.SolaceHeaderContrast) {
 
   window.SolaceHeaderContrast = HeaderContrastController;
 
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', () => new HeaderContrastController());
+  const initHeaderController = () => {
+    if (!window.headerContrastController) {
+      window.headerContrastController = new HeaderContrastController();
+    }
+  };
+
+  if (document.body.hasAttribute('data-fullpage-scroll')) {
+    document.addEventListener('fullpage:ready', initHeaderController);
+
+    if (window.fullpageScrollInstance && window.fullpageScrollInstance.swiper) {
+      initHeaderController();
+    } else if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', () => {
+        setTimeout(initHeaderController, 60);
+      });
+    } else {
+      setTimeout(initHeaderController, 60);
+    }
   } else {
-    new HeaderContrastController();
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', initHeaderController);
+    } else {
+      initHeaderController();
+    }
   }
 }
