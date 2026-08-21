@@ -1,0 +1,69 @@
+{%- liquid
+  assign title = section.settings.title
+  assign products = section.settings.products
+  assign header_mode = section.settings.header_contrast_mode | default: 'light'
+-%}
+
+{%- if products.size > 0 -%}
+  {{- 'related-products.css' | asset_url | stylesheet_tag -}}
+
+  <div class="related-products" data-header-mode="{{ header_mode }}">
+    <div class="related-products__inner">
+      {%- if title != blank -%}
+        <h2 class="related-products__title text-med-14">{{ title | escape }}</h2>
+      {%- endif -%}
+
+      <div class="related-products__wrapper">
+        {%- for product in products -%}
+          {%- render 'product-card', product: product -%}
+        {%- endfor -%}
+      </div>
+    </div>
+  </div>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Related Products",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "product_list",
+      "id": "products",
+      "label": "Products",
+      "limit": 4
+    },
+    {
+      "type": "select",
+      "id": "header_contrast_mode",
+      "label": "Header contrast mode",
+      "options": [
+        {
+          "value": "light",
+          "label": "Light Header (White text for dark background)"
+        },
+        {
+          "value": "dark",
+          "label": "Dark Header (Black text for light background)"
+        }
+      ],
+      "default": "light"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Related Products",
+      "settings": {
+        "title": "shop resort 2027",
+        "products": "{{ product.metafields.custom.related_products.value }}",
+        "header_contrast_mode": "dark"
+      }
+    }
+  ]
+}
+{% endschema %}

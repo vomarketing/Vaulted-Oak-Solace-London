@@ -1,0 +1,108 @@
+.related-products {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100vw;
+  min-height: 100dvh;
+  overflow: hidden;
+  padding-block: clamp(32px, 7dvh, 72px);
+  padding-inline: 20px;
+  background-color: var(--color-white, #ffffff);
+  color: var(--color-black, #000000);
+
+  @media (min-width: 768px) {
+    padding-block: clamp(40px, 8dvh, 96px);
+  }
+
+  @media (min-width: 901px) {
+    padding-block: clamp(48px, 9dvh, 120px);
+  }
+
+  @media (min-width: 1441px) {
+    padding-block: clamp(56px, 10dvh, 160px);
+  }
+}
+
+.related-products__inner {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  width: 100%;
+  margin: 0 auto;
+
+  @media (min-width: 768px) {
+    max-width: calc(582 / 836 * 100vw);
+  }
+
+  @media (min-width: 901px) {
+    max-width: calc(1202 / 1440 * 100vw);
+  }
+
+  @media (min-width: 1441px) {
+    max-width: calc(1538 / 1920 * 100vw);
+  }
+}
+
+.related-products__title {
+  margin-bottom: 30px;
+  text-align: center;
+
+  @media (min-width: 768px) {
+    margin-bottom: 50px;
+  }
+
+  @media (min-width: 1441px) {
+    margin-bottom: 80px;
+  }
+}
+
+.related-products__wrapper {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 32px 20px;
+
+  @media (min-width: 768px) {
+    gap: 30px;
+  }
+
+  @media (min-width: 901px) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  @media (min-width: 1441px) {
+    gap: 40px;
+  }
+
+  .prd-Card_ImageContainer {
+    margin-bottom: 10px;
+
+    @media (min-width: 768px) {
+      margin-bottom: 20px;
+    }
+  }
+
+  .prd-Card_Title {
+    font-family: var(--font-family-primary) !important;
+    font-size: var(--type-14-size);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--type-14-line-height);
+    text-align: center;
+    text-transform: none;
+  }
+
+  .prd-Card_Price,
+  .prd-Card_Kicker {
+    display: none;
+  }
+
+  .prd-Card_Overlay {
+    display: none;
+  }
+
+  .prd-Card:hover .prd-Card_Content {
+    opacity: 100;
+    visibility: visible;
+  }
+}
