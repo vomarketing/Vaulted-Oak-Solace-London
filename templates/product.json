@@ -11,8 +11,8 @@
         "contact_page": "contact"
       }
     },
-    "three_up_Bwqyrf": {
-      "type": "three-up",
+    "three_up_slider_Bwqyrf": {
+      "type": "three-up-slider",
       "blocks": {
         "image_NwaTwC": {
           "type": "image",
@@ -35,7 +35,14 @@
         "image_NwaTwC",
         "image_9cR86X"
       ],
-      "name": "Three Up",
+      "name": "Three Up Slider",
+      "settings": {
+        "header_contrast_mode": "dark"
+      }
+    },
+    "three_up_media_Bwqyrf": {
+      "type": "three-up-media",
+      "name": "Three Up Media",
       "settings": {
         "media_type": "video",
         "image_desktop": "shopify://shop_images/Image_2.jpg",
@@ -49,6 +56,7 @@
   },
   "order": [
     "main",
-    "three_up_Bwqyrf"
+    "three_up_slider_Bwqyrf",
+    "three_up_media_Bwqyrf"
   ]
 }
