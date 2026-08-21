@@ -53,17 +53,20 @@
 
   .hd-Nav_Link,
   .hd-MobileNav_Icon,
+  .mb-MenuTrigger,
   .hd-Header_Logo svg {
     color: var(--Header_TextColor);
     fill: var(--Header_TextColor);
   }
 
-  .hd-Nav_Cart {
+  .hd-Nav_Cart,
+  .hd-MobileNav_Cart {
     background-color: var(--Color_Primary);
   }
 
   .hd-Nav_CartCount,
-  .hd-MobileNav_Cart {
+  .hd-MobileNav_Cart,
+  .hd-MobileNav_CartCount {
     color: var(--Header_CountTextColor);
   }
 
