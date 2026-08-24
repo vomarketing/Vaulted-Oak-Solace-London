@@ -1,3 +1,7 @@
+/**
+ * <product-fullscreen> Section Container Component
+ */
+
 if (!customElements.get('product-fullscreen')) {
   class ProductFullscreen extends HTMLElement {
     static selectors = {
@@ -11,32 +15,13 @@ if (!customElements.get('product-fullscreen')) {
       zoomModal: '.js-pdp-zoom-modal',
       zoomClose: '.js-pdp-zoom-close',
       zoomItems: '.js-pdp-zoom-item',
-
-      // Size & Form Selectors
-      sizeButtons: '.js-pdp-size-btn',
-      optionSelects: '.js-pdp-option-select',
-      masterSelect: '.js-pdp-master-select',
-      submitButton: '.js-pdp-submit',
-      submitText: '.js-pdp-submit-text',
-      submitChoose: '.js-pdp-submit-choose',
-      priceButtonPrice: '[data-product-detail-button-price]',
       priceContainer: '.pdp-content__price-row',
       stockStatus: '.js-pdp-stock-status',
-
-      // Wishlist
-      wishlistAddBtn: '.js-Wishlist_Button-add',
-
-      // Drawers
-      sizeGuideTrigger: '.js-size-guide-trigger',
-
-      // Tracking & Third Party
       klaviyoData: '.js-pdp-klaviyo-data'
     };
 
     static classes = {
       modalActive: 'is-active',
-      btnSelected: 'is-selected',
-      isHidden: 'is-hidden',
       scrollLocked: 'is-scroll-locked'
     };
 
@@ -54,10 +39,14 @@ if (!customElements.get('product-fullscreen')) {
       this.initMediaObserver();
       this.initMobileSwiper();
       this.initZoomModal();
-      this.initVariantSelection();
       this.initDrawersMovement();
       this.initKlaviyoTracking();
       this.initBisPopover();
+
+      this.addEventListener('variant:change', (e) => {
+        const { price, comparePrice, inventoryQty } = e.detail;
+        this.updateExternalPriceAndStock(price, comparePrice, inventoryQty);
+      }, { signal: this.abortController.signal });
 
       this.mql = window.matchMedia('(max-width: 900px)');
       this.handleMediaChange = (e) => {
@@ -69,6 +58,38 @@ if (!customElements.get('product-fullscreen')) {
       };
 
       this.mql.addEventListener('change', this.handleMediaChange);
+    }
+
+    updateExternalPriceAndStock(price, comparePrice, inventoryQty) {
+      const priceContainer = this.querySelector(this.selectors.priceContainer);
+      const stockStatus = this.querySelector(this.selectors.stockStatus);
+
+      if (priceContainer && price) {
+        const compNum = comparePrice ? parseFloat(comparePrice.replace(/[^0-9.]/g, '')) : 0;
+        const priceNum = price ? parseFloat(price.replace(/[^0-9.]/g, '')) : 0;
+
+        if (comparePrice && compNum > priceNum) {
+          const discount = Math.round(((compNum - priceNum) / compNum) * 100);
+          const discountHtml = discount > 0 ? `<span class="pdp-content__price-discount prd-Card_Kicker-red text-reg-14">${discount}% off</span>` : '';
+          priceContainer.innerHTML = `
+            <span class="pdp-content__price-wrapper">
+              <s class="pdp-content__price-compare prd-Price_Compare text-reg-14">${comparePrice}</s>
+              <span class="pdp-content__price-sale prd-Card_Kicker-red text-reg-14">${price}</span>
+            </span>
+            ${discountHtml}
+          `;
+        } else {
+          priceContainer.innerHTML = `<span class="pdp-content__price-regular text-reg-14">${price}</span>`;
+        }
+      }
+
+      if (stockStatus) {
+        if (inventoryQty > 0 && inventoryQty < 10) {
+          stockStatus.setAttribute('aria-hidden', 'false');
+        } else {
+          stockStatus.setAttribute('aria-hidden', 'true');
+        }
+      }
     }
 
     initMobileSwiper() {
@@ -272,191 +293,7 @@ if (!customElements.get('product-fullscreen')) {
       return zoomModal && zoomModal.classList.contains(this.classes.modalActive);
     }
 
-    initVariantSelection() {
-      const sizeButtons = this.querySelectorAll(this.selectors.sizeButtons);
-      const masterSelect = this.querySelector(this.selectors.masterSelect);
-      const submitBtn = this.querySelector(this.selectors.submitButton);
-      const submitText = this.querySelector(this.selectors.submitText);
-      const priceContainer = this.querySelector(this.selectors.priceContainer);
-      const buttonPrices = this.querySelectorAll(this.selectors.priceButtonPrice);
-      const stockStatus = this.querySelector(this.selectors.stockStatus);
-      const optionDropdowns = this.querySelectorAll(this.selectors.optionSelects);
-
-      // Handle non-size dropdown options (e.g. Gift Cards)
-      optionDropdowns.forEach((dropdown) => {
-        dropdown.addEventListener('change', () => {
-          this.dataset.sizeChosen = 'true';
-          const selectedVal = dropdown.value;
-          if (masterSelect) {
-            for (let i = 0; i < masterSelect.options.length; i++) {
-              if (masterSelect.options[i].text.trim() === selectedVal.trim()) {
-                masterSelect.value = masterSelect.options[i].value;
-                masterSelect.dispatchEvent(new Event('change', { bubbles: true }));
-                this.updateVariantState(masterSelect.options[i]);
-                break;
-              }
-            }
-          }
-        });
-      });
-
-      if (!sizeButtons.length && !masterSelect) return;
-
-      sizeButtons.forEach((button) => {
-        button.addEventListener('click', (e) => {
-          e.preventDefault();
-
-          this.dataset.sizeChosen = 'true';
-
-          sizeButtons.forEach((btn) => {
-            btn.classList.remove(this.classes.btnSelected);
-            btn.setAttribute('aria-current', 'false');
-          });
-
-          button.classList.add(this.classes.btnSelected);
-          button.setAttribute('aria-current', 'true');
-
-          const sizeValue = button.getAttribute('data-value');
-          const optionIndex = button.getAttribute('data-index');
-
-          const hiddenSelect = this.querySelector(`select[data-index="${optionIndex}"]`);
-          if (hiddenSelect) {
-            hiddenSelect.value = sizeValue;
-            hiddenSelect.dispatchEvent(new Event('change', { bubbles: true }));
-          }
-
-          const variantId = button.getAttribute('data-variant-id');
-          let matchedVariantOption = null;
-
-          if (variantId && masterSelect) {
-            for (let i = 0; i < masterSelect.options.length; i++) {
-              if (masterSelect.options[i].value === variantId) {
-                matchedVariantOption = masterSelect.options[i];
-                break;
-              }
-            }
-          }
-
-          if (!matchedVariantOption && masterSelect) {
-            for (let i = 0; i < masterSelect.options.length; i++) {
-              if (masterSelect.options[i].text === sizeValue) {
-                matchedVariantOption = masterSelect.options[i];
-                break;
-              }
-            }
-          }
-
-          if (matchedVariantOption) {
-            masterSelect.value = matchedVariantOption.value;
-            masterSelect.dispatchEvent(new Event('change', { bubbles: true }));
-            this.updateVariantState(matchedVariantOption);
-          }
-        });
-      });
-    }
-
-    updateVariantState(variantOption) {
-      const isAvailable = variantOption.getAttribute('data-available') === 'true';
-      const price = variantOption.getAttribute('data-price');
-      const priceNoDecimals = variantOption.getAttribute('data-price-no-decimals') || price;
-      const comparePrice = variantOption.getAttribute('data-compare-price');
-      const inventoryQty = parseInt(variantOption.getAttribute('data-stock') || '0', 10);
-      const variantId = variantOption.value;
-
-      const submitBtn = this.querySelector(this.selectors.submitButton);
-      const submitText = this.querySelector(this.selectors.submitText);
-      const buttonPrices = this.querySelectorAll(this.selectors.priceButtonPrice);
-      const priceContainer = this.querySelector(this.selectors.priceContainer);
-      const stockStatus = this.querySelector(this.selectors.stockStatus);
-
-      // Update Submit Button State
-      if (submitBtn) {
-        submitBtn.disabled = !isAvailable;
-        if (isAvailable) {
-          submitBtn.removeAttribute('data-module-drawers-trigger');
-        } else {
-          submitBtn.setAttribute('data-module-drawers-trigger', 'bis');
-        }
-      }
-
-      if (submitText) {
-        const addText = submitText.getAttribute('data-translation-add-to-cart') || 'Add To Bag';
-        const soldOutText = submitText.getAttribute('data-translation-sold-out') || 'Sold Out';
-        submitText.textContent = isAvailable ? addText : soldOutText;
-      }
-
-      // Update Embedded Button Price
-      if (buttonPrices.length) {
-        buttonPrices.forEach((priceEl) => {
-          if (comparePrice && comparePrice !== price) {
-            priceEl.innerHTML = `
-              <s class="prd-Price_Compare text-reg-14">${comparePrice}</s>
-              <span class="prd-Card_Kicker-red text-med-14">${priceNoDecimals}</span>
-            `;
-          } else {
-            priceEl.innerHTML = priceNoDecimals;
-          }
-        });
-      }
-
-      // Update Standalone Price Row if present
-      if (priceContainer && price) {
-        if (comparePrice && comparePrice !== price) {
-          const compNum = parseFloat(comparePrice.replace(/[^0-9.]/g, ''));
-          const priceNum = parseFloat(price.replace(/[^0-9.]/g, ''));
-          const discount = compNum > priceNum ? Math.round(((compNum - priceNum) / compNum) * 100) : 0;
-          const discountHtml = discount > 0 ? `<span class="pdp-content__price-discount prd-Card_Kicker-red text-reg-14">${discount}% off</span>` : '';
-          priceContainer.innerHTML = `
-            <span class="pdp-content__price-wrapper">
-              <s class="pdp-content__price-compare prd-Price_Compare text-reg-14">${comparePrice}</s>
-              <span class="pdp-content__price-sale prd-Card_Kicker-red text-reg-14">${price}</span>
-            </span>
-            ${discountHtml}
-          `;
-        } else {
-          priceContainer.innerHTML = `<span class="pdp-content__price-regular text-reg-14">${price}</span>`;
-        }
-      }
-
-      // Update Inventory Stock Status Notice (< 10)
-      if (stockStatus) {
-        if (inventoryQty > 0 && inventoryQty < 10) {
-          stockStatus.setAttribute('aria-hidden', 'false');
-        } else {
-          stockStatus.setAttribute('aria-hidden', 'true');
-        }
-      }
-
-      // Update Wishlist Variant IDs
-      const wishlistAdd = document.querySelector(this.selectors.wishlistAddBtn);
-      if (wishlistAdd) {
-        wishlistAdd.dataset.variant = variantId;
-        const productId = wishlistAdd.dataset.product ? parseInt(wishlistAdd.dataset.product) : null;
-        if (window.iWishlistmain && productId && window.iWishlistmain[productId]) {
-          if (window.iWishlistmain[productId].includes(String(variantId))) {
-            wishlistAdd.classList.add('iwishAdded');
-          } else {
-            wishlistAdd.classList.remove('iwishAdded');
-          }
-        }
-      }
-
-      // Update Back In Stock Trigger
-      const bisTrigger = document.querySelector('[data-el="back-in-stock.trigger"]');
-      if (bisTrigger) {
-        bisTrigger.dataset.variantId = variantId;
-      }
-
-      // Update URL State
-      if (window.history && window.history.replaceState) {
-        const currentUrl = new URL(window.location.href);
-        currentUrl.searchParams.set('variant', variantId);
-        window.history.replaceState({ path: currentUrl.toString() }, '', currentUrl.toString());
-      }
-    }
-
     initDrawersMovement() {
-      // Ensure drawers with data-module-drawers-move-me="root" are appended to root drawers container
       const drawers = this.querySelectorAll('[data-module-drawers-move-me="root"]');
       const rootDrawersContainer = document.querySelector('.drw-Drawers[data-module="drawers"]') || document.body;
 
@@ -498,7 +335,7 @@ if (!customElements.get('product-fullscreen')) {
         }
       }]);
 
-      const submitBtn = this.querySelector(this.selectors.submitButton);
+      const submitBtn = this.querySelector('.js-pdp-submit');
       if (submitBtn) {
         const { signal } = this.abortController;
         submitBtn.addEventListener('click', () => {
@@ -528,14 +365,13 @@ if (!customElements.get('product-fullscreen')) {
       if (window.BIS.urlIsProductPage && !window.BIS.urlIsProductPage()) return;
 
       window.BISPopover.ready.then(() => {
-        const masterSelect = this.querySelector(this.selectors.masterSelect);
+        const masterSelect = this.querySelector('.js-pdp-master-select');
         if (!masterSelect) return;
 
         const reload = () => {
           try {
             const variant = window.BIS.detectVariant(window.BIS.popup);
             if (variant && window.BIS.popup.variantIsUnavailable(variant)) {
-              // Reload unavailable variant
             }
           } catch (e) {
             console.log('BIS error:', e);

@@ -99,12 +99,6 @@
           "type": "description",
           "settings": {}
         },
-        "variant_picker_i8m7PA": {
-          "type": "variant_picker",
-          "settings": {
-            "show_size_guide": true
-          }
-        },
         "buy_buttons_VGTxwz": {
           "type": "buy_buttons",
           "settings": {
@@ -136,7 +130,6 @@
       "block_order": [
         "title_9BKNBY",
         "description_jt7ddV",
-        "variant_picker_i8m7PA",
         "buy_buttons_VGTxwz",
         "duties_taxes_d76MTJ",
         "tab_content_jWBbB7",

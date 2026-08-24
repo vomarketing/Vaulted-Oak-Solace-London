@@ -282,13 +282,13 @@
         "type": "text",
         "id": "bis_placeholder",
         "label": "Email Placeholder",
-        "default": "Email"
+        "default": "Email Address"
       },
       {
         "type": "text",
         "id": "bis_button_text",
         "label": "Button Text",
-        "default": "Email me when available"
+        "default": "Submit"
       },
       {
         "type": "richtext",
