@@ -3,10 +3,6 @@
 
 {%- liquid
   assign title = section.settings.title
-  assign recommended_handles_str = product.metafields.Detail.Recommended_Products
-  if recommended_handles_str != blank
-    assign recommended_handles = recommended_handles_str | split: '|'
-  endif
   assign header_mode = section.settings.header_contrast_mode | default: 'light'
   assign recommendations_limit = 4
 -%}
@@ -15,13 +11,6 @@
   {%- if recommendations.performed -%}
     {%- for recommended_product in recommendations.products -%}
       {%- render 'product-card', product: recommended_product -%}
-    {%- endfor -%}
-  {%- else -%}
-    {%- for recommended_handle in recommended_handles -%}
-      {%- assign recommended_product = all_products[recommended_handle] -%}
-      {%- if recommended_product != blank -%}
-        {%- render 'product-card', product: recommended_product -%}
-      {%- endif -%}
     {%- endfor -%}
   {%- endif -%}
 {%- endcapture -%}
