@@ -407,12 +407,14 @@ if (!customElements.get('product-fullscreen')) {
           const discount = compNum > priceNum ? Math.round(((compNum - priceNum) / compNum) * 100) : 0;
           const discountHtml = discount > 0 ? `<span class="pdp-content__price-discount prd-Card_Kicker-red text-reg-14">${discount}% off</span>` : '';
           priceContainer.innerHTML = `
-            <s class="pdp-content__price-compare prd-Price_Compare text-reg-14">${comparePrice}</s>
-            <span class="pdp-content__price-sale prd-Card_Kicker-red text-med-14">${price}</span>
+            <span class="pdp-content__price-wrapper">
+              <s class="pdp-content__price-compare prd-Price_Compare text-reg-14">${comparePrice}</s>
+              <span class="pdp-content__price-sale prd-Card_Kicker-red text-reg-14">${price}</span>
+            </span>
             ${discountHtml}
           `;
         } else {
-          priceContainer.innerHTML = `<span class="pdp-content__price-regular text-med-14">${price}</span>`;
+          priceContainer.innerHTML = `<span class="pdp-content__price-regular text-reg-14">${price}</span>`;
         }
       }
 

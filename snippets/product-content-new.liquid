@@ -50,8 +50,10 @@
                 <div class="pdp-content__price-row text-reg-14">
                   {%- if current_variant.compare_at_price > current_variant.price -%}
                     {%- assign discount_percent = current_variant.compare_at_price | minus: current_variant.price | times: 100.0 | divided_by: current_variant.compare_at_price | round -%}
-                    <s class="pdp-content__price-compare prd-Price_Compare text-reg-14">{{ current_variant.compare_at_price | money_without_trailing_zeros | default: current_variant.compare_at_price | money }}</s>
-                    <span class="pdp-content__price-sale prd-Card_Kicker-red text-reg-14">{{ current_variant.price | money_without_trailing_zeros | default: current_variant.price | money }}</span>
+                    <span class="pdp-content__price-wrapper">
+                      <s class="pdp-content__price-compare prd-Price_Compare text-reg-14">{{ current_variant.compare_at_price | money_without_trailing_zeros | default: current_variant.compare_at_price | money }}</s>
+                      <span class="pdp-content__price-sale prd-Card_Kicker-red text-reg-14">{{ current_variant.price | money_without_trailing_zeros | default: current_variant.price | money }}</span>
+                    </span>
                     <span class="pdp-content__price-discount prd-Card_Kicker-red text-reg-14">{{ discount_percent }}% off</span>
                   {%- else -%}
                     <span class="pdp-content__price-regular text-reg-14">{{ current_variant.price | money_without_trailing_zeros | default: current_variant.price | money }}</span>
@@ -62,7 +64,7 @@
             {%- when 'description' -%}
               {%- assign short_desc = product.metafields.Detail.Description.value -%}
               {%- if short_desc != blank -%}
-                <div class="pdp-block pdp-block--desc pdp-content__short-desc text-reg-14" {{ block.shopify_attributes }}>
+                <div class="pdp-block pdp-content__short-desc text-reg-14" {{ block.shopify_attributes }}>
                   {{ short_desc }}
                 </div>
               {%- endif -%}

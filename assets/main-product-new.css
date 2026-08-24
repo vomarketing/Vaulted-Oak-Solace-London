@@ -116,8 +116,8 @@ body.is-scroll-locked {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    padding: clamp(90px, 12vh, 130px) clamp(30px, 4vw, 55px) 40px clamp(30px, 4vw, 55px);
     box-shadow: none;
+    padding-top: 110px;
 
     &::-webkit-scrollbar {
       display: none;
@@ -125,7 +125,7 @@ body.is-scroll-locked {
   }
 
   @media (min-width: 1441px) {
-    padding: clamp(100px, 13vh, 140px) clamp(40px, 5vw, 65px) 50px clamp(40px, 5vw, 65px);
+    padding-top: 153px;
   }
 
   .is-zoom-modal-active & {
@@ -135,11 +135,11 @@ body.is-scroll-locked {
 
 .pdp-sheet-handle {
   display: block;
-  width: 38px;
+  width: 47px;
   height: 2px;
-  background-color: #8e8e8e;
-  border-radius: 2px;
-  margin: 0 auto 16px;
+  background-color: var(--color-black, #000000);
+  opacity: 0.5;
+  margin: 0 auto 10px;
 
   @media (min-width: 901px) {
     display: none;
@@ -317,11 +317,27 @@ body.is-scroll-locked {
 .pdp-block {
   position: relative;
   width: 100%;
-
   padding-inline: 20px;
 
   @media (min-width: 901px) {
     padding-inline: 40px;
+  }
+
+  &.pdp-block--title {
+    display: flex;
+    flex-direction: row;
+    gap: 72px;
+    align-items: flex-start;
+    margin-bottom: 22px;
+
+    @media (min-width: 768px) {
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    @media (min-width: 901px) {
+      margin-bottom: 45px;
+    }
   }
 }
 
@@ -335,25 +351,23 @@ body.is-scroll-locked {
   margin-block: 36px;
 }
 
-.pdp-content__title {
-  margin: 0 0 10px;
-  text-transform: none;
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 500;
-}
-
 .pdp-content__price-row {
   display: flex;
-  align-items: center;
-  gap: 8px;
-  margin-bottom: 18px;
-  font-size: 14px;
-  line-height: 20px;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 4px;
+  min-width: 87px;
+  flex-shrink: 0;
 
-  @media (min-width: 901px) {
-    margin-bottom: 24px;
+  @media (min-width: 768px) {
+    flex-direction: row;
+    gap: 10px;
   }
+}
+
+.pdp-content__price-wrapper {
+  display: flex;
+  gap: 12px;
 }
 
 .pdp-content__price-compare {
@@ -371,13 +385,12 @@ body.is-scroll-locked {
 }
 
 .pdp-content__short-desc {
-  margin-bottom: 22px;
+  display: none;
   color: var(--color-black, #000000);
-  font-size: 14px;
-  line-height: 20px;
 
   @media (min-width: 901px) {
-    margin-bottom: 24px;
+    display: block;
+    margin-bottom: 45px;
   }
 }
 
@@ -426,8 +439,6 @@ body.is-scroll-locked {
 
 .pdp-size-row__label {
   color: var(--Color_Brand, #000000);
-  font-size: 14px;
-  line-height: 20px;
   min-width: max-content;
 
   @media (min-width: 901px) {
@@ -442,8 +453,6 @@ body.is-scroll-locked {
   color: var(--Color_Brand, #000000);
   cursor: pointer;
   opacity: 0.7;
-  font-size: 14px;
-  line-height: 20px;
   transition: opacity 0.2s ease;
   white-space: nowrap;
 
@@ -481,8 +490,6 @@ body.is-scroll-locked {
   color: var(--Color_Brand, #000000);
   cursor: pointer;
   position: relative;
-  font-size: 14px;
-  line-height: 20px;
   opacity: 0.9;
   transition: opacity 0.2s ease;
 
@@ -494,7 +501,6 @@ body.is-scroll-locked {
   &[aria-current="true"] {
     text-decoration: underline;
     text-underline-offset: 4px;
-    font-weight: 500;
     opacity: 1;
   }
 
@@ -540,8 +546,6 @@ body.is-scroll-locked {
 .pdp-content__contact-question {
   margin-bottom: 18px;
   color: var(--Color_Brand, #000000);
-  font-size: 14px;
-  line-height: 20px;
 
   @media (min-width: 901px) {
     margin-bottom: 20px;
@@ -630,8 +634,6 @@ body.is-scroll-locked {
   position: relative;
   z-index: 1;
   letter-spacing: 0.02em;
-  font-size: 14px;
-  font-weight: 500;
   transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.075), opacity 0.3s ease;
 }
 
@@ -643,8 +645,6 @@ body.is-scroll-locked {
   z-index: 1;
   opacity: 0;
   letter-spacing: 0.02em;
-  font-size: 14px;
-  font-weight: 500;
   transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.075), opacity 0.3s ease;
 }
 
@@ -715,9 +715,6 @@ body.is-scroll-locked {
 
 .pdp-block--duties-taxes,
 .pdp-duties-taxes__text {
-  font-size: 10px;
-  line-height: 14px;
-  font-style: italic;
   color: var(--Color_Brand, #000000);
   margin-bottom: 22px;
   opacity: 0.85;
@@ -730,7 +727,6 @@ body.is-scroll-locked {
 .prd-Status_Stock {
   color: var(--Color_Brand, #000000);
   margin-bottom: 6px;
-  font-style: normal;
   transition: opacity 0.3s ease, visibility 0.3s ease;
 
   &[aria-hidden="true"] {
@@ -758,9 +754,6 @@ body.is-scroll-locked {
 
 .prd-Related_Title {
   color: var(--Color_Brand, #000000);
-  font-size: 14px;
-  line-height: 20px;
-  font-weight: 400;
   margin: 0;
 }
 
