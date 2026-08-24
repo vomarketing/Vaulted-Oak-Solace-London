@@ -34,68 +34,6 @@
     </div>
   </div>
 
-  <!-- 2. Recommended Products Scroller (Below Main 2 Columns) -->
-  {%- assign recommended_handles_str = product.metafields.Detail.Recommended_Products | default: product.metafields.custom.related_products.value -%}
-  {%- if recommended_handles_str != blank -%}
-    {%- assign recommended_handles = recommended_handles_str | split: '|' -%}
-    {%- if recommended_handles.size > 0 -%}
-      <section class="sec-Section sec-Section-flushUntilMd pdp-recommended-section">
-        <div class="sec-Section_Inner lyt-Container">
-          <header class="sec-Section_Header">
-            {%- capture recommended_title -%}
-              {%- if product.metafields.Detail.Recommended_Title != blank -%}
-                {{ product.metafields.Detail.Recommended_Title }}
-              {%- elsif section.settings.recommended_title != blank -%}
-                {{ section.settings.recommended_title }}
-              {%- else -%}
-                {{ 'products.product.recommended_products' | t | default: 'You May Also Like' }}
-              {%- endif -%}
-            {%- endcapture -%}
-
-            <h2 class="sec-Section_Title text-med-14 uppercase">{{ recommended_title }}</h2>
-          </header>
-
-          <div class="sec-Section_Body">
-            <div
-              class="prd-Recommended css-Scroller"
-              data-module="css-scroller"
-              data-css-scroller-remove-at-breakpoint="md"
-            >
-              <div class="prd-Recommended_Items css-Scroller_Items" data-el="css-scroller.track">
-                <div class="prd-Recommended_Item css-Scroller_Spacer"></div>
-
-                {%- for recommended_handle in recommended_handles -%}
-                  {%- assign recommended_product = all_products[recommended_handle] -%}
-                  {%- if recommended_product != blank -%}
-                    <div
-                      class="prd-Recommended_Item css-Scroller_Item js-Animate"
-                      data-animation="Fade"
-                      {% if forloop.last %} style="--Item_HorizontalSpacing: 0;"{% endif %}
-                    >
-                      {%- render 'product-card', product: recommended_product -%}
-                    </div>
-                  {%- endif -%}
-                {%- endfor -%}
-
-                <div class="prd-Recommended_Item css-Scroller_Spacer"></div>
-              </div>
-
-              <div
-                class="prd-Recommended_Scroller css-Scroller_Scroller"
-                data-el="css-scroller.scroller"
-              >
-                <div
-                  class="prd-Recommended_Thumb css-Scroller_Thumb"
-                  data-el="css-scroller.thumb"
-                ></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
-    {%- endif -%}
-  {%- endif -%}
-
   <!-- 3. Back to Collection Link -->
   {%- if collection -%}
     <div class="pg-Back">
