@@ -180,13 +180,11 @@ if (!window.FullpageScrollController) {
         history.scrollRestoration = 'manual';
       }
 
-      let wheelCooldownTimer = null;
-
       this.swiper = new window.Swiper(targetElement, {
         direction: 'vertical',
         slidesPerView: 1,
         spaceBetween: 0,
-        speed: 700,
+        speed: 600,
         effect: 'creative',
         creativeEffect: {
           prev: {
@@ -198,13 +196,13 @@ if (!window.FullpageScrollController) {
           }
         },
         mousewheel: {
-          releaseOnEdges: true,
-          sensitivity: 0.5,
-          thresholdDelta: 25,
-          thresholdTime: 700,
+          releaseOnEdges: !this.isProductPage,
+          sensitivity: 0.8,
+          thresholdDelta: 15,
+          thresholdTime: 400,
           forceToAxis: true
         },
-        touchReleaseOnEdges: true,
+        touchReleaseOnEdges: !this.isProductPage,
         resistanceRatio: 0.85,
         watchOverflow: true,
         nested: true,
@@ -234,9 +232,6 @@ if (!window.FullpageScrollController) {
             }
           },
           slideChangeTransitionStart: (sw) => {
-            if (sw.mousewheel && sw.mousewheel.enabled) {
-              sw.mousewheel.disable();
-            }
             this.handleSlideChange(sw);
           },
           slideChangeTransitionEnd: (sw) => {
@@ -244,13 +239,6 @@ if (!window.FullpageScrollController) {
             if (activeSlide) {
               this.updateHeaderContrast(activeSlide);
             }
-
-            clearTimeout(wheelCooldownTimer);
-            wheelCooldownTimer = setTimeout(() => {
-              if (sw && sw.mousewheel && !sw.mousewheel.enabled) {
-                sw.mousewheel.enable();
-              }
-            }, 200);
           }
         }
       });
@@ -265,14 +253,33 @@ if (!window.FullpageScrollController) {
       let isTransitioning = false;
 
       const handleWheel = (e) => {
-        if (isTransitioning) return;
+        if (isTransitioning) {
+          if (e.cancelable) e.preventDefault();
+          return;
+        }
 
         const pdpBottom = this.pdpSection.offsetTop + this.pdpSection.offsetHeight;
         const currentScrollY = window.scrollY;
         const viewportBottom = currentScrollY + window.innerHeight;
 
-        if (e.deltaY > 20 && viewportBottom >= pdpBottom - 15 && viewportBottom < pdpBottom + 50) {
+        if (this.swiper && this.swiper.activeIndex === 0 && e.deltaY < -15) {
+          if (currentScrollY >= pdpBottom - 60) {
+            if (e.cancelable) e.preventDefault();
+            isTransitioning = true;
+            window.scrollTo({
+              top: Math.max(0, pdpBottom - window.innerHeight - 80),
+              behavior: 'smooth'
+            });
+            setTimeout(() => {
+              isTransitioning = false;
+            }, 700);
+            return;
+          }
+        }
+
+        if (currentScrollY < pdpBottom - 30 && viewportBottom >= pdpBottom - 20 && e.deltaY > 15) {
           if (this.swiper && this.swiper.activeIndex === 0) {
+            if (e.cancelable) e.preventDefault();
             isTransitioning = true;
             window.scrollTo({
               top: pdpBottom,
@@ -280,23 +287,53 @@ if (!window.FullpageScrollController) {
             });
             setTimeout(() => {
               isTransitioning = false;
-            }, 600);
+            }, 700);
+            return;
           }
-        }
-
-        if (e.deltaY < -20 && this.swiper && this.swiper.activeIndex === 0 && currentScrollY >= pdpBottom - 20) {
-          isTransitioning = true;
-          window.scrollTo({
-            top: Math.max(0, pdpBottom - window.innerHeight - 80),
-            behavior: 'smooth'
-          });
-          setTimeout(() => {
-            isTransitioning = false;
-          }, 600);
         }
       };
 
-      window.addEventListener('wheel', handleWheel, { passive: true, signal });
+      let touchStartY = 0;
+      let isTouchDown = false;
+
+      const handleTouchStart = (e) => {
+        if (e.touches && e.touches.length > 0) {
+          touchStartY = e.touches[0].clientY;
+          isTouchDown = true;
+        }
+      };
+
+      const handleTouchMove = (e) => {
+        if (!isTouchDown || !e.touches || e.touches.length === 0 || isTransitioning) return;
+        const currentY = e.touches[0].clientY;
+        const diffY = touchStartY - currentY;
+
+        const pdpBottom = this.pdpSection.offsetTop + this.pdpSection.offsetHeight;
+        const currentScrollY = window.scrollY;
+
+        if (this.swiper && this.swiper.activeIndex === 0 && diffY < -40) {
+          if (currentScrollY >= pdpBottom - 60) {
+            isTransitioning = true;
+            isTouchDown = false;
+            window.scrollTo({
+              top: Math.max(0, pdpBottom - window.innerHeight - 80),
+              behavior: 'smooth'
+            });
+            setTimeout(() => {
+              isTransitioning = false;
+            }, 700);
+          }
+        }
+      };
+
+      const handleTouchEnd = () => {
+        isTouchDown = false;
+      };
+
+      window.addEventListener('wheel', handleWheel, { passive: false, signal });
+      window.addEventListener('touchstart', handleTouchStart, { passive: true, signal });
+      window.addEventListener('touchmove', handleTouchMove, { passive: true, signal });
+      window.addEventListener('touchend', handleTouchEnd, { passive: true, signal });
     }
 
     handleSlideChange(swiperInstance) {
