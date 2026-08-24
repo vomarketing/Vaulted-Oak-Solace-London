@@ -25,6 +25,10 @@
   }
 }
 
+.related-products.is-loading {
+  visibility: hidden;
+}
+
 .related-products__inner {
   display: flex;
   flex-direction: column;
