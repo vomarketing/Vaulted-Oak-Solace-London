@@ -27,9 +27,8 @@
       {%- form 'product',
         product,
         id: product_form_id,
-        class: 'pdp-form js-pdp-form prd-Offers_Form',
-        data-push-cart-form: '',
-        data-product-detail-form: ''
+        class: 'pdp-form js-pdp-form',
+        data-push-cart-form: ''
       -%}
         <input type="hidden" name="quantity" value="1">
         {%- for block in section.blocks -%}

@@ -27,7 +27,7 @@
         {%- for option in product.options_with_values -%}
           {%- assign downcased_name = option.name | downcase -%}
           {%- if downcased_name contains 'size' -%}
-            <div class="pdp-size-row" data-option-index="{{ forloop.index0 }}" data-product-detail-size-option>
+            <div class="pdp-size-row" data-option-index="{{ forloop.index0 }}">
               <div class="pdp-size-row__inner">
                 <div class="pdp-size-row__header">
                   <span class="pdp-size-row__label text-reg-14">
@@ -45,18 +45,32 @@
                   {%- endif -%}
                 </div>
 
-                <div class="pdp-size-row__list" data-product-detail-choices>
+                <div class="pdp-size-row__list">
+                  {%- assign option_idx = forloop.index0 -%}
                   {%- for value in option.values -%}
                     {%- liquid
                       assign variant_for_value = null
                       for v in product.variants
-                        if v.options[forloop.parentloop.index0] == value
+                        assign match = true
+                        for option2 in product.options_with_values
+                          assign o_idx = forloop.index0
+                          if o_idx == option_idx
+                            if v.options[o_idx] != value
+                              assign match = false
+                            endif
+                          else
+                            if v.options[o_idx] != current_variant.options[o_idx]
+                              assign match = false
+                            endif
+                          endif
+                        endfor
+                        if match
                           assign variant_for_value = v
                           break
                         endif
                       endfor
 
-                      assign is_avail = true
+                      assign is_avail = false
                       assign inventory_qty = 0
                       if variant_for_value != null
                         assign is_avail = variant_for_value.available
@@ -64,7 +78,7 @@
                       endif
 
                       assign is_selected = false
-                      if current_variant.options[forloop.parentloop.index0] == value
+                      if current_variant.options[option_idx] == value
                         assign is_selected = true
                       endif
                     -%}
@@ -75,14 +89,13 @@
                     >
                       <button
                         type="button"
-                        class="pdp-size-row__btn text-reg-14 js-pdp-size-btn{% unless is_avail %} is-disabled is-soldout{% endunless %}{% if is_selected %} is-selected{% endif %}"
+                        class="pdp-size-row__btn text-reg-14 js-pdp-size-btn{% unless is_avail %} is-disabled is-soldout pdp-size-row__btn--oos{% endunless %}{% if is_selected %} is-selected{% endif %}"
                         data-value="{{ value | escape }}"
                         data-variant-id="{{ variant_for_value.id }}"
                         data-available="{{ is_avail }}"
                         data-stock="{{ inventory_qty }}"
                         data-index="option{{ option.position }}"
                         aria-current="{% if is_selected %}true{% else %}false{% endif %}"
-                        data-product-detail-choice
                       >
                         <span class="pdp-size-row__btn-text">{{ value }}</span>
                         {%- unless is_avail -%}
@@ -100,7 +113,6 @@
                 data-single-option-selector
                 data-index="option{{ option.position }}"
                 name="options[{{ option.name | escape }}]"
-                data-product-detail-select
               >
                 {%- for value in option.values -%}
                   <option
@@ -144,7 +156,6 @@
       <select
         name="id"
         class="util-ScreenReaderOnly js-pdp-master-select"
-        data-product-select
       >
         {%- for variant in product.variants -%}
           <option
@@ -171,11 +182,9 @@
         {% if has_size_option and current_variant == blank %}
           disabled
         {% endif %}
-        data-product-detail-submit
       >
         <span
           class="pdp-cta-submit__text js-pdp-submit-text text-med-14 uppercase"
-          data-product-detail-submit-text
           data-translation-add-to-cart="{{ 'products.product.add_to_bag' | t }}"
           data-translation-sold-out="{{ 'products.product.sold_out' | t }}"
           data-translation-waitlist="{{ 'products.product.join_waitlist' | t }}"
@@ -197,19 +206,19 @@
             data-variant="{{ current_variant.id }}"
             data-product="{{ product.id }}"
             data-pTitle="{{ product.title | escape }}"
-            aria-label="{{ 'wishlist.add_to_wishlist' | t | default: 'Add to Wishlist' }}"
-            title="{{ 'wishlist.add_to_wishlist' | t | default: 'Add to Wishlist' }}"
+            data-ptitle="{{ product.title | escape }}"
+            aria-label="{{ 'wishlist.add_to_wishlist' | t }}"
+            title="{{ 'wishlist.add_to_wishlist' | t }}"
           >
             <span class="pdp-cta-wishlist__icons">
-              {%- render 'icons', icon: 'wishlist', class: 'pdp-cta-wishlist__icon pdp-cta-wishlist__icon--outline' -%}
-              {%- render 'icons', icon: 'wishlist-filled', class: 'pdp-cta-wishlist__icon pdp-cta-wishlist__icon--filled' -%}
+              {%- render 'icons', icon: 'wishlist', class: 'pdp-cta-wishlist__icon' -%}
             </span>
           </button>
         </div>
       {%- endif -%}
     </div>
 
-    <div class="pdp-bis-box js-pdp-bis-box" aria-hidden="{% if current_variant.available %}true{% else %}false{% endif %}">
+    <div class="pdp-bis-box js-pdp-bis-box" aria-hidden="true">
       <p class="pdp-bis-box__title text-reg-14">
         {{ settings.bis_message | default: 'Notify me when this size is back in stock.' }}
       </p>

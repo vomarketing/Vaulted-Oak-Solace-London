@@ -1,14 +1,3 @@
-/**
- * Main Product (New) - Stylesheet
- * 
- * Manages:
- * - Product layout grid & columns
- * - Media Gallery swiper & video playback
- * - Product content details (title, description, tags, custom liquid)
- * - Fullscreen zoom modal
- * - Drawers movement & recommended products scroller
- */
-
 .template-product .lyt-Header {
   position: absolute;
   top: 0;
@@ -292,6 +281,10 @@ body.is-scroll-locked {
   flex-direction: column;
   overflow-y: auto;
   scrollbar-width: none;
+
+  @media (max-width: 900px) {
+    padding-bottom: 80px;
+  }
 
   @media (min-width: 901px) {
     max-width: 570px;

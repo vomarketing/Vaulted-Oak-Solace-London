@@ -22,6 +22,7 @@ if (!customElements.get('product-buy-buttons')) {
 
     static classes = {
       btnSelected: 'is-selected',
+      btnOos: 'pdp-size-row__btn--oos',
       drawerOpen: 'is-open',
       drawerExpanded: 'is-expanded',
       waitlistMode: 'is-waitlist-mode',
@@ -187,26 +188,52 @@ if (!customElements.get('product-buy-buttons')) {
             if (selectedOption && selectedOption.getAttribute('data-available') === 'false') {
               e.preventDefault();
               const sizeDrawer = this.querySelector(this.selectors.sizeDrawer);
+              const bisBox = this.querySelector(this.selectors.bisBox);
+              const backdrop = this.querySelector(this.selectors.sizeDrawerBackdrop);
+              const emailInput = this.querySelector(this.selectors.bisEmail);
 
-              if (isMobile && sizeDrawer && !sizeDrawer.classList.contains(this.classes.waitlistMode)) {
-                sizeDrawer.classList.add(this.classes.waitlistMode);
-                this.dispatchEvent(new CustomEvent('waitlist:mode-change', {
-                  bubbles: true,
-                  detail: { isWaitlistMode: true }
-                }));
+              if (isMobile) {
+                if (sizeDrawer && !sizeDrawer.classList.contains(this.classes.waitlistMode)) {
+                  sizeDrawer.classList.add(this.classes.waitlistMode, this.classes.drawerOpen, this.classes.drawerExpanded);
+                  sizeDrawer.setAttribute('aria-expanded', 'true');
+                  if (backdrop) {
+                    backdrop.classList.add(this.classes.backdropActive);
+                    backdrop.setAttribute('aria-hidden', 'false');
+                  }
+                  document.body.classList.add('is-size-drawer-open');
 
-                const emailInput = this.querySelector(this.selectors.bisEmail);
-                if (emailInput) {
-                  setTimeout(() => emailInput.focus(), 250);
+                  if (bisBox) {
+                    bisBox.classList.add('is-active', 'is-open');
+                    bisBox.setAttribute('aria-hidden', 'false');
+                  }
+
+                  this.dispatchEvent(new CustomEvent('waitlist:mode-change', {
+                    bubbles: true,
+                    detail: { isWaitlistMode: true }
+                  }));
+
+                  if (emailInput) {
+                    setTimeout(() => emailInput.focus(), 250);
+                  }
+                  return;
                 }
-                return;
+              } else {
+                // Desktop: reveal bisBox when clicking Join The Waitlist
+                if (bisBox && (bisBox.getAttribute('aria-hidden') === 'true' || !bisBox.classList.contains('is-open'))) {
+                  bisBox.classList.add('is-active', 'is-open');
+                  bisBox.setAttribute('aria-hidden', 'false');
+                  if (emailInput) {
+                    setTimeout(() => emailInput.focus(), 150);
+                  }
+                  return;
+                }
               }
 
-              const emailInput = this.querySelector(this.selectors.bisEmail);
-              if (emailInput && !emailInput.value.trim()) {
-                emailInput.focus();
-                emailInput.parentElement?.classList.add('is-highlight');
-                setTimeout(() => emailInput.parentElement?.classList.remove('is-highlight'), 1200);
+              const emailInputEl = this.querySelector(this.selectors.bisEmail);
+              if (emailInputEl && !emailInputEl.value.trim()) {
+                emailInputEl.focus();
+                emailInputEl.parentElement?.classList.add('is-highlight');
+                setTimeout(() => emailInputEl.parentElement?.classList.remove('is-highlight'), 1200);
               } else {
                 this.handleBisSubmission();
               }
@@ -246,7 +273,7 @@ if (!customElements.get('product-buy-buttons')) {
           const hiddenSelect = this.querySelector(`select[data-index="${optionIndex}"]`);
           if (hiddenSelect) {
             hiddenSelect.value = sizeValue;
-            hiddenSelect.dispatchEvent(new Event('change', { bubbles: true }));
+            hiddenSelect.dispatchEvent(new Event('change'));
           }
 
           const variantId = button.getAttribute('data-variant-id');
@@ -398,26 +425,31 @@ if (!customElements.get('product-buy-buttons')) {
       }
 
       if (bisBox) {
-        if (isAvailable) {
-          bisBox.classList.remove('is-active');
-          bisBox.setAttribute('aria-hidden', 'true');
-          if (bisResponse) bisResponse.setAttribute('aria-hidden', 'true');
-        } else {
-          bisBox.classList.add('is-active');
-          bisBox.setAttribute('aria-hidden', 'false');
+        bisBox.classList.remove('is-active', 'is-open');
+        bisBox.setAttribute('aria-hidden', 'true');
+        if (bisResponse) bisResponse.setAttribute('aria-hidden', 'true');
+
+        if (!isAvailable) {
           if (bisSubmit) bisSubmit.setAttribute('data-variant-id', variantId);
+        } else {
+          const sizeDrawer = this.querySelector(this.selectors.sizeDrawer);
+          if (sizeDrawer) sizeDrawer.classList.remove(this.classes.waitlistMode);
         }
       }
 
       const wishlistAdd = this.querySelector(this.selectors.wishlistAddBtn);
       if (wishlistAdd) {
         wishlistAdd.dataset.variant = variantId;
-        const productId = wishlistAdd.dataset.product ? parseInt(wishlistAdd.dataset.product) : null;
+        wishlistAdd.setAttribute('data-variant', variantId);
+        const productId = wishlistAdd.getAttribute('data-product') || this.getAttribute('data-product-id');
+        if (productId) {
+          wishlistAdd.setAttribute('data-product', productId);
+        }
         if (window.iWishlistmain && productId && window.iWishlistmain[productId]) {
           if (window.iWishlistmain[productId].includes(String(variantId))) {
-            wishlistAdd.classList.add('iwishAdded');
+            wishlistAdd.classList.add('iwishAdded', 'is-added', 'pdp-cta-wishlist__btn--active');
           } else {
-            wishlistAdd.classList.remove('iwishAdded');
+            wishlistAdd.classList.remove('iwishAdded', 'is-added', 'pdp-cta-wishlist__btn--active');
           }
         }
       }
@@ -467,27 +499,25 @@ if (!customElements.get('product-buy-buttons')) {
       this.wishlistObserver.observe(wishlistBtn, { childList: true });
 
       wishlistBtn.addEventListener('click', (e) => {
-        const variantId = wishlistBtn.getAttribute('data-variant') || wishlistBtn.dataset.variant;
-        const productId = wishlistBtn.getAttribute('data-product') || wishlistBtn.dataset.product;
+        e.preventDefault();
+        const masterSelect = this.querySelector(this.selectors.masterSelect);
+        const variantId = wishlistBtn.getAttribute('data-variant') || (masterSelect ? masterSelect.value : '');
+        const productId = wishlistBtn.getAttribute('data-product') || this.getAttribute('data-product-id') || '';
 
-        const isCurrentlyAdded = wishlistBtn.classList.contains('is-added') || wishlistBtn.classList.contains('iwishAdded');
+        wishlistBtn.setAttribute('data-variant', variantId);
+        wishlistBtn.setAttribute('data-product', productId);
+
+        const isCurrentlyAdded = wishlistBtn.classList.contains('is-added') || wishlistBtn.classList.contains('iwishAdded') || wishlistBtn.classList.contains('pdp-cta-wishlist__btn--active');
 
         if (isCurrentlyAdded) {
-          wishlistBtn.classList.remove('is-added', 'iwishAdded');
+          wishlistBtn.classList.remove('is-added', 'iwishAdded', 'pdp-cta-wishlist__btn--active');
           if (window.wishlist && typeof window.wishlist.removeFromWishlist === 'function') {
-            const dummy = document.createElement('button');
-            dummy.dataset.variant = variantId;
-            dummy.dataset.product = productId;
-            window.wishlist.removeFromWishlist(dummy, variantId, false);
+            window.wishlist.removeFromWishlist(wishlistBtn, variantId, false);
           }
         } else {
-          wishlistBtn.classList.add('is-added', 'iwishAdded');
+          wishlistBtn.classList.add('is-added', 'iwishAdded', 'pdp-cta-wishlist__btn--active');
           if (window.wishlist && typeof window.wishlist.addToWishlist === 'function') {
-            const dummy = document.createElement('button');
-            dummy.dataset.variant = variantId;
-            dummy.dataset.product = productId;
-            dummy.dataset.pTitle = wishlistBtn.getAttribute('data-pTitle') || '';
-            window.wishlist.addToWishlist(dummy, variantId, 'false');
+            window.wishlist.addToWishlist(wishlistBtn, variantId, false);
           }
         }
       }, { signal });
