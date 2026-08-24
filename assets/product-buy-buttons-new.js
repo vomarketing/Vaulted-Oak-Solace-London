@@ -274,6 +274,10 @@ if (!customElements.get('product-buy-buttons')) {
             masterSelect.value = matchedVariantOption.value;
             masterSelect.dispatchEvent(new Event('change', { bubbles: true }));
             this.updateVariantState(matchedVariantOption);
+
+            if (window.innerWidth <= 900 && matchedVariantOption.getAttribute('data-available') === 'true') {
+              this.collapseSizeDrawer();
+            }
           }
         }, { signal });
       });

@@ -416,8 +416,10 @@ product-buy-buttons,
   height: 53px;
   box-sizing: border-box;
   background-color: transparent;
+  order: 2;
 
   @media (max-width: 900px) {
+    order: 3;
     border-left: none;
     border-right: none;
     border-bottom: none;
