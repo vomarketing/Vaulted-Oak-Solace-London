@@ -62,10 +62,6 @@
   .hd-Nav_Cart,
   .hd-MobileNav_Cart {
     background-color: var(--Color_Primary);
-
-    @media (min-width: 901px) {
-      background-color: var(--Header_CountTextColor);
-    }
   }
 
   .hd-MobileNav_Icon {
@@ -75,9 +71,12 @@
     }
   }
 
-  .hd-Nav_CartCount,
   .hd-MobileNav_Cart,
   .hd-MobileNav_CartCount {
+    color: var(--Header_CountTextColor);
+  }
+
+  .hd-Nav_CartCount {
     color: var(--Header_CountTextColor);
   }
 
@@ -136,6 +135,17 @@
 
         .hd-Nav_CartCount {
           color: var(--color-white);
+
+          @media (min-width: 901px) {
+            color: var(--Color_Primary);
+          }
+        }
+      }
+
+      .hd-Nav_Cart,
+      .hd-MobileNav_Cart {
+        @media (min-width: 901px) {
+          background-color: var(--Header_CountTextColor);
         }
       }
     }
