@@ -1,0 +1,133 @@
+.custom-tab {
+  --custom-tab-gutter: 20px;
+
+  display: block;
+  width: 100%;
+
+  @media (min-width: 768px) {
+    --custom-tab-gutter: 40px;
+  }
+}
+
+.custom-tab__nav {
+  display: flex;
+  gap: 30px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  scroll-behavior: smooth;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media (max-width: 900px) {
+    margin-inline: calc(var(--custom-tab-gutter) * -1);
+    padding-inline: var(--custom-tab-gutter);
+    scroll-padding-inline: var(--custom-tab-gutter);
+  }
+}
+
+.custom-tab__toggle {
+  flex: 0 0 auto;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  text-align: left;
+  text-decoration: none;
+  text-underline-offset: 2px;
+  white-space: nowrap;
+  cursor: pointer;
+  appearance: none;
+  transition: opacity var(--transition-base);
+
+  &:hover {
+    text-decoration: underline;
+  }
+
+  &:focus-visible {
+    outline: 1px solid currentcolor;
+    outline-offset: 4px;
+  }
+
+  &[aria-selected="true"] {
+    text-decoration: underline;
+  }
+}
+
+.custom-tab__panels {
+  position: relative;
+  margin-top: 20px;
+  transition: height var(--transition-smooth);
+
+  &.is-animating {
+    overflow: hidden;
+  }
+}
+
+.custom-tab__panel {
+  transition:
+    opacity var(--transition-base),
+    transform var(--transition-base),
+    visibility 0s linear 0.25s;
+
+  p,
+  li,
+  a {
+    font-size: inherit;
+    line-height: inherit;
+  }
+
+  a {
+    text-decoration: underline;
+    font-weight: 400;
+  }
+
+  > *:first-child {
+    margin-top: 0;
+  }
+
+  > *:not(:last-child) {
+    margin-bottom: 1rem;
+  }
+
+  > *:last-child {
+    margin-bottom: 0;
+  }
+}
+
+.custom-tab__panel:not(.is-active) {
+  position: absolute;
+  inset-block-start: 0;
+  inset-inline: 0;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px);
+  pointer-events: none;
+}
+
+.custom-tab__panel.is-active {
+  position: relative;
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+  transition:
+    opacity var(--transition-base),
+    transform var(--transition-base),
+    visibility 0s;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .custom-tab__nav {
+    scroll-behavior: auto;
+  }
+
+  .custom-tab__toggle,
+  .custom-tab__panels,
+  .custom-tab__panel {
+    transition: none;
+  }
+}
