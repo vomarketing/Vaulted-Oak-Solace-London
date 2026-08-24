@@ -35,7 +35,7 @@ if (!customElements.get('three-up-slider')) {
       this.swiperEl.classList.toggle(this.classes.isSingle, isSingle);
 
       this.swiper = new window.Swiper(this.swiperEl, {
-        slidesPerView: isSingle ? 1 : 1.55,
+        slidesPerView: isSingle ? 1 : 1.33,
         spaceBetween: 20,
         touchEventsTarget: 'container',
         watchOverflow: true,
