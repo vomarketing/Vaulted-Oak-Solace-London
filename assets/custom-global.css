@@ -95,6 +95,10 @@ body.template-product[data-fullpage-scroll] {
   position: relative;
   box-sizing: border-box;
   flex-shrink: 0;
+
+  &:empty {
+    display: none;
+  }
 }
 
 .shopify-section {

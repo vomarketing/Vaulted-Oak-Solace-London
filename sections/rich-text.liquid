@@ -1,10 +1,9 @@
-{{ 'rich-text.css' | asset_url | stylesheet_tag }}
-
 {%- liquid
   assign header_mode = section.settings.header_contrast_mode | default: 'dark'
 -%}
 
 {%- if section.settings.text != blank -%}
+  {{ 'rich-text.css' | asset_url | stylesheet_tag }}
   <rich-text
     class="rich-text"
     id="RichText-{{ section.id }}"
@@ -35,7 +34,7 @@
   </rich-text>
 {%- endif -%}
 
-{% schema %}
+{%- schema -%}
 {
   "name": "Rich text",
   "tag": "section",
@@ -88,4 +87,4 @@
     }
   ]
 }
-{% endschema %}
+{%- endschema -%}
