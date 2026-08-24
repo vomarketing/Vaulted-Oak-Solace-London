@@ -1,3 +1,16 @@
+<script type="application/json" class="js-pdp-klaviyo-data">
+{
+  "Name": {{ product.title | json }},
+  "ProductID": {{ product.id | json }},
+  "Categories": {{ product.collections | map: 'title' | json }},
+  "ImageURL": "https:{{ product.featured_media | image_url: width: 600 }}",
+  "URL": "{{ shop.secure_url }}{{ product.url }}",
+  "Brand": {{ product.vendor | json }},
+  "Price": {{ product.price | money | json }},
+  "CompareAtPrice": {{ product.compare_at_price_max | money | json }}
+}
+</script>
+
 {{ 'main-product-new.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'main-product-new.js' | asset_url }}" defer="defer"></script>
 
@@ -15,7 +28,7 @@
 -%}
 
 <product-fullscreen
-  class="pdp-new js-pdp-new prd-Detail"
+  class="pdp-new js-pdp-new"
   id="Product-{{ section.id }}"
   data-section-id="{{ section.id }}"
   data-section-type="product"
@@ -23,35 +36,17 @@
   data-has-size-option="{{ has_size_option }}"
   data-size-chosen="{% if has_size_option %}false{% else %}true{% endif %}"
 >
-  <!-- 1. Main 2-Column Section (Gallery + Sticky Content) -->
-  <div class="pdp-new__main prd-Detail_Inner">
-    <div class="pdp-new__gallery-column prd-Detail_Column prd-Detail_Column-image">
+  <div class="pdp-new__main">
+    <div class="pdp-new__gallery-column">
       {%- render 'product-media-gallery-new', product: product, section: section -%}
     </div>
 
-    <div class="pdp-new__content-column prd-Detail_Column prd-Detail_Column-content">
+    <div class="pdp-new__content-column">
       {%- render 'product-content-new', product: product, section: section, current_variant: current_variant -%}
     </div>
   </div>
-
-  <!-- 3. Back to Collection Link -->
-  {%- if collection -%}
-    <div class="pg-Back">
-      <div class="pg-Back_Inner lyt-Container">
-        <div class="pg-Back_Body">
-          <a class="pg-Back_Link text-med-10 uppercase" href="{{ collection.url }}">
-            <span class="pg-Back_Icon">{%- render 'bao-chevron-left' -%}</span>
-            <span class="pg-Back_Text">{{ 'products.product.back' | t | default: 'Back' }}</span>
-          </a>
-        </div>
-      </div>
-    </div>
-  {%- endif -%}
 </product-fullscreen>
 
-<!-- =============================================================================
-     SEO JSON-LD Structured Data
-     ============================================================================= -->
 <script type="application/ld+json">
 {
   "@context": "http://schema.org/",
@@ -96,71 +91,6 @@
     ]
   {%- endif -%}
 }
-</script>
-
-<!-- =============================================================================
-     Back-in-Stock (BIS) Popover Integration
-     ============================================================================= -->
-<script type="text/javascript">
-if (typeof(BIS) !== 'undefined') {
-  if (BIS.urlIsProductPage()) {
-    BISPopover.ready.then(function() {
-      var variant_id;
-      var reload = function() {
-        try {
-          var variant = BIS.detectVariant(BIS.popup);
-          if (variant && BIS.popup.variantIsUnavailable(variant)) {
-            variant_id = variant.id;
-          }
-        } catch (e) {};
-      };
-
-      var elm = $('.js-pdp-master-select');
-      if (elm[0]) {
-        elm.on('change', reload);
-      }
-    });
-  }
-}
-</script>
-
-<!-- =============================================================================
-     Klaviyo Product & Add to Cart Tracking
-     ============================================================================= -->
-<script type="text/javascript">
-  var _learnq = _learnq || [];
-  var klaviyoItem = {
-    Name: {{ product.title | json }},
-    ProductID: {{ product.id | json }},
-    Categories: {{ product.collections | map: 'title' | json }},
-    ImageURL: "https:{{ product.featured_media | image_url: width: 600 }}",
-    URL: "{{ shop.secure_url }}{{ product.url }}",
-    Brand: {{ product.vendor | json }},
-    Price: {{ product.price | money | json }},
-    CompareAtPrice: {{ product.compare_at_price_max | money | json }}
-  };
-  _learnq.push(['track', 'Viewed Product', klaviyoItem]);
-  _learnq.push(['trackViewedItem', {
-    Title: klaviyoItem.Name,
-    ItemId: klaviyoItem.ProductID,
-    Categories: klaviyoItem.Categories,
-    ImageUrl: klaviyoItem.ImageURL,
-    Url: klaviyoItem.URL,
-    Metadata: {
-      Brand: klaviyoItem.Brand,
-      Price: klaviyoItem.Price,
-      CompareAtPrice: klaviyoItem.CompareAtPrice
-    }
-  }]);
-
-  document.addEventListener('DOMContentLoaded', function() {
-    var submitBtn = document.querySelector('.js-pdp-submit');
-    if (submitBtn) {
-      submitBtn.addEventListener('click', function() {
-        _learnq.push(['track', 'Added to Cart', klaviyoItem]);
-      });
-    }
-  });
 </script>
 
 {% schema %}
@@ -349,16 +279,6 @@ if (typeof(BIS) !== 'undefined') {
       ]
     },
     {
-      "type": "drawers_links",
-      "name": "Drawer Links",
-      "limit": 1
-    },
-    {
-      "type": "accordion_tabs",
-      "name": "Drawer Links (Legacy)",
-      "limit": 1
-    },
-    {
       "type": "text",
       "name": "Text",
       "settings": [
@@ -416,10 +336,16 @@ if (typeof(BIS) !== 'undefined') {
           "type": "title"
         },
         {
+          "type": "price"
+        },
+        {
           "type": "description"
         },
         {
           "type": "variant_picker"
+        },
+        {
+          "type": "contact_question"
         },
         {
           "type": "buy_buttons"
@@ -428,10 +354,10 @@ if (typeof(BIS) !== 'undefined') {
           "type": "duties_taxes"
         },
         {
-          "type": "colorways"
+          "type": "tab_content"
         },
         {
-          "type": "drawers_links"
+          "type": "colorways"
         }
       ]
     }

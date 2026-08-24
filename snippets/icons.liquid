@@ -38,4 +38,9 @@
     <svg class="{{ icon_class }}" viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.5">
       <path stroke-linecap="round" stroke-linejoin="round" d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"/>
     </svg>
+
+  {%- when 'wishlist' -%}
+    <svg class="{{ icon_class }}" xmlns="http://www.w3.org/2000/svg" width="12" height="14" viewBox="0 0 12 14" fill="none">
+      <path d="M0.5 0.5H11.5V13.5L6.36719 7.61523L0.615637 13.5L0.5 0.5Z" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
 {%- endcase -%}

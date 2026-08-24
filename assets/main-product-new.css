@@ -115,8 +115,8 @@ body.is-scroll-locked {
     -ms-overflow-style: none;
     display: flex;
     flex-direction: column;
-    justify-content: space-between;
-    padding: clamp(80px, 10vh, 110px) 45px 35px 40px;
+    justify-content: flex-start;
+    padding: clamp(90px, 12vh, 130px) clamp(30px, 4vw, 55px) 40px clamp(30px, 4vw, 55px);
     box-shadow: none;
 
     &::-webkit-scrollbar {
@@ -125,7 +125,7 @@ body.is-scroll-locked {
   }
 
   @media (min-width: 1441px) {
-    padding: clamp(90px, 11vh, 130px) 60px 45px 50px;
+    padding: clamp(100px, 13vh, 140px) clamp(40px, 5vw, 65px) 50px clamp(40px, 5vw, 65px);
   }
 
   .is-zoom-modal-active & {
@@ -293,7 +293,6 @@ body.is-scroll-locked {
 
 .pdp-content {
   width: 100%;
-  height: 100%;
   display: flex;
   flex-direction: column;
   overflow-y: auto;
@@ -309,8 +308,6 @@ body.is-scroll-locked {
   width: 100%;
   display: flex;
   flex-direction: column;
-  height: 100%;
-  justify-content: space-between;
 }
 
 .pdp-content__top {
@@ -339,30 +336,49 @@ body.is-scroll-locked {
 }
 
 .pdp-content__title {
-  margin: 0 0 16px;
+  margin: 0 0 10px;
   text-transform: none;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 500;
 }
 
 .pdp-content__price-row {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
+  font-size: 14px;
+  line-height: 20px;
+
+  @media (min-width: 901px) {
+    margin-bottom: 24px;
+  }
 }
 
 .pdp-content__price-compare {
-  color: var(--Color_Dark-grey, #757575);
+  color: var(--color-price, #333333);
   text-decoration: line-through;
+
+  &::after {
+    background-color: var(--color-price, #333333);
+  }
 }
 
 .pdp-content__price-sale,
 .pdp-content__price-discount {
-  color: var(--Color_Error, #c20000);
+  color: var(--Color_Error, #CE0000);
 }
 
 .pdp-content__short-desc {
   margin-bottom: 22px;
-  color: var(--Color_Brand, #000000);
+  color: var(--color-black, #000000);
+  font-size: 14px;
+  line-height: 20px;
+
+  @media (min-width: 901px) {
+    margin-bottom: 24px;
+  }
 }
 
 .pdp-final-sale {
@@ -375,17 +391,48 @@ body.is-scroll-locked {
 
 .pdp-size-row {
   margin-bottom: 18px;
+
+  @media (min-width: 901px) {
+    margin-bottom: 20px;
+  }
+}
+
+.pdp-size-row__inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+
+  @media (min-width: 901px) {
+    flex-wrap: nowrap;
+    gap: 0;
+  }
 }
 
 .pdp-size-row__header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 10px;
+  width: 100%;
+  margin-bottom: 8px;
+
+  @media (min-width: 901px) {
+    width: auto;
+    margin-bottom: 0;
+  }
 }
 
 .pdp-size-row__label {
   color: var(--Color_Brand, #000000);
+  font-size: 14px;
+  line-height: 20px;
+  min-width: max-content;
+
+  @media (min-width: 901px) {
+    margin-right: 20px;
+  }
 }
 
 .pdp-size-row__guide-link {
@@ -394,29 +441,48 @@ body.is-scroll-locked {
   padding: 0;
   color: var(--Color_Brand, #000000);
   cursor: pointer;
-  opacity: 0.6;
-  transition: opacity 0.3s ease;
+  opacity: 0.7;
+  font-size: 14px;
+  line-height: 20px;
+  transition: opacity 0.2s ease;
+  white-space: nowrap;
 
   &:hover {
     opacity: 1;
+    text-decoration: underline;
+  }
+
+  @media (min-width: 901px) {
+    margin-left: auto;
+    padding-left: 16px;
   }
 }
 
 .pdp-size-row__list {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
-  margin-right: -8px;
-  margin-left: -8px;
+  align-items: center;
+  gap: 12px;
+  margin: 0;
+  padding: 0;
+
+  @media (min-width: 901px) {
+    gap: 14px;
+  }
+}
+
+.prd-OffersOption_Item {
+  display: inline-flex;
 }
 
 .pdp-size-row__btn {
   background: transparent;
   border: none;
-  padding: 8px;
+  padding: 2px 4px;
   color: var(--Color_Brand, #000000);
   cursor: pointer;
   position: relative;
+  font-size: 14px;
+  line-height: 20px;
   opacity: 0.9;
   transition: opacity 0.2s ease;
 
@@ -427,17 +493,18 @@ body.is-scroll-locked {
   &.is-selected,
   &[aria-current="true"] {
     text-decoration: underline;
-    text-underline-offset: 3px;
+    text-underline-offset: 4px;
+    font-weight: 500;
     opacity: 1;
   }
 
   &.disabled-btn,
   &.is-soldout {
-    opacity: 0.4;
+    opacity: 0.35;
     cursor: pointer;
 
     &:hover {
-      opacity: 0.8;
+      opacity: 0.75;
     }
 
     &.is-selected {
@@ -466,34 +533,68 @@ body.is-scroll-locked {
 }
 
 /* =============================================================================
-   6. Add To Bag Button (Solace Animations)
+   6. Contact / Questions Block
+   ============================================================================= */
+
+.pdp-block--contact,
+.pdp-content__contact-question {
+  margin-bottom: 18px;
+  color: var(--Color_Brand, #000000);
+  font-size: 14px;
+  line-height: 20px;
+
+  @media (min-width: 901px) {
+    margin-bottom: 20px;
+  }
+}
+
+.pdp-content__contact-link {
+  color: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  opacity: 0.8;
+  transition: opacity 0.2s ease;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+/* =============================================================================
+   7. Add To Bag & Wishlist Row
    ============================================================================= */
 
 .pdp-block--buy-buttons {
-  margin-bottom: 22px;
+  margin-bottom: 20px;
 }
 
 .pdp-cta-row {
   width: 100%;
+  display: flex;
+  align-items: stretch;
+  border: 1px solid var(--Color_Brand, #000000);
+  height: 44px;
+  box-sizing: border-box;
+  background-color: transparent;
 }
 
 .prd-Offers_Submit,
 .pdp-cta-submit {
   position: relative;
-  width: 100%;
-  height: 40px;
-  padding: 10px 14px;
-  text-align: left;
+  flex: 1;
+  height: 100%;
+  padding: 0 16px;
+  text-align: center;
   background-color: transparent;
-  border: 1px solid var(--Color_Brand, #000000);
+  border: none;
   border-radius: 0;
   color: var(--Color_Brand, #000000);
   overflow: hidden;
   cursor: pointer;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  transition: border 0.4s ease, color 0.3s ease;
+  justify-content: center;
+  transition: color 0.3s ease;
 
   &:before {
     content: "";
@@ -528,78 +629,108 @@ body.is-scroll-locked {
 .js-pdp-submit-text {
   position: relative;
   z-index: 1;
+  letter-spacing: 0.02em;
+  font-size: 14px;
+  font-weight: 500;
   transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.075), opacity 0.3s ease;
-}
-
-.prd-Offers_Submit:hover .prd-Offers_SubmitText,
-.pdp-cta-submit:hover .js-pdp-submit-text {
-  opacity: 0;
-  transform: translateY(-300%);
 }
 
 .prd-Offers_Choose,
 .js-pdp-submit-choose {
   position: absolute;
-  left: 14px;
+  left: 50%;
+  transform: translate(-50%, 300%);
   z-index: 1;
   opacity: 0;
-  transform: translateY(300%);
+  letter-spacing: 0.02em;
+  font-size: 14px;
+  font-weight: 500;
   transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.075), opacity 0.3s ease;
 }
 
 .prd-Offers_Submit:hover .prd-Offers_Choose,
 .pdp-cta-submit:hover .js-pdp-submit-choose {
   opacity: 1;
-  transform: none;
+  transform: translate(-50%, 0);
 }
 
 .price-wrapper,
 .js-pdp-price-wrapper {
+  display: none;
+}
+
+/* Wishlist Bookmark Button */
+.pdp-cta-wishlist {
   position: relative;
-  z-index: 1;
+  width: 44px;
+  height: 100%;
+  border-left: 1px solid var(--Color_Brand, #000000);
+  flex-shrink: 0;
   display: flex;
   align-items: center;
-  gap: 6px;
-  margin-left: auto;
+  justify-content: center;
 }
 
-.prd-Offers_SubmitPrice {
-  text-align: right;
-  display: inline-block;
+.pdp-cta-wishlist__btn {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--Color_Brand, #000000);
+  cursor: pointer;
+  transition: background-color 0.2s ease, opacity 0.2s ease;
 
-  &[aria-current="true"] {
-    display: inline-block;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.04);
   }
 
-  &[aria-current="false"] {
+  .pdp-cta-wishlist__icon {
+    width: 14px;
+    height: 16px;
+    display: block;
+  }
+
+  .pdp-cta-wishlist__icon--filled {
     display: none;
   }
-}
 
-.prd-Card_Kicker-red {
-  color: var(--Color_Red, #c20000);
+  &.iwishAdded,
+  &.is-added {
+    .pdp-cta-wishlist__icon--outline {
+      display: none;
+    }
+    .pdp-cta-wishlist__icon--filled {
+      display: block;
+    }
+  }
 }
 
 /* =============================================================================
-   7. Status Notes, Delivery & Wishlist
+   8. Customs Duties & Taxes Disclaimer
    ============================================================================= */
 
-.pdp-block--status,
-.prd-Detail_Status {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 15px;
+.pdp-block--duties-taxes,
+.pdp-duties-taxes__text {
+  font-size: 10px;
+  line-height: 14px;
+  font-style: italic;
+  color: var(--Color_Brand, #000000);
   margin-bottom: 22px;
-}
+  opacity: 0.85;
 
-.prd-Status {
-  flex: 1;
+  @media (min-width: 901px) {
+    margin-bottom: 28px;
+  }
 }
 
 .prd-Status_Stock {
   color: var(--Color_Brand, #000000);
-  margin-bottom: 4px;
+  margin-bottom: 6px;
+  font-style: normal;
   transition: opacity 0.3s ease, visibility 0.3s ease;
 
   &[aria-hidden="true"] {
@@ -611,17 +742,9 @@ body.is-scroll-locked {
   }
 }
 
-.prd-Status_Delivery {
-  color: var(--Color_Brand, #000000);
-  opacity: 0.7;
-}
-
-.pdp-wishlist-wrapper {
-  flex-shrink: 0;
-}
 
 /* =============================================================================
-   8. Colorways / Related Products
+   9. Colorways / Related Products ("Also available in")
    ============================================================================= */
 
 .pdp-block--colorways,
@@ -635,75 +758,58 @@ body.is-scroll-locked {
 
 .prd-Related_Title {
   color: var(--Color_Brand, #000000);
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
   margin: 0;
 }
 
-.prd-Related_Items {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-}
-
-.prd-Related_Item {
-  width: 100%;
-}
-
-.prd-Related_Link {
-  display: block;
-  width: 100%;
-  overflow: hidden;
-  transition: opacity 0.3s ease;
-
-  &:hover {
-    opacity: 0.8;
-  }
-}
-
-/* =============================================================================
-   9. Drawer Links (Details, Delivery & Returns, Contact)
-   ============================================================================= */
-
-.pdp-block--links,
-.prd-Detail_Links {
+.prd-Related_Items,
+.pdp-colorways__items {
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-  margin-top: 30px;
-  padding-top: 18px;
-  border-top: 1px solid rgba(0, 0, 0, 0.1);
-}
+  gap: 10px;
+  overflow-x: auto;
+  scrollbar-width: none;
 
-.prd-Detail_LinksItem {
-  display: inline-block;
-}
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
-.prd-Detail_Link {
-  background: transparent;
-  border: none;
-  padding: 0;
-  color: var(--Color_Brand, #000000);
-  cursor: pointer;
-  opacity: 0.5;
-  transition: opacity 0.3s ease;
-
-  &:hover {
-    opacity: 1;
+  @media (min-width: 901px) {
+    flex-wrap: wrap;
+    gap: 12px;
   }
 }
 
-.pdp-content__contact-question {
-  margin-bottom: 20px;
-  color: var(--Color_Brand, #000000);
+.prd-Related_Item,
+.pdp-colorways__item {
+  width: 44px;
+  flex-shrink: 0;
+
+  @media (min-width: 768px) {
+    width: 48px;
+  }
 }
 
-.pdp-content__contact-link {
-  color: inherit;
-  opacity: 0.7;
+.prd-Related_Link,
+.pdp-colorways__link {
+  display: block;
+  width: 100%;
+  aspect-ratio: 9 / 13;
+  overflow: hidden;
+  background-color: #f6f6f6;
   transition: opacity 0.2s ease;
 
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
   &:hover {
-    opacity: 1;
+    opacity: 0.75;
   }
 }
 

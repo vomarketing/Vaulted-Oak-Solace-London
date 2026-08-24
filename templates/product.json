@@ -131,10 +131,6 @@
           "settings": {
             "title": "Also available in"
           }
-        },
-        "drawers_links_Vnywyi": {
-          "type": "drawers_links",
-          "settings": {}
         }
       },
       "block_order": [
@@ -144,8 +140,7 @@
         "buy_buttons_VGTxwz",
         "duties_taxes_d76MTJ",
         "tab_content_jWBbB7",
-        "colorways_UnqVeT",
-        "drawers_links_Vnywyi"
+        "colorways_UnqVeT"
       ],
       "name": "Main Product (New)",
       "settings": {

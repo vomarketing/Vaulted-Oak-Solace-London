@@ -25,10 +25,12 @@ if (!customElements.get('product-fullscreen')) {
 
       // Wishlist
       wishlistAddBtn: '.js-Wishlist_Button-add',
-      wishlistRemoveBtn: '.js-Wishlist_Button-remove',
 
       // Drawers
-      sizeGuideTrigger: '.js-size-guide-trigger'
+      sizeGuideTrigger: '.js-size-guide-trigger',
+
+      // Tracking & Third Party
+      klaviyoData: '.js-pdp-klaviyo-data'
     };
 
     static classes = {
@@ -54,6 +56,8 @@ if (!customElements.get('product-fullscreen')) {
       this.initZoomModal();
       this.initVariantSelection();
       this.initDrawersMovement();
+      this.initKlaviyoTracking();
+      this.initBisPopover();
 
       this.mql = window.matchMedia('(max-width: 900px)');
       this.handleMediaChange = (e) => {
@@ -398,9 +402,14 @@ if (!customElements.get('product-fullscreen')) {
       // Update Standalone Price Row if present
       if (priceContainer && price) {
         if (comparePrice && comparePrice !== price) {
+          const compNum = parseFloat(comparePrice.replace(/[^0-9.]/g, ''));
+          const priceNum = parseFloat(price.replace(/[^0-9.]/g, ''));
+          const discount = compNum > priceNum ? Math.round(((compNum - priceNum) / compNum) * 100) : 0;
+          const discountHtml = discount > 0 ? `<span class="pdp-content__price-discount prd-Card_Kicker-red text-reg-14">${discount}% off</span>` : '';
           priceContainer.innerHTML = `
-            <s class="pdp-content__price-compare text-reg-14">${comparePrice}</s>
+            <s class="pdp-content__price-compare prd-Price_Compare text-reg-14">${comparePrice}</s>
             <span class="pdp-content__price-sale prd-Card_Kicker-red text-med-14">${price}</span>
+            ${discountHtml}
           `;
         } else {
           priceContainer.innerHTML = `<span class="pdp-content__price-regular text-med-14">${price}</span>`;
@@ -418,7 +427,6 @@ if (!customElements.get('product-fullscreen')) {
 
       // Update Wishlist Variant IDs
       const wishlistAdd = document.querySelector(this.selectors.wishlistAddBtn);
-      const wishlistRemove = document.querySelector(this.selectors.wishlistRemoveBtn);
       if (wishlistAdd) {
         wishlistAdd.dataset.variant = variantId;
         const productId = wishlistAdd.dataset.product ? parseInt(wishlistAdd.dataset.product) : null;
@@ -429,9 +437,6 @@ if (!customElements.get('product-fullscreen')) {
             wishlistAdd.classList.remove('iwishAdded');
           }
         }
-      }
-      if (wishlistRemove) {
-        wishlistRemove.dataset.variant = variantId;
       }
 
       // Update Back In Stock Trigger
@@ -460,6 +465,84 @@ if (!customElements.get('product-fullscreen')) {
           }
         });
       }
+    }
+
+    initKlaviyoTracking() {
+      const dataEl = this.querySelector(this.selectors.klaviyoData);
+      if (!dataEl) return;
+
+      let klaviyoItem = null;
+      try {
+        klaviyoItem = JSON.parse(dataEl.textContent);
+      } catch (e) {
+        console.log('Klaviyo data parse error:', e);
+        return;
+      }
+
+      if (!klaviyoItem) return;
+
+      window._learnq = window._learnq || [];
+      window._learnq.push(['track', 'Viewed Product', klaviyoItem]);
+      window._learnq.push(['trackViewedItem', {
+        Title: klaviyoItem.Name,
+        ItemId: klaviyoItem.ProductID,
+        Categories: klaviyoItem.Categories,
+        ImageUrl: klaviyoItem.ImageURL,
+        Url: klaviyoItem.URL,
+        Metadata: {
+          Brand: klaviyoItem.Brand,
+          Price: klaviyoItem.Price,
+          CompareAtPrice: klaviyoItem.CompareAtPrice
+        }
+      }]);
+
+      const submitBtn = this.querySelector(this.selectors.submitButton);
+      if (submitBtn) {
+        const { signal } = this.abortController;
+        submitBtn.addEventListener('click', () => {
+          window._learnq = window._learnq || [];
+          window._learnq.push(['track', 'Added to Cart', klaviyoItem]);
+        }, { signal });
+      }
+    }
+
+    initBisPopover() {
+      if (typeof window.BIS === 'undefined' || typeof window.BISPopover === 'undefined') {
+        const checkBis = setInterval(() => {
+          if (typeof window.BIS !== 'undefined' && typeof window.BISPopover !== 'undefined') {
+            clearInterval(checkBis);
+            this.setupBisPopover();
+          }
+        }, 300);
+        setTimeout(() => clearInterval(checkBis), 5000);
+        return;
+      }
+
+      this.setupBisPopover();
+    }
+
+    setupBisPopover() {
+      if (!window.BIS || !window.BISPopover) return;
+      if (window.BIS.urlIsProductPage && !window.BIS.urlIsProductPage()) return;
+
+      window.BISPopover.ready.then(() => {
+        const masterSelect = this.querySelector(this.selectors.masterSelect);
+        if (!masterSelect) return;
+
+        const reload = () => {
+          try {
+            const variant = window.BIS.detectVariant(window.BIS.popup);
+            if (variant && window.BIS.popup.variantIsUnavailable(variant)) {
+              // Reload unavailable variant
+            }
+          } catch (e) {
+            console.log('BIS error:', e);
+          }
+        };
+
+        const { signal } = this.abortController;
+        masterSelect.addEventListener('change', reload, { signal });
+      });
     }
 
     disconnectedCallback() {
