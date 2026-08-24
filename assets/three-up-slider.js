@@ -55,6 +55,7 @@ if (!customElements.get('three-up-slider')) {
 
         breakpoints: {
           768: {
+            slidesPerView: isSingle ? 1 : 1.55,
             spaceBetween: 60
           },
           901: {
