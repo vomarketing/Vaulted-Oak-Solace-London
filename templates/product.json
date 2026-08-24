@@ -28,7 +28,10 @@
         "header_contrast_mode": "dark",
         "text": "{{ product.metafields.custom.richtext_content_1 | metafield_tag }}",
         "link_text": "",
-        "link": ""
+        "link": "",
+        "max_width_desktop": 807,
+        "max_width_tablet": 589,
+        "max_width_mobile": 305
       }
     },
     "three_up_slider_Bwqyrf": {
