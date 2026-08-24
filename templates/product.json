@@ -114,6 +114,15 @@
             "text": "Prices now include customs duties, import fees and taxes. No additional charges will be incurred upon delivery."
           }
         },
+        "tab_content_jWBbB7": {
+          "type": "tab_content",
+          "settings": {
+            "description": "{{ product.metafields.custom.tab_description | metafield_tag }}",
+            "fabric_care": "{{ product.metafields.custom.fabric_care | metafield_tag }}",
+            "size_fit": "{{ product.metafields.custom.size_fit | metafield_tag }}",
+            "shipping_returns": "{{ product.metafields.custom.shipping_returns | metafield_tag }}"
+          }
+        },
         "colorways_UnqVeT": {
           "type": "colorways",
           "settings": {
@@ -131,6 +140,7 @@
         "variant_picker_i8m7PA",
         "buy_buttons_VGTxwz",
         "duties_taxes_d76MTJ",
+        "tab_content_jWBbB7",
         "colorways_UnqVeT",
         "drawers_links_Vnywyi"
       ],
