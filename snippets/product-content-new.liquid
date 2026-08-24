@@ -362,7 +362,8 @@
               </div>
 
             {%- when 'colorways' -%}
-              {%- if related_color_handles.size > 0 -%}
+              {%- assign related_products = block.settings.products -%}
+              {%- if related_products.size > 0 or related_color_handles.size > 0 -%}
                 <div class="pdp-block pdp-block--colorways" {{ block.shopify_attributes }}>
                   <header class="prd-Related_Header">
                     <h4 class="prd-Related_Title text-reg-14">
@@ -371,26 +372,49 @@
                   </header>
 
                   <div class="prd-Related_Body">
-                    <div class="prd-Related_Items pdp-colorways__items">
-                      {%- for handle in related_color_handles -%}
-                        {%- assign rel_prod = all_products[handle] -%}
-                        {%- if rel_prod != blank -%}
-                          <div class="prd-Related_Item pdp-colorways__item">
-                            <a
-                              class="prd-Related_Link pdp-colorways__link"
-                              href="{{ rel_prod.url }}"
-                              title="{{ rel_prod.title }}"
-                            >
-                              {%- render 'responsive-image',
-                                image: rel_prod.featured_image,
-                                width: 140,
-                                size_by_width: true
-                              -%}
-                            </a>
-                          </div>
-                        {%- endif -%}
-                      {%- endfor -%}
-                    </div>
+                    <script src="{{ 'pdp-colorways.js' | asset_url }}" defer="defer"></script>
+                    <pdp-colorways class="pdp-colorways">
+                      <div class="js-colorways-swiper pdp-colorways__slider swiper">
+                        <div class="prd-Related_Items pdp-colorways__items swiper-wrapper">
+                          {%- if related_products.size > 0 -%}
+                            {%- for related_product in related_products -%}
+                              <div class="js-colorways-slide prd-Related_Item pdp-colorways__item swiper-slide">
+                                <a
+                                  class="prd-Related_Link pdp-colorways__link"
+                                  href="{{ related_product.url }}"
+                                  title="{{ related_product.title }}"
+                                >
+                                  {%- render 'responsive-image',
+                                    image: related_product.featured_image,
+                                    width: 140,
+                                    size_by_width: true
+                                  -%}
+                                </a>
+                              </div>
+                            {%- endfor -%}
+                          {%- else -%}
+                            {%- for handle in related_color_handles -%}
+                              {%- assign rel_prod = all_products[handle] -%}
+                              {%- if rel_prod != blank -%}
+                                <div class="js-colorways-slide prd-Related_Item pdp-colorways__item swiper-slide">
+                                  <a
+                                    class="prd-Related_Link pdp-colorways__link"
+                                    href="{{ rel_prod.url }}"
+                                    title="{{ rel_prod.title }}"
+                                  >
+                                    {%- render 'responsive-image',
+                                      image: rel_prod.featured_image,
+                                      width: 140,
+                                      size_by_width: true
+                                    -%}
+                                  </a>
+                                </div>
+                              {%- endif -%}
+                            {%- endfor -%}
+                          {%- endif -%}
+                        </div>
+                      </div>
+                    </pdp-colorways>
                   </div>
                 </div>
               {%- endif -%}
