@@ -96,12 +96,12 @@ body.is-scroll-locked {
   width: 100%;
   box-sizing: border-box;
   background-color: var(--color-white, #ffffff);
-  padding: 14px 20px 50px;
+  padding: 14px 0 50px;
   box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.08);
   min-height: 100vh;
 
   @media (min-width: 768px) {
-    padding: 20px 40px 60px;
+    padding: 20px 0 60px;
   }
 
   @media (min-width: 901px) {
@@ -110,6 +110,7 @@ body.is-scroll-locked {
     height: 100vh;
     height: 100dvh;
     overflow-y: auto;
+    max-width: none;
     scrollbar-width: none;
     -ms-overflow-style: none;
     display: flex;
@@ -295,6 +296,13 @@ body.is-scroll-locked {
   height: 100%;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
+  scrollbar-width: none;
+
+  @media (min-width: 901px) {
+    max-width: 480px;
+    margin: 0 auto;
+  }
 }
 
 .pdp-content__wrapper {
@@ -312,12 +320,22 @@ body.is-scroll-locked {
 .pdp-block {
   position: relative;
   width: 100%;
+
+  padding-inline: 20px;
+
+  @media (min-width: 901px) {
+    padding-inline: 40px;
+  }
 }
 
 .pdp-block--app,
 .pdp-block--text,
 .pdp-block--custom-liquid {
   margin-bottom: 18px;
+}
+
+.pdp-block--tab-content {
+  margin-block: 36px;
 }
 
 .pdp-content__title {

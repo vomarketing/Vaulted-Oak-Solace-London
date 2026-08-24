@@ -1,0 +1,108 @@
+{% doc %}
+  Render the product tab content block.
+  There are 4 hardcoded tabs: Description, Fabric & Care, Size & Fit, Shipping & Returns.
+  Empty tab content won't be rendered.
+
+  @param {string} description
+  @param {string} fabric_care
+  @param {string} size_fit
+  @param {string} shipping_returns
+  @param {string} [uid] - Unique suffix for the tab/panel ids. Defaults to 'product-tab'.
+
+  @example
+  {%- render 'product-tab-content',
+    description: description,
+    fabric_care: fabric_care,
+    size_fit: size_fit,
+    shipping_returns: shipping_returns,
+    uid: block.id
+  -%}
+{% enddoc %}
+
+{%- liquid
+  assign tab_uid = uid | default: 'product-tab'
+
+  assign tab_keys = ''
+  if description != blank
+    assign tab_keys = tab_keys | append: 'description,'
+  endif
+  if fabric_care != blank
+    assign tab_keys = tab_keys | append: 'fabric_care,'
+  endif
+  if size_fit != blank
+    assign tab_keys = tab_keys | append: 'size_fit,'
+  endif
+  if shipping_returns != blank
+    assign tab_keys = tab_keys | append: 'shipping_returns,'
+  endif
+  assign tab_keys = tab_keys | split: ','
+-%}
+
+{%- if tab_keys.size > 0 -%}
+  {{- 'custom-tab.css' | asset_url | stylesheet_tag -}}
+  <script src="{{ 'custom-tab.js' | asset_url }}" defer="defer"></script>
+
+  <custom-tab class="custom-tab">
+    <div
+      class="js-tab-nav custom-tab__nav"
+      role="tablist"
+      aria-label="Product information"
+    >
+      {%- for key in tab_keys -%}
+        {%- liquid
+          case key
+            when 'description'
+              assign tab_label = 'Description'
+            when 'fabric_care'
+              assign tab_label = 'Fabric & Care'
+            when 'size_fit'
+              assign tab_label = 'Size & Fit'
+            when 'shipping_returns'
+              assign tab_label = 'Shipping & Returns'
+          endcase
+        -%}
+        <button
+          type="button"
+          class="js-tab-toggle custom-tab__toggle text-reg-14"
+          id="TabToggle-{{ tab_uid }}-{{ key }}"
+          role="tab"
+          aria-controls="TabPanel-{{ tab_uid }}-{{ key }}"
+          aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
+          tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
+        >
+          {{ tab_label }}
+        </button>
+      {%- endfor -%}
+    </div>
+
+    <div class="js-tab-panels custom-tab__panels">
+      {%- for key in tab_keys -%}
+        {%- liquid
+          case key
+            when 'description'
+              assign tab_content = description
+            when 'fabric_care'
+              assign tab_content = fabric_care
+            when 'size_fit'
+              assign tab_content = size_fit
+            when 'shipping_returns'
+              assign tab_content = shipping_returns
+          endcase
+        -%}
+        <div
+          class="js-tab-panel custom-tab__panel text-reg-14{% if forloop.first %} is-active{% endif %}"
+          id="TabPanel-{{ tab_uid }}-{{ key }}"
+          role="tabpanel"
+          aria-labelledby="TabToggle-{{ tab_uid }}-{{ key }}"
+          {% if forloop.first %}
+            tabindex="0"
+          {% else %}
+            hidden
+          {% endif %}
+        >
+          {{ tab_content }}
+        </div>
+      {%- endfor -%}
+    </div>
+  </custom-tab>
+{%- endif -%}

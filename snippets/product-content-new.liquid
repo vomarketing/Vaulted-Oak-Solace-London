@@ -29,7 +29,7 @@
   endif
 -%}
 
-<div class="pdp-content js-pdp-content prd-Detail_Column prd-Detail_Column-content">
+<div class="pdp-content js-pdp-content">
   <div class="pdp-sheet-handle" aria-hidden="true"></div>
 
   <div class="pdp-content__wrapper">
@@ -515,6 +515,16 @@
                   </div>
                 {%- endif -%}
 
+              {%- when 'tab_content' -%}
+                <div class="pdp-block pdp-block--tab-content" {{ block.shopify_attributes }}>
+                  {%- render 'product-tab-content',
+                    description: block.settings.description,
+                    fabric_care: block.settings.fabric_care,
+                    size_fit: block.settings.size_fit,
+                    shipping_returns: block.settings.shipping_returns,
+                    uid: block.id
+                  -%}
+                </div>
             {%- endcase -%}
           {%- endfor -%}
 
