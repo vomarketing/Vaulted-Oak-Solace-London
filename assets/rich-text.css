@@ -27,7 +27,7 @@
 
 .rich-text__content {
   width: 100%;
-  max-width: 305px;
+  max-width: var(--max-width-mobile, 305px);
 }
 
 .rich-text__link {
@@ -39,12 +39,12 @@
 
 @media screen and (min-width: 768px) {
   .rich-text__content {
-    max-width: 598px;
+    max-width: var(--max-width-tablet, 598px);
   }
 }
 
 @media screen and (min-width: 901px) {
   .rich-text__content {
-    max-width: 910px;
+    max-width: var(--max-width-desktop, 910px);
   }
 }
