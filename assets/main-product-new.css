@@ -281,14 +281,12 @@ body.is-scroll-locked {
   flex-direction: column;
   overflow-y: auto;
   scrollbar-width: none;
-
-  @media (max-width: 900px) {
-    padding-bottom: 80px;
-  }
+  padding-bottom: 80px;
 
   @media (min-width: 901px) {
     max-width: 570px;
     margin: 0 auto;
+    padding-bottom: 0;
   }
 }
 
@@ -377,11 +375,10 @@ body.is-scroll-locked {
 }
 
 .pdp-content__short-desc {
-  display: none;
+  margin-bottom: 22px;
   color: var(--color-black, #000000);
 
   @media (min-width: 901px) {
-    display: block;
     margin-bottom: 45px;
   }
 }
@@ -462,9 +459,10 @@ body.is-scroll-locked {
 
 .pdp-colorways__slider {
   width: auto;
+  margin-inline: calc(var(--pdp-colorways-gutter) * -1);
 
-  @media (max-width: 900px) {
-    margin-inline: calc(var(--pdp-colorways-gutter) * -1);
+  @media (min-width: 901px) {
+    margin-inline: 0;
   }
 }
 

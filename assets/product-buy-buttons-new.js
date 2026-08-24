@@ -12,7 +12,6 @@ if (!customElements.get('product-buy-buttons')) {
       submitText: '.js-pdp-submit-text',
       sizeDrawer: '.js-pdp-size-drawer',
       sizeDrawerBackdrop: '.js-pdp-size-drawer-backdrop',
-      sizeDrawerClose: '.js-pdp-size-drawer-close',
       bisBox: '.js-pdp-bis-box',
       bisEmail: '.js-pdp-bis-email',
       bisSubmit: '.js-pdp-bis-submit',
@@ -54,16 +53,8 @@ if (!customElements.get('product-buy-buttons')) {
     }
 
     initSizeDrawer() {
-      const closeBtn = this.querySelector(this.selectors.sizeDrawerClose);
       const backdrop = this.querySelector(this.selectors.sizeDrawerBackdrop);
       const { signal } = this.abortController;
-
-      if (closeBtn) {
-        closeBtn.addEventListener('click', (e) => {
-          e.preventDefault();
-          this.collapseSizeDrawer();
-        }, { signal });
-      }
 
       if (backdrop) {
         backdrop.addEventListener('click', (e) => {

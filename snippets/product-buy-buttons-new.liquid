@@ -89,7 +89,7 @@
                     >
                       <button
                         type="button"
-                        class="pdp-size-row__btn text-reg-14 js-pdp-size-btn{% unless is_avail %} is-disabled is-soldout pdp-size-row__btn--oos{% endunless %}{% if is_selected %} is-selected{% endif %}"
+                        class="pdp-size-row__btn text-reg-14 js-pdp-size-btn{% unless is_avail %} pdp-size-row__btn--oos{% endunless %}{% if is_selected %} is-selected{% endif %}"
                         data-value="{{ value | escape }}"
                         data-variant-id="{{ variant_for_value.id }}"
                         data-available="{{ is_avail }}"
@@ -99,7 +99,7 @@
                       >
                         <span class="pdp-size-row__btn-text">{{ value }}</span>
                         {%- unless is_avail -%}
-                          <span class="pdp-size-row__waitlist-label text-reg-10 uppercase">{{ 'products.product.join_waitlist' | t | default: 'Join The Waitlist' }}</span>
+                          <span class="pdp-size-row__waitlist-label text-reg-14">{{ 'products.product.join_waitlist' | t }}</span>
                         {%- endunless -%}
                       </button>
                     </div>
@@ -201,7 +201,7 @@
         <div class="pdp-cta-wishlist">
           <button
             type="button"
-            class="pdp-cta-wishlist__btn js-Wishlist_Button js-Wishlist_Button-add js-pdp-wishlist-btn"
+            class="pdp-cta-wishlist__btn js-Wishlist_Button js-Wishlist_Button-add"
             {%- unless customer -%}data-module-drawers-trigger="wishlist"{%- endunless -%}
             data-variant="{{ current_variant.id }}"
             data-product="{{ product.id }}"
