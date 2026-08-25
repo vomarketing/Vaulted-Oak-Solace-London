@@ -44,17 +44,19 @@
   appearance: none;
   transition: opacity var(--transition-base);
 
-  &:hover {
-    text-decoration: underline;
-  }
-
-  &:focus-visible {
-    outline: 1px solid currentcolor;
-    outline-offset: 4px;
-  }
-
   &[aria-expanded="true"] {
     text-decoration: underline;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &:focus-visible {
+      outline: 1px solid currentcolor;
+      outline-offset: 4px;
+    }
   }
 }
 
