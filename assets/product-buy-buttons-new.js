@@ -34,6 +34,14 @@ if (!customElements.get('product-buy-buttons')) {
       this.classes = ProductBuyButtons.classes;
     }
 
+    isDesktop() {
+      return window.matchMedia('(min-width: 901px)').matches;
+    }
+
+    isMobile() {
+      return !this.isDesktop();
+    }
+
     connectedCallback() {
       this.abortController = new AbortController();
 
@@ -59,13 +67,31 @@ if (!customElements.get('product-buy-buttons')) {
       if (backdrop) {
         backdrop.addEventListener('click', (e) => {
           e.preventDefault();
-          this.collapseSizeDrawer();
+          this.collapseSizeDrawer(true);
         }, { signal });
       }
 
       document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape' && this.isSizeDrawerOpen()) {
-          this.collapseSizeDrawer();
+        if (e.key === 'Escape' && this.isMobile() && this.isSizeDrawerOpen()) {
+          this.collapseSizeDrawer(true);
+        }
+      }, { signal });
+
+      document.addEventListener('click', (e) => {
+        if (!this.isMobile()) return;
+
+        const sizeDrawer = this.querySelector(this.selectors.sizeDrawer);
+        const submitBtn = this.querySelector(this.selectors.submitButton);
+        const backdrop = this.querySelector(this.selectors.sizeDrawerBackdrop);
+
+        if (this.isSizeDrawerOpen() && sizeDrawer && !sizeDrawer.contains(e.target)) {
+          if (submitBtn && submitBtn.contains(e.target)) return;
+          if (backdrop && backdrop.contains(e.target)) return;
+          
+          if (e.target.closest('.drw-Drawer') || e.target.closest('.js-Drawers_Backdrop') || e.target.closest('.drw-Drawers_Backdrop')) return;
+          if (e.target.closest('[data-module-drawers-trigger]')) return;
+
+          this.collapseSizeDrawer(true);
         }
       }, { signal });
     }
@@ -75,19 +101,26 @@ if (!customElements.get('product-buy-buttons')) {
     }
 
     closeSizeDrawer() {
-      this.collapseSizeDrawer();
+      this.collapseSizeDrawer(true);
     }
 
     expandSizeDrawer() {
       const sizeDrawer = this.querySelector(this.selectors.sizeDrawer);
       const backdrop = this.querySelector(this.selectors.sizeDrawerBackdrop);
+      const bisBox = this.querySelector(this.selectors.bisBox);
+
       if (sizeDrawer) {
+        sizeDrawer.classList.remove(this.classes.waitlistMode);
         sizeDrawer.classList.add(this.classes.drawerExpanded, this.classes.drawerOpen);
         sizeDrawer.setAttribute('aria-expanded', 'true');
       }
       if (backdrop) {
         backdrop.classList.add(this.classes.backdropActive);
         backdrop.setAttribute('aria-hidden', 'false');
+      }
+      if (bisBox) {
+        bisBox.classList.remove('is-active');
+        bisBox.setAttribute('aria-hidden', 'true');
       }
       document.body.classList.add('is-size-drawer-open');
 
@@ -97,9 +130,12 @@ if (!customElements.get('product-buy-buttons')) {
       }));
     }
 
-    collapseSizeDrawer() {
+    collapseSizeDrawer(resetSelection = false) {
       const sizeDrawer = this.querySelector(this.selectors.sizeDrawer);
       const backdrop = this.querySelector(this.selectors.sizeDrawerBackdrop);
+      const bisBox = this.querySelector(this.selectors.bisBox);
+      const bisResponse = this.querySelector(this.selectors.bisResponse);
+
       if (sizeDrawer) {
         sizeDrawer.classList.remove(this.classes.drawerExpanded, this.classes.drawerOpen, this.classes.waitlistMode);
         sizeDrawer.setAttribute('aria-expanded', 'false');
@@ -108,7 +144,35 @@ if (!customElements.get('product-buy-buttons')) {
         backdrop.classList.remove(this.classes.backdropActive);
         backdrop.setAttribute('aria-hidden', 'true');
       }
+      if (bisBox) {
+        bisBox.classList.remove('is-active');
+        bisBox.setAttribute('aria-hidden', 'true');
+      }
+      if (bisResponse) {
+        bisResponse.setAttribute('aria-hidden', 'true');
+      }
       document.body.classList.remove('is-size-drawer-open');
+
+      if (resetSelection) {
+        const submitText = this.querySelector(this.selectors.submitText);
+        if (submitText) {
+          submitText.textContent = submitText.getAttribute('data-translation-add-to-cart') || 'Add To Bag';
+        }
+        if (this.dataset.hasSizeOption === 'true') {
+          this.dataset.sizeChosen = 'false';
+        }
+        const sizeButtons = this.querySelectorAll(this.selectors.sizeButtons);
+        sizeButtons.forEach((btn) => {
+          btn.classList.remove(this.classes.btnSelected);
+          btn.setAttribute('aria-pressed', 'false');
+          btn.setAttribute('aria-current', 'false');
+        });
+
+        this.dispatchEvent(new CustomEvent('waitlist:mode-change', {
+          bubbles: true,
+          detail: { isWaitlistMode: false }
+        }));
+      }
 
       this.dispatchEvent(new CustomEvent('size-drawer:close', {
         bubbles: true,
@@ -117,9 +181,13 @@ if (!customElements.get('product-buy-buttons')) {
     }
 
     isSizeDrawerExpanded() {
-      if (window.innerWidth > 900) return true;
+      if (!this.isMobile()) return false;
       const sizeDrawer = this.querySelector(this.selectors.sizeDrawer);
-      return sizeDrawer && (sizeDrawer.classList.contains(this.classes.drawerExpanded) || sizeDrawer.classList.contains(this.classes.drawerOpen));
+      return sizeDrawer && (
+        sizeDrawer.classList.contains(this.classes.drawerExpanded) ||
+        sizeDrawer.classList.contains(this.classes.drawerOpen) ||
+        sizeDrawer.classList.contains(this.classes.waitlistMode)
+      );
     }
 
     isSizeDrawerOpen() {
@@ -152,23 +220,21 @@ if (!customElements.get('product-buy-buttons')) {
 
       if (submitBtn) {
         submitBtn.addEventListener('click', (e) => {
-          const isMobile = window.innerWidth <= 900;
+          const isMobile = this.isMobile();
           const hasSizeOption = this.dataset.hasSizeOption === 'true';
           const sizeChosen = this.dataset.sizeChosen === 'true';
 
           if (isMobile && hasSizeOption) {
-            if (!this.isSizeDrawerExpanded()) {
-              e.preventDefault();
-              this.expandSizeDrawer();
-              return;
-            }
-
             if (!sizeChosen) {
               e.preventDefault();
-              const sizeRow = this.querySelector('.pdp-size-row');
-              if (sizeRow) {
-                sizeRow.classList.add('is-highlight');
-                setTimeout(() => sizeRow.classList.remove('is-highlight'), 1000);
+              if (!this.isSizeDrawerExpanded()) {
+                this.expandSizeDrawer();
+              } else {
+                const sizeRow = this.querySelector('.pdp-size-row');
+                if (sizeRow) {
+                  sizeRow.classList.add('is-highlight');
+                  setTimeout(() => sizeRow.classList.remove('is-highlight'), 1000);
+                }
               }
               return;
             }
@@ -194,7 +260,7 @@ if (!customElements.get('product-buy-buttons')) {
                   document.body.classList.add('is-size-drawer-open');
 
                   if (bisBox) {
-                    bisBox.classList.add('is-active', 'is-open');
+                    bisBox.classList.add('is-active');
                     bisBox.setAttribute('aria-hidden', 'false');
                   }
 
@@ -209,9 +275,8 @@ if (!customElements.get('product-buy-buttons')) {
                   return;
                 }
               } else {
-                // Desktop: reveal bisBox when clicking Join The Waitlist
-                if (bisBox && (bisBox.getAttribute('aria-hidden') === 'true' || !bisBox.classList.contains('is-open'))) {
-                  bisBox.classList.add('is-active', 'is-open');
+                if (bisBox && (bisBox.getAttribute('aria-hidden') === 'true' || !bisBox.classList.contains('is-active'))) {
+                  bisBox.classList.add('is-active');
                   bisBox.setAttribute('aria-hidden', 'false');
                   if (emailInput) {
                     setTimeout(() => emailInput.focus(), 150);
@@ -238,24 +303,18 @@ if (!customElements.get('product-buy-buttons')) {
       sizeButtons.forEach((button) => {
         button.addEventListener('click', (e) => {
           e.preventDefault();
+          const isMobile = this.isMobile();
 
           this.dataset.sizeChosen = 'true';
 
-          const sizeDrawer = this.querySelector(this.selectors.sizeDrawer);
-          if (sizeDrawer) {
-            sizeDrawer.classList.remove(this.classes.waitlistMode);
-            this.dispatchEvent(new CustomEvent('waitlist:mode-change', {
-              bubbles: true,
-              detail: { isWaitlistMode: false }
-            }));
-          }
-
           sizeButtons.forEach((btn) => {
             btn.classList.remove(this.classes.btnSelected);
+            btn.setAttribute('aria-pressed', 'false');
             btn.setAttribute('aria-current', 'false');
           });
 
           button.classList.add(this.classes.btnSelected);
+          button.setAttribute('aria-pressed', 'true');
           button.setAttribute('aria-current', 'true');
 
           const sizeValue = button.getAttribute('data-value');
@@ -293,8 +352,49 @@ if (!customElements.get('product-buy-buttons')) {
             masterSelect.dispatchEvent(new Event('change', { bubbles: true }));
             this.updateVariantState(matchedVariantOption);
 
-            if (window.innerWidth <= 900 && matchedVariantOption.getAttribute('data-available') === 'true') {
-              this.collapseSizeDrawer();
+            const isAvailable = matchedVariantOption.getAttribute('data-available') === 'true';
+
+            if (isMobile) {
+              if (isAvailable) {
+                this.collapseSizeDrawer(false);
+                const form = this.closest('form') || document.getElementById(`product-form-${this.dataset.sectionId}`);
+                if (form) {
+                  if (typeof form.requestSubmit === 'function') {
+                    form.requestSubmit(submitBtn);
+                  } else {
+                    form.dispatchEvent(new Event('submit', { bubbles: true, cancelable: true }));
+                  }
+                }
+              } else {
+                const sizeDrawer = this.querySelector(this.selectors.sizeDrawer);
+                const bisBox = this.querySelector(this.selectors.bisBox);
+                const backdrop = this.querySelector(this.selectors.sizeDrawerBackdrop);
+                const emailInput = this.querySelector(this.selectors.bisEmail);
+
+                if (sizeDrawer) {
+                  sizeDrawer.classList.add(this.classes.waitlistMode, this.classes.drawerOpen, this.classes.drawerExpanded);
+                  sizeDrawer.setAttribute('aria-expanded', 'true');
+                }
+                if (backdrop) {
+                  backdrop.classList.add(this.classes.backdropActive);
+                  backdrop.setAttribute('aria-hidden', 'false');
+                }
+                document.body.classList.add('is-size-drawer-open');
+
+                if (bisBox) {
+                  bisBox.classList.add('is-active');
+                  bisBox.setAttribute('aria-hidden', 'false');
+                }
+
+                this.dispatchEvent(new CustomEvent('waitlist:mode-change', {
+                  bubbles: true,
+                  detail: { isWaitlistMode: true }
+                }));
+
+                if (emailInput) {
+                  setTimeout(() => emailInput.focus(), 250);
+                }
+              }
             }
           }
         }, { signal });
@@ -323,7 +423,7 @@ if (!customElements.get('product-buy-buttons')) {
       }
     }
 
-    handleBisSubmission() {
+    async handleBisSubmission() {
       const emailInput = this.querySelector(this.selectors.bisEmail);
       const responseEl = this.querySelector(this.selectors.bisResponse);
       const bisSubmit = this.querySelector(this.selectors.bisSubmit);
@@ -332,10 +432,11 @@ if (!customElements.get('product-buy-buttons')) {
       if (!emailInput || !responseEl) return;
 
       const email = emailInput.value.trim();
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const emailRegex = /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)+$/;
+      const invalidEmailMsg = responseEl.getAttribute('data-invalid-email') || 'Please enter a valid email address.';
 
       if (!email || !emailRegex.test(email)) {
-        responseEl.textContent = responseEl.getAttribute('data-error') || 'Please enter a valid email address.';
+        responseEl.innerHTML = invalidEmailMsg;
         responseEl.className = 'pdp-bis-box__response text-reg-14 is-error js-pdp-bis-response';
         responseEl.setAttribute('aria-hidden', 'false');
         emailInput.focus();
@@ -343,9 +444,9 @@ if (!customElements.get('product-buy-buttons')) {
       }
 
       const variantId = bisSubmit ? bisSubmit.getAttribute('data-variant-id') : (masterSelect ? masterSelect.value : '');
-      const productId = bisSubmit ? bisSubmit.getAttribute('data-product-id') : '';
+      const productId = bisSubmit ? bisSubmit.getAttribute('data-product-id') : (this.getAttribute('data-product-id') || this.dataset.productId || '');
 
-      const successMsg = responseEl.getAttribute('data-success') || 'Thank you! We will notify you when this item is back in stock.';
+      const successMsg = responseEl.getAttribute('data-success') || 'Thank you for joining the waitlist.<br>We’ll notify you if this size becomes available.';
       const errorMsg = responseEl.getAttribute('data-error') || 'Something went wrong. Please try again.';
 
       if (bisSubmit) {
@@ -359,34 +460,114 @@ if (!customElements.get('product-buy-buttons')) {
           bisSubmit.textContent = 'Submit';
         }
         if (isOk) {
-          responseEl.textContent = msg || successMsg;
+          responseEl.innerHTML = msg || successMsg;
           responseEl.className = 'pdp-bis-box__response text-reg-14 is-success js-pdp-bis-response';
           responseEl.setAttribute('aria-hidden', 'false');
           emailInput.value = '';
         } else {
-          responseEl.textContent = msg || errorMsg;
+          responseEl.innerHTML = msg || errorMsg;
           responseEl.className = 'pdp-bis-box__response text-reg-14 is-error js-pdp-bis-response';
           responseEl.setAttribute('aria-hidden', 'false');
         }
       };
 
+      // Try legacy Back In Stock app if available
       if (window.BIS && typeof window.BIS.create === 'function') {
-        window.BIS.create(email, variantId, productId)
-          .then((res) => {
-            if (res && res.status === 'OK') {
-              onComplete(true, res.message || successMsg);
-            } else {
-              const err = res && res.errors ? Object.values(res.errors).flat().join(' ') : errorMsg;
-              onComplete(false, err);
+        try {
+          const res = await window.BIS.create(email, variantId, productId);
+          if (res && (res.status === 'OK' || res.status === 'ok' || res.status === 200)) {
+            onComplete(true, res.message || successMsg);
+            return;
+          } else {
+            const err = res && res.errors ? (Array.isArray(res.errors) ? res.errors.join(' ') : Object.values(res.errors).flat().join(' ')) : errorMsg;
+            onComplete(false, err || errorMsg);
+            return;
+          }
+        } catch (e) {
+          console.warn('[BIS] window.BIS.create failed:', e);
+          onComplete(false, errorMsg);
+          return;
+        }
+      }
+
+      // Submit to Klaviyo Back In Stock modern Client API
+      try {
+        const companyId = this.getAttribute('data-klaviyo-account') || window._learnq?.accountNum || (window.location.hostname.includes('solace-london') ? 'XuEqtQ' : 'MKZsDF');
+
+        if (window._learnq && typeof window._learnq.push === 'function') {
+          window._learnq.push(['identify', { '$email': email }]);
+          window._learnq.push(['track', 'Subscribed to Back in Stock', {
+            email: email,
+            variant: variantId,
+            variant_id: variantId,
+            product_id: productId,
+            VariantID: variantId,
+            ProductID: productId
+          }]);
+        }
+
+        const compoundVariantId = `$shopify:::$default:::${variantId}`;
+
+        const klaviyoPayload = {
+          data: {
+            type: 'back-in-stock-subscription',
+            attributes: {
+              channels: ['EMAIL'],
+              profile: {
+                data: {
+                  type: 'profile',
+                  attributes: {
+                    email: email
+                  }
+                }
+              }
+            },
+            relationships: {
+              variant: {
+                data: {
+                  type: 'catalog-variant',
+                  id: compoundVariantId
+                }
+              }
             }
-          })
-          .catch(() => {
-            onComplete(true, successMsg);
-          });
-      } else {
-        setTimeout(() => {
+          }
+        };
+
+        const klaviyoRes = await fetch(`https://a.klaviyo.com/client/back-in-stock-subscriptions/?company_id=${encodeURIComponent(companyId)}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'Accept': 'application/vnd.api+json',
+            'revision': '2026-07-15'
+          },
+          body: JSON.stringify(klaviyoPayload)
+        });
+
+        console.log(klaviyoRes, 'error')
+
+        if (klaviyoRes.ok || klaviyoRes.status === 200 || klaviyoRes.status === 201 || klaviyoRes.status === 202 || klaviyoRes.status === 409) {
           onComplete(true, successMsg);
-        }, 400);
+        } else if (klaviyoRes.status === 429) {
+          onComplete(false, 'Too many requests. Please wait a moment and try again.');
+        } else {
+          let errMsg = errorMsg;
+          try {
+            const errData = await klaviyoRes.json();
+            if (errData && Array.isArray(errData.errors) && errData.errors.length) {
+              const detail = errData.errors.map(e => e.detail || e.title || '').filter(Boolean).join(' ');
+              if (detail) {
+                errMsg = detail;
+              }
+            } else if (errData && errData.message) {
+              errMsg = errData.message;
+            }
+          } catch (e) {}
+
+          onComplete(false, errMsg);
+        }
+      } catch (err) {
+        console.error('[BIS] Submission error:', err);
+        onComplete(false, errorMsg);
       }
     }
 
@@ -416,12 +597,14 @@ if (!customElements.get('product-buy-buttons')) {
       }
 
       if (bisBox) {
-        bisBox.classList.remove('is-active', 'is-open');
+        bisBox.classList.remove('is-active');
         bisBox.setAttribute('aria-hidden', 'true');
         if (bisResponse) bisResponse.setAttribute('aria-hidden', 'true');
 
         if (!isAvailable) {
           if (bisSubmit) bisSubmit.setAttribute('data-variant-id', variantId);
+          const bisTrigger = this.querySelector('[data-el="back-in-stock.trigger"]');
+          if (bisTrigger) bisTrigger.setAttribute('data-variant-id', variantId);
         } else {
           const sizeDrawer = this.querySelector(this.selectors.sizeDrawer);
           if (sizeDrawer) sizeDrawer.classList.remove(this.classes.waitlistMode);

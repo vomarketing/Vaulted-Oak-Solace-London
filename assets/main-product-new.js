@@ -16,8 +16,7 @@ if (!customElements.get('product-fullscreen')) {
       zoomClose: '.js-pdp-zoom-close',
       zoomItems: '.js-pdp-zoom-item',
       priceContainer: '.pdp-content__price-row',
-      stockStatus: '.js-pdp-stock-status',
-      klaviyoData: '.js-pdp-klaviyo-data'
+      stockStatus: '.js-pdp-stock-status'
     };
 
     static classes = {
@@ -31,6 +30,15 @@ if (!customElements.get('product-fullscreen')) {
       this.selectors = ProductFullscreen.selectors;
       this.classes = ProductFullscreen.classes;
       this.swiper = null;
+      this.swiperInitTimer = null;
+    }
+
+    isDesktop() {
+      return window.matchMedia('(min-width: 901px)').matches;
+    }
+
+    isMobile() {
+      return !this.isDesktop();
     }
 
     connectedCallback() {
@@ -40,20 +48,18 @@ if (!customElements.get('product-fullscreen')) {
       this.initMobileSwiper();
       this.initZoomModal();
       this.initDrawersMovement();
-      // this.initKlaviyoTracking();
-      this.initBisPopover();
 
       this.addEventListener('variant:change', (e) => {
         const { price, comparePrice, inventoryQty } = e.detail;
         this.updateExternalPriceAndStock(price, comparePrice, inventoryQty);
       }, { signal: this.abortController.signal });
 
-      this.mql = window.matchMedia('(max-width: 900px)');
+      this.mql = window.matchMedia('(min-width: 901px)');
       this.handleMediaChange = (e) => {
         if (e.matches) {
-          this.initMobileSwiper();
-        } else {
           this.destroyMobileSwiper();
+        } else {
+          this.initMobileSwiper();
         }
       };
 
@@ -93,7 +99,7 @@ if (!customElements.get('product-fullscreen')) {
     }
 
     initMobileSwiper() {
-      if (window.innerWidth > 900) return;
+      if (!this.isMobile()) return;
       if (this.swiper) return;
 
       const swiperEl = this.querySelector(this.selectors.swiper);
@@ -102,9 +108,15 @@ if (!customElements.get('product-fullscreen')) {
       const slideCount = this.querySelectorAll(this.selectors.slides).length;
       if (slideCount <= 1) return;
 
+      let retries = 0;
+      const maxRetries = 50;
+
       const init = () => {
         if (typeof window.Swiper === 'undefined') {
-          setTimeout(init, 50);
+          if (retries < maxRetries) {
+            retries++;
+            this.swiperInitTimer = setTimeout(init, 50);
+          }
           return;
         }
 
@@ -182,6 +194,10 @@ if (!customElements.get('product-fullscreen')) {
     }
 
     destroyMobileSwiper() {
+      if (this.swiperInitTimer) {
+        clearTimeout(this.swiperInitTimer);
+        this.swiperInitTimer = null;
+      }
       if (this.swiper) {
         this.swiper.destroy(true, true);
         this.swiper = null;
@@ -214,6 +230,7 @@ if (!customElements.get('product-fullscreen')) {
     initZoomModal() {
       const zoomModal = this.querySelector(this.selectors.zoomModal);
       const zoomTriggers = this.querySelectorAll(this.selectors.zoomTriggers);
+      const { signal } = this.abortController;
 
       if (!zoomModal) return;
 
@@ -222,7 +239,7 @@ if (!customElements.get('product-fullscreen')) {
           e.preventDefault();
           const index = trigger.getAttribute('data-media-index');
           this.openZoomModal(index);
-        });
+        }, { signal });
 
         trigger.addEventListener('keydown', (e) => {
           if (e.key === 'Enter' || e.key === ' ') {
@@ -230,7 +247,7 @@ if (!customElements.get('product-fullscreen')) {
             const index = trigger.getAttribute('data-media-index');
             this.openZoomModal(index);
           }
-        });
+        }, { signal });
       });
 
       zoomModal.addEventListener('click', (e) => {
@@ -241,7 +258,7 @@ if (!customElements.get('product-fullscreen')) {
         ) {
           this.closeZoomModal();
         }
-      });
+      }, { signal });
 
       window.addEventListener(
         'keydown',
@@ -250,7 +267,7 @@ if (!customElements.get('product-fullscreen')) {
             this.closeZoomModal();
           }
         },
-        { signal: this.abortController.signal }
+        { signal }
       );
     }
 
@@ -304,83 +321,6 @@ if (!customElements.get('product-fullscreen')) {
           }
         });
       }
-    }
-
-    initKlaviyoTracking() {
-      const dataEl = this.querySelector(this.selectors.klaviyoData);
-      if (!dataEl) return;
-
-      let klaviyoItem = null;
-      try {
-        klaviyoItem = JSON.parse(dataEl.textContent);
-      } catch (e) {
-        console.log('Klaviyo data parse error:', e);
-        return;
-      }
-
-      if (!klaviyoItem) return;
-
-      window._learnq = window._learnq || [];
-      window._learnq.push(['track', 'Viewed Product', klaviyoItem]);
-      window._learnq.push(['trackViewedItem', {
-        Title: klaviyoItem.Name,
-        ItemId: klaviyoItem.ProductID,
-        Categories: klaviyoItem.Categories,
-        ImageUrl: klaviyoItem.ImageURL,
-        Url: klaviyoItem.URL,
-        Metadata: {
-          Brand: klaviyoItem.Brand,
-          Price: klaviyoItem.Price,
-          CompareAtPrice: klaviyoItem.CompareAtPrice
-        }
-      }]);
-
-      const submitBtn = this.querySelector('.js-pdp-submit');
-      if (submitBtn) {
-        const { signal } = this.abortController;
-        submitBtn.addEventListener('click', () => {
-          window._learnq = window._learnq || [];
-          window._learnq.push(['track', 'Added to Cart', klaviyoItem]);
-        }, { signal });
-      }
-    }
-
-    initBisPopover() {
-      if (typeof window.BIS === 'undefined' || typeof window.BISPopover === 'undefined') {
-        const checkBis = setInterval(() => {
-          if (typeof window.BIS !== 'undefined' && typeof window.BISPopover !== 'undefined') {
-            clearInterval(checkBis);
-            this.setupBisPopover();
-          }
-        }, 300);
-        setTimeout(() => clearInterval(checkBis), 5000);
-        return;
-      }
-
-      this.setupBisPopover();
-    }
-
-    setupBisPopover() {
-      if (!window.BIS || !window.BISPopover) return;
-      if (window.BIS.urlIsProductPage && !window.BIS.urlIsProductPage()) return;
-
-      window.BISPopover.ready.then(() => {
-        const masterSelect = this.querySelector('.js-pdp-master-select');
-        if (!masterSelect) return;
-
-        const reload = () => {
-          try {
-            const variant = window.BIS.detectVariant(window.BIS.popup);
-            if (variant && window.BIS.popup.variantIsUnavailable(variant)) {
-            }
-          } catch (e) {
-            console.log('BIS error:', e);
-          }
-        };
-
-        const { signal } = this.abortController;
-        masterSelect.addEventListener('change', reload, { signal });
-      });
     }
 
     disconnectedCallback() {

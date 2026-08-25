@@ -261,7 +261,7 @@ product-buy-buttons,
   background-color: transparent;
   border: 1px solid var(--Color_Border, #b2b2b2);
   border-radius: 0;
-  color: var(--Color_Brand, #000000);
+  color: var(--color-black);
   cursor: pointer;
 }
 
@@ -269,18 +269,34 @@ product-buy-buttons,
   display: none;
   width: 100%;
   margin-top: 0;
-  padding: 24px 20px;
+  padding: 24px 20px 35px;
   box-sizing: border-box;
   animation: pdpBisSlideUp 0.3s ease;
+
+  &.is-active,
+  &[aria-hidden="false"] {
+    display: block;
+  }
 
   @media (min-width: 901px) {
     margin-top: 20px;
     padding: 0;
+  }
+}
 
-    &.is-active,
-    &[aria-hidden="false"] {
-      display: block;
-    }
+.pdp-size-drawer.is-waitlist-mode .pdp-size-drawer__inner {
+  min-height: 0;
+  max-height: 0;
+  padding: 0;
+  opacity: 0;
+  overflow: hidden;
+  pointer-events: none;
+
+  @media (min-width: 901px) {
+    max-height: none;
+    opacity: 1;
+    overflow: visible;
+    pointer-events: auto;
   }
 }
 
@@ -386,7 +402,7 @@ product-buy-buttons,
 }
 
 .pdp-bis-box__response {
-  margin-top: 10px;
+  margin-top: 12px;
 
   &[aria-hidden="true"] {
     display: none;

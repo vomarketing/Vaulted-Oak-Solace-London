@@ -11,12 +11,18 @@
 {{ 'product-buy-buttons-new.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'product-buy-buttons-new.js' | asset_url }}" defer="defer"></script>
 
+{%- assign klaviyo_company_id = 'MKZsDF' -%}
+{%- if shop.permanent_domain == 'solace-london.myshopify.com' or shop.domain contains 'solace-london' or shop.domain contains 'solacelondon' -%}
+  {%- assign klaviyo_company_id = 'XuEqtQ' -%}
+{%- endif -%}
+
 <product-buy-buttons
   class="pdp-block pdp-block--purchase-actions"
   data-section-id="{{ section.id }}"
   data-product-id="{{ product.id }}"
   data-has-size-option="{{ has_size_option }}"
   data-size-chosen="{% if has_size_option %}false{% else %}true{% endif %}"
+  data-klaviyo-account="{{ klaviyo_company_id }}"
   {{ block.shopify_attributes }}
 >
   <div class="pdp-size-drawer__backdrop js-pdp-size-drawer-backdrop" aria-hidden="true"></div>
@@ -95,6 +101,7 @@
                         data-available="{{ is_avail }}"
                         data-stock="{{ inventory_qty }}"
                         data-index="option{{ option.position }}"
+                        aria-pressed="{% if is_selected %}true{% else %}false{% endif %}"
                         aria-current="{% if is_selected %}true{% else %}false{% endif %}"
                       >
                         <span class="pdp-size-row__btn-text">{{ value }}</span>
@@ -218,36 +225,7 @@
       {%- endif -%}
     </div>
 
-    <div class="pdp-bis-box js-pdp-bis-box" aria-hidden="true">
-      <p class="pdp-bis-box__title text-reg-14">
-        {{ settings.bis_message | default: 'Notify me when this size is back in stock.' }}
-      </p>
-      <div class="pdp-bis-box__form">
-        <div class="pdp-bis-box__input-wrapper">
-          <input
-            type="email"
-            class="pdp-bis-box__input text-reg-14 js-pdp-bis-email"
-            placeholder="{{ settings.bis_placeholder | default: 'Email Address' }}"
-            autocomplete="email"
-            aria-label="Email Address"
-          >
-          <button
-            type="button"
-            class="pdp-bis-box__submit text-reg-14 js-pdp-bis-submit"
-            data-product-id="{{ product.id }}"
-            data-variant-id="{{ current_variant.id }}"
-          >
-            {{ settings.bis_button_text | default: 'Submit' }}
-          </button>
-        </div>
-        <div
-          class="pdp-bis-box__response text-reg-14 js-pdp-bis-response"
-          aria-hidden="true"
-          data-success="{{ settings.bis_success_message | default: 'Thank you! We will notify you when this item is back in stock.' }}"
-          data-error="{{ settings.bis_error_message | default: 'Please enter a valid email address.' }}"
-        ></div>
-      </div>
-    </div>
+    {%- render 'back-in-stock-form-new', product: product, current_variant: current_variant -%}
   </div>
 
   {%- if size_guide_table != blank or section.settings.size_guide_page != blank -%}

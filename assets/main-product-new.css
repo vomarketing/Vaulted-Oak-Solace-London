@@ -411,12 +411,11 @@ body.is-scroll-locked {
 
 .pdp-block--duties-taxes,
 .pdp-duties-taxes__text {
-  color: var(--Color_Brand, #000000);
-  margin-bottom: 22px;
-  opacity: 0.85;
+  color: var(--color-black);
+  margin-bottom: 35px;
 
   @media (min-width: 901px) {
-    margin-bottom: 28px;
+    margin-bottom: 45px;
   }
 }
 

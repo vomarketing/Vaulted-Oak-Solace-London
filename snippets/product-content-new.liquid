@@ -90,7 +90,7 @@
 
                 {%- assign delivery_msg = block.settings.text | default: section.settings.delivery_note | default: 'Prices now include customs duties, import fees and taxes. No additional charges will be incurred upon delivery.' -%}
                 {%- if delivery_msg != blank -%}
-                  <div class="pdp-duties-taxes__text">
+                  <div class="pdp-duties-taxes__text text-med-14 italic">
                     {{ delivery_msg }}
                   </div>
                 {%- endif -%}
