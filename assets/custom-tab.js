@@ -19,7 +19,7 @@ if (!customElements.get('custom-tab')) {
       this.panelsEl = null;
       this.toggles = [];
       this.panels = [];
-      this.activeIndex = 0;
+      this.activeIndex = -1;
       this.reduceMotion = null;
       this.animationTimer = null;
 
@@ -39,11 +39,10 @@ if (!customElements.get('custom-tab')) {
 
       this.reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
 
-      const selected = this.toggles.findIndex((toggle) => toggle.getAttribute('aria-selected') === 'true');
-      this.activeIndex = selected > -1 ? selected : 0;
-
       this.panels.forEach((panel) => panel.removeAttribute('hidden'));
-      this.setActive(this.activeIndex, { focus: false, animate: false });
+
+      const expanded = this.toggles.findIndex((toggle) => toggle.getAttribute('aria-expanded') === 'true');
+      this.setActive(expanded, { animate: false, scroll: false });
 
       this.nav.addEventListener('click', this.clickHandler);
       this.nav.addEventListener('keydown', this.keydownHandler);
@@ -55,21 +54,24 @@ if (!customElements.get('custom-tab')) {
       if (!toggle) return;
 
       const index = this.toggles.indexOf(toggle);
-      if (index === -1 || index === this.activeIndex) return;
+      if (index === -1) return;
 
-      this.setActive(index, { focus: false });
+      this.setActive(index === this.activeIndex ? -1 : index);
     }
 
     onKeydown(event) {
       const lastIndex = this.toggles.length - 1;
+      const current = this.toggles.indexOf(document.activeElement);
+      if (current === -1) return;
+
       let index = null;
 
       switch (event.key) {
         case 'ArrowRight':
-          index = this.activeIndex === lastIndex ? 0 : this.activeIndex + 1;
+          index = current === lastIndex ? 0 : current + 1;
           break;
         case 'ArrowLeft':
-          index = this.activeIndex === 0 ? lastIndex : this.activeIndex - 1;
+          index = current === 0 ? lastIndex : current - 1;
           break;
         case 'Home':
           index = 0;
@@ -82,26 +84,23 @@ if (!customElements.get('custom-tab')) {
       }
 
       event.preventDefault();
-      this.setActive(index);
+      this.toggles[index].focus();
+      this.scrollToggleIntoView(this.toggles[index]);
     }
 
     setActive(index, options = {}) {
-      const { focus = true, animate = true } = options;
-      const targetToggle = this.toggles[index];
-      const targetPanel = this.panels[index];
-      if (!targetToggle || !targetPanel) return;
+      const { animate = true, scroll = true } = options;
+      const targetIndex = this.toggles[index] && this.panels[index] ? index : -1;
 
       const shouldAnimate = animate && !this.reduceMotion.matches;
       const startHeight = shouldAnimate ? this.panelsEl.offsetHeight : 0;
 
       this.toggles.forEach((toggle, i) => {
-        const isActive = i === index;
-        toggle.setAttribute('aria-selected', isActive ? 'true' : 'false');
-        toggle.setAttribute('tabindex', isActive ? '0' : '-1');
+        toggle.setAttribute('aria-expanded', i === targetIndex ? 'true' : 'false');
       });
 
       this.panels.forEach((panel, i) => {
-        const isActive = i === index;
+        const isActive = i === targetIndex;
         panel.classList.toggle(this.classes.isActive, isActive);
         panel.toggleAttribute('inert', !isActive);
 
@@ -112,12 +111,10 @@ if (!customElements.get('custom-tab')) {
         }
       });
 
-      this.activeIndex = index;
+      this.activeIndex = targetIndex;
 
       if (shouldAnimate) this.animateHeight(startHeight);
-      if (focus) targetToggle.focus();
-
-      this.scrollToggleIntoView(targetToggle);
+      if (scroll && targetIndex > -1) this.scrollToggleIntoView(this.toggles[targetIndex]);
     }
 
     animateHeight(startHeight) {

@@ -43,11 +43,7 @@
   <script src="{{ 'custom-tab.js' | asset_url }}" defer="defer"></script>
 
   <custom-tab class="custom-tab">
-    <div
-      class="js-tab-nav custom-tab__nav"
-      role="tablist"
-      aria-label="Product information"
-    >
+    <div class="js-tab-nav custom-tab__nav" aria-label="Product information">
       {%- for key in tab_keys -%}
         {%- liquid
           case key
@@ -65,10 +61,8 @@
           type="button"
           class="js-tab-toggle custom-tab__toggle text-reg-14"
           id="TabToggle-{{ tab_uid }}-{{ key }}"
-          role="tab"
           aria-controls="TabPanel-{{ tab_uid }}-{{ key }}"
-          aria-selected="{% if forloop.first %}true{% else %}false{% endif %}"
-          tabindex="{% if forloop.first %}0{% else %}-1{% endif %}"
+          aria-expanded="false"
         >
           {{ tab_label }}
         </button>
@@ -90,15 +84,11 @@
           endcase
         -%}
         <div
-          class="js-tab-panel custom-tab__panel text-reg-14{% if forloop.first %} is-active{% endif %}"
+          class="js-tab-panel custom-tab__panel text-reg-14"
           id="TabPanel-{{ tab_uid }}-{{ key }}"
-          role="tabpanel"
+          role="region"
           aria-labelledby="TabToggle-{{ tab_uid }}-{{ key }}"
-          {% if forloop.first %}
-            tabindex="0"
-          {% else %}
-            hidden
-          {% endif %}
+          hidden
         >
           {{ tab_content }}
         </div>

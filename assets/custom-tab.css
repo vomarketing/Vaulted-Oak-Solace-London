@@ -53,14 +53,13 @@
     outline-offset: 4px;
   }
 
-  &[aria-selected="true"] {
+  &[aria-expanded="true"] {
     text-decoration: underline;
   }
 }
 
 .custom-tab__panels {
   position: relative;
-  margin-top: 20px;
   transition: height var(--transition-smooth);
 
   &.is-animating {
@@ -69,6 +68,7 @@
 }
 
 .custom-tab__panel {
+  padding-top: 20px;
   transition:
     opacity var(--transition-base),
     transform var(--transition-base),
