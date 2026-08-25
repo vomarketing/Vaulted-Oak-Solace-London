@@ -8,9 +8,6 @@
   @param {boolean} has_size_option - Whether product has size options
 {%- enddoc -%}
 
-{{ 'product-buy-buttons-new.css' | asset_url | stylesheet_tag }}
-<script src="{{ 'product-buy-buttons-new.js' | asset_url }}" defer="defer"></script>
-
 {%- assign klaviyo_company_id = 'MKZsDF' -%}
 {%- if shop.permanent_domain == 'solace-london.myshopify.com' or shop.domain contains 'solace-london' or shop.domain contains 'solacelondon' -%}
   {%- assign klaviyo_company_id = 'XuEqtQ' -%}

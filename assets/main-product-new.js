@@ -11,17 +11,26 @@ if (!customElements.get('product-fullscreen')) {
       swiper: '.js-pdp-swiper',
       slides: '.js-pdp-slide',
       videos: '.js-pdp-video',
+      galleryColumn: '.js-pdp-gallery-column',
+      contentColumn: '.js-pdp-content-column',
+      sheetHandle: '.js-pdp-sheet-handle',
+      header: '.hd-Header',
       zoomTriggers: '.js-pdp-media-zoom-trigger',
       zoomModal: '.js-pdp-zoom-modal',
       zoomClose: '.js-pdp-zoom-close',
       zoomItems: '.js-pdp-zoom-item',
-      priceContainer: '.pdp-content__price-row',
-      stockStatus: '.js-pdp-stock-status'
+      priceContainer: '.js-pdp-price-row',
+      stockStatus: '.js-pdp-stock-status',
+      moveDrawers: '[data-module-drawers-move-me="root"]',
+      rootDrawers: '.drw-Drawers[data-module="drawers"]'
     };
 
     static classes = {
       modalActive: 'is-active',
-      scrollLocked: 'is-scroll-locked'
+      scrollLocked: 'is-scroll-locked',
+      galleryLocked: 'is-locked',
+      contentExpanded: 'is-content-expanded',
+      zoomModalActive: 'is-zoom-modal-active'
     };
 
     constructor() {
@@ -46,6 +55,7 @@ if (!customElements.get('product-fullscreen')) {
 
       this.initMediaObserver();
       this.initMobileSwiper();
+      this.initMobileScrollController();
       this.initZoomModal();
       this.initDrawersMovement();
 
@@ -207,6 +217,84 @@ if (!customElements.get('product-fullscreen')) {
         this.swiper.destroy(true, true);
         this.swiper = null;
       }
+      const galleryColumn = this.querySelector(this.selectors.galleryColumn);
+      if (galleryColumn) {
+        galleryColumn.classList.remove(this.classes.galleryLocked);
+      }
+      this.classList.remove(this.classes.contentExpanded);
+    }
+
+    initMobileScrollController() {
+      const galleryColumn = this.querySelector(this.selectors.galleryColumn);
+      const contentColumn = this.querySelector(this.selectors.contentColumn);
+      const sheetHandle = this.querySelector(this.selectors.sheetHandle);
+      const { signal } = this.abortController;
+
+      let isLocked = false;
+
+      const checkScrollState = () => {
+        if (!this.isMobile()) {
+          if (isLocked) {
+            isLocked = false;
+            if (this.swiper) this.swiper.allowTouchMove = true;
+            if (galleryColumn) galleryColumn.classList.remove(this.classes.galleryLocked);
+            this.classList.remove(this.classes.contentExpanded);
+          }
+          return;
+        }
+
+        const headerHeight = document.querySelector(this.selectors.header)?.offsetHeight || 60;
+        let shouldLock = false;
+
+        if (window.scrollY > 15) {
+          shouldLock = true;
+        } else if (contentColumn) {
+          const rect = contentColumn.getBoundingClientRect();
+          if (rect.top <= headerHeight + 30) {
+            shouldLock = true;
+          }
+        }
+
+        if (shouldLock && !isLocked) {
+          isLocked = true;
+          if (this.swiper) {
+            this.swiper.allowTouchMove = false;
+          }
+          if (galleryColumn) {
+            galleryColumn.classList.add(this.classes.galleryLocked);
+          }
+          this.classList.add(this.classes.contentExpanded);
+        } else if (!shouldLock && isLocked) {
+          isLocked = false;
+          if (this.swiper) {
+            this.swiper.allowTouchMove = true;
+          }
+          if (galleryColumn) {
+            galleryColumn.classList.remove(this.classes.galleryLocked);
+          }
+          this.classList.remove(this.classes.contentExpanded);
+        }
+      };
+
+      window.addEventListener('scroll', checkScrollState, { passive: true, signal });
+      window.addEventListener('resize', checkScrollState, { passive: true, signal });
+
+      if (sheetHandle) {
+        sheetHandle.addEventListener('click', (e) => {
+          if (!this.isMobile()) return;
+          e.preventDefault();
+          const headerHeight = document.querySelector(this.selectors.header)?.offsetHeight || 60;
+          if (contentColumn) {
+            const targetScroll = window.scrollY + contentColumn.getBoundingClientRect().top - headerHeight;
+            window.scrollTo({
+              top: Math.max(0, targetScroll),
+              behavior: 'smooth'
+            });
+          }
+        }, { signal });
+      }
+
+      checkScrollState();
     }
 
     initMediaObserver() {
@@ -257,7 +345,7 @@ if (!customElements.get('product-fullscreen')) {
 
       zoomModal.addEventListener('click', (e) => {
         if (
-          e.target.closest('.pdp-zoom-modal__close') ||
+          e.target.closest(this.selectors.zoomClose) ||
           e.target.closest('.pdp-zoom-modal__item') ||
           e.target === zoomModal
         ) {
@@ -283,7 +371,7 @@ if (!customElements.get('product-fullscreen')) {
       zoomModal.classList.add(this.classes.modalActive);
       zoomModal.setAttribute('aria-hidden', 'false');
       document.body.classList.add(this.classes.scrollLocked);
-      document.body.classList.add('is-zoom-modal-active');
+      document.body.classList.add(this.classes.zoomModalActive);
 
       if (window.lazySizes && typeof window.lazySizes.loader.checkElems === 'function') {
         window.lazySizes.loader.checkElems();
@@ -307,7 +395,7 @@ if (!customElements.get('product-fullscreen')) {
       zoomModal.classList.remove(this.classes.modalActive);
       zoomModal.setAttribute('aria-hidden', 'true');
       document.body.classList.remove(this.classes.scrollLocked);
-      document.body.classList.remove('is-zoom-modal-active');
+      document.body.classList.remove(this.classes.zoomModalActive);
     }
 
     isZoomOpen() {
@@ -316,8 +404,8 @@ if (!customElements.get('product-fullscreen')) {
     }
 
     initDrawersMovement() {
-      const drawers = this.querySelectorAll('[data-module-drawers-move-me="root"]');
-      const rootDrawersContainer = document.querySelector('.drw-Drawers[data-module="drawers"]') || document.body;
+      const drawers = this.querySelectorAll(this.selectors.moveDrawers);
+      const rootDrawersContainer = document.querySelector(this.selectors.rootDrawers) || document.body;
 
       if (rootDrawersContainer && drawers.length) {
         drawers.forEach((drawer) => {

@@ -19,7 +19,7 @@
 -%}
 
 <div class="pdp-content js-pdp-content">
-  <div class="pdp-sheet-handle" aria-hidden="true"></div>
+  <div class="pdp-sheet-handle js-pdp-sheet-handle" aria-hidden="true"></div>
 
   <div class="pdp-content__wrapper">
     <div class="pdp-content__top">
@@ -43,7 +43,7 @@
                 <h1 class="pdp-content__title text-med-14">
                   {{ product.title }}
                 </h1>
-                <div class="pdp-content__price-row text-reg-14">
+                <div class="pdp-content__price-row js-pdp-price-row text-reg-14">
                   {%- if current_variant.compare_at_price != blank and current_variant.compare_at_price > current_variant.price -%}
                     {%- assign discount_percent = current_variant.compare_at_price | minus: current_variant.price | times: 100.0 | divided_by: current_variant.compare_at_price | round -%}
                     <span class="pdp-content__price-wrapper">

@@ -64,6 +64,11 @@ body.is-scroll-locked {
   overflow: hidden;
   z-index: 1;
   min-width: 0;
+  touch-action: pan-y;
+
+  &.is-locked {
+    pointer-events: none !important;
+  }
 
   @media (min-width: 768px) {
     height: var(--pdp-mobile-gallery-height, 1023px);
@@ -79,6 +84,11 @@ body.is-scroll-locked {
     max-height: none;
     overflow: visible;
     z-index: auto;
+    touch-action: auto;
+
+    &.is-locked {
+      pointer-events: auto !important;
+    }
   }
 }
 
@@ -91,6 +101,8 @@ body.is-scroll-locked {
   padding: 14px 0 50px;
   box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.08);
   min-height: 100vh;
+  touch-action: pan-y;
+  isolation: isolate;
 
   @media (min-width: 768px) {
     padding: 20px 0 60px;
@@ -110,6 +122,8 @@ body.is-scroll-locked {
     justify-content: flex-start;
     box-shadow: none;
     padding-top: 110px;
+    touch-action: auto;
+    isolation: auto;
 
     &::-webkit-scrollbar {
       display: none;
@@ -132,6 +146,13 @@ body.is-scroll-locked {
   background-color: var(--color-black, #000000);
   opacity: 0.5;
   margin: 0 auto 10px;
+  cursor: pointer;
+  background-clip: content-box;
+  touch-action: manipulation;
+
+  @media (min-width: 768px) {
+    margin-bottom: 35px;
+  }
 
   @media (min-width: 901px) {
     display: none;
@@ -307,7 +328,6 @@ body.is-scroll-locked {
   @media (min-width: 901px) {
     display: flex;
     flex-direction: column;
-    flex: 1 0 auto;
   }
 }
 
@@ -324,7 +344,7 @@ body.is-scroll-locked {
   width: 100%;
   padding-inline: 20px;
 
-  &:last-of-type {
+  &:last-child {
     margin-bottom: 0;
   }
 

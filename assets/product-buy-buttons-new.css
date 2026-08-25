@@ -148,6 +148,7 @@ product-buy-buttons,
   color: var(--color-black, #000000);
   cursor: pointer;
   white-space: nowrap;
+  opacity: 1;
   text-underline-offset: 4px;
 
   &:hover {

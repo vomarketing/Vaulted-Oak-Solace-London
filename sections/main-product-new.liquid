@@ -14,6 +14,9 @@
 {{ 'main-product-new.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'main-product-new.js' | asset_url }}" defer="defer"></script>
 
+{{ 'product-buy-buttons-new.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product-buy-buttons-new.js' | asset_url }}" defer="defer"></script>
+
 {%- liquid
   assign current_variant = product.selected_or_first_available_variant
 
@@ -32,11 +35,11 @@
   data-has-size-option="{{ has_size_option }}"
 >
   <div class="pdp-new__main">
-    <div class="pdp-new__gallery-column">
+    <div class="pdp-new__gallery-column js-pdp-gallery-column">
       {%- render 'product-media-gallery-new', product: product, section: section -%}
     </div>
 
-    <div class="pdp-new__content-column">
+    <div class="pdp-new__content-column js-pdp-content-column">
       {%- render 'product-content-new', product: product, section: section, current_variant: current_variant -%}
     </div>
   </div>
