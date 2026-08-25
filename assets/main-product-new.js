@@ -40,7 +40,7 @@ if (!customElements.get('product-fullscreen')) {
       this.initMobileSwiper();
       this.initZoomModal();
       this.initDrawersMovement();
-      this.initKlaviyoTracking();
+      // this.initKlaviyoTracking();
       this.initBisPopover();
 
       this.addEventListener('variant:change', (e) => {
