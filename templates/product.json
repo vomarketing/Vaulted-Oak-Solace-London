@@ -75,6 +75,7 @@
       "name": "Related Products",
       "settings": {
         "title": "shop resort 2027",
+        "products": "{{ product.metafields.custom.recommended_products.value }}",
         "header_contrast_mode": "dark"
       }
     },
@@ -123,7 +124,8 @@
         "colorways_UnqVeT": {
           "type": "colorways",
           "settings": {
-            "title": "Also available in"
+            "title": "Also available in",
+            "products": "{{ product.metafields.custom.related_products.value }}"
           }
         }
       },
