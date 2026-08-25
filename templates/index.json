@@ -13,7 +13,7 @@
       "type": "hero-fullscreen",
       "name": "Hero Fullscreen",
       "settings": {
-        "media_type": "video",
+        "media_type": "image",
         "image_desktop": "shopify://shop_images/03a48d106dae488ca858875dcb4be083d9d6f13d.jpg",
         "image_mobile": "shopify://shop_images/03a48d106dae488ca858875dcb4be083d9d6f13d.jpg",
         "video_desktop": "shopify://files/videos/homepage3.mp4",
@@ -89,7 +89,7 @@
       "settings": {
         "header_contrast_mode": "dark",
         "desktop_image": "shopify://shop_images/Image_25.png",
-        "mobile_image": "shopify://shop_images/Image_24.png",
+        "mobile_image": "shopify://shop_images/Image_26.png",
         "image_link": "",
         "text_left": "The Annie",
         "text_left_link": "#",
@@ -123,7 +123,10 @@
         "header_contrast_mode": "dark",
         "text": "<p>The resort 2027 collection lets fabrication and technique driving the design process, the pair describe their aesthetic as “Bold, confident, refined. Modern futurism balanced with timeless minimalism”. The result is a distinctly graphic collection defined by precision cuts, craftsmanship and a signature look of sophistication.</p>",
         "link_text": "Shop Collection",
-        "link": "#"
+        "link": "#",
+        "max_width_desktop": 910,
+        "max_width_tablet": 589,
+        "max_width_mobile": 305
       }
     },
     "hero_fullscreen_rzid96": {
@@ -152,7 +155,10 @@
         "header_contrast_mode": "dark",
         "text": "<p>Solace London is a British womenswear brand founded by Laura Taylor and Ryan Holliday-Stevens in 2013. Longtime friends and collaborators, the duo share a dynamic background spanning design, production, retail, marketing and creative direction. Their combined sensibilities are visible in pieces that continuously blur the line between statement making and wearability.</p>",
         "link_text": "",
-        "link": ""
+        "link": "",
+        "max_width_desktop": 910,
+        "max_width_tablet": 589,
+        "max_width_mobile": 305
       }
     }
   },

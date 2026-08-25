@@ -17,8 +17,66 @@
         "stock_note": "Only a few left in stock",
         "wishlist_enable": true,
         "delivery_and_returns_page": "delivery-returns-product-drawer",
-        "size_guide_page": "",
-        "contact_page": "contact"
+        "size_guide_page": ""
+      }
+    },
+    "main_product_new_qVcUWX": {
+      "type": "main-product-new",
+      "blocks": {
+        "title_9BKNBY": {
+          "type": "title",
+          "settings": {}
+        },
+        "description_jt7ddV": {
+          "type": "description",
+          "settings": {
+            "content": ""
+          }
+        },
+        "buy_buttons_VGTxwz": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_wishlist": true
+          }
+        },
+        "duties_taxes_d76MTJ": {
+          "type": "duties_taxes",
+          "settings": {
+            "text": "Prices now include customs duties, import fees and taxes. No additional charges will be incurred upon delivery."
+          }
+        },
+        "tab_content_jWBbB7": {
+          "type": "tab_content",
+          "settings": {
+            "description": "<p>{{ product.metafields.custom.tab_description | metafield_tag }}</p>",
+            "fabric_care": "<p>{{ product.metafields.custom.fabric_care | metafield_tag }}</p>",
+            "size_fit": "<p>{{ product.metafields.custom.size_fit | metafield_tag }}</p>",
+            "shipping_returns": "<p>{{ product.metafields.custom.shipping_returns | metafield_tag }}</p>"
+          }
+        },
+        "colorways_UnqVeT": {
+          "type": "colorways",
+          "settings": {
+            "title": "Also available in",
+            "products": "{{ product.metafields.custom.related_products.value }}"
+          }
+        }
+      },
+      "block_order": [
+        "title_9BKNBY",
+        "description_jt7ddV",
+        "buy_buttons_VGTxwz",
+        "duties_taxes_d76MTJ",
+        "tab_content_jWBbB7",
+        "colorways_UnqVeT"
+      ],
+      "name": "Main Product (New)",
+      "settings": {
+        "header_contrast_mode": "light",
+        "stock_note": "Only a few left in stock",
+        "wishlist_enable": true,
+        "size_guide": "solace-standard-dress-guide",
+        "contact_page": "shopify://pages/contact"
       }
     },
     "rich_text_NHU7La": {
@@ -89,65 +147,6 @@
         "link": ""
       }
     },
-    "main_product_new_qVcUWX": {
-      "type": "main-product-new",
-      "blocks": {
-        "title_9BKNBY": {
-          "type": "title",
-          "settings": {}
-        },
-        "description_jt7ddV": {
-          "type": "description",
-          "settings": {}
-        },
-        "buy_buttons_VGTxwz": {
-          "type": "buy_buttons",
-          "settings": {
-            "show_wishlist": true
-          }
-        },
-        "duties_taxes_d76MTJ": {
-          "type": "duties_taxes",
-          "settings": {
-            "text": "Prices now include customs duties, import fees and taxes. No additional charges will be incurred upon delivery."
-          }
-        },
-        "tab_content_jWBbB7": {
-          "type": "tab_content",
-          "settings": {
-            "description": "{{ product.metafields.custom.tab_description | metafield_tag }}",
-            "fabric_care": "{{ product.metafields.custom.fabric_care | metafield_tag }}",
-            "size_fit": "{{ product.metafields.custom.size_fit | metafield_tag }}",
-            "shipping_returns": "{{ product.metafields.custom.shipping_returns | metafield_tag }}"
-          }
-        },
-        "colorways_UnqVeT": {
-          "type": "colorways",
-          "settings": {
-            "title": "Also available in",
-            "products": "{{ product.metafields.custom.related_products.value }}"
-          }
-        }
-      },
-      "block_order": [
-        "title_9BKNBY",
-        "description_jt7ddV",
-        "buy_buttons_VGTxwz",
-        "duties_taxes_d76MTJ",
-        "tab_content_jWBbB7",
-        "colorways_UnqVeT"
-      ],
-      "name": "Main Product (New)",
-      "settings": {
-        "header_contrast_mode": "light",
-        "delivery_note": "Order by 4pm for Next Day Delivery",
-        "stock_note": "Only a few left in stock",
-        "wishlist_enable": true,
-        "delivery_and_returns_page": "",
-        "contact_url": "",
-        "recommended_title": "You May Also Like"
-      }
-    }
   },
   "order": [
     "main",
