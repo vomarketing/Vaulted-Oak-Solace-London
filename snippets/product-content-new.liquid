@@ -174,16 +174,32 @@
                   shipping_returns: block.settings.shipping_returns,
                   uid: block.id
                 -%}
-                <div class="pdp-tab-help text-reg-14">
-                  Questions about size, fit or fabric? View
-                  <button type="button" class="pdp-tab-help__link js-pdp-size-guide-trigger text-reg-14">
-                    {{ 'products.product.size_guide' | t }}
-                  </button>
-                  or
-                  <a href="{{ section.settings.contact_page | default: '/pages/contact' }}" class="pdp-tab-help__link text-reg-14">
-                    {{- 'products.product.contact_us' | t -}}
-                  </a>
-                </div>
+                {%- assign has_size_guide = false -%}
+                {%- if size_guide_table != blank or product.metafields.custom.size_guide != blank or section.settings.size_guide != blank or product.metafields.Detail.Size_Guide_Table != blank -%}
+                  {%- assign has_size_guide = true -%}
+                {%- endif -%}
+                {%- assign has_contact = false -%}
+                {%- if section.settings.contact_page != blank -%}
+                  {%- assign has_contact = true -%}
+                {%- endif -%}
+
+                {%- if has_size_guide or has_contact -%}
+                  <div class="pdp-tab-help text-reg-14">
+                    Questions about size, fit or fabric?
+                    {%- if has_size_guide -%}
+                      View
+                      <button type="button" class="pdp-tab-help__link js-pdp-size-guide-trigger text-reg-14">
+                        {{ 'products.product.size_guide' | t }}
+                      </button>
+                    {%- endif -%}
+                    {%- if has_contact -%}
+                      {%- if has_size_guide -%}or{%- endif -%}
+                      <a href="{{ section.settings.contact_page }}" class="pdp-tab-help__link text-reg-14">
+                        {{- 'products.product.contact_us' | t -}}
+                      </a>
+                    {%- endif -%}
+                  </div>
+                {%- endif -%}
               </div>
           {%- endcase -%}
         {%- endfor -%}

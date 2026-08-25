@@ -140,31 +140,31 @@ if (!customElements.get('pdp-size-guide')) {
 
     openModal() {
       if (!this.modalEl || !document.body.contains(this.modalEl)) {
-        this.modalEl = document.querySelector(this.selectors.modal);
+        this.modalEl = this.closest(this.selectors.modal) || document.querySelector(this.selectors.modal);
       }
-      if (this.modalEl) {
-        this.modalEl.classList.add(this.classes.modalActive, this.classes.drawerActive);
-        this.modalEl.setAttribute('aria-hidden', 'false');
-        document.body.classList.add(this.classes.scrollLocked, this.classes.bodyModalActive, 'util-Drawer-active', 'drw-Drawers-active');
-      }
+      if (!this.modalEl) return;
+
+      this.modalEl.classList.add(this.classes.modalActive, this.classes.drawerActive);
+      this.modalEl.setAttribute('aria-hidden', 'false');
+      document.body.classList.add(this.classes.scrollLocked, this.classes.bodyModalActive, 'util-Drawer-active', 'drw-Drawers-active');
     }
 
     closeModal() {
       if (!this.modalEl || !document.body.contains(this.modalEl)) {
-        this.modalEl = document.querySelector(this.selectors.modal);
+        this.modalEl = this.closest(this.selectors.modal) || document.querySelector(this.selectors.modal);
       }
-      if (this.modalEl) {
-        this.modalEl.classList.remove(this.classes.modalActive, this.classes.drawerActive);
-        this.modalEl.setAttribute('aria-hidden', 'true');
-        document.body.classList.remove(this.classes.scrollLocked, this.classes.bodyModalActive, 'util-Drawer-active', 'drw-Drawers-active');
-      }
+      if (!this.modalEl) return;
+
+      this.modalEl.classList.remove(this.classes.modalActive, this.classes.drawerActive);
+      this.modalEl.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove(this.classes.scrollLocked, this.classes.bodyModalActive, 'util-Drawer-active', 'drw-Drawers-active');
     }
 
     isModalOpen() {
       if (!this.modalEl || !document.body.contains(this.modalEl)) {
-        this.modalEl = document.querySelector(this.selectors.modal);
+        this.modalEl = this.closest(this.selectors.modal) || document.querySelector(this.selectors.modal);
       }
-      return (
+      return Boolean(
         this.modalEl &&
         (this.modalEl.classList.contains(this.classes.modalActive) ||
           this.modalEl.classList.contains(this.classes.drawerActive) ||
@@ -173,16 +173,19 @@ if (!customElements.get('pdp-size-guide')) {
     }
 
     setUnit(unit) {
+      if (!unit) return;
       this.currentUnit = unit;
 
       // Update toggle buttons active state across all tables (desktop & mobile)
       const unitButtons = this.querySelectorAll(this.selectors.unitButtons);
-      unitButtons.forEach((btn) => {
-        const btnUnit = btn.getAttribute('data-unit');
-        const isActive = btnUnit === unit;
-        btn.classList.toggle(this.classes.active, isActive);
-        btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
-      });
+      if (unitButtons && unitButtons.length) {
+        unitButtons.forEach((btn) => {
+          const btnUnit = btn.getAttribute('data-unit');
+          const isActive = btnUnit === unit;
+          btn.classList.toggle(this.classes.active, isActive);
+          btn.setAttribute('aria-pressed', isActive ? 'true' : 'false');
+        });
+      }
 
       this.renderTableMeasurements();
     }
@@ -193,29 +196,32 @@ if (!customElements.get('pdp-size-guide')) {
     }
 
     renderTableSizes() {
-      if (this.matrixData && Array.isArray(this.matrixData.rows)) {
-        const rows = this.matrixData.rows;
-        const tables = this.querySelectorAll(this.selectors.table);
+      if (!this.matrixData || !Array.isArray(this.matrixData.rows) || !this.matrixData.rows.length) return;
+      const rows = this.matrixData.rows;
+      const tables = this.querySelectorAll(this.selectors.table);
+      if (!tables || !tables.length) return;
 
-        tables.forEach((table) => {
-          const domRows = table.querySelectorAll(this.selectors.tableRows);
-          domRows.forEach((domRow, index) => {
-            const rowData = rows[index];
-            if (!rowData || !rowData.sizes) return;
+      tables.forEach((table) => {
+        const domRows = table.querySelectorAll(this.selectors.tableRows);
+        if (!domRows || !domRows.length) return;
 
-            const sizeCell = domRow.querySelector(this.selectors.cellSize);
-            if (sizeCell) {
-              const sizeVal = rowData.sizes[this.currentRegion] || rowData.sizes.UK || rowData.sizes.US || '';
-              sizeCell.textContent = sizeVal;
-            }
-          });
+        domRows.forEach((domRow, index) => {
+          const rowData = rows[index];
+          if (!rowData || !rowData.sizes) return;
+
+          const sizeCell = domRow.querySelector(this.selectors.cellSize);
+          if (sizeCell) {
+            const sizeVal = rowData.sizes[this.currentRegion] || rowData.sizes.UK || rowData.sizes.US || '';
+            sizeCell.textContent = sizeVal;
+          }
         });
-      }
+      });
     }
 
     renderTableMeasurements() {
       const isInch = this.currentUnit === 'in';
       const domRows = this.querySelectorAll(this.selectors.tableRows);
+      if (!domRows || !domRows.length) return;
 
       domRows.forEach((row) => {
         const bustCell = row.querySelector(this.selectors.cellBust);
@@ -223,13 +229,16 @@ if (!customElements.get('pdp-size-guide')) {
         const hipCell = row.querySelector(this.selectors.cellHip);
 
         if (bustCell) {
-          bustCell.textContent = isInch ? bustCell.getAttribute('data-in') : bustCell.getAttribute('data-cm');
+          const val = isInch ? bustCell.getAttribute('data-in') : bustCell.getAttribute('data-cm');
+          if (val !== null) bustCell.textContent = val;
         }
         if (waistCell) {
-          waistCell.textContent = isInch ? waistCell.getAttribute('data-in') : waistCell.getAttribute('data-cm');
+          const val = isInch ? waistCell.getAttribute('data-in') : waistCell.getAttribute('data-cm');
+          if (val !== null) waistCell.textContent = val;
         }
         if (hipCell) {
-          hipCell.textContent = isInch ? hipCell.getAttribute('data-in') : hipCell.getAttribute('data-cm');
+          const val = isInch ? hipCell.getAttribute('data-in') : hipCell.getAttribute('data-cm');
+          if (val !== null) hipCell.textContent = val;
         }
       });
     }

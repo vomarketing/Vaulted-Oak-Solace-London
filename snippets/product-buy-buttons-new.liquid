@@ -16,6 +16,18 @@
   {%- assign klaviyo_company_id = 'XuEqtQ' -%}
 {%- endif -%}
 
+{%- liquid
+  assign size_guide_obj = product.metafields.custom.size_guide.value | default: product.metafields.custom.size_guide
+  if size_guide_obj == blank and section.settings.size_guide != blank
+    assign size_guide_obj = section.settings.size_guide.value | default: section.settings.size_guide
+  endif
+  assign custom_table = size_guide_table | default: product.metafields.Detail.Size_Guide_Table
+  assign has_size_guide_content = false
+  if size_guide_obj != blank or custom_table != blank
+    assign has_size_guide_content = true
+  endif
+-%}
+
 <product-buy-buttons
   class="pdp-block pdp-block--purchase-actions"
   data-section-id="{{ section.id }}"
@@ -103,13 +115,15 @@
                   {%- endfor -%}
                 </div>
 
-                <button
-                  type="button"
-                  class="pdp-size-row__guide-link text-reg-14 js-pdp-size-guide-trigger"
-                  aria-label="Open Size Guide"
-                >
-                  {{ 'products.product.size_fit_guide' | t }}
-                </button>
+                {%- if has_size_guide_content -%}
+                  <button
+                    type="button"
+                    class="pdp-size-row__guide-link text-reg-14 js-pdp-size-guide-trigger"
+                    aria-label="{{ 'products.product.size_fit_guide' | t }}"
+                  >
+                    {{ 'products.product.size_fit_guide' | t }}
+                  </button>
+                {%- endif -%}
               </div>
 
               <select
@@ -130,12 +144,14 @@
               </select>
             </div>
 
-            <div class="pdp-size-row__help text-reg-14">
-              Questions about size, fit or fabric?
-              <a href="{{ section.settings.contact_page | default: '/pages/contact' }}" class="pdp-tab-help__link text-reg-14">
-                {{- 'products.product.contact_us' | t -}}
-              </a>
-            </div>
+            {%- if section.settings.contact_page != blank -%}
+              <div class="pdp-size-row__help text-reg-14">
+                Questions about size, fit or fabric?
+                <a href="{{ section.settings.contact_page }}" class="pdp-tab-help__link text-reg-14">
+                  {{- 'products.product.contact_us' | t -}}
+                </a>
+              </div>
+            {%- endif -%}
 
           {%- else -%}
             <div class="pdp-option-row">
@@ -233,9 +249,11 @@
     {%- render 'back-in-stock-form-new', product: product, current_variant: current_variant -%}
   </div>
 
-  {%- render 'pdp-size-guide-drawer',
-    product: product,
-    section: section,
-    size_guide_table: size_guide_table
-  -%}
+  {%- if has_size_guide_content -%}
+    {%- render 'pdp-size-guide-drawer',
+      product: product,
+      section: section,
+      size_guide_table: size_guide_table
+    -%}
+  {%- endif -%}
 </product-buy-buttons>

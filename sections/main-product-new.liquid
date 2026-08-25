@@ -16,7 +16,7 @@
 
 {%- liquid
   assign current_variant = product.selected_or_first_available_variant
-  
+
   assign option_names = product.options | join: ',' | downcase
   assign has_size_option = false
   if option_names contains 'size'
@@ -30,7 +30,6 @@
   data-section-id="{{ section.id }}"
   data-product-handle="{{ product.handle }}"
   data-has-size-option="{{ has_size_option }}"
-  data-size-chosen="{% if has_size_option %}false{% else %}true{% endif %}"
 >
   <div class="pdp-new__main">
     <div class="pdp-new__gallery-column">
@@ -45,7 +44,7 @@
 
 <script type="application/ld+json">
 {
-  "@context": "http://schema.org/",
+  "@context": "https://schema.org/",
   "@type": "Product",
   "name": {{ product.title | json }},
   "url": "{{ shop.url }}{{ product.url }}",
@@ -59,29 +58,25 @@
     "sku": {{ current_variant.sku | json }},
   {%- endif -%}
   "brand": {
-    "@type": "Thing",
+    "@type": "Brand",
     "name": {{ product.vendor | default: shop.name | json }}
   },
   {%- if product.variants.size > 0 -%}
     "offers": [
       {%- for variant in product.variants -%}
         {
-          "@type" : "Offer",
-          "availability" : "http://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
-          "price" : "{{ variant.price | divided_by: 100.00 }}",
-          "priceCurrency" : "{{ shop.currency }}",
-          "url" : "{{ shop.url }}{{ variant.url }}",
-          "itemOffered" : {
-            "@type" : "Product",
-            {%- if variant.image -%}
-              "image": "http:{{ variant.image | image_url: width: 1000 }}",
-            {%- endif -%}
-            "name" : {{ variant.title | json }},
-            {%- if variant.sku != blank -%}
-              "sku": {{ variant.sku | json }},
-            {%- endif -%}
-            "url": "{{ shop.url }}{{ variant.url }}"
-          }
+          "@type": "Offer",
+          "availability": "https://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
+          "price": "{{ variant.price | divided_by: 100.00 }}",
+          "priceCurrency": "{{ cart.currency.iso_code | default: shop.currency }}",
+          "url": "{{ shop.url }}{{ variant.url }}",
+          {%- if variant.sku != blank -%}
+            "sku": {{ variant.sku | json }},
+          {%- endif -%}
+          {%- if variant.image -%}
+            "image": "https:{{ variant.image | image_url: width: 1000 }}",
+          {%- endif -%}
+          "name": {{ variant.title | json }}
         }{% unless forloop.last %},{% endunless %}
       {%- endfor -%}
     ]
@@ -90,41 +85,43 @@
 </script>
 
 {% comment %}
-Enable Klaviyo JS - Abandon Browse & Add to cart tracking
+  Klaviyo Abandon Browse & Add-to-cart tracking
 {% endcomment %}
-<script type="text/javascript">
-  var _learnq = _learnq || [];
-  var item = {
-    Name: {{ product.title | json }},
-    ProductID: {{ product.id | json }},
-    Categories: {{ product.collections | map: 'title' | json }},
-    ImageURL: "https:{{ product.featured_image.src | img_url: 'grande' }}",
-    URL: "{{ shop.secure_url }}{{ product.url }}",
-    Brand: {{ product.vendor | json }},
-    Price: {{ product.price | money | json }},
-    CompareAtPrice: {{ product.compare_at_price_max | money | json }}
-  };
+<script>
+  (function () {
+    var _learnq = window._learnq || [];
+    var item = {
+      Name: {{ product.title | json }},
+      ProductID: {{ product.id | json }},
+      Categories: {{ product.collections | map: 'title' | json }},
+      ImageURL: "https:{{ product.featured_image | image_url: width: 600 }}",
+      URL: "{{ shop.secure_url }}{{ product.url }}",
+      Brand: {{ product.vendor | json }},
+      Price: {{ product.price | money | json }},
+      CompareAtPrice: {{ product.compare_at_price_max | money | json }}
+    };
 
-  _learnq.push(['track', 'Viewed Product', item]);
-  _learnq.push(['trackViewedItem', {
-    Title: item.Name,
-    ItemId: item.ProductID,
-    Categories: item.Categories,
-    ImageUrl: item.ImageURL,
-    Url: item.URL,
-    Metadata: {
-      Brand: item.Brand,
-      Price: item.Price,
-      CompareAtPrice: item.CompareAtPrice
-    }
-  }]);
+    _learnq.push(['track', 'Viewed Product', item]);
+    _learnq.push(['trackViewedItem', {
+      Title: item.Name,
+      ItemId: item.ProductID,
+      Categories: item.Categories,
+      ImageUrl: item.ImageURL,
+      Url: item.URL,
+      Metadata: {
+        Brand: item.Brand,
+        Price: item.Price,
+        CompareAtPrice: item.CompareAtPrice
+      }
+    }]);
 
-  document.addEventListener('click', function (e) {
-    var btn = e.target.closest('#AddToCart, .js-product-add-to-cart, [data-el="product-form.submit"], [name="add"]');
-    if (btn) {
-      _learnq.push(['track', 'Added to Cart', item]);
-    }
-  });
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest('#AddToCart, .js-product-add-to-cart, [data-el="product-form.submit"], [name="add"], .js-pdp-submit');
+      if (btn) {
+        _learnq.push(['track', 'Added to Cart', item]);
+      }
+    });
+  })();
 </script>
 
 {% schema %}
@@ -156,7 +153,7 @@ Enable Klaviyo JS - Abandon Browse & Add to cart tracking
     },
     {
       "type": "header",
-      "content": "Product Notes"
+      "content": "Product Notes & Policies"
     },
     {
       "type": "text",
@@ -172,15 +169,19 @@ Enable Klaviyo JS - Abandon Browse & Add to cart tracking
       "default": true
     },
     {
+      "type": "header",
+      "content": "Size Guide & Support"
+    },
+    {
       "type": "metaobject",
       "id": "size_guide",
-      "label": "Size Guide",
+      "label": "Default Size Guide Metaobject",
       "metaobject_type": "size_guide"
     },
     {
       "type": "url",
       "id": "contact_page",
-      "label": "Contact page"
+      "label": "Contact Page URL"
     }
   ],
   "blocks": [
