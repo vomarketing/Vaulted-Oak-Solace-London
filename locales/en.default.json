@@ -10,7 +10,8 @@
 {
   "general": {
     "accessibility": {
-      "skip_to_content": "Skip to content"
+      "skip_to_content": "Skip to content",
+      "close": "Close"
     },
     "meta": {
       "tags": "Tagged \"{{ tags }}\"",
@@ -371,7 +372,8 @@
       "recommended_products": "Recommended products",
       "back": "Back to collection",
       "size": "Size",
-      "join_waitlist": "Join The Waitlist"
+      "join_waitlist": "Join The Waitlist",
+      "size_fit_guide": "Size & Fit Guide"
     }
   },
   "wishlist": {

@@ -1,0 +1,325 @@
+{%- doc -%}
+  PDP Size & Fit Guide Drawer Component
+
+  @param {object} product - Shopify product object (required)
+  @param {object} [section] - Shopify section object
+  @param {string} [size_guide_table] - Custom HTML size table string
+{%- enddoc -%}
+
+{{ 'pdp-size-guide-drawer.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'pdp-size-guide-drawer.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign size_guide_obj = product.metafields.custom.size_guide.value | default: product.metafields.custom.size_guide
+  if size_guide_obj == blank and section.settings.size_guide != blank
+    assign size_guide_obj = section.settings.size_guide.value | default: section.settings.size_guide
+  endif
+
+  assign fit_notes = product.metafields.custom.fit_notes
+  assign packshot_image = product.metafields.custom.packshot_image.value | default: product.metafields.custom.packshot_image
+  assign custom_table = size_guide_table | default: product.metafields.Detail.Size_Guide_Table
+  assign contact_text = product.metafields.custom.size_guide_contact_text
+
+  # Detect Default Region and Unit based on Shopify Localization
+  assign default_region = 'UK'
+  assign default_unit = 'cm'
+  assign country_code = localization.country.iso_code | upcase
+
+  if country_code == 'US'
+    assign default_region = 'US'
+    assign default_unit = 'in'
+  elsif country_code == 'GB'
+    assign default_region = 'UK'
+    assign default_unit = 'cm'
+  endif
+
+  # JSON Matrix Data Parsing (supports chart_data_matrix and chart_matrix)
+  assign chart_matrix_data = ''
+  if size_guide_obj != blank
+    assign chart_matrix_data = size_guide_obj.chart_data_matrix.value | default: size_guide_obj.chart_data_matrix | default: size_guide_obj.chart_matrix.value | default: size_guide_obj.chart_matrix
+  endif
+-%}
+
+<div
+  class="drw-Drawer drw-Drawer-fromRight pdp-size-guide-drawer pdp-size-guide-modal js-pdp-size-guide-modal"
+  data-module-drawers-drawer="pdp-size-guide"
+  data-module-drawers-move-me="root"
+  id="pdp-size-guide-drawer"
+  role="dialog"
+  aria-modal="true"
+  aria-label="{{ 'products.product.size_fit_guide' | t | default: 'Size & Fit Guide' }}"
+  aria-hidden="true"
+>
+  <pdp-size-guide
+    class="pdp-size-guide"
+    data-default-region="{{ default_region }}"
+    data-default-unit="{{ default_unit }}"
+  >
+    {%- if chart_matrix_data != blank -%}
+      <script type="application/json" class="js-pdp-size-guide-matrix">
+        {{ chart_matrix_data | json }}
+      </script>
+    {%- endif -%}
+
+    <div class="pdp-size-guide__layout">
+      <div class="pdp-size-guide__col-left">
+        <div class="pdp-size-guide__left-inner">
+          <div class="pdp-size-guide__topbar pdp-size-guide--mobile">
+            <h2 class="pdp-size-guide__main-title text-med-14">
+              {{ 'products.product.size_fit_guide' | t }}
+            </h2>
+            <button
+              type="button"
+              class="pdp-size-guide__close text-reg-14 js-pdp-size-guide-close"
+              data-module-drawers-close="pdp-size-guide"
+              aria-label="{{ 'general.accessibility.close' | t }}"
+            >
+              close
+            </button>
+          </div>
+
+          <div class="pdp-size-guide__product-title text-med-14 pdp-size-guide--desktop">
+            {{ product.title }}
+          </div>
+
+          {%- if packshot_image != blank -%}
+            {%- assign packshot_alt = packshot_image.alt | default: product.title -%}
+            <div class="pdp-size-guide__packshot-wrapper">
+              <div class="pdp-size-guide__packshot-media">
+                {{
+                  packshot_image
+                  | image_url: width: 1000
+                  | image_tag:
+                    widths: '300, 500, 600, 700, 800, 900, 1000',
+                    sizes: '(min-width: 901px) 380px, 100vw',
+                    alt: packshot_alt,
+                    class: 'pdp-size-guide__packshot-img',
+                    loading: 'lazy'
+                }}
+              </div>
+            </div>
+          {%- endif -%}
+
+          {%- if contact_text != blank -%}
+            <div class="pdp-size-guide__contact text-reg-14 pdp-size-guide--desktop">
+              {%- if contact_text.type == 'rich_text_field' -%}
+                {{ contact_text | metafield_tag }}
+              {%- else -%}
+                {{ contact_text.value | default: contact_text }}
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+
+      <div class="pdp-size-guide__col-right">
+        <div class="pdp-size-guide__topbar pdp-size-guide--desktop">
+          <h2 class="pdp-size-guide__main-title text-med-14">
+            {{ 'products.product.size_fit_guide' | t | default: 'Size & Fit Guide' }}
+          </h2>
+          <button
+            type="button"
+            class="pdp-size-guide__close text-reg-14 js-pdp-size-guide-close"
+            data-module-drawers-close="pdp-size-guide"
+            aria-label="{{ 'general.accessibility.close' | t | default: 'Close' }}"
+          >
+            close
+          </button>
+        </div>
+
+        <div class="pdp-size-guide__content-scroll">
+          <div class="pdp-size-guide__mobile-header pdp-size-guide--mobile">
+            <div class="pdp-size-guide__product-title text-med-14">
+              {{ product.title }}
+            </div>
+            {%- if contact_text != blank -%}
+              <div class="pdp-size-guide__contact text-reg-14">
+                {%- if contact_text.type == 'rich_text_field' -%}
+                  {{ contact_text | metafield_tag }}
+                {%- else -%}
+                  {{ contact_text.value | default: contact_text }}
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          </div>
+
+          {%- if fit_notes != blank -%}
+            <div class="pdp-size-guide__section pdp-size-guide__section--fit">
+              <div class="pdp-size-guide__fit-text text-reg-14">
+                {%- if fit_notes.type == 'rich_text_field' -%}
+                  {{ fit_notes | metafield_tag }}
+                {%- else -%}
+                  {{ fit_notes.value | default: fit_notes }}
+                {%- endif -%}
+              </div>
+            </div>
+          {%- endif -%}
+
+          {%- if chart_matrix_data != blank or custom_table != blank -%}
+            <div class="pdp-size-guide__section pdp-size-guide__section--converter">
+              {%- if custom_table != blank and chart_matrix_data == blank -%}
+                <div class="pdp-size-guide__custom-table text-reg-14">
+                  {{ custom_table }}
+                </div>
+              {%- elsif chart_matrix_data != blank -%}
+                <div class="pdp-size-guide__table-wrapper pdp-size-guide__table-wrapper--desktop">
+                  <table class="pdp-size-guide__table text-reg-14 js-pdp-size-table">
+                    <thead>
+                      <tr>
+                        <th class="pdp-size-guide__th pdp-size-guide__th--size text-med-14">
+                          Size
+                        </th>
+                        <th class="pdp-size-guide__th text-med-14">Bust</th>
+                        <th class="pdp-size-guide__th text-med-14">Waist</th>
+                        <th class="pdp-size-guide__th text-med-14 pdp-size-guide__th--toggle" colspan="2">
+                          <div class="pdp-size-guide__th-toggle-content">
+                            <span>Low Hip</span>
+                            <div class="pdp-size-guide__unit-toggle js-pdp-unit-toggle" role="group" aria-label="Measurement Units">
+                              <button
+                                type="button"
+                                class="pdp-size-guide__unit-btn js-pdp-unit-btn{% if default_unit == 'cm' %} is-active{% endif %}"
+                                data-unit="cm"
+                                aria-pressed="{% if default_unit == 'cm' %}true{% else %}false{% endif %}"
+                              >
+                                cM
+                              </button>
+                              <span class="pdp-size-guide__unit-divider">/</span>
+                              <button
+                                type="button"
+                                class="pdp-size-guide__unit-btn js-pdp-unit-btn{% if default_unit == 'in' %} is-active{% endif %}"
+                                data-unit="in"
+                                aria-pressed="{% if default_unit == 'in' %}true{% else %}false{% endif %}"
+                              >
+                                iN
+                              </button>
+                            </div>
+                          </div>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody class="js-pdp-size-table-body">
+                      {%- for row in chart_matrix_data.rows -%}
+                        <tr class="js-pdp-table-row">
+                          <td class="pdp-size-guide__td pdp-size-guide__td--size text-med-14 js-cell-size">
+                            {{ row.sizes[default_region] | default: row.sizes.UK | default: row.sizes.US }}
+                          </td>
+                          <td class="pdp-size-guide__td js-cell-bust" data-cm="{{ row.measurements.cm.bust }}" data-in="{{ row.measurements.in.bust }}">
+                            {% if default_unit == 'in' %}{{ row.measurements.in.bust }}{% else %}{{ row.measurements.cm.bust }}{% endif %}
+                          </td>
+                          <td class="pdp-size-guide__td js-cell-waist" data-cm="{{ row.measurements.cm.waist }}" data-in="{{ row.measurements.in.waist }}">
+                            {% if default_unit == 'in' %}{{ row.measurements.in.waist }}{% else %}{{ row.measurements.cm.waist }}{% endif %}
+                          </td>
+                          <td class="pdp-size-guide__td js-cell-hip" colspan="2" data-cm="{{ row.measurements.cm.hip }}" data-in="{{ row.measurements.in.hip }}">
+                            {% if default_unit == 'in' %}{{ row.measurements.in.hip }}{% else %}{{ row.measurements.cm.hip }}{% endif %}
+                          </td>
+                        </tr>
+                      {%- endfor -%}
+                    </tbody>
+                  </table>
+                </div>
+
+                <div class="pdp-size-guide__table-wrapper pdp-size-guide__table-wrapper--mobile">
+                  <table class="pdp-size-guide__table pdp-size-guide__table--mobile-layout text-reg-14 js-pdp-size-table">
+                    <thead>
+                      <tr>
+                        <th class="pdp-size-guide__th pdp-size-guide__th--mobile-size text-med-14">
+                          size
+                        </th>
+                        <th class="pdp-size-guide__th pdp-size-guide__th--mobile-meas text-med-14">
+                          <div class="pdp-size-guide__mobile-th-content">
+                            <span>measurements</span>
+                            <div class="pdp-size-guide__unit-toggle js-pdp-unit-toggle" role="group" aria-label="Measurement Units">
+                              <button
+                                type="button"
+                                class="pdp-size-guide__unit-btn js-pdp-unit-btn{% if default_unit == 'cm' %} is-active{% endif %}"
+                                data-unit="cm"
+                                aria-pressed="{% if default_unit == 'cm' %}true{% else %}false{% endif %}"
+                              >
+                                cM
+                              </button>
+                              <span class="pdp-size-guide__unit-divider">/</span>
+                              <button
+                                type="button"
+                                class="pdp-size-guide__unit-btn js-pdp-unit-btn{% if default_unit == 'in' %} is-active{% endif %}"
+                                data-unit="in"
+                                aria-pressed="{% if default_unit == 'in' %}true{% else %}false{% endif %}"
+                              >
+                                iN
+                              </button>
+                            </div>
+                          </div>
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody class="js-pdp-size-table-body">
+                      {%- for row in chart_matrix_data.rows -%}
+                        <tr class="js-pdp-table-row">
+                          <td class="pdp-size-guide__td pdp-size-guide__td--mobile-size text-med-14 js-cell-size">
+                            {{ row.sizes[default_region] | default: row.sizes.UK | default: row.sizes.US }}
+                          </td>
+                          <td class="pdp-size-guide__td pdp-size-guide__td--mobile-meas text-reg-14">
+                            <div class="pdp-size-guide__mobile-meas-grid">
+                              <div class="pdp-size-guide__meas-row">
+                                <span class="pdp-size-guide__meas-label">bust:</span>
+                                <span class="pdp-size-guide__meas-val js-cell-bust" data-cm="{{ row.measurements.cm.bust }}" data-in="{{ row.measurements.in.bust }}">
+                                  {% if default_unit == 'in' %}{{ row.measurements.in.bust }}{% else %}{{ row.measurements.cm.bust }}{% endif %}
+                                </span>
+                              </div>
+                              <div class="pdp-size-guide__meas-row">
+                                <span class="pdp-size-guide__meas-label">waist:</span>
+                                <span class="pdp-size-guide__meas-val js-cell-waist" data-cm="{{ row.measurements.cm.waist }}" data-in="{{ row.measurements.in.waist }}">
+                                  {% if default_unit == 'in' %}{{ row.measurements.in.waist }}{% else %}{{ row.measurements.cm.waist }}{% endif %}
+                                </span>
+                              </div>
+                              <div class="pdp-size-guide__meas-row">
+                                <span class="pdp-size-guide__meas-label">low hip:</span>
+                                <span class="pdp-size-guide__meas-val js-cell-hip" data-cm="{{ row.measurements.cm.hip }}" data-in="{{ row.measurements.in.hip }}">
+                                  {% if default_unit == 'in' %}{{ row.measurements.in.hip }}{% else %}{{ row.measurements.cm.hip }}{% endif %}
+                                </span>
+                              </div>
+                            </div>
+                          </td>
+                        </tr>
+                      {%- endfor -%}
+                    </tbody>
+                  </table>
+                </div>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+
+          {%- if size_guide_obj.how_to_measure != blank or size_guide_obj.measurement_diagram != blank -%}
+            <div class="pdp-size-guide__section pdp-size-guide__section--measure">
+              <h3 class="pdp-size-guide__section-title text-med-14">How To Measure</h3>
+              {%- if size_guide_obj.how_to_measure != blank -%}
+                <div class="pdp-size-guide__section-subtitle text-reg-14">
+                  {%- if size_guide_obj.how_to_measure.type == 'rich_text_field' -%}
+                    {{ size_guide_obj.how_to_measure | metafield_tag }}
+                  {%- else -%}
+                    {{ size_guide_obj.how_to_measure.value | default: size_guide_obj.how_to_measure }}
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+
+              {%- if size_guide_obj.measurement_diagram != blank -%}
+                <div class="pdp-size-guide__measure-diagram">
+                  {%- assign diagram_image = size_guide_obj.measurement_diagram.value | default: size_guide_obj.measurement_diagram -%}
+                  {{
+                    diagram_image
+                    | image_url: width: 1000
+                    | image_tag:
+                      widths: '300, 500, 600, 700, 800, 900, 1000',
+                      alt: 'How to measure diagram',
+                      class: 'pdp-size-guide__diagram-img',
+                      loading: 'lazy'
+                  }}
+                </div>
+              {%- endif -%}
+              </div>
+            </div>
+          {%- endif -%}
+        </div>
+      </div>
+    </div>
+  </pdp-size-guide>
+</div>

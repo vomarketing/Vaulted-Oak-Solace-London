@@ -64,17 +64,14 @@
                 </div>
               {%- endif -%}
             {%- when 'buy_buttons' -%}
-              {%- unless rendered_buy_block -%}
-                {%- assign rendered_buy_block = true -%}
-                {%- render 'product-buy-buttons-new',
-                  product: product,
-                  section: section,
-                  block: block,
-                  current_variant: current_variant,
-                  size_guide_table: size_guide_table,
-                  has_size_option: has_size_option
-                -%}
-              {%- endunless -%}
+              {%- render 'product-buy-buttons-new',
+                product: product,
+                section: section,
+                block: block,
+                current_variant: current_variant,
+                size_guide_table: size_guide_table,
+                has_size_option: has_size_option
+              -%}
 
             {%- when 'duties_taxes', 'status_notes' -%}
               <div class="pdp-block pdp-block--duties-taxes text-reg-10 italic" {{ block.shopify_attributes }}>
@@ -88,7 +85,7 @@
                   </div>
                 {%- endif -%}
 
-                {%- assign delivery_msg = block.settings.text | default: section.settings.delivery_note | default: 'Prices now include customs duties, import fees and taxes. No additional charges will be incurred upon delivery.' -%}
+                {%- assign delivery_msg = block.settings.text -%}
                 {%- if delivery_msg != blank -%}
                   <div class="pdp-duties-taxes__text text-med-14 italic">
                     {{ delivery_msg }}
@@ -177,6 +174,16 @@
                   shipping_returns: block.settings.shipping_returns,
                   uid: block.id
                 -%}
+                <div class="pdp-tab-help text-reg-14">
+                  Questions about size, fit or fabric? View
+                  <button type="button" class="pdp-tab-help__link js-pdp-size-guide-trigger text-reg-14">
+                    {{ 'products.product.size_guide' | t }}
+                  </button>
+                  or
+                  <a href="{{ section.settings.contact_page | default: '/pages/contact' }}" class="pdp-tab-help__link text-reg-14">
+                    {{- 'products.product.contact_us' | t -}}
+                  </a>
+                </div>
               </div>
           {%- endcase -%}
         {%- endfor -%}

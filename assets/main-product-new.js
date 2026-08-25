@@ -54,6 +54,11 @@ if (!customElements.get('product-fullscreen')) {
         this.updateExternalPriceAndStock(price, comparePrice, inventoryQty);
       }, { signal: this.abortController.signal });
 
+      window.addEventListener('pdp:zoom:open', (e) => {
+        const index = e.detail && typeof e.detail.index !== 'undefined' ? e.detail.index : 0;
+        this.openZoomModal(index);
+      }, { signal: this.abortController.signal });
+
       this.mql = window.matchMedia('(min-width: 901px)');
       this.handleMediaChange = (e) => {
         if (e.matches) {

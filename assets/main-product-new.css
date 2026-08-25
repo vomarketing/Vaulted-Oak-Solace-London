@@ -709,7 +709,7 @@ body.is-scroll-locked {
   width: 100vw;
   height: 100vh;
   height: 100dvh;
-  z-index: var(--z-modal, 100);
+  z-index: 10;
   background-color: var(--color-white, #ffffff);
   overflow-y: auto;
   opacity: 0;
@@ -729,22 +729,18 @@ body.is-scroll-locked {
   position: fixed;
   top: 20px;
   right: 20px;
-  z-index: 105;
+  z-index: var(--z-modal);
   background: transparent;
-  color: var(--color-white, #ffffff);
+  color: var(--color-white);
   border: none;
   cursor: pointer;
-  padding: 0;
-  text-decoration: none;
-  transition: opacity 0.2s ease;
 
   &:hover {
     text-decoration: underline;
-    opacity: 0.8;
   }
 
   @media (min-width: 901px) {
-    top: 30px;
+    top: 40px;
     right: 40px;
   }
 }

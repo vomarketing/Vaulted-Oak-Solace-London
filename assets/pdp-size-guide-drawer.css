@@ -1,0 +1,513 @@
+/* ==========================================================================
+   1. MODAL CONTAINER & OVERLAY
+   ========================================================================== */
+
+.pdp-size-guide-drawer {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  max-width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 10000;
+  background-color: var(--color-white, #ffffff);
+  overflow-y: auto;
+  opacity: 0;
+  pointer-events: none;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
+  transform: none;
+  color: var(--color-black);
+
+  &.is-active,
+  &.drw-Drawer-active,
+  &[aria-hidden="false"] {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    display: block;
+  }
+}
+
+.pdp-size-guide {
+  position: relative;
+  display: block;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+.pdp-size-guide__layout {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+
+  @media (min-width: 901px) {
+    flex-direction: row;
+    margin: 0 auto;
+  }
+}
+
+/* ==========================================================================
+   2. CONTENT LEFT (Sticky on Desktop, Top Packshot on Mobile)
+   ========================================================================== */
+
+.pdp-size-guide__col-left {
+  position: relative;
+  width: 100%;
+  background-color: #F7F7F7;
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+
+  @media (min-width: 901px) {
+    width: 50%;
+    height: 100%;
+    position: sticky;
+    top: 0;
+    border-bottom: none;
+    overflow-y: auto;
+  }
+}
+
+.pdp-size-guide__left-inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  justify-content: space-between;
+  gap: 16px;
+
+  @media (min-width: 901px) {
+    position: relative;
+    height: auto;
+    gap: 24px;
+    padding-bottom: 70px;
+    background-color: #F7F7F7;
+  }
+}
+
+.pdp-size-guide__packshot-wrapper {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+}
+
+.pdp-size-guide__packshot-media {
+  position: relative;
+  width: 100%;
+  margin: 0 auto;
+  aspect-ratio: 407/496;
+
+  @media (min-width: 768px) {
+    aspect-ratio: 834/836;
+  }
+
+  @media (min-width: 901px) {
+    aspect-ratio: 720/1024;
+  }
+
+  @media (min-width: 1920px) {
+    aspect-ratio: 960/1080;
+  }
+}
+
+.pdp-size-guide__packshot-img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+
+  @media (min-width: 901px) {
+    object-fit: contain;
+  }
+}
+
+.pdp-size-guide__contact {
+  margin-top: 0;
+
+  @media (min-width: 901px) {
+    position: absolute;
+    bottom: 40px;
+    left: 40px;
+  }
+
+  a {
+    color: inherit;
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+  }
+}
+
+/* ==========================================================================
+   3. CONTENT RIGHT (Scrollable Content Column)
+   ========================================================================== */
+
+.pdp-size-guide__col-right {
+  position: relative;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  background-color: var(--color-white, #ffffff);
+
+  @media (min-width: 901px) {
+    width: 50%;
+  }
+}
+
+.pdp-size-guide__topbar {
+  position: absolute;
+  top: 20px;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0 20px;
+  background-color: transparent;
+  z-index: 1;
+
+  @media (min-width: 768px) {
+    top: 16px;
+  }
+
+  @media (min-width: 901px) {
+    position: relative;
+    top: 0;
+    flex-direction: row;
+    padding: 40px 40px 60px;
+  }
+
+  &.pdp-size-guide--desktop {
+    display: flex !important;
+  }
+}
+
+.pdp-size-guide__main-title {
+  margin: 0;
+}
+
+.pdp-size-guide__close {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: inherit;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.pdp-size-guide__content-scroll {
+  padding: 24px 20px 85px;
+  display: flex;
+  flex-direction: column;
+  gap: 40px;
+
+  @media (min-width: 768px) {
+    padding-top: 40px 24px 85px;
+    gap: 60px;
+  }
+
+  @media (min-width: 901px) {
+    padding: 0 40px 100px;
+  }
+}
+
+.pdp-size-guide__mobile-header {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.pdp-size-guide__section {
+  position: relative;
+  width: 100%;
+}
+
+.pdp-size-guide__section-title {
+  margin: 0 0 10px;
+}
+
+.pdp-size-guide__section-subtitle {
+  margin: 0 0 16px;
+}
+
+.pdp-size-guide__fit-text {
+  p {
+    margin: 0 0 10px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    strong {
+      font-weight: 500;
+    }
+  }
+}
+
+/* ==========================================================================
+   4. SIZE CONVERTER TABLES & TOGGLES
+   ========================================================================== */
+
+.pdp-size-guide__table-wrapper {
+  width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.pdp-size-guide__table-wrapper--mobile {
+  @media (min-width: 768px) {
+    display: none;
+  }
+}
+
+.pdp-size-guide__table-wrapper--desktop {
+  display: none;
+
+  @media (min-width: 768px) {
+    display: block;
+  }
+}
+
+.pdp-size-guide__table {
+  width: 100%;
+  border-collapse: collapse;
+  border: 1px solid #000000;
+  text-align: left;
+}
+
+.pdp-size-guide__th,
+.pdp-size-guide__td {
+  border: 1px solid #000000;
+  padding: 16px 12px;
+  vertical-align: middle;
+
+  @media (min-width: 768px) {
+    padding: 20px 30px;
+  }
+}
+
+.pdp-size-guide__th {
+  background-color: #ffffff;
+
+  &--size {
+    padding: 8px 12px;
+    width: 28%;
+    min-width: 105px;
+  }
+
+  &--toggle {
+    padding: 8px 12px;
+  }
+
+  &--mobile-size {
+    width: 35%;
+    padding: 8px 12px;
+  }
+
+  &--mobile-meas {
+    width: 65%;
+    padding: 8px 12px;
+  }
+}
+
+.pdp-size-guide__td {
+  &--mobile-size {
+    vertical-align: top;
+    padding: 10px 12px;
+  }
+
+  &--mobile-meas {
+    vertical-align: top;
+    padding: 10px 12px;
+  }
+}
+
+/* Desktop Header Toggle Content */
+.pdp-size-guide__th-toggle-content {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+
+  @media (min-width: 901px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  @media (min-width: 1201px) {
+    flex-direction: row;
+    align-items: center;
+  }
+}
+
+/* Mobile Measurement Row Grid inside cell */
+.pdp-size-guide__mobile-th-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1px;
+
+  @media (min-width: 768px) {
+    flex-direction: row;
+  }
+}
+
+.pdp-size-guide__mobile-meas-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.pdp-size-guide__meas-row {
+  display: flex;
+  align-items: baseline;
+  gap: 4px;
+}
+
+.pdp-size-guide__meas-val {
+  font-variant-numeric: tabular-nums;
+}
+
+/* Row Hover / Focus Highlight */
+.pdp-size-guide__table tbody tr {
+  transition: background-color 0.15s ease;
+
+  &:hover {
+    background-color: #f7f9fa;
+  }
+
+  &.is-highlighted {
+    background-color: #eef6fc;
+    box-shadow: inset 3px 0 0 #0070f3;
+  }
+}
+
+/* Unit Measurement Switcher (cM / iN) */
+.pdp-size-guide__unit-toggle {
+  display: inline-flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 4px;
+}
+
+.pdp-size-guide__unit-btn {
+  background: transparent;
+  border: none;
+  padding: 2px 4px;
+  color: var(--color-black);
+  cursor: pointer;
+
+  &.is-active,
+  &[aria-pressed="true"] {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  &:hover:not(.is-active) {
+    color: #444444;
+  }
+}
+
+.pdp-size-guide__unit-divider {
+  user-select: none;
+}
+
+/* ==========================================================================
+   5. HOW TO MEASURE SECTION & CALLOUTS
+   ========================================================================== */
+
+.pdp-size-guide__measure-diagram {
+  width: 100%;
+  margin-top: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.pdp-size-guide__diagram-img {
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  display: block;
+}
+
+.pdp-size-guide__callouts {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.pdp-size-guide__callout {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.pdp-size-guide__callout-title {
+  margin: 0;
+}
+
+.pdp-size-guide__callout-text {
+  margin: 0;
+}
+
+/* ==========================================================================
+   6. RESPONSIVE SHOW / HIDE UTILITIES
+   ========================================================================== */
+
+.pdp-size-guide--mobile {
+  @media (min-width: 901px) {
+    display: none !important;
+  }
+}
+
+.pdp-size-guide--desktop {
+  display: none !important;
+
+  @media (min-width: 901px) {
+    display: block !important;
+  }
+}
+
+.pdp-size-row__help {
+  display: none;
+
+  @media (min-width: 901px) {
+    display: block;
+    margin-bottom: 20px;
+  }
+
+  a {
+    text-decoration: none;
+
+    &:hover {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+  }
+}
+
+.pdp-size-guide__product-title {
+  &.pdp-size-guide--desktop {
+    position: absolute;
+    top: 36px;
+    left: 40px;
+    z-index: 1;
+  }
+}

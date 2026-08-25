@@ -39,16 +39,6 @@
                   <span class="pdp-size-row__label text-reg-14">
                     {{ option.name }}
                   </span>
-                  {%- if size_guide_table != blank or section.settings.size_guide_page != blank -%}
-                    <button
-                      type="button"
-                      class="pdp-size-row__guide-link text-reg-14 js-size-guide-trigger"
-                      data-module-drawers-trigger="pdp-size-guide"
-                      aria-label="Open Size Guide"
-                    >
-                      {{ 'products.product.size_guide' | t | default: 'Size & Fit Guide' }}
-                    </button>
-                  {%- endif -%}
                 </div>
 
                 <div class="pdp-size-row__list">
@@ -112,6 +102,14 @@
                     </div>
                   {%- endfor -%}
                 </div>
+
+                <button
+                  type="button"
+                  class="pdp-size-row__guide-link text-reg-14 js-pdp-size-guide-trigger"
+                  aria-label="Open Size Guide"
+                >
+                  {{ 'products.product.size_fit_guide' | t }}
+                </button>
               </div>
 
               <select
@@ -130,6 +128,13 @@
                   </option>
                 {%- endfor -%}
               </select>
+            </div>
+
+            <div class="pdp-size-row__help text-reg-14">
+              Questions about size, fit or fabric?
+              <a href="{{ section.settings.contact_page | default: '/pages/contact' }}" class="pdp-tab-help__link text-reg-14">
+                {{- 'products.product.contact_us' | t -}}
+              </a>
             </div>
 
           {%- else -%}
@@ -228,39 +233,9 @@
     {%- render 'back-in-stock-form-new', product: product, current_variant: current_variant -%}
   </div>
 
-  {%- if size_guide_table != blank or section.settings.size_guide_page != blank -%}
-    <div
-      class="drw-Drawer drw-Drawer-fromRight pdp-size-guide-drawer"
-      data-module-drawers-drawer="pdp-size-guide"
-      data-module-drawers-move-me="root"
-    >
-      <button
-        type="button"
-        class="drw-Drawer_Close"
-        data-module-drawers-close="pdp-size-guide"
-        aria-label="Close Size Guide"
-      >
-        {%- render 'bao-close' -%}
-      </button>
-      <div class="drw-Drawer_Inner">
-        <div class="drw-Drawer_Body">
-          <div class="drw-Drawer_Header">
-            <h2 class="drw-Drawer_Title text-med-14 uppercase">
-              {{ 'products.product.size_guide' | t | default: 'Size Guide' }}
-            </h2>
-            <p class="drw-Drawer_Product text-reg-10 uppercase">
-              {{ product.title }}
-            </p>
-          </div>
-          <div class="drw_Drawer_Content rte-RichText text-reg-14">
-            {%- if size_guide_table != blank -%}
-              {{ size_guide_table }}
-            {%- elsif section.settings.size_guide_page != blank -%}
-              {{ pages[section.settings.size_guide_page].content }}
-            {%- endif -%}
-          </div>
-        </div>
-      </div>
-    </div>
-  {%- endif -%}
+  {%- render 'pdp-size-guide-drawer',
+    product: product,
+    section: section,
+    size_guide_table: size_guide_table
+  -%}
 </product-buy-buttons>
