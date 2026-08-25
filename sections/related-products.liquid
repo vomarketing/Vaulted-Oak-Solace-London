@@ -4,11 +4,16 @@
 {%- liquid
   assign title = section.settings.title
   assign header_mode = section.settings.header_contrast_mode | default: 'light'
+  assign manual_products = section.settings.products
   assign recommendations_limit = 4
 -%}
 
 {%- capture cards -%}
-  {%- if recommendations.performed -%}
+  {%- if manual_products.count > 0 -%}
+    {%- for manual_product in manual_products limit: recommendations_limit -%}
+      {%- render 'product-card', product: manual_product -%}
+    {%- endfor -%}
+  {%- elsif recommendations.performed -%}
     {%- for recommended_product in recommendations.products -%}
       {%- render 'product-card', product: recommended_product -%}
     {%- endfor -%}
@@ -43,6 +48,13 @@
       "type": "text",
       "id": "title",
       "label": "Title"
+    },
+    {
+      "type": "product_list",
+      "id": "products",
+      "label": "Products",
+      "limit": 4,
+      "info": "Leave empty to use Shopify's automatic product recommendations."
     },
     {
       "type": "select",
