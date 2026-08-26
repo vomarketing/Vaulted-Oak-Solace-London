@@ -189,7 +189,9 @@
   }
 
   &.pdp-size-guide--desktop {
-    display: flex !important;
+    @media (min-width: 901px) {
+      display: flex !important;
+    }
   }
 }
 
