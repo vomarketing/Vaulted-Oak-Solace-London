@@ -1,0 +1,136 @@
+.global-media {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+
+  picture,
+  img,
+  video {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+  }
+}
+
+.global-overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  background: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.15) 0%,
+    rgba(0, 0, 0, 0) 30%,
+    rgba(0, 0, 0, 0) 70%,
+    rgba(0, 0, 0, 0.35) 100%
+  );
+}
+
+/* =============================================================================
+   Fullpage Scroll Swiper System
+   ============================================================================= */
+
+body.template-index[data-fullpage-scroll] {
+  overflow: hidden;
+  height: 100vh;
+  height: 100dvh;
+
+  #MainContent {
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    position: relative;
+  }
+}
+
+body.template-product[data-fullpage-scroll] {
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: auto;
+  min-height: 100vh;
+  /* Prevent iOS rubber-band bounce scroll at PDP -> Editorial boundary */
+  overscroll-behavior-y: none;
+
+  #MainContent {
+    width: 100%;
+    height: auto;
+    overflow: visible;
+    position: relative;
+  }
+
+  .pdp-editorial-swiper {
+    position: relative;
+    width: 100vw;
+    height: 100vh;
+    height: 100dvh;
+    overflow: hidden;
+    /* Swiper manages transform on the inner .swiper-wrapper.
+       Avoid will-change or transition on outer container to prevent
+       GPU stacking context conflict. */
+  }
+
+  @media (max-width: 900px) {
+    .pdp-new__main {
+      /* Snappier 0.4s transition matching SSENSE app feel */
+      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.32s ease;
+    }
+
+    .pdp-new__main.is-pdp-leaving {
+      /* Hardware acceleration is promoted automatically on active transform */
+      transform: translateY(-15%);
+      opacity: 0;
+    }
+  }
+}
+
+/* Lock body scroll during PDP -> Editorial transition.
+   Use overflow: hidden instead of position: fixed to avoid resetting scroll position. */
+body.is-pdp-transitioning {
+  overflow: hidden;
+}
+
+
+.fullpage-swiper {
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+}
+
+.fullpage-swiper > .swiper-wrapper {
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.fullpage-swiper > .swiper-wrapper > .swiper-slide {
+  width: 100vw !important;
+  height: 100vh !important;
+  height: 100dvh !important;
+  overflow: hidden;
+  position: relative;
+  box-sizing: border-box;
+  flex-shrink: 0;
+
+  &:empty {
+    display: none;
+  }
+}
+
+.shopify-section {
+  background-color: var(--color-white);
+}
+
+.psh-Cart {
+  .shopify-section {
+    background-color: transparent;
+  }
+}

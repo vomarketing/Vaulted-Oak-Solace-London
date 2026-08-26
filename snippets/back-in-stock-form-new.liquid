@@ -1,0 +1,41 @@
+{%- doc -%}
+  Renders the Back In Stock (BIS) waitlist form for PDP (New)
+
+  @param {product} product - Product Liquid object
+  @param {variant} current_variant - Currently selected variant
+  @param {boolean} [is_active] - Whether form is active/visible by default
+{%- enddoc -%}
+
+<div class="pdp-bis-box js-pdp-bis-box{% if is_active %} is-active{% endif %}" aria-hidden="{% if is_active %}false{% else %}true{% endif %}">
+  <p class="pdp-bis-box__title text-reg-14">
+    {{ settings.bis_message | default: 'Notify me when this size is back in stock.' }}
+  </p>
+  <div class="pdp-bis-box__form">
+    <div class="pdp-bis-box__input-wrapper">
+      <input
+        type="email"
+        class="pdp-bis-box__input text-reg-14 js-pdp-bis-email"
+        placeholder="{{ settings.bis_placeholder | default: 'Email Address' }}"
+        autocomplete="email"
+        aria-label="Email Address"
+      >
+      <button
+        type="button"
+        class="pdp-bis-box__submit text-reg-14 js-pdp-bis-submit"
+        data-product-id="{{ product.id }}"
+        data-variant-id="{{ current_variant.id }}"
+      >
+        {{ settings.bis_button_text | default: 'Submit' }}
+      </button>
+    </div>
+    <div
+      class="pdp-bis-box__response text-reg-14 js-pdp-bis-response"
+      role="status"
+      aria-live="polite"
+      aria-hidden="true"
+      data-success="{{ settings.bis_success_message | default: 'Thank you for joining the waitlist.<br>We’ll notify you if this size becomes available.' }}"
+      data-error="{{ settings.bis_error_message | default: 'Something went wrong. Please try again.' }}"
+      data-invalid-email="Please enter a valid email address."
+    ></div>
+  </div>
+</div>

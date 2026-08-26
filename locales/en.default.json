@@ -10,7 +10,8 @@
 {
   "general": {
     "accessibility": {
-      "skip_to_content": "Skip to content"
+      "skip_to_content": "Skip to content",
+      "close": "Close"
     },
     "meta": {
       "tags": "Tagged \"{{ tags }}\"",
@@ -370,14 +371,16 @@
       "contact_us": "Contact us",
       "recommended_products": "Recommended products",
       "back": "Back to collection",
-      "size": "Size"
+      "size": "Size",
+      "join_waitlist": "Join The Waitlist",
+      "size_fit_guide": "Size & Fit Guide"
     }
   },
   "wishlist": {
     "your_wishlist": "Your Wishlist",
     "wishlist_drawer_title": "Wishlist",
     "temporarilly_saved_html": "Wishlist is not saved permanently yet. Please {{ login }} or {{ register }}",
-    "add_to_wishlist": "Wishlist",
+    "add_to_wishlist": "Add to Wishlist",
     "added_to_wishlist": "Wishlist",
     "remove_from_wishlist": "Remove",
     "removed_from_wishlist": "Removed",

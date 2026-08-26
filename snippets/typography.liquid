@@ -1,0 +1,89 @@
+{%- doc -%}
+  Render Solace London Typography System
+{%- enddoc -%}
+
+<style>
+  {{ settings.type_primary_font | font_face: font_display: 'swap' }}
+  {%- assign primary_font_medium = settings.type_primary_font | font_modify: 'weight', '500' -%}
+  {%- if primary_font_medium -%}
+    {{ primary_font_medium | font_face: font_display: 'swap' }}
+  {%- endif -%}
+  {%- assign primary_font_italic = settings.type_primary_font | font_modify: 'style', 'italic' -%}
+  {%- if primary_font_italic -%}
+    {{ primary_font_italic | font_face: font_display: 'swap' }}
+  {%- endif -%}
+
+  :root {
+    /* Primary Font Family from Shopify Font Picker */
+    --font-family-primary: {{ settings.type_primary_font.family | default: 'Inter' }}, {{ settings.type_primary_font.fallback_families | default: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif' }};
+
+    /* Font Weights */
+    --font-weight-regular: 400;
+    --font-weight-medium: 500;
+
+    /* Typography Scale Variables (14px & 10px) */
+    --type-14-size: 14px;
+    --type-14-line-height: 20px;
+
+    --type-10-size: 10px;
+    --type-10-line-height: 14px;
+  }
+
+  body {
+    font-family: var(--font-family-primary);
+  }
+
+  /* =============================================================================
+     Core Typography Classes (4 Base Typo)
+     ============================================================================= */
+
+  /* 1. Inter Med 14 (14px / 20.00px - Medium 500) */
+  .text-med-14 {
+    font-family: var(--font-family-primary) !important;
+    font-size: var(--type-14-size);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--type-14-line-height);
+  }
+
+  /* 2. Inter Reg 14 (14px / 20.00px - Regular 400) */
+  .text-reg-14 {
+    font-family: var(--font-family-primary) !important;
+    font-size: var(--type-14-size);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--type-14-line-height);
+  }
+
+  /* 3. Inter Med 10 (10px / 14.00px - Medium 500) */
+  .text-med-10 {
+    font-family: var(--font-family-primary) !important;
+    font-size: var(--type-10-size);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--type-10-line-height);
+  }
+
+  /* 4. Inter Reg 10 (10px / 14.00px - Regular 400) */
+  .text-reg-10,
+  .text-req-10 {
+    font-family: var(--font-family-primary) !important;
+    font-size: var(--type-10-size);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--type-10-line-height);
+  }
+
+  /* =============================================================================
+     Font Styles & Modifiers
+     ============================================================================= */
+
+  .underline {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .italic {
+    font-style: italic;
+  }
+
+  .uppercase {
+    text-transform: uppercase;
+  }
+</style>

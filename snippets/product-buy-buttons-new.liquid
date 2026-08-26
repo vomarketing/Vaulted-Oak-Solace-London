@@ -1,0 +1,256 @@
+{%- doc -%}
+  Renders the Buy Buttons and Size Selection Drawer block for PDP (New)
+  @param {product} product - Product Liquid object
+  @param {section} section - Section Liquid object
+  @param {block} block - Block Liquid object
+  @param {variant} current_variant - Currently selected or first available variant
+  @param {string} [size_guide_table] - Optional metafield size guide table
+  @param {boolean} has_size_option - Whether product has size options
+{%- enddoc -%}
+
+{%- assign klaviyo_company_id = 'MKZsDF' -%}
+{%- if shop.permanent_domain == 'solace-london.myshopify.com' or shop.domain contains 'solace-london' or shop.domain contains 'solacelondon' -%}
+  {%- assign klaviyo_company_id = 'XuEqtQ' -%}
+{%- endif -%}
+
+{%- liquid
+  assign size_guide_obj = product.metafields.custom.size_guide.value | default: product.metafields.custom.size_guide
+  if size_guide_obj == blank and section.settings.size_guide != blank
+    assign size_guide_obj = section.settings.size_guide.value | default: section.settings.size_guide
+  endif
+  assign custom_table = size_guide_table | default: product.metafields.Detail.Size_Guide_Table
+  assign has_size_guide_content = false
+  if size_guide_obj != blank or custom_table != blank
+    assign has_size_guide_content = true
+  endif
+-%}
+
+<product-buy-buttons
+  class="pdp-block pdp-block--purchase-actions"
+  data-section-id="{{ section.id }}"
+  data-product-id="{{ product.id }}"
+  data-has-size-option="{{ has_size_option }}"
+  data-size-chosen="{% if has_size_option %}false{% else %}true{% endif %}"
+  data-klaviyo-account="{{ klaviyo_company_id }}"
+  {{ block.shopify_attributes }}
+>
+  <div class="pdp-size-drawer__backdrop js-pdp-size-drawer-backdrop" aria-hidden="true"></div>
+
+  <div class="pdp-size-drawer js-pdp-size-drawer" aria-expanded="false">
+    <div class="pdp-size-drawer__inner">
+      {%- unless product.has_only_default_variant -%}
+        {%- for option in product.options_with_values -%}
+          {%- assign downcased_name = option.name | downcase -%}
+          {%- if downcased_name contains 'size' -%}
+            <div class="pdp-size-row" data-option-index="{{ forloop.index0 }}">
+              <div class="pdp-size-row__inner">
+                <div class="pdp-size-row__header">
+                  <span class="pdp-size-row__label text-reg-14">
+                    {{ option.name }}
+                  </span>
+                </div>
+
+                <div class="pdp-size-row__list">
+                  {%- assign option_idx = forloop.index0 -%}
+                  {%- for value in option.values -%}
+                    {%- liquid
+                      assign variant_for_value = null
+                      for v in product.variants
+                        assign match = true
+                        for option2 in product.options_with_values
+                          assign o_idx = forloop.index0
+                          if o_idx == option_idx
+                            if v.options[o_idx] != value
+                              assign match = false
+                            endif
+                          else
+                            if v.options[o_idx] != current_variant.options[o_idx]
+                              assign match = false
+                            endif
+                          endif
+                        endfor
+                        if match
+                          assign variant_for_value = v
+                          break
+                        endif
+                      endfor
+
+                      assign is_avail = false
+                      assign inventory_qty = 0
+                      if variant_for_value != null
+                        assign is_avail = variant_for_value.available
+                        assign inventory_qty = variant_for_value.inventory_quantity
+                      endif
+
+                      assign is_selected = false
+                      if current_variant.options[option_idx] == value
+                        assign is_selected = true
+                      endif
+                    -%}
+
+                    <div
+                      class="pdp-size-row__item"
+                      data-stock="{{ inventory_qty }}"
+                    >
+                      <button
+                        type="button"
+                        class="pdp-size-row__btn text-reg-14 js-pdp-size-btn{% unless is_avail %} pdp-size-row__btn--oos{% endunless %}{% if is_selected %} is-selected{% endif %}"
+                        data-value="{{ value | escape }}"
+                        data-variant-id="{{ variant_for_value.id }}"
+                        data-available="{{ is_avail }}"
+                        data-stock="{{ inventory_qty }}"
+                        data-index="option{{ option.position }}"
+                        aria-pressed="{% if is_selected %}true{% else %}false{% endif %}"
+                        aria-current="{% if is_selected %}true{% else %}false{% endif %}"
+                      >
+                        <span class="pdp-size-row__btn-text">{{ value }}</span>
+                        {%- unless is_avail -%}
+                          <span class="pdp-size-row__waitlist-label text-reg-14">{{ 'products.product.join_waitlist' | t }}</span>
+                        {%- endunless -%}
+                      </button>
+                    </div>
+                  {%- endfor -%}
+                </div>
+
+                {%- if has_size_guide_content -%}
+                  <button
+                    type="button"
+                    class="pdp-size-row__guide-link text-reg-14 js-pdp-size-guide-trigger"
+                    aria-label="{{ 'products.product.size_fit_guide' | t }}"
+                  >
+                    {{ 'products.product.size_fit_guide' | t }}
+                  </button>
+                {%- endif -%}
+              </div>
+
+              <select
+                class="util-ScreenReaderOnly js-pdp-option-select"
+                id="SingleOptionSelector-{{ forloop.index0 }}"
+                data-single-option-selector
+                data-index="option{{ option.position }}"
+                name="options[{{ option.name | escape }}]"
+              >
+                {%- for value in option.values -%}
+                  <option
+                    value="{{ value | escape }}"
+                    {%- if option.selected_value == value -%}selected="selected"{%- endif -%}
+                  >
+                    {{ value }}
+                  </option>
+                {%- endfor -%}
+              </select>
+            </div>
+
+            {%- if section.settings.contact_page != blank -%}
+              <div class="pdp-size-row__help text-reg-14">
+                Questions about size, fit or fabric?
+                <a href="{{ section.settings.contact_page }}" class="pdp-tab-help__link text-reg-14">
+                  {{- 'products.product.contact_us' | t -}}
+                </a>
+              </div>
+            {%- endif -%}
+
+          {%- else -%}
+            <div class="pdp-option-row">
+              <header class="pdp-option-row__header">
+                <label class="pdp-option-row__label text-reg-14" for="SingleOptionSelector-{{ forloop.index0 }}">
+                  {{ option.name }}
+                </label>
+              </header>
+              <select
+                class="pdp-option-row__select text-reg-14 js-pdp-option-select"
+                id="SingleOptionSelector-{{ forloop.index0 }}"
+                data-single-option-selector
+                name="options[{{ option.name | escape }}]"
+                data-index="option{{ option.position }}"
+              >
+                {%- for value in option.values -%}
+                  <option
+                    value="{{ value | escape }}"
+                    {%- if option.selected_value == value -%}selected="selected"{%- endif -%}
+                  >
+                    {{ value | replace: '.00', '' }}
+                  </option>
+                {%- endfor -%}
+              </select>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+      {%- endunless -%}
+
+      <select
+        name="id"
+        class="util-ScreenReaderOnly js-pdp-master-select"
+      >
+        {%- for variant in product.variants -%}
+          <option
+            {% if variant == current_variant %}selected="selected"{% endif %}
+            {% unless variant.available %}data-soldout="true" disabled="disabled"{% endunless %}
+            value="{{ variant.id }}"
+            data-price="{{ variant.price | money }}"
+            data-price-no-decimals="{{ variant.price | money_without_trailing_zeros }}"
+            data-compare-price="{% if variant.compare_at_price != blank and variant.compare_at_price > variant.price %}{{ variant.compare_at_price | money }}{% endif %}"
+            data-available="{{ variant.available }}"
+            data-stock="{{ variant.inventory_quantity }}"
+          >
+            {{ variant.title }}
+          </option>
+        {%- endfor -%}
+      </select>
+    </div>
+
+    <div class="pdp-cta-row">
+      <button
+        class="pdp-cta-submit text-med-14 js-pdp-submit"
+        type="submit"
+        name="add"
+        {% if has_size_option and current_variant == blank %}
+          disabled
+        {% endif %}
+      >
+        <span
+          class="pdp-cta-submit__text js-pdp-submit-text text-med-14 uppercase"
+          data-translation-add-to-cart="{{ 'products.product.add_to_bag' | t }}"
+          data-translation-sold-out="{{ 'products.product.sold_out' | t }}"
+          data-translation-waitlist="{{ 'products.product.join_waitlist' | t }}"
+        >
+          {%- if current_variant.available -%}
+            {{ 'products.product.add_to_bag' | t }}
+          {%- else -%}
+            {{ 'products.product.join_waitlist' | t }}
+          {%- endif -%}
+        </span>
+      </button>
+
+      {%- if section.settings.wishlist_enable -%}
+        <div class="pdp-cta-wishlist">
+          <button
+            type="button"
+            class="pdp-cta-wishlist__btn js-Wishlist_Button js-Wishlist_Button-add"
+            {%- unless customer -%}data-module-drawers-trigger="wishlist"{%- endunless -%}
+            data-variant="{{ current_variant.id }}"
+            data-product="{{ product.id }}"
+            data-pTitle="{{ product.title | escape }}"
+            data-ptitle="{{ product.title | escape }}"
+            aria-label="{{ 'wishlist.add_to_wishlist' | t }}"
+            title="{{ 'wishlist.add_to_wishlist' | t }}"
+          >
+            <span class="pdp-cta-wishlist__icons">
+              {%- render 'icons', icon: 'wishlist', class: 'pdp-cta-wishlist__icon' -%}
+            </span>
+          </button>
+        </div>
+      {%- endif -%}
+    </div>
+
+    {%- render 'back-in-stock-form-new', product: product, current_variant: current_variant -%}
+  </div>
+
+  {%- if has_size_guide_content -%}
+    {%- render 'pdp-size-guide-drawer',
+      product: product,
+      section: section,
+      size_guide_table: size_guide_table
+    -%}
+  {%- endif -%}
+</product-buy-buttons>

@@ -1,0 +1,268 @@
+{{ 'two-ups-media.css' | asset_url | stylesheet_tag }}
+
+{% liquid
+  assign color_scheme = section.settings.color_scheme | default: 'light'
+  assign header_mode = section.settings.header_contrast_mode | default: 'dark'
+%}
+
+<div
+  class="two-ups-media two-ups-media--{{ color_scheme }}"
+  id="TwoUpsMedia-{{ section.id }}"
+  data-header-mode="{{ header_mode }}"
+>
+  <div class="two-ups-media__inner">
+    {% for block in section.blocks %}
+      {% liquid
+        assign media_type = block.settings.media_type | default: 'image'
+        assign desktop_image = block.settings.desktop_image
+        assign mobile_image = block.settings.mobile_image
+        assign desktop_video_url = blank
+        assign mobile_video_url = blank
+        assign has_media = false
+
+        if mobile_image == blank
+          assign mobile_image = desktop_image
+        endif
+
+        if block.settings.desktop_video != blank
+          assign desktop_video_url = block.settings.desktop_video.sources[1].url | default: block.settings.desktop_video.sources[0].url
+        elsif block.settings.desktop_video_url != blank
+          assign desktop_video_url = block.settings.desktop_video_url
+        endif
+
+        if block.settings.mobile_video != blank
+          assign mobile_video_url = block.settings.mobile_video.sources[1].url | default: block.settings.mobile_video.sources[0].url
+        elsif block.settings.mobile_video_url != blank
+          assign mobile_video_url = block.settings.mobile_video_url
+        else
+          assign mobile_video_url = desktop_video_url
+        endif
+
+        if media_type == 'video' and desktop_video_url != blank
+          assign has_media = true
+        elsif media_type == 'image' and desktop_image != blank
+          assign has_media = true
+        endif
+      %}
+
+      <div class="two-ups-media__item" {{ block.shopify_attributes }}>
+        {% if block.settings.text != blank %}
+          <div class="two-ups-media__text two-ups-media__text--mobile-top">
+            {% if block.settings.link != blank %}
+              <a href="{{ block.settings.link }}">{{ block.settings.text | escape }}</a>
+            {% else %}
+              {{ block.settings.text | escape }}
+            {% endif %}
+          </div>
+        {% endif %}
+
+        {% if has_media %}
+          {% if block.settings.link != blank %}
+            <a class="two-ups-media__media" href="{{ block.settings.link }}">
+          {% else %}
+            <div class="two-ups-media__media">
+          {% endif %}
+
+            {% if media_type == 'video' %}
+              <video
+                class="two-ups-media__video"
+                autoplay
+                loop
+                muted
+                playsinline
+                preload="metadata"
+                {% if desktop_image != blank %}
+                  poster="{{ desktop_image | image_url: width: 1200 }}"
+                {% endif %}
+              >
+                <source src="{{ mobile_video_url }}" media="(max-width: 834px)" type="video/mp4">
+                <source src="{{ desktop_video_url }}" type="video/mp4">
+              </video>
+            {% else %}
+              <picture>
+                {% if mobile_image != blank %}
+                  <source
+                    media="(max-width: 834px)"
+                    srcset="
+                      {{ mobile_image | image_url: width: 400 }} 400w,
+                      {{ mobile_image | image_url: width: 600 }} 600w,
+                      {{ mobile_image | image_url: width: 800 }} 800w,
+                      {{ mobile_image | image_url: width: 1200 }} 1200w
+                    "
+                    sizes="(max-width: 834px) calc(100vw - 50px)"
+                  >
+                {% endif %}
+
+                {{
+                  desktop_image
+                  | image_url: width: 1600
+                  | image_tag:
+                    class: 'two-ups-media__image',
+                    loading: 'lazy',
+                    widths: '400, 600, 800, 1000, 1200, 1600',
+                    sizes: '(min-width: 1441px) 531px, (min-width: 835px) 440px, (min-width: 403px) 335px, 236px'
+                }}
+              </picture>
+            {% endif %}
+
+          {% if block.settings.link != blank %}
+            </a>
+          {% else %}
+            </div>
+          {% endif %}
+        {% endif %}
+
+        {% if block.settings.text != blank %}
+          <div class="two-ups-media__text two-ups-media__text--default">
+            {% if block.settings.link != blank %}
+              <a href="{{ block.settings.link }}">{{ block.settings.text | escape }}</a>
+            {% else %}
+              {{ block.settings.text | escape }}
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    {% endfor %}
+  </div>
+</div>
+
+{% schema %}
+{
+  "name": "Two Ups Media",
+  "tag": "section",
+  "class": "section-two-ups-media js-section-header-contrast",
+  "max_blocks": 2,
+  "settings": [
+    {
+      "type": "header",
+      "content": "Color & Contrast"
+    },
+    {
+      "type": "select",
+      "id": "color_scheme",
+      "label": "Background",
+      "options": [
+        {
+          "value": "light",
+          "label": "Light"
+        },
+        {
+          "value": "dark",
+          "label": "Dark"
+        }
+      ],
+      "default": "light"
+    },
+    {
+      "type": "select",
+      "id": "header_contrast_mode",
+      "label": "Header colour scheme over this section",
+      "options": [
+        {
+          "value": "light",
+          "label": "Light"
+        },
+        {
+          "value": "dark",
+          "label": "Dark"
+        }
+      ],
+      "default": "dark"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Media",
+      "settings": [
+        {
+          "type": "select",
+          "id": "media_type",
+          "label": "Media type",
+          "options": [
+            {
+              "value": "image",
+              "label": "Image"
+            },
+            {
+              "value": "video",
+              "label": "Video"
+            }
+          ],
+          "default": "image"
+        },
+        {
+          "type": "image_picker",
+          "id": "desktop_image",
+          "label": "Desktop image",
+          "info": "Used as the image or optional video poster."
+        },
+        {
+          "type": "image_picker",
+          "id": "mobile_image",
+          "label": "Mobile image",
+          "info": "Uses desktop image when left empty.",
+          "visible_if": "{{ block.settings.media_type == 'image' }}"
+        },
+        {
+          "type": "video",
+          "id": "desktop_video",
+          "label": "Desktop video",
+          "visible_if": "{{ block.settings.media_type == 'video' }}"
+        },
+        {
+          "type": "video",
+          "id": "mobile_video",
+          "label": "Mobile video",
+          "info": "Uses desktop video when left empty.",
+          "visible_if": "{{ block.settings.media_type == 'video' }}"
+        },
+        {
+          "type": "text",
+          "id": "desktop_video_url",
+          "label": "Desktop external MP4 URL",
+          "info": "Used when no desktop Shopify video is selected.",
+          "visible_if": "{{ block.settings.media_type == 'video' }}"
+        },
+        {
+          "type": "text",
+          "id": "mobile_video_url",
+          "label": "Mobile external MP4 URL",
+          "info": "Used when no mobile Shopify video is selected. Falls back to desktop video when empty.",
+          "visible_if": "{{ block.settings.media_type == 'video' }}"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Text",
+          "default": "Shop Now"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Two Ups Media",
+      "blocks": [
+        {
+          "type": "item",
+          "settings": {
+            "text": "The Delano"
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "text": "Shop Now"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

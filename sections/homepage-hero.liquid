@@ -221,6 +221,20 @@
           nextEl: '[data-hero-arrow-next="{{ section.id }}"]',
           prevEl: '[data-hero-arrow-prev="{{ section.id }}"]'
         },
+        a11y: {
+          enabled: true,
+          prevSlideMessage: 'Previous slide',
+          nextSlideMessage: 'Next slide',
+          firstSlideMessage: 'This is the first slide',
+          lastSlideMessage: 'This is the last slide',
+          slideLabelMessage: '{% raw %}{{index}} of {{slidesLength}}{% endraw %}',
+          itemRoleDescriptionMessage: 'slide',
+          containerRoleDescriptionMessage: 'hero carousel'
+        },
+        keyboard: {
+          enabled: true,
+          onlyInViewport: true
+        },
         breakpoints: {
           0: {
             allowTouchMove: mobileSwipeEnabled

@@ -1,0 +1,140 @@
+{%- doc -%}
+  Product Editorial Component (New PDP)
+{%- enddoc -%}
+
+{%- liquid
+  assign editorial_quote = product.metafields.custom.editorial_statement.value | default: product.metafields.Detail.Editorial_Statement | default: section.settings.default_editorial_quote
+  assign brand_statement = section.settings.brand_statement
+  assign recommended_handles = product.metafields.custom.related_products.value | default: product.metafields.Detail.Recommended_Products | split: '|'
+-%}
+
+<div class="pdp-editorial js-pdp-editorial">
+  <!-- 1. Editorial Quote / Statement -->
+  {%- if editorial_quote != blank -%}
+    <section class="pdp-editorial__quote-section js-section-header-contrast" data-header-mode="dark">
+      <div class="pdp-editorial__quote-inner lyt-Container">
+        <blockquote class="pdp-editorial__quote text-med-14 uppercase">
+          {{ editorial_quote }}
+        </blockquote>
+      </div>
+    </section>
+  {%- endif -%}
+
+  <!-- 2. Campaign Media Grid (2 split images + 1 full width image) -->
+  {%- if section.blocks.size > 0 -%}
+    <section class="pdp-editorial__campaign-section js-section-header-contrast" data-header-mode="dark">
+      <div class="pdp-editorial__campaign-inner lyt-Container">
+        <div class="pdp-campaign-grid">
+          <!-- Split Row (2 images) -->
+          <div class="pdp-campaign-grid__row pdp-campaign-grid__row--split">
+            {%- assign split_count = 0 -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == 'campaign_image_split' and split_count < 2 -%}
+                {%- assign split_count = split_count | plus: 1 -%}
+                <div class="pdp-campaign-grid__item pdp-campaign-grid__item--split" {{ block.shopify_attributes }}>
+                  {%- if block.settings.image != blank -%}
+                    <picture class="pdp-campaign-grid__picture">
+                      <source
+                        media="(max-width: 900px)"
+                        srcset="{{ block.settings.image | image_url: width: 600 }}"
+                      >
+                      <img
+                        src="{{ block.settings.image | image_url: width: 900 }}"
+                        srcset="{{ block.settings.image | image_url: width: 600 }} 600w, {{ block.settings.image | image_url: width: 900 }} 900w, {{ block.settings.image | image_url: width: 1200 }} 1200w"
+                        sizes="(min-width: 901px) 45vw, 100vw"
+                        alt="{{ block.settings.caption | escape | default: product.title }}"
+                        width="{{ block.settings.image.width }}"
+                        height="{{ block.settings.image.height }}"
+                        loading="lazy"
+                        class="pdp-campaign-grid__img"
+                      >
+                    </picture>
+                  {%- else -%}
+                    {{ 'lifestyle-2' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {%- endif -%}
+
+                  {%- if block.settings.caption != blank -%}
+                    <p class="pdp-campaign-grid__caption text-reg-10 uppercase">
+                      {{ block.settings.caption }}
+                    </p>
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+
+          <!-- Full Row (1 full-width horizontal image) -->
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'campaign_image_full' -%}
+              <div class="pdp-campaign-grid__row pdp-campaign-grid__row--full" {{ block.shopify_attributes }}>
+                <div class="pdp-campaign-grid__item pdp-campaign-grid__item--full">
+                  {%- if block.settings.image != blank -%}
+                    <picture class="pdp-campaign-grid__picture">
+                      <source
+                        media="(max-width: 900px)"
+                        srcset="{{ block.settings.image | image_url: width: 900 }}"
+                      >
+                      <img
+                        src="{{ block.settings.image | image_url: width: 1800 }}"
+                        srcset="{{ block.settings.image | image_url: width: 900 }} 900w, {{ block.settings.image | image_url: width: 1400 }} 1400w, {{ block.settings.image | image_url: width: 2000 }} 2000w"
+                        sizes="(min-width: 901px) 90vw, 100vw"
+                        alt="{{ block.settings.caption | escape | default: product.title }}"
+                        width="{{ block.settings.image.width }}"
+                        height="{{ block.settings.image.height }}"
+                        loading="lazy"
+                        class="pdp-campaign-grid__img"
+                      >
+                    </picture>
+                  {%- else -%}
+                    {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+                  {%- endif -%}
+
+                  {%- if block.settings.caption != blank -%}
+                    <p class="pdp-campaign-grid__caption text-reg-10 uppercase">
+                      {{ block.settings.caption }}
+                    </p>
+                  {%- endif -%}
+                </div>
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </section>
+  {%- endif -%}
+
+  <!-- 3. Recommended Products Carousel -->
+  {%- if recommended_handles.size > 0 -%}
+    <section class="pdp-editorial__recommendations js-section-header-contrast" data-header-mode="dark">
+      <div class="pdp-editorial__recommendations-inner lyt-Container">
+        <header class="pdp-editorial__recommendations-header">
+          <h2 class="pdp-editorial__recommendations-title text-med-14 uppercase">
+            {{ section.settings.recommended_title | default: 'You May Also Like' }}
+          </h2>
+        </header>
+
+        <div class="pdp-recommended-grid">
+          {%- for handle in recommended_handles -%}
+            {%- assign rec_product = all_products[handle] -%}
+            {%- if rec_product != blank -%}
+              <div class="pdp-recommended-card">
+                {%- render 'product-card', product: rec_product -%}
+              </div>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      </div>
+    </section>
+  {%- endif -%}
+
+  <!-- 4. Brand Statement Footer Banner -->
+  {%- if brand_statement != blank -%}
+    <section class="pdp-editorial__brand-statement js-section-header-contrast" data-header-mode="dark">
+      <div class="pdp-editorial__brand-statement-inner lyt-Container">
+        <p class="pdp-editorial__brand-statement-text text-reg-14">
+          {{ brand_statement }}
+        </p>
+      </div>
+    </section>
+  {%- endif -%}
+</div>

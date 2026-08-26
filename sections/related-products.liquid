@@ -1,0 +1,86 @@
+{{- 'related-products.css' | asset_url | stylesheet_tag -}}
+<script src="{{ 'related-products.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign title = section.settings.title
+  assign header_mode = section.settings.header_contrast_mode | default: 'light'
+  assign manual_products = section.settings.products
+  assign recommendations_limit = 4
+-%}
+
+{%- capture cards -%}
+  {%- if manual_products.count > 0 -%}
+    {%- for manual_product in manual_products limit: recommendations_limit -%}
+      {%- render 'product-card', product: manual_product -%}
+    {%- endfor -%}
+  {%- elsif recommendations.performed -%}
+    {%- for recommended_product in recommendations.products -%}
+      {%- render 'product-card', product: recommended_product -%}
+    {%- endfor -%}
+  {%- endif -%}
+{%- endcapture -%}
+
+<related-products
+  class="related-products{% if cards == blank %} is-loading{% endif %}"
+  data-header-mode="{{ header_mode }}"
+  data-section-id="{{ section.id }}"
+  data-product-id="{{ product.id }}"
+  data-recommendations-url="{{ routes.product_recommendations_url }}"
+  data-limit="{{ recommendations_limit }}"
+>
+  <div class="related-products__inner">
+    {%- if title != blank -%}
+      <h2 class="related-products__title text-med-14">{{ title | escape }}</h2>
+    {%- endif -%}
+
+    <div class="related-products__wrapper js-related-products-wrapper">
+      {{- cards -}}
+    </div>
+  </div>
+</related-products>
+
+{%- schema -%}
+{
+  "name": "Related Products",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "text",
+      "id": "title",
+      "label": "Title"
+    },
+    {
+      "type": "product_list",
+      "id": "products",
+      "label": "Products",
+      "limit": 4,
+      "info": "Leave empty to use Shopify's automatic product recommendations."
+    },
+    {
+      "type": "select",
+      "id": "header_contrast_mode",
+      "label": "Header contrast mode",
+      "options": [
+        {
+          "value": "light",
+          "label": "Light Header (White text for dark background)"
+        },
+        {
+          "value": "dark",
+          "label": "Dark Header (Black text for light background)"
+        }
+      ],
+      "default": "light"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Related Products",
+      "settings": {
+        "title": "shop resort 2027",
+        "header_contrast_mode": "dark"
+      }
+    }
+  ]
+}
+{%- endschema -%}

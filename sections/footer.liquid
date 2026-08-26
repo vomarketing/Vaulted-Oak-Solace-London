@@ -1,14 +1,8 @@
-<footer class="ft-Footer" aria-label="Footer">
+{{- 'custom-footer.css' | asset_url | stylesheet_tag -}}
+
+<footer class="ft-Footer" aria-label="Footer" data-header-mode="dark">
   <div class="ft-Footer_Inner lyt-Container">
     <div class="ft-Footer_Body">
-      <a class="ft-Footer_Logo ft-Footer_Logo-large" href="{{ routes.root_url }}">
-        {%- render 'bao-logo-large' -%}
-      </a>
-
-      <a class="ft-Footer_Logo ft-Footer_Logo-small" href="{{ routes.root_url }}">
-        {%- render 'bao-logo' -%}
-      </a>
-
       {%- if section.settings.navigation != blank -%}
         <div class="ft-Footer_Navigation">
           <div class="ft-Footer_Items">
@@ -33,6 +27,7 @@
 {% schema %}
 {
   "name": "Footer",
+  "class": "js-section-header-contrast",
   "settings": [
     {
       "type": "link_list",

@@ -1,0 +1,11 @@
+node_modules/*
+package.json
+package-lock.json
+.husky/*
+.DS_Store
+.vscode/*
+.idea/*
+README.md
+
+# Environment-specific assets — manage per store
+assets/site.webmanifest.json
