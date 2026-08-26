@@ -138,10 +138,6 @@
 
         .hd-Nav_CartCount {
           color: var(--color-white);
-
-          @media (min-width: 901px) {
-            color: var(--Color_Primary);
-          }
         }
       }
 

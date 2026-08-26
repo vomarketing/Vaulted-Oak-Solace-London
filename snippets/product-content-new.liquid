@@ -19,7 +19,7 @@
 -%}
 
 <div class="pdp-content js-pdp-content">
-  <div class="pdp-sheet-handle js-pdp-sheet-handle" aria-hidden="true"></div>
+  <button type="button" class="pdp-sheet-handle js-pdp-sheet-handle" aria-hidden="true"></button>
 
   <div class="pdp-content__wrapper">
     <div class="pdp-content__top">
@@ -186,12 +186,12 @@
                 {%- if has_size_guide or has_contact -%}
                   <div class="pdp-tab-help text-reg-14">
                     Questions about size, fit or fabric?
-                    {%- if has_size_guide -%}
+                    {% if has_size_guide %}
                       View
                       <button type="button" class="pdp-tab-help__link js-pdp-size-guide-trigger text-reg-14">
                         {{ 'products.product.size_guide' | t }}
                       </button>
-                    {%- endif -%}
+                    {% endif %}
                     {%- if has_contact -%}
                       {%- if has_size_guide -%}or{%- endif -%}
                       <a href="{{ section.settings.contact_page }}" class="pdp-tab-help__link text-reg-14">

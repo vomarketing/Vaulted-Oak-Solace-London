@@ -32,6 +32,7 @@ body.is-scroll-locked {
   color: var(--color-black, #000000);
   overflow-x: hidden;
   --pdp-mobile-gallery-height: min(727px, calc(100dvh - 110px));
+  --pdp-header-height: 60px;
 
   @media (min-width: 768px) {
     --pdp-mobile-gallery-height: min(1023px, calc(100dvh - 120px));
@@ -98,14 +99,26 @@ body.is-scroll-locked {
   width: 100%;
   box-sizing: border-box;
   background-color: var(--color-white, #ffffff);
-  padding: 14px 0 50px;
+  padding: 14px 0 35px;
   box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.08);
-  min-height: 100vh;
+  min-height: auto;
   touch-action: pan-y;
   isolation: isolate;
 
   @media (min-width: 768px) {
-    padding: 20px 0 60px;
+    padding: 20px 0 45px;
+  }
+
+  &.is-locked-top {
+    @media (max-width: 900px) {
+      position: sticky;
+      top: var(--pdp-header-height, 60px);
+      height: calc(100dvh - var(--pdp-header-height, 60px));
+      max-height: calc(100dvh - var(--pdp-header-height, 60px));
+      overflow-y: auto;
+      -webkit-overflow-scrolling: touch;
+      overscroll-behavior: contain;
+    }
   }
 
   @media (min-width: 901px) {
@@ -146,9 +159,9 @@ body.is-scroll-locked {
   background-color: var(--color-black, #000000);
   opacity: 0.5;
   margin: 0 auto 10px;
-  cursor: pointer;
   background-clip: content-box;
   touch-action: manipulation;
+  border: none;
 
   @media (min-width: 768px) {
     margin-bottom: 35px;
@@ -302,7 +315,6 @@ body.is-scroll-locked {
   flex-direction: column;
   overflow-y: auto;
   scrollbar-width: none;
-  padding-bottom: 80px;
 
   @media (min-width: 901px) {
     max-width: 570px;

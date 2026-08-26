@@ -213,7 +213,8 @@ product-buy-buttons,
   }
 
   &.is-selected,
-  &[aria-current="true"] {
+  &[aria-current="true"],
+  &:hover {
     .pdp-size-row__btn-text {
       text-decoration: underline;
       text-underline-offset: 4px;

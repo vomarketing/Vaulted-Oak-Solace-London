@@ -104,3 +104,9 @@ body.template-product[data-fullpage-scroll] {
 .shopify-section {
   background-color: var(--color-white);
 }
+
+.psh-Cart {
+  .shopify-section {
+    background-color: transparent;
+  }
+}

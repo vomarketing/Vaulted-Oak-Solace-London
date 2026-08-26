@@ -310,6 +310,7 @@ if (!window.FullpageScrollController) {
 
         const pdpBottom = this.pdpSection.offsetTop + this.pdpSection.offsetHeight;
         const currentScrollY = window.scrollY;
+        const viewportBottom = currentScrollY + window.innerHeight;
 
         if (this.swiper && this.swiper.activeIndex === 0 && diffY < -40) {
           if (currentScrollY >= pdpBottom - 60) {
@@ -322,6 +323,22 @@ if (!window.FullpageScrollController) {
             setTimeout(() => {
               isTransitioning = false;
             }, 700);
+            return;
+          }
+        }
+
+        if (currentScrollY < pdpBottom - 30 && viewportBottom >= pdpBottom - 100 && diffY > 35) {
+          if (this.swiper && this.swiper.activeIndex === 0) {
+            isTransitioning = true;
+            isTouchDown = false;
+            window.scrollTo({
+              top: pdpBottom,
+              behavior: 'smooth'
+            });
+            setTimeout(() => {
+              isTransitioning = false;
+            }, 700);
+            return;
           }
         }
       };

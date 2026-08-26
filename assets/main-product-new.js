@@ -30,6 +30,7 @@ if (!customElements.get('product-fullscreen')) {
       scrollLocked: 'is-scroll-locked',
       galleryLocked: 'is-locked',
       contentExpanded: 'is-content-expanded',
+      contentLockedTop: 'is-locked-top',
       zoomModalActive: 'is-zoom-modal-active'
     };
 
@@ -218,8 +219,12 @@ if (!customElements.get('product-fullscreen')) {
         this.swiper = null;
       }
       const galleryColumn = this.querySelector(this.selectors.galleryColumn);
+      const contentColumn = this.querySelector(this.selectors.contentColumn);
       if (galleryColumn) {
         galleryColumn.classList.remove(this.classes.galleryLocked);
+      }
+      if (contentColumn) {
+        contentColumn.classList.remove(this.classes.contentLockedTop);
       }
       this.classList.remove(this.classes.contentExpanded);
     }
@@ -232,6 +237,116 @@ if (!customElements.get('product-fullscreen')) {
 
       let isLocked = false;
 
+      const expandSheet = (animate = true) => {
+        if (!this.isMobile() || !contentColumn) return;
+        isLocked = true;
+        if (this.swiper) this.swiper.allowTouchMove = false;
+        if (galleryColumn) galleryColumn.classList.add(this.classes.galleryLocked);
+        this.classList.add(this.classes.contentExpanded);
+        contentColumn.classList.add(this.classes.contentLockedTop);
+
+        const headerHeight = document.querySelector(this.selectors.header)?.offsetHeight || 60;
+        const targetScroll = window.scrollY + contentColumn.getBoundingClientRect().top - headerHeight;
+        if (animate && targetScroll > 0) {
+          window.scrollTo({
+            top: Math.max(0, targetScroll),
+            behavior: 'smooth'
+          });
+        }
+      };
+
+      const collapseSheet = (animate = true) => {
+        if (!this.isMobile() || !contentColumn) return;
+        isLocked = false;
+        if (this.swiper) this.swiper.allowTouchMove = true;
+        if (galleryColumn) galleryColumn.classList.remove(this.classes.galleryLocked);
+        this.classList.remove(this.classes.contentExpanded);
+        contentColumn.classList.remove(this.classes.contentLockedTop);
+        contentColumn.scrollTop = 0;
+
+        if (animate && window.scrollY > 0) {
+          window.scrollTo({
+            top: 0,
+            behavior: 'smooth'
+          });
+        }
+      };
+
+      // Tap on Sheet Handle to toggle Peek vs Expanded
+      if (sheetHandle) {
+        sheetHandle.addEventListener('click', (e) => {
+          if (!this.isMobile()) return;
+          e.preventDefault();
+          if (contentColumn && contentColumn.classList.contains(this.classes.contentLockedTop)) {
+            collapseSheet(true);
+          } else {
+            expandSheet(true);
+          }
+        }, { signal });
+      }
+
+      // SSENSE App touch gesture tracking on Content Column
+      let touchStartY = 0;
+      let isTouchActive = false;
+
+      if (contentColumn) {
+        contentColumn.addEventListener('touchstart', (e) => {
+          if (!this.isMobile() || !e.touches.length) return;
+          touchStartY = e.touches[0].clientY;
+          isTouchActive = true;
+        }, { passive: true, signal });
+
+        contentColumn.addEventListener('touchmove', (e) => {
+          if (!this.isMobile() || !isTouchActive || !e.touches.length) return;
+          const currentY = e.touches[0].clientY;
+          const diffY = touchStartY - currentY; // > 0 is swipe up, < 0 is swipe down
+
+          const isLockedTop = contentColumn.classList.contains(this.classes.contentLockedTop);
+
+          // 1. In Peek Mode: Swipe up -> Expand to Locked Top
+          if (!isLockedTop && diffY > 25) {
+            expandSheet(true);
+            return;
+          }
+
+          // 2. In Expanded Locked Top Mode:
+          if (isLockedTop) {
+            const isAtTop = contentColumn.scrollTop <= 0;
+            const isAtBottom = contentColumn.scrollTop + contentColumn.clientHeight >= contentColumn.scrollHeight - 8;
+
+            // Swipe down when at top of content -> Collapse back to Peek Mode
+            if (isAtTop && diffY < -35) {
+              collapseSheet(true);
+              isTouchActive = false;
+              return;
+            }
+
+            // Swipe up when at bottom of content -> Transition to Next Section (Fullpage Swiper)
+            if (isAtBottom && diffY > 35) {
+              const fullpageInstance = window.fullpageScrollInstance;
+              if (fullpageInstance && fullpageInstance.swiper && typeof fullpageInstance.swiper.slideNext === 'function') {
+                fullpageInstance.swiper.slideNext();
+                isTouchActive = false;
+              } else {
+                const pdpSection = this.closest('.shopify-section') || this;
+                const pdpBottom = pdpSection.offsetTop + pdpSection.offsetHeight;
+                window.scrollTo({
+                  top: pdpBottom,
+                  behavior: 'smooth'
+                });
+                isTouchActive = false;
+              }
+              return;
+            }
+          }
+        }, { passive: true, signal });
+
+        contentColumn.addEventListener('touchend', () => {
+          isTouchActive = false;
+        }, { passive: true, signal });
+      }
+
+      // Sync on window scroll
       const checkScrollState = () => {
         if (!this.isMobile()) {
           if (isLocked) {
@@ -239,60 +354,21 @@ if (!customElements.get('product-fullscreen')) {
             if (this.swiper) this.swiper.allowTouchMove = true;
             if (galleryColumn) galleryColumn.classList.remove(this.classes.galleryLocked);
             this.classList.remove(this.classes.contentExpanded);
+            if (contentColumn) contentColumn.classList.remove(this.classes.contentLockedTop);
           }
           return;
         }
 
         const headerHeight = document.querySelector(this.selectors.header)?.offsetHeight || 60;
-        let shouldLock = false;
-
-        if (window.scrollY > 15) {
-          shouldLock = true;
-        } else if (contentColumn) {
-          const rect = contentColumn.getBoundingClientRect();
-          if (rect.top <= headerHeight + 30) {
-            shouldLock = true;
-          }
-        }
-
-        if (shouldLock && !isLocked) {
-          isLocked = true;
-          if (this.swiper) {
-            this.swiper.allowTouchMove = false;
-          }
-          if (galleryColumn) {
-            galleryColumn.classList.add(this.classes.galleryLocked);
-          }
-          this.classList.add(this.classes.contentExpanded);
-        } else if (!shouldLock && isLocked) {
-          isLocked = false;
-          if (this.swiper) {
-            this.swiper.allowTouchMove = true;
-          }
-          if (galleryColumn) {
-            galleryColumn.classList.remove(this.classes.galleryLocked);
-          }
-          this.classList.remove(this.classes.contentExpanded);
+        if (window.scrollY <= 5 && isLocked && contentColumn && contentColumn.scrollTop <= 0) {
+          collapseSheet(false);
+        } else if (window.scrollY > 15 && !isLocked) {
+          expandSheet(false);
         }
       };
 
       window.addEventListener('scroll', checkScrollState, { passive: true, signal });
       window.addEventListener('resize', checkScrollState, { passive: true, signal });
-
-      if (sheetHandle) {
-        sheetHandle.addEventListener('click', (e) => {
-          if (!this.isMobile()) return;
-          e.preventDefault();
-          const headerHeight = document.querySelector(this.selectors.header)?.offsetHeight || 60;
-          if (contentColumn) {
-            const targetScroll = window.scrollY + contentColumn.getBoundingClientRect().top - headerHeight;
-            window.scrollTo({
-              top: Math.max(0, targetScroll),
-              behavior: 'smooth'
-            });
-          }
-        }, { signal });
-      }
 
       checkScrollState();
     }
