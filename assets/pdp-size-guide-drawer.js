@@ -15,9 +15,7 @@ if (!customElements.get('pdp-size-guide')) {
       table: '.js-pdp-size-table',
       tableRows: '.js-pdp-table-row',
       cellSize: '.js-cell-size',
-      cellBust: '.js-cell-bust',
-      cellWaist: '.js-cell-waist',
-      cellHip: '.js-cell-hip'
+      cellMeasurement: '.js-cell-measurement'
     };
 
     static classes = {
@@ -205,7 +203,9 @@ if (!customElements.get('pdp-size-guide')) {
         const domRows = table.querySelectorAll(this.selectors.tableRows);
         if (!domRows || !domRows.length) return;
 
-        domRows.forEach((domRow, index) => {
+        domRows.forEach((domRow, fallbackIndex) => {
+          const rowIndexAttr = domRow.getAttribute('data-row-index');
+          const index = rowIndexAttr !== null ? parseInt(rowIndexAttr, 10) : fallbackIndex;
           const rowData = rows[index];
           if (!rowData || !rowData.sizes) return;
 
@@ -220,25 +220,13 @@ if (!customElements.get('pdp-size-guide')) {
 
     renderTableMeasurements() {
       const isInch = this.currentUnit === 'in';
-      const domRows = this.querySelectorAll(this.selectors.tableRows);
-      if (!domRows || !domRows.length) return;
+      const measCells = this.querySelectorAll(this.selectors.cellMeasurement);
+      if (!measCells || !measCells.length) return;
 
-      domRows.forEach((row) => {
-        const bustCell = row.querySelector(this.selectors.cellBust);
-        const waistCell = row.querySelector(this.selectors.cellWaist);
-        const hipCell = row.querySelector(this.selectors.cellHip);
-
-        if (bustCell) {
-          const val = isInch ? bustCell.getAttribute('data-in') : bustCell.getAttribute('data-cm');
-          if (val !== null) bustCell.textContent = val;
-        }
-        if (waistCell) {
-          const val = isInch ? waistCell.getAttribute('data-in') : waistCell.getAttribute('data-cm');
-          if (val !== null) waistCell.textContent = val;
-        }
-        if (hipCell) {
-          const val = isInch ? hipCell.getAttribute('data-in') : hipCell.getAttribute('data-cm');
-          if (val !== null) hipCell.textContent = val;
+      measCells.forEach((cell) => {
+        const val = isInch ? cell.getAttribute('data-in') : cell.getAttribute('data-cm');
+        if (val !== null) {
+          cell.textContent = val;
         }
       });
     }

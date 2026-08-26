@@ -57,7 +57,11 @@
   >
     {%- if chart_matrix_data != blank -%}
       <script type="application/json" class="js-pdp-size-guide-matrix">
-        {{ chart_matrix_data | json }}
+        {%- if chart_matrix_data.rows != blank -%}
+          {{ chart_matrix_data | json }}
+        {%- else -%}
+          {{ chart_matrix_data }}
+        {%- endif -%}
       </script>
     {%- endif -%}
 
@@ -161,7 +165,8 @@
                 <div class="pdp-size-guide__custom-table text-reg-14">
                   {{ custom_table }}
                 </div>
-              {%- elsif chart_matrix_data != blank -%}
+              {%- elsif chart_matrix_data != blank and chart_matrix_data.measurement_columns != blank and chart_matrix_data.rows != blank -%}
+                {%- assign measurement_cols = chart_matrix_data.measurement_columns -%}
                 <div class="pdp-size-guide__table-wrapper pdp-size-guide__table-wrapper--desktop">
                   <table class="pdp-size-guide__table text-reg-14 js-pdp-size-table">
                     <thead>
@@ -169,49 +174,57 @@
                         <th class="pdp-size-guide__th pdp-size-guide__th--size text-med-14">
                           Size
                         </th>
-                        <th class="pdp-size-guide__th text-med-14">Bust</th>
-                        <th class="pdp-size-guide__th text-med-14">Waist</th>
-                        <th class="pdp-size-guide__th text-med-14 pdp-size-guide__th--toggle" colspan="2">
-                          <div class="pdp-size-guide__th-toggle-content">
-                            <span>Low Hip</span>
-                            <div class="pdp-size-guide__unit-toggle js-pdp-unit-toggle" role="group" aria-label="Measurement Units">
-                              <button
-                                type="button"
-                                class="pdp-size-guide__unit-btn js-pdp-unit-btn{% if default_unit == 'cm' %} is-active{% endif %}"
-                                data-unit="cm"
-                                aria-pressed="{% if default_unit == 'cm' %}true{% else %}false{% endif %}"
-                              >
-                                cM
-                              </button>
-                              <span class="pdp-size-guide__unit-divider">/</span>
-                              <button
-                                type="button"
-                                class="pdp-size-guide__unit-btn js-pdp-unit-btn{% if default_unit == 'in' %} is-active{% endif %}"
-                                data-unit="in"
-                                aria-pressed="{% if default_unit == 'in' %}true{% else %}false{% endif %}"
-                              >
-                                iN
-                              </button>
-                            </div>
-                          </div>
-                        </th>
+                        {%- for col in measurement_cols -%}
+                          {%- if forloop.last -%}
+                            <th class="pdp-size-guide__th text-med-14 pdp-size-guide__th--toggle">
+                              <div class="pdp-size-guide__th-toggle-content">
+                                <span>{{ col.label }}</span>
+                                <div class="pdp-size-guide__unit-toggle js-pdp-unit-toggle" role="group" aria-label="Measurement Units">
+                                  <button
+                                    type="button"
+                                    class="pdp-size-guide__unit-btn js-pdp-unit-btn{% if default_unit == 'cm' %} is-active{% endif %}"
+                                    data-unit="cm"
+                                    aria-pressed="{% if default_unit == 'cm' %}true{% else %}false{% endif %}"
+                                  >
+                                    cM
+                                  </button>
+                                  <span class="pdp-size-guide__unit-divider">/</span>
+                                  <button
+                                    type="button"
+                                    class="pdp-size-guide__unit-btn js-pdp-unit-btn{% if default_unit == 'in' %} is-active{% endif %}"
+                                    data-unit="in"
+                                    aria-pressed="{% if default_unit == 'in' %}true{% else %}false{% endif %}"
+                                  >
+                                    iN
+                                  </button>
+                                </div>
+                              </div>
+                            </th>
+                          {%- else -%}
+                            <th class="pdp-size-guide__th text-med-14">
+                              {{ col.label }}
+                            </th>
+                          {%- endif -%}
+                        {%- endfor -%}
                       </tr>
                     </thead>
                     <tbody class="js-pdp-size-table-body">
                       {%- for row in chart_matrix_data.rows -%}
-                        <tr class="js-pdp-table-row">
+                        <tr class="js-pdp-table-row" data-row-index="{{ forloop.index0 }}">
                           <td class="pdp-size-guide__td pdp-size-guide__td--size text-med-14 js-cell-size">
                             {{ row.sizes[default_region] | default: row.sizes.UK | default: row.sizes.US }}
                           </td>
-                          <td class="pdp-size-guide__td js-cell-bust" data-cm="{{ row.measurements.cm.bust }}" data-in="{{ row.measurements.in.bust }}">
-                            {% if default_unit == 'in' %}{{ row.measurements.in.bust }}{% else %}{{ row.measurements.cm.bust }}{% endif %}
-                          </td>
-                          <td class="pdp-size-guide__td js-cell-waist" data-cm="{{ row.measurements.cm.waist }}" data-in="{{ row.measurements.in.waist }}">
-                            {% if default_unit == 'in' %}{{ row.measurements.in.waist }}{% else %}{{ row.measurements.cm.waist }}{% endif %}
-                          </td>
-                          <td class="pdp-size-guide__td js-cell-hip" colspan="2" data-cm="{{ row.measurements.cm.hip }}" data-in="{{ row.measurements.in.hip }}">
-                            {% if default_unit == 'in' %}{{ row.measurements.in.hip }}{% else %}{{ row.measurements.cm.hip }}{% endif %}
-                          </td>
+                          {%- for col in measurement_cols -%}
+                            {%- assign col_key = col.key -%}
+                            <td
+                              class="pdp-size-guide__td js-cell-measurement"
+                              data-col="{{ col_key }}"
+                              data-cm="{{ row.measurements.cm[col_key] }}"
+                              data-in="{{ row.measurements.in[col_key] }}"
+                            >
+                              {% if default_unit == 'in' %}{{ row.measurements.in[col_key] }}{% else %}{{ row.measurements.cm[col_key] }}{% endif %}
+                            </td>
+                          {%- endfor -%}
                         </tr>
                       {%- endfor -%}
                     </tbody>
@@ -235,7 +248,7 @@
                                 data-unit="cm"
                                 aria-pressed="{% if default_unit == 'cm' %}true{% else %}false{% endif %}"
                               >
-                                cM
+                                CM
                               </button>
                               <span class="pdp-size-guide__unit-divider">/</span>
                               <button
@@ -253,30 +266,26 @@
                     </thead>
                     <tbody class="js-pdp-size-table-body">
                       {%- for row in chart_matrix_data.rows -%}
-                        <tr class="js-pdp-table-row">
+                        <tr class="js-pdp-table-row" data-row-index="{{ forloop.index0 }}">
                           <td class="pdp-size-guide__td pdp-size-guide__td--mobile-size text-med-14 js-cell-size">
                             {{ row.sizes[default_region] | default: row.sizes.UK | default: row.sizes.US }}
                           </td>
                           <td class="pdp-size-guide__td pdp-size-guide__td--mobile-meas text-reg-14">
                             <div class="pdp-size-guide__mobile-meas-grid">
-                              <div class="pdp-size-guide__meas-row">
-                                <span class="pdp-size-guide__meas-label">bust:</span>
-                                <span class="pdp-size-guide__meas-val js-cell-bust" data-cm="{{ row.measurements.cm.bust }}" data-in="{{ row.measurements.in.bust }}">
-                                  {% if default_unit == 'in' %}{{ row.measurements.in.bust }}{% else %}{{ row.measurements.cm.bust }}{% endif %}
-                                </span>
-                              </div>
-                              <div class="pdp-size-guide__meas-row">
-                                <span class="pdp-size-guide__meas-label">waist:</span>
-                                <span class="pdp-size-guide__meas-val js-cell-waist" data-cm="{{ row.measurements.cm.waist }}" data-in="{{ row.measurements.in.waist }}">
-                                  {% if default_unit == 'in' %}{{ row.measurements.in.waist }}{% else %}{{ row.measurements.cm.waist }}{% endif %}
-                                </span>
-                              </div>
-                              <div class="pdp-size-guide__meas-row">
-                                <span class="pdp-size-guide__meas-label">low hip:</span>
-                                <span class="pdp-size-guide__meas-val js-cell-hip" data-cm="{{ row.measurements.cm.hip }}" data-in="{{ row.measurements.in.hip }}">
-                                  {% if default_unit == 'in' %}{{ row.measurements.in.hip }}{% else %}{{ row.measurements.cm.hip }}{% endif %}
-                                </span>
-                              </div>
+                              {%- for col in measurement_cols -%}
+                                {%- assign col_key = col.key -%}
+                                <div class="pdp-size-guide__meas-row">
+                                  <span class="pdp-size-guide__meas-label">{{ col.label | downcase }}:</span>
+                                  <span
+                                    class="pdp-size-guide__meas-val js-cell-measurement"
+                                    data-col="{{ col_key }}"
+                                    data-cm="{{ row.measurements.cm[col_key] }}"
+                                    data-in="{{ row.measurements.in[col_key] }}"
+                                  >
+                                    {% if default_unit == 'in' %}{{ row.measurements.in[col_key] }}{% else %}{{ row.measurements.cm[col_key] }}{% endif %}
+                                  </span>
+                                </div>
+                              {%- endfor -%}
                             </div>
                           </td>
                         </tr>

@@ -304,6 +304,7 @@
 
 .pdp-size-guide__th {
   background-color: #ffffff;
+  text-transform: capitalize;
 
   &--size {
     padding: 8px 12px;
@@ -350,7 +351,7 @@
     align-items: flex-start;
   }
 
-  @media (min-width: 1201px) {
+  @media (min-width: 1440px) {
     flex-direction: row;
     align-items: center;
   }
@@ -363,6 +364,7 @@
   align-items: flex-start;
   justify-content: space-between;
   gap: 1px;
+  text-transform: capitalize;
 
   @media (min-width: 768px) {
     flex-direction: row;
@@ -512,4 +514,8 @@
     left: 40px;
     z-index: 1;
   }
+}
+
+.pdp-size-guide__meas-label {
+  text-transform: capitalize;
 }
