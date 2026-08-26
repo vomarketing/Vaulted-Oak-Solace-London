@@ -745,6 +745,8 @@ body.is-scroll-locked {
   z-index: 10;
   background-color: var(--color-white, #ffffff);
   overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.3s ease;
@@ -781,6 +783,7 @@ body.is-scroll-locked {
   display: flex;
   flex-direction: column;
   width: 100%;
+  padding-bottom: env(safe-area-inset-bottom, 20px);
 }
 
 .pdp-zoom-modal__item {
