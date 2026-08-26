@@ -379,6 +379,36 @@ if (!customElements.get('product-fullscreen')) {
         }, { passive: true, signal });
       }
 
+      if (galleryColumn) {
+        let galleryTouchStartY = 0;
+        let galleryTouchStartX = 0;
+
+        galleryColumn.addEventListener('touchstart', (e) => {
+          if (!this.isMobile() || !e.touches.length || isLocked) return;
+          galleryTouchStartY = e.touches[0].clientY;
+          galleryTouchStartX = e.touches[0].clientX;
+        }, { passive: true, signal });
+
+        galleryColumn.addEventListener('touchend', (e) => {
+          if (!this.isMobile() || isLocked) return;
+          if (!this.swiper) return;
+
+          const atLastSlide = this.swiper.isEnd
+            || this.swiper.activeIndex >= this.swiper.slides.length - 1;
+          if (!atLastSlide) return;
+
+          const changedTouch = e.changedTouches[0];
+          if (!changedTouch) return;
+
+          const diffY = galleryTouchStartY - changedTouch.clientY;
+          const diffX = Math.abs(galleryTouchStartX - changedTouch.clientX);
+
+          if (diffY > 40 && diffX < diffY * 0.6) {
+            expandSheet(true);
+          }
+        }, { passive: true, signal });
+      }
+
       // Sync on window scroll
       const checkScrollState = () => {
         if (!this.isMobile()) {
@@ -392,11 +422,11 @@ if (!customElements.get('product-fullscreen')) {
           return;
         }
 
-        const headerHeight = document.querySelector(this.selectors.header)?.offsetHeight || 60;
-        if (window.scrollY <= 5 && isLocked && contentColumn && contentColumn.scrollTop <= 0) {
+        // Collapse to peek mode when user scrolls back to document top.
+        // expandSheet is now driven by gallery swipe-up (touchend) — NOT by scrollY —
+        // to prevent mid-gesture layout thrash that causes jank on real devices.
+        if (window.scrollY <= 0 && isLocked && contentColumn && contentColumn.scrollTop <= 0) {
           collapseSheet(false);
-        } else if (window.scrollY > 15 && !isLocked) {
-          expandSheet(false);
         }
       };
 

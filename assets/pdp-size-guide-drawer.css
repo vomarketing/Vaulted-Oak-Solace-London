@@ -263,6 +263,21 @@
       font-weight: 500;
     }
   }
+
+  h4 {
+    font-family: var(--font-family-primary);
+    font-size: var(--type-14-size);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--type-14-line-height);
+  }
+
+  p + h4 {
+    margin-top: 40px;
+
+    @media (min-width: 768px) {
+      margin-top: 60px;
+    }
+  }
 }
 
 /* ==========================================================================
@@ -305,42 +320,51 @@
   @media (min-width: 768px) {
     padding: 20px 30px;
   }
+
+  @media (min-width: 910px) {
+    padding: 20px;
+  }
+
+  @media (min-width: 1440px) {
+    padding: 20px 30px;
+  }
 }
 
 .pdp-size-guide__th {
-  background-color: #ffffff;
+  background-color: var(--color-white);
   text-transform: capitalize;
 
-  &--size {
-    padding: 8px 12px;
-    width: 28%;
+  &.pdp-size-guide__th--size {
+    width: 20%;
     min-width: 105px;
   }
 
-  &--toggle {
-    padding: 8px 12px;
-  }
-
-  &--mobile-size {
+  &.pdp-size-guide__th--toggle {
     width: 35%;
-    padding: 8px 12px;
+    min-width: 200px;
+    grid-column: span 2;
+
+    @media (min-width: 1440px) {
+      width: 25%;
+    }
   }
 
-  &--mobile-meas {
+  &.pdp-size-guide__th--mobile-size {
+    width: 35%;
+  }
+
+  &.pdp-size-guide__th--mobile-meas {
     width: 65%;
-    padding: 8px 12px;
   }
 }
 
 .pdp-size-guide__td {
-  &--mobile-size {
+  &.pdp-size-guide__td--mobile-size {
     vertical-align: top;
-    padding: 10px 12px;
   }
 
-  &--mobile-meas {
+  &.pdp-size-guide__td--mobile-meas {
     vertical-align: top;
-    padding: 10px 12px;
   }
 }
 
