@@ -258,7 +258,7 @@ if (!window.FullpageScrollController) {
           return;
         }
 
-        const pdpBottom = this.pdpSection.offsetTop + this.pdpSection.offsetHeight;
+        const pdpBottom = this.editorialContainer ? this.editorialContainer.offsetTop : (this.pdpSection.offsetTop + this.pdpSection.offsetHeight);
         const currentScrollY = window.scrollY;
         const viewportBottom = currentScrollY + window.innerHeight;
 
@@ -308,7 +308,7 @@ if (!window.FullpageScrollController) {
         const currentY = e.touches[0].clientY;
         const diffY = touchStartY - currentY;
 
-        const pdpBottom = this.pdpSection.offsetTop + this.pdpSection.offsetHeight;
+        const pdpBottom = this.editorialContainer ? this.editorialContainer.offsetTop : (this.pdpSection.offsetTop + this.pdpSection.offsetHeight);
         const currentScrollY = window.scrollY;
         const viewportBottom = currentScrollY + window.innerHeight;
 

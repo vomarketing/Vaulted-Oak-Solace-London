@@ -311,8 +311,8 @@ if (!customElements.get('product-fullscreen')) {
 
           // 2. In Expanded Locked Top Mode:
           if (isLockedTop) {
-            const isAtTop = contentColumn.scrollTop <= 0;
-            const isAtBottom = contentColumn.scrollTop + contentColumn.clientHeight >= contentColumn.scrollHeight - 8;
+            const isAtTop = contentColumn.scrollTop <= 5;
+            const isAtBottom = contentColumn.scrollTop + contentColumn.clientHeight >= contentColumn.scrollHeight - 25;
 
             // Swipe down when at top of content -> Collapse back to Peek Mode
             if (isAtTop && diffY < -35) {
@@ -321,21 +321,37 @@ if (!customElements.get('product-fullscreen')) {
               return;
             }
 
-            // Swipe up when at bottom of content -> Transition to Next Section (Fullpage Swiper)
-            if (isAtBottom && diffY > 35) {
-              const fullpageInstance = window.fullpageScrollInstance;
-              if (fullpageInstance && fullpageInstance.swiper && typeof fullpageInstance.swiper.slideNext === 'function') {
-                fullpageInstance.swiper.slideNext();
-                isTouchActive = false;
-              } else {
-                const pdpSection = this.closest('.shopify-section') || this;
-                const pdpBottom = pdpSection.offsetTop + pdpSection.offsetHeight;
+            // Swipe up when at bottom of content -> Transition to Next Section with Creative Effect
+            if (isAtBottom && diffY > 30) {
+              const pdpSection = this.closest('.shopify-section') || this;
+              const editorialContainer = document.querySelector('.pdp-editorial-swiper');
+              const pdpMain = this.querySelector('.pdp-new__main');
+              const targetScroll = editorialContainer ? editorialContainer.offsetTop : (pdpSection.offsetTop + pdpSection.offsetHeight);
+
+              // Apply creative transition: editorial slides up, pdp pushes back
+              if (editorialContainer) {
+                editorialContainer.classList.add('is-editorial-entering');
+              }
+              if (pdpMain) {
+                pdpMain.classList.add('is-pdp-leaving');
+              }
+
+              // Force reflow, then trigger scroll
+              requestAnimationFrame(() => {
+                if (editorialContainer) editorialContainer.classList.remove('is-editorial-entering');
+
                 window.scrollTo({
-                  top: pdpBottom,
+                  top: targetScroll,
                   behavior: 'smooth'
                 });
-                isTouchActive = false;
-              }
+
+                // Cleanup after animation
+                setTimeout(() => {
+                  if (pdpMain) pdpMain.classList.remove('is-pdp-leaving');
+                }, 600);
+              });
+
+              isTouchActive = false;
               return;
             }
           }

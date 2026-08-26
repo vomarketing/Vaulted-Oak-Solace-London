@@ -192,12 +192,12 @@
                         {{ 'products.product.size_guide' | t }}
                       </button>
                     {% endif %}
-                    {%- if has_contact -%}
-                      {%- if has_size_guide -%}or{%- endif -%}
+                    {% if has_contact %}
+                      {% if has_size_guide %}or {% endif %}
                       <a href="{{ section.settings.contact_page }}" class="pdp-tab-help__link text-reg-14">
-                        {{- 'products.product.contact_us' | t -}}
+                        {{ 'products.product.contact_us' | t }}
                       </a>
-                    {%- endif -%}
+                    {% endif %}
                   </div>
                 {%- endif -%}
               </div>
