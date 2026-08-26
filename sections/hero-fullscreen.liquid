@@ -1,0 +1,267 @@
+{{ 'hero-fullscreen.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'hero-fullscreen.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign header_mode = section.settings.header_contrast_mode | default: 'light'
+  assign text_color = section.settings.text_color | default: 'white'
+  assign is_video = false
+  if section.settings.media_type == 'video'
+    assign is_video = true
+  endif
+-%}
+
+<hero-fullscreen
+  class="hero-fullscreen js-hero-fullscreen"
+  id="hero-{{ section.id }}"
+  data-header-mode="{{ header_mode }}"
+  data-text-color="{{ text_color }}"
+>
+  <div class="hero-fullscreen__media global-media">
+    {%- if is_video -%}
+      {%- liquid
+        assign video_desktop_url = ''
+        assign video_mobile_url = ''
+
+        if section.settings.video_desktop != blank
+          assign video_desktop_url = section.settings.video_desktop.sources[1].url | default: section.settings.video_desktop.sources[0].url
+        elsif section.settings.video_url_desktop != blank
+          assign video_desktop_url = section.settings.video_url_desktop
+        endif
+
+        if section.settings.video_mobile != blank
+          assign video_mobile_url = section.settings.video_mobile.sources[1].url | default: section.settings.video_mobile.sources[0].url
+        elsif section.settings.video_url_mobile != blank
+          assign video_mobile_url = section.settings.video_url_mobile
+        else
+          assign video_mobile_url = video_desktop_url
+        endif
+      -%}
+
+      {%- if video_desktop_url != blank -%}
+        <video
+          class="hero-fullscreen__video js-hero-video"
+          autoplay
+          loop
+          muted
+          playsinline
+          preload="metadata"
+          {% if section.settings.image_desktop != blank %}
+            poster="{{ section.settings.image_desktop | image_url: width: 1800 }}"
+          {% endif %}
+        >
+          <source src="{{ video_mobile_url }}" media="(max-width: 900px)" type="video/mp4">
+          <source src="{{ video_desktop_url }}" type="video/mp4">
+        </video>
+
+        <button
+          type="button"
+          class="hero-fullscreen__sound-toggle js-sound-toggle is-muted"
+          aria-label="Unmute sound"
+        >
+          {%- render 'icons', icon: 'sound-muted', class: 'icon-muted js-icon-muted' -%}
+          {%- render 'icons', icon: 'sound-unmuted', class: 'icon-unmuted js-icon-unmuted' -%}
+        </button>
+      {%- endif -%}
+
+    {%- else -%}
+      {%- if section.settings.image_desktop != blank -%}
+        {%- render 'picture',
+          image_desktop: section.settings.image_desktop,
+          image_mobile: section.settings.image_mobile,
+          loading: 'eager',
+          fetchpriority: 'high',
+          class: 'hero-fullscreen__image'
+        -%}
+      {%- else -%}
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+
+  {%- if section.settings.show_overlay -%}
+    {%- liquid
+      assign overlay_opacity = section.settings.overlay_opacity | default: 40 | divided_by: 100.0
+      assign overlay_color = section.settings.overlay_color | default: '#000000'
+    -%}
+    <div
+      class="hero-fullscreen__overlay"
+      style="background: linear-gradient(0deg, {{ overlay_color | color_modify: 'alpha', overlay_opacity }} 0%, {{ overlay_color | color_modify: 'alpha', overlay_opacity }} 100%);"
+    ></div>
+  {%- endif -%}
+
+  <div class="hero-fullscreen__content">
+    {%- if section.settings.heading != blank -%}
+      <h2 class="hero-fullscreen__heading text-med-14">
+        {{ section.settings.heading }}
+      </h2>
+    {%- endif -%}
+
+    {%- if section.settings.cta_text != blank -%}
+      {%- if section.settings.cta_link != blank -%}
+        <a href="{{ section.settings.cta_link }}" class="hero-fullscreen__link hero-fullscreen__cta text-med-14">
+          {{ section.settings.cta_text }}
+        </a>
+      {%- else -%}
+        <p class="hero-fullscreen__cta text-reg-14">
+          {{ section.settings.cta_text }}
+        </p>
+      {%- endif -%}
+    {%- endif -%}
+  </div>
+</hero-fullscreen>
+
+{% schema %}
+{
+  "name": "Hero Fullscreen",
+  "tag": "section",
+  "class": "shopify-section-hero-fullscreen js-section-header-contrast",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Media Settings"
+    },
+    {
+      "type": "select",
+      "id": "media_type",
+      "label": "Media type",
+      "options": [
+        {
+          "value": "image",
+          "label": "Image"
+        },
+        {
+          "value": "video",
+          "label": "Video"
+        }
+      ],
+      "default": "image"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_desktop",
+      "label": "Desktop image",
+      "visible_if": "{{ section.settings.media_type == 'image' }}"
+    },
+    {
+      "type": "image_picker",
+      "id": "image_mobile",
+      "label": "Mobile image",
+      "visible_if": "{{ section.settings.media_type == 'image' }}"
+    },
+    {
+      "type": "video",
+      "id": "video_desktop",
+      "label": "Desktop Shopify video",
+      "visible_if": "{{ section.settings.media_type == 'video' }}"
+    },
+    {
+      "type": "video",
+      "id": "video_mobile",
+      "label": "Mobile Shopify video",
+      "visible_if": "{{ section.settings.media_type == 'video' }}"
+    },
+    {
+      "type": "text",
+      "id": "video_url_desktop",
+      "label": "Desktop external video URL (MP4 direct link)",
+      "visible_if": "{{ section.settings.media_type == 'video' }}"
+    },
+    {
+      "type": "text",
+      "id": "video_url_mobile",
+      "label": "Mobile external video URL (MP4 direct link)",
+      "visible_if": "{{ section.settings.media_type == 'video' }}"
+    },
+    {
+      "type": "header",
+      "content": "Overlay Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_overlay",
+      "label": "Show overlay",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "overlay_opacity",
+      "label": "Overlay opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 40,
+      "visible_if": "{{ section.settings.show_overlay == true }}"
+    },
+    {
+      "type": "color",
+      "id": "overlay_color",
+      "label": "Overlay color",
+      "default": "#000000",
+      "visible_if": "{{ section.settings.show_overlay == true }}"
+    },
+    {
+      "type": "header",
+      "content": "Color & Contrast"
+    },
+    {
+      "type": "select",
+      "id": "header_contrast_mode",
+      "label": "Header colour scheme over this section",
+      "options": [
+        {
+          "value": "light",
+          "label": "Light"
+        },
+        {
+          "value": "dark",
+          "label": "Dark"
+        }
+      ],
+      "default": "light"
+    },
+    {
+      "type": "select",
+      "id": "text_color",
+      "label": "Text color",
+      "options": [
+        {
+          "value": "white",
+          "label": "White"
+        },
+        {
+          "value": "black",
+          "label": "Black"
+        }
+      ],
+      "default": "white"
+    },
+    {
+      "type": "header",
+      "content": "Default Content"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Resort 2027"
+    },
+    {
+      "type": "text",
+      "id": "cta_text",
+      "label": "CTA Text",
+      "default": "Shop Collection"
+    },
+    {
+      "type": "url",
+      "id": "cta_link",
+      "label": "CTA Link"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Hero Fullscreen"
+    }
+  ]
+}
+{% endschema %}

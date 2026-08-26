@@ -1,0 +1,124 @@
+{%- liquid
+  assign header_mode = section.settings.header_contrast_mode | default: 'light'
+
+  assign valid_block_count = 0
+  for block in section.blocks
+    if block.settings.image_desktop != blank
+      assign valid_block_count = valid_block_count | plus: 1
+    endif
+  endfor
+-%}
+
+{%- if valid_block_count > 0 -%}
+  {{- 'three-up-slider.css' | asset_url | stylesheet_tag -}}
+  <script src="{{ 'three-up-slider.js' | asset_url }}" defer="defer"></script>
+
+  <three-up-slider
+    class="three-up-slider"
+    data-header-mode="{{ header_mode }}"
+  >
+    <div>
+      <div class="js-swiper three-up-slider__swiper swiper">
+        <div class="swiper-wrapper">
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign block_image_desktop = block.settings.image_desktop
+              assign block_image_mobile = block.settings.image_mobile
+              assign block_title = block.settings.title
+
+              if block_image_desktop == blank
+                continue
+              endif
+            -%}
+            <div class="js-slide swiper-slide">
+              {%- render 'picture',
+                image_desktop: block_image_desktop,
+                image_mobile: block_image_mobile,
+                class: 'three-up-slider__slide-image'
+              -%}
+
+              {%- if block_title != blank -%}
+                <p class="three-up-slider__slide-title text-reg-14">{{ block_title }}</p>
+              {%- endif -%}
+            </div>
+          {%- endfor -%}
+        </div>
+      </div>
+    </div>
+  </three-up-slider>
+{%- endif -%}
+
+{%- schema -%}
+{
+  "name": "Three Up Slider",
+  "tag": "section",
+  "settings": [
+    {
+      "type": "select",
+      "id": "header_contrast_mode",
+      "label": "Header contrast mode",
+      "options": [
+        {
+          "value": "light",
+          "label": "Light Header (White text for dark background)"
+        },
+        {
+          "value": "dark",
+          "label": "Dark Header (Black text for light background)"
+        }
+      ],
+      "default": "light"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "limit": 2,
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image_desktop",
+          "label": "Desktop image"
+        },
+        {
+          "type": "image_picker",
+          "id": "image_mobile",
+          "label": "Mobile image"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Description"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Three Up Slider",
+      "settings": {
+        "header_contrast_mode": "dark"
+      },
+      "blocks": [
+        {
+          "type": "image",
+          "settings": {
+            "image_desktop": "shopify://shop_images/Image.jpg",
+            "image_mobile": "shopify://shop_images/Image.jpg",
+            "title": "Fabric lorem Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim."
+          }
+        },
+        {
+          "type": "image",
+          "settings": {
+            "image_desktop": "shopify://shop_images/Image_1.jpg",
+            "image_mobile": "shopify://shop_images/Image_1.jpg",
+            "title": "Sleeve Construction lorem Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+          }
+        }
+      ]
+    }
+  ]
+}
+{%- endschema -%}

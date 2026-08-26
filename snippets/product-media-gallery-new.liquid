@@ -1,0 +1,94 @@
+{%- doc -%}
+  Product Media Gallery Component (New PDP)
+{%- enddoc -%}
+
+{%- liquid
+  assign default_header_mode = section.settings.header_contrast_mode | default: 'light'
+-%}
+
+<div class="pdp-media-gallery js-pdp-media-gallery swiper js-pdp-swiper" data-media-count="{{ product.media.size }}">
+  <div class="pdp-media-gallery__list js-pdp-media-list swiper-wrapper">
+    {%- if product.media.size > 0 -%}
+      {%- for media in product.media -%}
+        {%- liquid
+          assign header_mode = default_header_mode
+          assign alt_lower = media.alt | downcase
+          if alt_lower contains 'header:dark'
+            assign header_mode = 'dark'
+          elsif alt_lower contains 'header:light'
+            assign header_mode = 'light'
+          endif
+
+          assign is_video = false
+          if media.media_type == 'video' or media.media_type == 'external_video'
+            assign is_video = true
+          endif
+        -%}
+
+        <div
+          class="pdp-media-item js-pdp-media-item swiper-slide js-pdp-slide js-section-header-contrast{% if is_video %} pdp-media-item--video{% else %} pdp-media-item--image{% endif %}"
+          data-media-id="{{ media.id }}"
+          data-media-index="{{ forloop.index0 }}"
+          data-media-type="{{ media.media_type }}"
+          data-header-mode="{{ header_mode }}"
+        >
+          <div class="pdp-media-item__inner js-pdp-media-zoom-trigger" data-media-index="{{ forloop.index0 }}" role="button" tabindex="0" aria-label="Zoom media {{ forloop.index }}">
+            {%- case media.media_type -%}
+              {%- when 'image' -%}
+                {%- liquid
+                  assign img_loading = 'lazy'
+                  assign img_fetchpriority = 'auto'
+                  if forloop.first
+                    assign img_loading = 'eager'
+                    assign img_fetchpriority = 'high'
+                  endif
+                -%}
+                {%- render 'picture',
+                  image_desktop: media,
+                  class: 'pdp-media-item__image',
+                  picture_class: 'pdp-media-item__picture',
+                  loading: img_loading,
+                  fetchpriority: img_fetchpriority,
+                  alt: media.alt | default: product.title,
+                  sizes: '(min-width: 901px) 50vw, 100vw',
+                  widths: '400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1400, 1600, 1800, 2000'
+                -%}
+
+              {%- when 'video' -%}
+                <div class="pdp-media-item__video-wrapper">
+                  <video
+                    class="pdp-media-item__video js-pdp-video"
+                    autoplay
+                    loop
+                    muted
+                    playsinline
+                    preload="metadata"
+                    {% if media.preview_image %}
+                      poster="{{ media.preview_image | image_url: width: 1400 }}"
+                    {% endif %}
+                  >
+                    {%- for source in media.sources -%}
+                      <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                    {%- endfor -%}
+                  </video>
+                </div>
+
+              {%- when 'external_video' -%}
+                <div class="pdp-media-item__video-wrapper">
+                  {{ media | external_video_tag: class: 'pdp-media-item__video', autoplay: true, loop: true, muted: true }}
+                </div>
+
+              {%- else -%}
+                {{ media | media_tag: class: 'pdp-media-item__fallback' }}
+            {%- endcase -%}
+          </div>
+        </div>
+      {%- endfor -%}
+    {%- else -%}
+      <div class="pdp-media-item pdp-media-item--placeholder js-pdp-media-item swiper-slide js-pdp-slide js-section-header-contrast" data-header-mode="dark">
+        {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+

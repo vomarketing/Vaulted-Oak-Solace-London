@@ -51,7 +51,7 @@
     </div>
   </div>
 
-  <a class="klv-Card_FauxLink util-FauxLink_Link" href="<%=dataLocal.url%>"></a>
+  <a class="klv-Card_FauxLink util-FauxLink_Link" href="<%= dataLocal.url.indexOf('/products/') !== -1 ? dataLocal.url.replace(/^https?:\/\/[^/]+/, '') : dataLocal.url %>"></a>
 </div>
 </script>
 

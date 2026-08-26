@@ -1,7 +1,17 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "main-product",
+      "disabled": true,
       "settings": {
         "delivery_note": "All items are shipped from our UK warehouse and the shipping times quoted are estimates. International customs procedures may apply which can cause delays beyond original delivery estimates. Customs clearance charges are payable by the customer, Solace London has no control over these and will not pay them on your behalf.",
         "stock_note": "Only a few left in stock",
@@ -10,9 +20,144 @@
         "size_guide_page": "",
         "contact_page": "contact"
       }
+    },
+    "main_product_new_qVcUWX": {
+      "type": "main-product-new",
+      "blocks": {
+        "title_9BKNBY": {
+          "type": "title",
+          "settings": {}
+        },
+        "description_jt7ddV": {
+          "type": "description",
+          "settings": {
+            "content": "{{ product.description }}"
+          }
+        },
+        "buy_buttons_VGTxwz": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_wishlist": true
+          }
+        },
+        "duties_taxes_d76MTJ": {
+          "type": "duties_taxes",
+          "settings": {
+            "text": "Prices now include customs duties, import fees and taxes. No additional charges will be incurred upon delivery."
+          }
+        },
+        "tab_content_jWBbB7": {
+          "type": "tab_content",
+          "settings": {
+            "description": "{{ product.metafields.custom.tab_description | metafield_tag }}",
+            "fabric_care": "{{ product.metafields.custom.fabric_care | metafield_tag }}",
+            "size_fit": "{{ product.metafields.custom.size_fit | metafield_tag }}",
+            "shipping_returns": "{{ product.metafields.custom.shipping_returns | metafield_tag }}"
+          }
+        },
+        "colorways_UnqVeT": {
+          "type": "colorways",
+          "settings": {
+            "title": "Also available in",
+            "products": "{{ product.metafields.custom.related_products.value }}"
+          }
+        }
+      },
+      "block_order": [
+        "title_9BKNBY",
+        "description_jt7ddV",
+        "buy_buttons_VGTxwz",
+        "duties_taxes_d76MTJ",
+        "tab_content_jWBbB7",
+        "colorways_UnqVeT"
+      ],
+      "name": "Main Product (New)",
+      "settings": {
+        "header_contrast_mode": "light",
+        "delivery_note": "Order by 4pm for Next Day Delivery",
+        "stock_note": "Only a few left in stock",
+        "wishlist_enable": true
+      }
+    },
+    "rich_text_NHU7La": {
+      "type": "rich-text",
+      "name": "Rich text",
+      "settings": {
+        "header_contrast_mode": "dark",
+        "text": "{{ product.metafields.custom.richtext_content_1 | metafield_tag }}",
+        "link_text": "",
+        "link": "",
+        "max_width_desktop": 807,
+        "max_width_tablet": 589,
+        "max_width_mobile": 305
+      }
+    },
+    "three_up_slider_Bwqyrf": {
+      "type": "three-up-slider",
+      "blocks": {
+        "image_NwaTwC": {
+          "type": "image",
+          "repeater": "{{ product.metafields.custom.three_up_slider.value }}",
+          "settings": {
+            "image_desktop": "{{ block.repeater.desktop_image.value }}",
+            "image_mobile": "{{ block.repeater.mobile_image.value }}",
+            "title": "{{ block.repeater.description.value }}"
+          }
+        }
+      },
+      "block_order": [
+        "image_NwaTwC"
+      ],
+      "name": "Three Up Slider",
+      "settings": {
+        "header_contrast_mode": "dark"
+      }
+    },
+    "three_up_media_Bwqyrf": {
+      "type": "three-up-media",
+      "name": "Three Up Media",
+      "settings": {
+        "media_type": "video",
+        "image_desktop": "{{ product.metafields.custom.three_up_media.value.desktop_image.value }}",
+        "image_mobile": "{{ product.metafields.custom.three_up_media.value.mobile_image.value }}",
+        "video_desktop": "{{ product.metafields.custom.three_up_media.value.desktop_video_shopify.value }}",
+        "video_mobile": "{{ product.metafields.custom.three_up_media.value.mobile_video_shopify.value }}",
+        "video_desktop_url": "{{ product.metafields.custom.three_up_media.value.desktop_video_external.value }}",
+        "video_mobile_url": "{{ product.metafields.custom.three_up_media.value.mobile_video_external.value }}",
+        "media_description": "{{ product.metafields.custom.three_up_media.value.description.value }}",
+        "header_contrast_mode": "dark"
+      }
+    },
+    "related_products_3tzxLK": {
+      "type": "related-products",
+      "name": "Related Products",
+      "settings": {
+        "title": "shop resort 2027",
+        "products": "{{ product.metafields.custom.recommended_products.value }}",
+        "header_contrast_mode": "dark"
+      }
+    },
+    "rich_text_qGAkrF": {
+      "type": "rich-text",
+      "name": "Rich text",
+      "settings": {
+        "header_contrast_mode": "dark",
+        "text": "{{ product.metafields.custom.richtext_content_2 | metafield_tag }}",
+        "link_text": "",
+        "link": "",
+        "max_width_desktop": 910,
+        "max_width_tablet": 589,
+        "max_width_mobile": 305
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "main_product_new_qVcUWX",
+    "rich_text_NHU7La",
+    "three_up_slider_Bwqyrf",
+    "three_up_media_Bwqyrf",
+    "related_products_3tzxLK",
+    "rich_text_qGAkrF"
   ]
 }

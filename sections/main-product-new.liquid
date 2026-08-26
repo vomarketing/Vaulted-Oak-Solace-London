@@ -1,0 +1,346 @@
+<script type="application/json" class="js-pdp-klaviyo-data">
+{
+  "Name": {{ product.title | json }},
+  "ProductID": {{ product.id | json }},
+  "Categories": {{ product.collections | map: 'title' | json }},
+  "ImageURL": "https:{{ product.featured_media | image_url: width: 600 }}",
+  "URL": "{{ shop.secure_url }}{{ product.url }}",
+  "Brand": {{ product.vendor | json }},
+  "Price": {{ product.price | money | json }},
+  "CompareAtPrice": {{ product.compare_at_price_max | money | json }}
+}
+</script>
+
+{{ 'main-product-new.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'main-product-new.js' | asset_url }}" defer="defer"></script>
+
+{{ 'product-buy-buttons-new.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'product-buy-buttons-new.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign current_variant = product.selected_or_first_available_variant
+
+  assign option_names = product.options | join: ',' | downcase
+  assign has_size_option = false
+  if option_names contains 'size'
+    assign has_size_option = true
+  endif
+-%}
+
+<product-fullscreen
+  class="pdp-new js-pdp-new"
+  id="Product-{{ section.id }}"
+  data-section-id="{{ section.id }}"
+  data-product-handle="{{ product.handle }}"
+  data-has-size-option="{{ has_size_option }}"
+>
+  <div class="pdp-new__main">
+    <div class="pdp-new__gallery-column js-pdp-gallery-column">
+      {%- render 'product-media-gallery-new', product: product, section: section -%}
+    </div>
+
+    <div class="pdp-new__content-column js-pdp-content-column">
+      {%- render 'product-content-new', product: product, section: section, current_variant: current_variant -%}
+    </div>
+  </div>
+
+  {%- render 'product-media-zoom-modal-new', product: product -%}
+</product-fullscreen>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org/",
+  "@type": "Product",
+  "name": {{ product.title | json }},
+  "url": "{{ shop.url }}{{ product.url }}",
+  {%- if product.featured_media -%}
+    "image": [
+      "https:{{ product.featured_media | image_url: width: 1400 }}"
+    ],
+  {%- endif -%}
+  "description": {{ product.description | strip_html | json }},
+  {%- if current_variant.sku != blank -%}
+    "sku": {{ current_variant.sku | json }},
+  {%- endif -%}
+  "brand": {
+    "@type": "Brand",
+    "name": {{ product.vendor | default: shop.name | json }}
+  },
+  {%- if product.variants.size > 0 -%}
+    "offers": [
+      {%- for variant in product.variants -%}
+        {
+          "@type": "Offer",
+          "availability": "https://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
+          "price": "{{ variant.price | divided_by: 100.00 }}",
+          "priceCurrency": "{{ cart.currency.iso_code | default: shop.currency }}",
+          "url": "{{ shop.url }}{{ variant.url }}",
+          {%- if variant.sku != blank -%}
+            "sku": {{ variant.sku | json }},
+          {%- endif -%}
+          {%- if variant.image -%}
+            "image": "https:{{ variant.image | image_url: width: 1000 }}",
+          {%- endif -%}
+          "name": {{ variant.title | json }}
+        }{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ]
+  {%- endif -%}
+}
+</script>
+
+{% comment %}
+  Klaviyo Abandon Browse & Add-to-cart tracking
+{% endcomment %}
+<script>
+  (function () {
+    var _learnq = window._learnq || [];
+    var item = {
+      Name: {{ product.title | json }},
+      ProductID: {{ product.id | json }},
+      Categories: {{ product.collections | map: 'title' | json }},
+      ImageURL: "https:{{ product.featured_image | image_url: width: 600 }}",
+      URL: "{{ shop.secure_url }}{{ product.url }}",
+      Brand: {{ product.vendor | json }},
+      Price: {{ product.price | money | json }},
+      CompareAtPrice: {{ product.compare_at_price_max | money | json }}
+    };
+
+    _learnq.push(['track', 'Viewed Product', item]);
+    _learnq.push(['trackViewedItem', {
+      Title: item.Name,
+      ItemId: item.ProductID,
+      Categories: item.Categories,
+      ImageUrl: item.ImageURL,
+      Url: item.URL,
+      Metadata: {
+        Brand: item.Brand,
+        Price: item.Price,
+        CompareAtPrice: item.CompareAtPrice
+      }
+    }]);
+
+    document.addEventListener('click', function (e) {
+      var btn = e.target.closest('#AddToCart, .js-product-add-to-cart, [data-el="product-form.submit"], [name="add"], .js-pdp-submit');
+      if (btn) {
+        _learnq.push(['track', 'Added to Cart', item]);
+      }
+    });
+  })();
+</script>
+
+{% schema %}
+{
+  "name": "Main Product (New)",
+  "tag": "section",
+  "class": "shopify-section-main-product-new",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Header Contrast Default"
+    },
+    {
+      "type": "select",
+      "id": "header_contrast_mode",
+      "label": "Header Scheme",
+      "info": "Default header contrast mode over media gallery",
+      "options": [
+        {
+          "value": "light",
+          "label": "Light"
+        },
+        {
+          "value": "dark",
+          "label": "Dark"
+        }
+      ],
+      "default": "light"
+    },
+    {
+      "type": "header",
+      "content": "Product Notes & Policies"
+    },
+    {
+      "type": "text",
+      "id": "stock_note",
+      "label": "Stock Note",
+      "info": "Only shown if inventory is below 10",
+      "default": "Only a few left in stock"
+    },
+    {
+      "type": "checkbox",
+      "id": "wishlist_enable",
+      "label": "Enable Wishlist",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Size Guide & Support"
+    },
+    {
+      "type": "metaobject",
+      "id": "size_guide",
+      "label": "Default Size Guide Metaobject",
+      "metaobject_type": "size_guide"
+    },
+    {
+      "type": "url",
+      "id": "contact_page",
+      "label": "Contact Page URL"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "@app"
+    },
+    {
+      "type": "title",
+      "name": "Title",
+      "limit": 1
+    },
+    {
+      "type": "description",
+      "name": "Short Description",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content"
+        }
+      ]
+    },
+    {
+      "type": "buy_buttons",
+      "name": "Buy Buttons & Wishlist",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_wishlist",
+          "label": "Show Wishlist Button",
+          "default": true
+        }
+      ]
+    },
+    {
+      "type": "duties_taxes",
+      "name": "Duties & Taxes",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Disclaimer Text",
+          "default": "Prices now include customs duties, import fees and taxes. No additional charges will be incurred upon delivery."
+        }
+      ]
+    },
+    {
+      "type": "status_notes",
+      "name": "Status Notes",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Note Text",
+          "info": "Optional override for status and delivery notes"
+        }
+      ]
+    },
+    {
+      "type": "colorways",
+      "name": "Also Available In",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Also available in"
+        },
+        {
+          "type": "product_list",
+          "id": "products",
+          "label": "Products"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Text",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text",
+          "default": "<p>Share information about your brand or products.</p>"
+        }
+      ]
+    },
+    {
+      "type": "custom_liquid",
+      "name": "Custom Liquid",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "custom_liquid",
+          "label": "Custom Liquid"
+        }
+      ]
+    },
+    {
+      "type": "tab_content",
+      "name": "Tab Content",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "description",
+          "label": "Description"
+        },
+        {
+          "type": "richtext",
+          "id": "fabric_care",
+          "label": "Fabric & Care"
+        },
+        {
+          "type": "richtext",
+          "id": "size_fit",
+          "label": "Size & Fit"
+        },
+        {
+          "type": "richtext",
+          "id": "shipping_returns",
+          "label": "Shipping & Returns"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Main Product (New)",
+      "blocks": [
+        {
+          "type": "title"
+        },
+        {
+          "type": "description"
+        },
+        {
+          "type": "buy_buttons"
+        },
+        {
+          "type": "duties_taxes"
+        },
+        {
+          "type": "tab_content"
+        },
+        {
+          "type": "colorways"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

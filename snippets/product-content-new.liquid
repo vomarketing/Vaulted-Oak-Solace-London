@@ -1,0 +1,209 @@
+{%- doc -%}
+  Product Content Component (New PDP)
+{%- enddoc -%}
+
+{%- liquid
+  assign current_variant = current_variant | default: product.selected_or_first_available_variant | default: product.variants.first
+  assign has_size_option = false
+
+  for option in product.options_with_values
+    assign downcased_name = option.name | downcase
+    if downcased_name contains 'size'
+      assign has_size_option = true
+      break
+    endif
+  endfor
+
+  assign size_guide_table = product.metafields.Detail.Size_Guide_Table
+  assign related_color_handles = product.metafields.custom.related_products.value | default: product.metafields.Detail.Related_Products | split: '|'
+-%}
+
+<div class="pdp-content js-pdp-content">
+  <button type="button" class="pdp-sheet-handle js-pdp-sheet-handle" aria-hidden="true"></button>
+
+  <div class="pdp-content__wrapper">
+    <div class="pdp-content__top">
+      {%- assign product_form_id = 'product-form-' | append: section.id -%}
+      {%- form 'product',
+        product,
+        id: product_form_id,
+        class: 'pdp-form js-pdp-form',
+        data-push-cart-form: ''
+      -%}
+        <input type="hidden" name="quantity" value="1">
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when '@app' -%}
+              <div class="pdp-block pdp-block--app" {{ block.shopify_attributes }}>
+                {% render block %}
+              </div>
+
+            {%- when 'title' -%}
+              <div class="pdp-block pdp-block--title" {{ block.shopify_attributes }}>
+                <h1 class="pdp-content__title text-med-14">
+                  {{ product.title }}
+                </h1>
+                <div class="pdp-content__price-row js-pdp-price-row text-reg-14">
+                  {%- if current_variant.compare_at_price != blank and current_variant.compare_at_price > current_variant.price -%}
+                    {%- assign discount_percent = current_variant.compare_at_price | minus: current_variant.price | times: 100.0 | divided_by: current_variant.compare_at_price | round -%}
+                    <span class="pdp-content__price-wrapper">
+                      <s class="pdp-content__price-compare prd-Price_Compare text-reg-14">{{ current_variant.compare_at_price | money }}</s>
+                      <span class="pdp-content__price-sale prd-Card_Kicker-red text-reg-14">{{ current_variant.price | money }}</span>
+                    </span>
+                    <span class="pdp-content__price-discount prd-Card_Kicker-red text-reg-14">{{ discount_percent }}% off</span>
+                  {%- else -%}
+                    <span class="pdp-content__price-regular text-reg-14">{{ current_variant.price | money }}</span>
+                  {%- endif -%}
+                </div>
+              </div>
+
+            {%- when 'description' -%}
+              {%- if block.settings.content != blank -%}
+                <div class="pdp-block pdp-content__short-desc text-reg-14" {{ block.shopify_attributes }}>
+                  {{ block.settings.content }}
+                </div>
+              {%- endif -%}
+            {%- when 'buy_buttons' -%}
+              {%- render 'product-buy-buttons-new',
+                product: product,
+                section: section,
+                block: block,
+                current_variant: current_variant,
+                size_guide_table: size_guide_table,
+                has_size_option: has_size_option
+              -%}
+
+            {%- when 'duties_taxes', 'status_notes' -%}
+              <div class="pdp-block pdp-block--duties-taxes text-reg-10 italic" {{ block.shopify_attributes }}>
+                {%- if section.settings.stock_note != blank -%}
+                  <div
+                    class="prd-Status_Stock js-pdp-stock-status text-reg-14"
+                    data-stock-note="{{ section.settings.stock_note }}"
+                    aria-hidden="{% if current_variant.inventory_quantity > 0 and current_variant.inventory_quantity < 10 %}false{% else %}true{% endif %}"
+                  >
+                    {{ section.settings.stock_note }}
+                  </div>
+                {%- endif -%}
+
+                {%- assign delivery_msg = block.settings.text -%}
+                {%- if delivery_msg != blank -%}
+                  <div class="pdp-duties-taxes__text text-med-14 italic">
+                    {{ delivery_msg }}
+                  </div>
+                {%- endif -%}
+              </div>
+
+            {%- when 'colorways' -%}
+              {%- assign related_products = block.settings.products -%}
+              {%- if related_products.size > 0 or related_color_handles.size > 0 -%}
+                <div class="pdp-block pdp-block--colorways" {{ block.shopify_attributes }}>
+                  <header class="prd-Related_Header">
+                    <h4 class="prd-Related_Title text-reg-14">
+                      {{ block.settings.title | default: product.metafields.Detail.Related_Title | default: 'Also available in' }}
+                    </h4>
+                  </header>
+
+                  <div class="prd-Related_Body">
+                    <script src="{{ 'pdp-colorways.js' | asset_url }}" defer="defer"></script>
+                    <pdp-colorways class="pdp-colorways">
+                      <div class="js-colorways-swiper pdp-colorways__slider swiper">
+                        <div class="prd-Related_Items pdp-colorways__items swiper-wrapper">
+                          {%- if related_products.size > 0 -%}
+                            {%- for related_product in related_products -%}
+                              <div class="js-colorways-slide prd-Related_Item pdp-colorways__item swiper-slide">
+                                <a
+                                  class="prd-Related_Link pdp-colorways__link"
+                                  href="{{ related_product.url }}"
+                                  title="{{ related_product.title }}"
+                                >
+                                  {%- render 'responsive-image',
+                                    image: related_product.featured_image,
+                                    width: 140,
+                                    size_by_width: true
+                                  -%}
+                                </a>
+                              </div>
+                            {%- endfor -%}
+                          {%- else -%}
+                            {%- for handle in related_color_handles -%}
+                              {%- assign rel_prod = all_products[handle] -%}
+                              {%- if rel_prod != blank -%}
+                                <div class="js-colorways-slide prd-Related_Item pdp-colorways__item swiper-slide">
+                                  <a
+                                    class="prd-Related_Link pdp-colorways__link"
+                                    href="{{ rel_prod.url }}"
+                                    title="{{ rel_prod.title }}"
+                                  >
+                                    {%- render 'responsive-image',
+                                      image: rel_prod.featured_image,
+                                      width: 140,
+                                      size_by_width: true
+                                    -%}
+                                  </a>
+                                </div>
+                              {%- endif -%}
+                            {%- endfor -%}
+                          {%- endif -%}
+                        </div>
+                      </div>
+                    </pdp-colorways>
+                  </div>
+                </div>
+              {%- endif -%}
+
+            {%- when 'text' -%}
+              {%- if block.settings.text != blank -%}
+                <div class="pdp-block pdp-block--text text-reg-14" {{ block.shopify_attributes }}>
+                  {{ block.settings.text }}
+                </div>
+              {%- endif -%}
+
+            {%- when 'custom_liquid' -%}
+              {%- if block.settings.custom_liquid != blank -%}
+                <div class="pdp-block pdp-block--custom-liquid" {{ block.shopify_attributes }}>
+                  {{ block.settings.custom_liquid }}
+                </div>
+              {%- endif -%}
+
+            {%- when 'tab_content' -%}
+              <div class="pdp-block pdp-block--tab-content" {{ block.shopify_attributes }}>
+                {%- render 'product-tab-content',
+                  description: block.settings.description,
+                  fabric_care: block.settings.fabric_care,
+                  size_fit: block.settings.size_fit,
+                  shipping_returns: block.settings.shipping_returns,
+                  uid: block.id
+                -%}
+                {%- assign has_size_guide = false -%}
+                {%- if size_guide_table != blank or product.metafields.custom.size_guide != blank or section.settings.size_guide != blank or product.metafields.Detail.Size_Guide_Table != blank -%}
+                  {%- assign has_size_guide = true -%}
+                {%- endif -%}
+                {%- assign has_contact = false -%}
+                {%- if section.settings.contact_page != blank -%}
+                  {%- assign has_contact = true -%}
+                {%- endif -%}
+
+                {%- if has_size_guide or has_contact -%}
+                  <div class="pdp-tab-help text-reg-14">
+                    Questions about size, fit or fabric?
+                    {% if has_size_guide %}
+                      View
+                      <button type="button" class="pdp-tab-help__link js-pdp-size-guide-trigger text-reg-14">
+                        {{ 'products.product.size_guide' | t }}
+                      </button>
+                    {% endif %}
+                    {% if has_contact %}
+                      {% if has_size_guide %}or {% endif %}
+                      <a href="{{ section.settings.contact_page }}" class="pdp-tab-help__link text-reg-14">
+                        {{ 'products.product.contact_us' | t }}
+                      </a>
+                    {% endif %}
+                  </div>
+                {%- endif -%}
+              </div>
+          {%- endcase -%}
+        {%- endfor -%}
+      {%- endform -%}
+    </div>
+  </div>
+</div>

@@ -282,13 +282,13 @@
         "type": "text",
         "id": "bis_placeholder",
         "label": "Email Placeholder",
-        "default": "Email"
+        "default": "Email Address"
       },
       {
         "type": "text",
         "id": "bis_button_text",
         "label": "Button Text",
-        "default": "Email me when available"
+        "default": "Submit"
       },
       {
         "type": "richtext",
@@ -304,6 +304,21 @@
         "type": "text",
         "id": "bis_success_message",
         "label": "Additional Success Message"
+      }
+    ]
+  },
+  {
+    "name": "Typography",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Typography"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_primary_font",
+        "label": "Primary Font",
+        "default": "inter_n4"
       }
     ]
   },

@@ -1,0 +1,174 @@
+.lyt-Header {
+  position: relative;
+  width: 100%;
+  z-index: var(--z-header, 90);
+  transition: background-color 0.3s ease;
+}
+
+.lyt-Header:has(.hd-Header-transparent) {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  pointer-events: none;
+}
+
+.lyt-Header:has(.hd-Header-transparent) .hd-Header,
+.lyt-Header:has(.hd-Header-transparent) .hd-AnnouncementBar {
+  pointer-events: auto;
+}
+
+.hd-Header {
+  color: var(--Header_TextColor);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease,
+    border-color 0.3s ease;
+
+  .hd-Nav_Link {
+    font-family: var(--font-family-primary);
+    font-size: var(--type-14-size);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--type-14-line-height);
+    text-transform: capitalize;
+  }
+
+  &[data-header-mode="light"] {
+    --Header_TextColor: var(--color-white);
+    --Header_CountTextColor: var(--color-black);
+    --Color_Primary: var(--color-white);
+  }
+
+  &[data-header-mode="dark"] {
+    --Header_TextColor: var(--color-black);
+    --Header_CountTextColor: var(--color-white);
+    --Color_Primary: var(--color-black);
+  }
+
+  &.hd-Header-dropdownActive,
+  &.hd-Header-searchActive {
+    --Header_TextColor: var(--color-black);
+  }
+
+  .hd-Nav_ChildLink {
+    color: var(--color-black);
+  }
+
+  .hd-Nav_Link,
+  .hd-MobileNav_Icon,
+  .mb-MenuTrigger,
+  .hd-Header_Logo svg {
+    color: var(--Header_TextColor);
+    fill: var(--Header_TextColor);
+  }
+
+  .hd-Nav_Cart,
+  .hd-MobileNav_Cart {
+    background-color: var(--Color_Primary);
+  }
+
+  .hd-MobileNav_Icon {
+    @media (min-width: 901px) {
+      color: var(--Header_CountTextColor);
+      fill: var(--Header_CountTextColor);
+    }
+  }
+
+  .hd-MobileNav_Cart,
+  .hd-MobileNav_CartCount {
+    color: var(--Header_CountTextColor);
+  }
+
+  .hd-Nav_CartCount {
+    color: var(--Header_CountTextColor);
+  }
+
+  .hd-MobileNav_CartCount {
+    @media (min-width: 901px) {
+      color: var(--Color_Primary);
+    }
+  }
+
+  .hd-Nav_CartCount {
+    font-family: var(--font-family-primary);
+    font-size: var(--type-10-size);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--type-10-line-height);
+  }
+
+  &[data-sticky="true"] {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: var(--z-header, 90);
+    background-color: transparent;
+  }
+}
+
+.template-product .hd-Header:not(.hd-Header-dropdownActive):not(.hd-Header-searchActive) {
+  @media (min-width: 901px) {
+    &[data-header-split="true"] {
+      &[data-header-mode="light"] {
+        .hd-Header_Nav-left .hd-Nav_Link,
+        .hd-Header_Logo svg {
+          color: var(--color-white);
+          fill: var(--color-white);
+        }
+      }
+
+      &[data-header-mode="dark"] {
+        .hd-Header_Nav-left .hd-Nav_Link,
+        .hd-Header_Logo svg {
+          color: var(--color-black);
+          fill: var(--color-black);
+        }
+      }
+
+      .hd-Header_Nav-right {
+        .hd-Nav_Link,
+        .hd-Nav_Link--account,
+        .hd-Nav_Link[data-module-drawers-trigger="search"] {
+          color: var(--color-black);
+        }
+
+        .hd-Nav_Cart {
+          background-color: var(--color-black);
+        }
+
+        .hd-Nav_CartCount {
+          color: var(--color-white);
+        }
+      }
+
+      .hd-Nav_Cart,
+      .hd-MobileNav_Cart {
+        @media (min-width: 901px) {
+          background-color: var(--Header_CountTextColor);
+        }
+      }
+    }
+
+    &:not([data-header-split="true"]) {
+      &[data-header-mode="light"] {
+        --Header_TextColor: var(--color-white);
+        --Header_CountTextColor: var(--color-black);
+        --Color_Primary: var(--color-white);
+      }
+
+      &[data-header-mode="dark"] {
+        --Header_TextColor: var(--color-black);
+        --Header_CountTextColor: var(--color-white);
+        --Color_Primary: var(--color-black);
+      }
+    }
+  }
+}
+
+.hd-Header_NavBackdrop {
+  background-color: var(--color-white);
+}
+
+.hd-Header_NavBackdropLogo {
+  color: var(--color-black);
+}
