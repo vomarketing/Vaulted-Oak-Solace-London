@@ -17,7 +17,8 @@
         "stock_note": "Only a few left in stock",
         "wishlist_enable": true,
         "delivery_and_returns_page": "delivery-returns-product-drawer",
-        "size_guide_page": ""
+        "size_guide_page": "",
+        "contact_page": "contact"
       }
     },
     "main_product_new_qVcUWX": {
@@ -30,7 +31,7 @@
         "description_jt7ddV": {
           "type": "description",
           "settings": {
-            "content": ""
+            "content": "{{ product.description }}"
           }
         },
         "buy_buttons_VGTxwz": {
@@ -48,10 +49,10 @@
         "tab_content_jWBbB7": {
           "type": "tab_content",
           "settings": {
-            "description": "<p>{{ product.metafields.custom.tab_description | metafield_tag }}</p>",
-            "fabric_care": "<p>{{ product.metafields.custom.fabric_care | metafield_tag }}</p>",
-            "size_fit": "<p>{{ product.metafields.custom.size_fit | metafield_tag }}</p>",
-            "shipping_returns": "<p>{{ product.metafields.custom.shipping_returns | metafield_tag }}</p>"
+            "description": "{{ product.metafields.custom.tab_description | metafield_tag }}",
+            "fabric_care": "{{ product.metafields.custom.fabric_care | metafield_tag }}",
+            "size_fit": "{{ product.metafields.custom.size_fit | metafield_tag }}",
+            "shipping_returns": "{{ product.metafields.custom.shipping_returns | metafield_tag }}"
           }
         },
         "colorways_UnqVeT": {
@@ -73,10 +74,9 @@
       "name": "Main Product (New)",
       "settings": {
         "header_contrast_mode": "light",
+        "delivery_note": "Order by 4pm for Next Day Delivery",
         "stock_note": "Only a few left in stock",
-        "wishlist_enable": true,
-        "size_guide": "solace-standard-dress-guide",
-        "contact_page": "shopify://pages/contact"
+        "wishlist_enable": true
       }
     },
     "rich_text_NHU7La": {
@@ -144,9 +144,12 @@
         "header_contrast_mode": "dark",
         "text": "{{ product.metafields.custom.richtext_content_2 | metafield_tag }}",
         "link_text": "",
-        "link": ""
+        "link": "",
+        "max_width_desktop": 910,
+        "max_width_tablet": 589,
+        "max_width_mobile": 305
       }
-    },
+    }
   },
   "order": [
     "main",
