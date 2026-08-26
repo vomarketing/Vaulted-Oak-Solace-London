@@ -2,11 +2,6 @@ product-buy-buttons,
 .pdp-block--purchase-actions {
   display: block;
   margin-bottom: 20px;
-  
-
-  @media (min-width: 901px) {
-    margin-top: 45px;
-  }
 }
 
 .pdp-size-drawer__backdrop {
