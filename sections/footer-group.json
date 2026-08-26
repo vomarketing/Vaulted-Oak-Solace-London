@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "footer",
   "name": "Footer group",
@@ -34,6 +43,7 @@
         "efc89aa6-6875-4f64-8685-f36c4f601d80",
         "36c32a2f-5d41-466e-86bb-5ee2a1eadf17"
       ],
+      "disabled": true,
       "settings": {
         "store_switcher_enable": true,
         "fallback_store_domain": "www.solacelondon.com",
