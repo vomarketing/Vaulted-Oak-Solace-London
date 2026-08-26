@@ -546,12 +546,19 @@ product-buy-buttons,
     }
   }
 
-  &.is-active,
-  &.is-added,
-  &.iwishAdded,
-  &.pdp-cta-wishlist__btn--active {
+  &.iwishAdded {
     .pdp-cta-wishlist__icon path {
       fill: var(--Color_Brand, #000000);
     }
+  }
+}
+
+.pdp-bis-box__form {
+  @media (min-width: 768px) {
+    max-width: 361px;
+  }
+
+  @media (min-width: 901px) {
+    max-width: 100%;
   }
 }
