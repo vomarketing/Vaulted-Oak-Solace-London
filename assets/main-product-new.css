@@ -149,6 +149,7 @@ body.is-scroll-locked {
 
   .is-zoom-modal-active & {
     z-index: -1;
+    background-color: transparent;
   }
 }
 
@@ -749,7 +750,6 @@ body.is-scroll-locked {
   transition: opacity 0.3s ease;
   scrollbar-width: thin;
   scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
-  cursor: url(/cdn/shop/files/zoom-out.svg?v=1610038902), auto;
 
   &.is-active {
     opacity: 1;
@@ -781,14 +781,12 @@ body.is-scroll-locked {
   display: flex;
   flex-direction: column;
   width: 100%;
-  cursor: url(/cdn/shop/files/zoom-out.svg?v=1610038902), auto;
 }
 
 .pdp-zoom-modal__item {
   width: 100%;
   position: relative;
   display: block;
-  cursor: url(/cdn/shop/files/zoom-out.svg?v=1610038902), auto;
 }
 
 .pdp-zoom-modal__rsp-image {
@@ -796,7 +794,6 @@ body.is-scroll-locked {
   width: 100%;
   margin: 0 auto;
   overflow: hidden;
-  cursor: url(/cdn/shop/files/zoom-out.svg?v=1610038902), auto;
 
   &::before {
     content: "";

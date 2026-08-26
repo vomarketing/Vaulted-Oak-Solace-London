@@ -415,6 +415,7 @@ if (!customElements.get('product-fullscreen')) {
     initZoomModal() {
       const zoomModal = this.querySelector(this.selectors.zoomModal);
       const zoomTriggers = this.querySelectorAll(this.selectors.zoomTriggers);
+      const zoomCloseBtn = this.querySelector(this.selectors.zoomClose);
       const { signal } = this.abortController;
 
       if (!zoomModal) return;
@@ -435,15 +436,12 @@ if (!customElements.get('product-fullscreen')) {
         }, { signal });
       });
 
-      zoomModal.addEventListener('click', (e) => {
-        if (
-          e.target.closest(this.selectors.zoomClose) ||
-          e.target.closest('.pdp-zoom-modal__item') ||
-          e.target === zoomModal
-        ) {
+      if (zoomCloseBtn) {
+        zoomCloseBtn.addEventListener('click', (e) => {
+          e.preventDefault();
           this.closeZoomModal();
-        }
-      }, { signal });
+        }, { signal });
+      }
 
       window.addEventListener(
         'keydown',
