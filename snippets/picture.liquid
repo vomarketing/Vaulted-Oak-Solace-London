@@ -1,15 +1,42 @@
+{% doc %}
+  Renders a responsive picture element with desktop and optional mobile image sources.
+
+  @param {object} image_desktop - Desktop image or media object
+  @param {object} [image_mobile] - Optional mobile image or media object
+  @param {string} [class] - CSS class for the img element. Defaults to ''
+  @param {string} [picture_class] - CSS class for the picture element (alias: class_picture). Defaults to ''
+  @param {string} [loading] - Image loading strategy ('lazy' | 'eager'). Defaults to 'lazy'
+  @param {string} [fetchpriority] - Image fetchpriority ('auto' | 'high' | 'low'). Defaults to 'auto'
+  @param {string} [alt] - Custom alt text. Defaults to image_desktop.alt or shop.name
+  @param {string} [breakpoint] - Breakpoint for the mobile source query. Defaults to '900px'
+  @param {string} [sizes] - HTML sizes attribute for responsive image widths. Defaults to '100vw'
+  @param {string} [widths] - Widths for the srcset attribute. Defaults to '1200, 1600, 2000, 2400, 2800, 3200'
+
+  @example
+  {%- render 'picture',
+    image_desktop: section.settings.image,
+    image_mobile: section.settings.image_mobile,
+    class: 'hero__image',
+    picture_class: 'hero__picture',
+    sizes: '(min-width: 901px) 50vw, 100vw'
+  -%}
+{% enddoc %}
+
 {%- liquid
   assign image_desktop = image_desktop
   assign image_mobile = image_mobile
   assign class = class | default: ''
+  assign picture_class = picture_class | default: class_picture | default: ''
   assign loading = loading | default: 'lazy'
   assign fetchpriority = fetchpriority | default: 'auto'
   assign alt = alt | default: image_desktop.alt | default: shop.name | escape
   assign breakpoint = breakpoint | default: '900px'
+  assign sizes = sizes | default: '100vw'
+  assign widths = widths | default: '1200, 1600, 2000, 2400, 2800, 3200'
 -%}
 
 {%- if image_desktop != blank -%}
-  <picture>
+  <picture{% if picture_class != blank %} class="{{ picture_class }}"{% endif %}>
     {%- if image_mobile != blank -%}
       <source
         media="(max-width: {{ breakpoint }})"
@@ -19,7 +46,7 @@
           {{ image_mobile | image_url: width: 1000 }} 1000w,
           {{ image_mobile | image_url: width: 1200 }} 1200w
         "
-        sizes="100vw"
+        sizes="{{ sizes }}"
       >
     {%- endif -%}
 
@@ -31,8 +58,8 @@
         fetchpriority: fetchpriority,
         class: class,
         alt: alt,
-        widths: '1200, 1600, 2000, 2400, 2800, 3200',
-        sizes: '100vw'
+        widths: widths,
+        sizes: sizes
     }}
   </picture>
 {%- endif -%}

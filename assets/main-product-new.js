@@ -321,44 +321,54 @@ if (!customElements.get('product-fullscreen')) {
               return;
             }
 
-            // Swipe up when at bottom of content -> Transition to Next Section with Creative Effect
+            // Swipe up when at bottom of content -> Transition to Editorial Swiper
+            // FIX: Do not use window.scrollTo(smooth) because iOS Safari cancels smooth scroll
+            // if touch is still active on screen. Use CSS animation + instant snap instead.
             if (isAtBottom && diffY > 30) {
-              const pdpSection = this.closest('.shopify-section') || this;
+              isTouchActive = false;
+
               const editorialContainer = document.querySelector('.pdp-editorial-swiper');
               const pdpMain = this.querySelector('.pdp-new__main');
-              const targetScroll = editorialContainer ? editorialContainer.offsetTop : (pdpSection.offsetTop + pdpSection.offsetHeight);
 
-              // Apply creative transition: editorial slides up, pdp pushes back
-              if (editorialContainer) {
-                editorialContainer.classList.add('is-editorial-entering');
-              }
+              if (!editorialContainer) return;
+
+              // 1. Notify fullpage controller to temporarily block double-trigger
+              document.dispatchEvent(new CustomEvent('pdp:transition:to-editorial'));
+
+              // 2. Lock body scroll immediately (overflow: hidden, prevent scroll jump)
+              document.body.classList.add('is-pdp-transitioning');
+
+              // 3. Trigger CSS push-back animation for PDP main
               if (pdpMain) {
                 pdpMain.classList.add('is-pdp-leaving');
               }
 
-              // Force reflow, then trigger scroll
-              requestAnimationFrame(() => {
-                if (editorialContainer) editorialContainer.classList.remove('is-editorial-entering');
+              // 4. After CSS transition finishes (0.4s), instant scroll snap to editorial
+              //    Use 'instant' instead of 'smooth' to prevent iOS touch cancellation mid-gesture.
+              const TRANSITION_MS = 400;
+              setTimeout(() => {
+                // Calculate absolute target position after body is unlocked
+                const targetY = editorialContainer.getBoundingClientRect().top + window.scrollY;
 
-                window.scrollTo({
-                  top: targetScroll,
-                  behavior: 'smooth'
-                });
+                // Unlock body before scrolling to avoid scroll locking
+                document.body.classList.remove('is-pdp-transitioning');
 
-                // Cleanup after animation and detect header mode at the end (chạy sau cùng)
-                setTimeout(() => {
-                  if (pdpMain) pdpMain.classList.remove('is-pdp-leaving');
+                window.scrollTo({ top: targetY, behavior: 'instant' });
 
-                  const fullpageInstance = window.fullpageScrollInstance;
-                  if (fullpageInstance && fullpageInstance.swiper && fullpageInstance.swiper.slides && fullpageInstance.swiper.slides[0]) {
-                    fullpageInstance.updateHeaderContrast(fullpageInstance.swiper.slides[0]);
-                  } else if (window.headerContrastController && typeof window.headerContrastController.detectSectionMode === 'function') {
-                    window.headerContrastController.detectSectionMode();
-                  }
-                }, 600);
-              });
+                // Cleanup animation class
+                if (pdpMain) {
+                  pdpMain.classList.remove('is-pdp-leaving');
+                }
 
-              isTouchActive = false;
+                // Update header contrast for the first slide of editorial
+                const fullpageInstance = window.fullpageScrollInstance;
+                if (fullpageInstance?.swiper?.slides?.[0]) {
+                  fullpageInstance.updateHeaderContrast(fullpageInstance.swiper.slides[0]);
+                } else if (window.headerContrastController?.detectSectionMode) {
+                  window.headerContrastController.detectSectionMode();
+                }
+              }, TRANSITION_MS);
+
               return;
             }
           }

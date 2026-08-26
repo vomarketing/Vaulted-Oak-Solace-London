@@ -56,7 +56,8 @@ body.template-product[data-fullpage-scroll] {
   overflow-x: hidden;
   height: auto;
   min-height: 100vh;
-  scroll-behavior: smooth;
+  /* Prevent iOS rubber-band bounce scroll at PDP -> Editorial boundary */
+  overscroll-behavior-y: none;
 
   #MainContent {
     width: 100%;
@@ -71,29 +72,29 @@ body.template-product[data-fullpage-scroll] {
     height: 100vh;
     height: 100dvh;
     overflow: hidden;
-
-    @media (max-width: 900px) {
-      will-change: transform;
-      transition: transform 0.55s cubic-bezier(0.25, 1, 0.5, 1);
-
-      &.is-editorial-entering {
-        transform: translateY(0);
-        transition: none;
-      }
-    }
+    /* Swiper manages transform on the inner .swiper-wrapper.
+       Avoid will-change or transition on outer container to prevent
+       GPU stacking context conflict. */
   }
 
   @media (max-width: 900px) {
     .pdp-new__main {
-      transition: transform 0.55s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.45s ease;
+      /* Snappier 0.4s transition matching SSENSE app feel */
+      transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.32s ease;
     }
 
     .pdp-new__main.is-pdp-leaving {
-      will-change: transform, opacity;
+      /* Hardware acceleration is promoted automatically on active transform */
       transform: translateY(-15%);
       opacity: 0;
     }
   }
+}
+
+/* Lock body scroll during PDP -> Editorial transition.
+   Use overflow: hidden instead of position: fixed to avoid resetting scroll position. */
+body.is-pdp-transitioning {
+  overflow: hidden;
 }
 
 

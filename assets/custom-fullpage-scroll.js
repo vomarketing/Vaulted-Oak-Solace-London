@@ -222,7 +222,7 @@ if (!window.FullpageScrollController) {
           pageUpDown: true
         },
         followFinger: true,
-        passiveListeners: false,
+        passiveListeners: true, // Fix: allow browser to optimize scroll performance on mobile
         on: {
           init: (sw) => {
             this.handleSlideChange(sw);
@@ -251,6 +251,16 @@ if (!window.FullpageScrollController) {
       const { signal } = this.abortController;
 
       let isTransitioning = false;
+      // Guard against double-trigger when main-product-new.js is running PDP -> Editorial transition
+      let isBlockedByPDPTransition = false;
+
+      document.addEventListener('pdp:transition:to-editorial', () => {
+        isBlockedByPDPTransition = true;
+        // Reset after transition + safety buffer (400ms transition + 150ms buffer)
+        setTimeout(() => {
+          isBlockedByPDPTransition = false;
+        }, 550);
+      }, { signal });
 
       const handleWheel = (e) => {
         if (isTransitioning) {
@@ -307,7 +317,7 @@ if (!window.FullpageScrollController) {
       };
 
       const handleTouchMove = (e) => {
-        if (!isTouchDown || !e.touches || e.touches.length === 0 || isTransitioning) return;
+        if (!isTouchDown || !e.touches || e.touches.length === 0 || isTransitioning || isBlockedByPDPTransition) return;
         const currentY = e.touches[0].clientY;
         const diffY = touchStartY - currentY;
 

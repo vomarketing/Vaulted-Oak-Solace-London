@@ -35,23 +35,24 @@
           <div class="pdp-media-item__inner js-pdp-media-zoom-trigger" data-media-index="{{ forloop.index0 }}" role="button" tabindex="0" aria-label="Zoom media {{ forloop.index }}">
             {%- case media.media_type -%}
               {%- when 'image' -%}
-                <picture class="pdp-media-item__picture">
-                  <source
-                    media="(max-width: 900px)"
-                    srcset="{{ media | image_url: width: 900 }} 1x, {{ media | image_url: width: 1800 }} 2x"
-                  >
-                  <img
-                    src="{{ media | image_url: width: 1400 }}"
-                    srcset="{{ media | image_url: width: 1000 }} 1000w, {{ media | image_url: width: 1400 }} 1400w, {{ media | image_url: width: 2000 }} 2000w"
-                    sizes="(min-width: 901px) 60vw, 100vw"
-                    alt="{{ media.alt | escape | default: product.title }}"
-                    width="{{ media.width }}"
-                    height="{{ media.height }}"
-                    loading="{% if forloop.first %}eager{% else %}lazy{% endif %}"
-                    fetchpriority="{% if forloop.first %}high{% else %}auto{% endif %}"
-                    class="pdp-media-item__image"
-                  >
-                </picture>
+                {%- liquid
+                  assign img_loading = 'lazy'
+                  assign img_fetchpriority = 'auto'
+                  if forloop.first
+                    assign img_loading = 'eager'
+                    assign img_fetchpriority = 'high'
+                  endif
+                -%}
+                {%- render 'picture',
+                  image_desktop: media,
+                  class: 'pdp-media-item__image',
+                  picture_class: 'pdp-media-item__picture',
+                  loading: img_loading,
+                  fetchpriority: img_fetchpriority,
+                  alt: media.alt | default: product.title,
+                  sizes: '(min-width: 901px) 50vw, 100vw',
+                  widths: '400, 500, 600, 700, 800, 900, 1000, 1100, 1200, 1400, 1600, 1800, 2000'
+                -%}
 
               {%- when 'video' -%}
                 <div class="pdp-media-item__video-wrapper">
