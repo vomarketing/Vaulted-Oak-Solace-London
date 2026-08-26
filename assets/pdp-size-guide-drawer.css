@@ -4,7 +4,8 @@
 
 .pdp-size-guide-drawer {
   position: fixed;
-  inset: 0;
+  top: 60px;
+  left: 0;
   width: 100vw;
   max-width: 100vw;
   height: 100vh;
@@ -20,6 +21,10 @@
   scrollbar-color: rgba(0, 0, 0, 0.3) transparent;
   transform: none;
   color: var(--color-black);
+
+  @media (min-width: 901px) {
+    top: 0;
+  }
 
   &.is-active,
   &.drw-Drawer-active,
