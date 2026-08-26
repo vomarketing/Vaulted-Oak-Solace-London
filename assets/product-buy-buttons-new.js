@@ -58,6 +58,9 @@ if (!customElements.get('product-buy-buttons')) {
       if (this.wishlistObserver) {
         this.wishlistObserver.disconnect();
       }
+      if (this.sectionObserver) {
+        this.sectionObserver.disconnect();
+      }
     }
 
     initSizeDrawer() {
@@ -93,6 +96,37 @@ if (!customElements.get('product-buy-buttons')) {
 
           this.collapseSizeDrawer(true);
         }
+      }, { signal });
+
+      const pdpSection = this.closest('.pdp-new') || this.closest('.shopify-section');
+      const sizeDrawer = this.querySelector(this.selectors.sizeDrawer);
+
+      if (pdpSection && sizeDrawer && 'IntersectionObserver' in window) {
+        this.sectionObserver = new IntersectionObserver((entries) => {
+          entries.forEach((entry) => {
+            if (!this.isMobile()) return;
+            if (entry.isIntersecting) {
+              sizeDrawer.classList.remove('is-hidden-by-section');
+            } else {
+              sizeDrawer.classList.add('is-hidden-by-section');
+              this.collapseSizeDrawer(false);
+            }
+          });
+        }, {
+          threshold: 0.05
+        });
+        this.sectionObserver.observe(pdpSection);
+      }
+
+      document.addEventListener('pdp:transition:to-editorial', () => {
+        if (!this.isMobile() || !sizeDrawer) return;
+        sizeDrawer.classList.add('is-hidden-by-section');
+        this.collapseSizeDrawer(false);
+      }, { signal });
+
+      document.addEventListener('pdp:transition:from-editorial', () => {
+        if (!this.isMobile() || !sizeDrawer) return;
+        sizeDrawer.classList.remove('is-hidden-by-section');
       }, { signal });
     }
 

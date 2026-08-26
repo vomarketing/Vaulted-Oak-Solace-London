@@ -251,12 +251,10 @@ if (!window.FullpageScrollController) {
       const { signal } = this.abortController;
 
       let isTransitioning = false;
-      // Guard against double-trigger when main-product-new.js is running PDP -> Editorial transition
       let isBlockedByPDPTransition = false;
 
       document.addEventListener('pdp:transition:to-editorial', () => {
         isBlockedByPDPTransition = true;
-        // Reset after transition + safety buffer (400ms transition + 150ms buffer)
         setTimeout(() => {
           isBlockedByPDPTransition = false;
         }, 550);
@@ -276,10 +274,16 @@ if (!window.FullpageScrollController) {
           if (currentScrollY >= pdpBottom - 60) {
             if (e.cancelable) e.preventDefault();
             isTransitioning = true;
-            window.scrollTo({
-              top: Math.max(0, pdpBottom - window.innerHeight - 80),
-              behavior: 'smooth'
-            });
+
+            if (window.innerWidth <= 900) {
+              document.dispatchEvent(new CustomEvent('pdp:transition:from-editorial'));
+            } else {
+              window.scrollTo({
+                top: Math.max(0, pdpBottom - window.innerHeight - 80),
+                behavior: 'smooth'
+              });
+            }
+
             setTimeout(() => {
               isTransitioning = false;
             }, 700);
@@ -329,10 +333,16 @@ if (!window.FullpageScrollController) {
           if (currentScrollY >= pdpBottom - 60) {
             isTransitioning = true;
             isTouchDown = false;
-            window.scrollTo({
-              top: Math.max(0, pdpBottom - window.innerHeight - 80),
-              behavior: 'smooth'
-            });
+
+            if (window.innerWidth <= 900) {
+              document.dispatchEvent(new CustomEvent('pdp:transition:from-editorial'));
+            } else {
+              window.scrollTo({
+                top: Math.max(0, pdpBottom - window.innerHeight - 80),
+                behavior: 'smooth'
+              });
+            }
+
             setTimeout(() => {
               isTransitioning = false;
               if (window.headerContrastController && typeof window.headerContrastController.detectSectionMode === 'function') {
@@ -341,6 +351,10 @@ if (!window.FullpageScrollController) {
             }, 700);
             return;
           }
+        }
+
+        if (window.innerWidth <= 900 || (e.target && e.target.closest && e.target.closest('.pdp-new'))) {
+          return;
         }
 
         if (currentScrollY < pdpBottom - 30 && viewportBottom >= pdpBottom - 100 && diffY > 35) {

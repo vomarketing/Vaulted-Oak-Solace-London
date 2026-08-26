@@ -246,11 +246,18 @@ if (!customElements.get('product-fullscreen')) {
         contentColumn.classList.add(this.classes.contentLockedTop);
 
         const headerHeight = document.querySelector(this.selectors.header)?.offsetHeight || 60;
-        const targetScroll = window.scrollY + contentColumn.getBoundingClientRect().top - headerHeight;
-        if (animate && targetScroll > 0) {
+        const galleryHeight = galleryColumn ? galleryColumn.offsetHeight : 727;
+        const targetScroll = Math.max(0, galleryHeight - headerHeight);
+
+        if (animate) {
           window.scrollTo({
-            top: Math.max(0, targetScroll),
+            top: targetScroll,
             behavior: 'smooth'
+          });
+        } else {
+          window.scrollTo({
+            top: targetScroll,
+            behavior: 'instant'
           });
         }
       };
@@ -285,82 +292,100 @@ if (!customElements.get('product-fullscreen')) {
         }, { signal });
       }
 
-      // SSENSE App touch gesture tracking on Content Column
+      document.addEventListener('pdp:transition:from-editorial', () => {
+        if (!this.isMobile()) return;
+        expandSheet(false);
+        requestAnimationFrame(() => {
+          if (contentColumn) {
+            contentColumn.scrollTop = contentColumn.scrollHeight - contentColumn.clientHeight;
+          }
+        });
+      }, { signal });
+
       let touchStartY = 0;
+      let touchStartX = 0;
+      let startedAtTop = false;
+      let startedAtBottom = false;
       let isTouchActive = false;
 
       if (contentColumn) {
+        if ('ResizeObserver' in window) {
+          const resizeObserver = new ResizeObserver(() => {
+            if (isTouchActive) {
+              startedAtBottom = false;
+            }
+          });
+          resizeObserver.observe(contentColumn);
+        }
+
         contentColumn.addEventListener('touchstart', (e) => {
           if (!this.isMobile() || !e.touches.length) return;
           touchStartY = e.touches[0].clientY;
+          touchStartX = e.touches[0].clientX;
           isTouchActive = true;
+
+          const isLockedTop = contentColumn.classList.contains(this.classes.contentLockedTop);
+          if (isLockedTop) {
+            startedAtTop = contentColumn.scrollTop <= 2;
+
+            const maxScrollable = contentColumn.scrollHeight - contentColumn.clientHeight;
+            startedAtBottom = maxScrollable > 5
+              ? (contentColumn.scrollTop >= maxScrollable - 5)
+              : true;
+          } else {
+            startedAtTop = false;
+            startedAtBottom = false;
+          }
         }, { passive: true, signal });
 
-        contentColumn.addEventListener('touchmove', (e) => {
-          if (!this.isMobile() || !isTouchActive || !e.touches.length) return;
-          const currentY = e.touches[0].clientY;
-          const diffY = touchStartY - currentY; // > 0 is swipe up, < 0 is swipe down
+        contentColumn.addEventListener('touchend', (e) => {
+          if (!this.isMobile() || !isTouchActive) return;
+          isTouchActive = false;
+
+          const changedTouch = e.changedTouches?.[0];
+          if (!changedTouch) return;
+
+          const diffY = touchStartY - changedTouch.clientY; // > 0 is swipe up, < 0 is swipe down
+          const diffX = Math.abs(touchStartX - changedTouch.clientX);
 
           const isLockedTop = contentColumn.classList.contains(this.classes.contentLockedTop);
 
-          // 1. In Peek Mode: Swipe up -> Expand to Locked Top
-          if (!isLockedTop && diffY > 25) {
+          if (!isLockedTop && diffY > 30 && diffX < diffY * 0.8) {
             expandSheet(true);
             return;
           }
 
-          // 2. In Expanded Locked Top Mode:
           if (isLockedTop) {
-            const isAtTop = contentColumn.scrollTop <= 5;
-            const isAtBottom = contentColumn.scrollTop + contentColumn.clientHeight >= contentColumn.scrollHeight - 25;
-
-            // Swipe down when at top of content -> Collapse back to Peek Mode
-            if (isAtTop && diffY < -35) {
+            if (startedAtTop && diffY < -45 && diffX < Math.abs(diffY) * 0.6) {
               collapseSheet(true);
-              isTouchActive = false;
               return;
             }
 
-            // Swipe up when at bottom of content -> Transition to Editorial Swiper
-            // FIX: Do not use window.scrollTo(smooth) because iOS Safari cancels smooth scroll
-            // if touch is still active on screen. Use CSS animation + instant snap instead.
-            if (isAtBottom && diffY > 30) {
-              isTouchActive = false;
-
+            if (startedAtBottom && diffY > 40 && diffX < diffY * 0.6) {
               const editorialContainer = document.querySelector('.pdp-editorial-swiper');
               const pdpMain = this.querySelector('.pdp-new__main');
 
               if (!editorialContainer) return;
 
-              // 1. Notify fullpage controller to temporarily block double-trigger
               document.dispatchEvent(new CustomEvent('pdp:transition:to-editorial'));
 
-              // 2. Lock body scroll immediately (overflow: hidden, prevent scroll jump)
               document.body.classList.add('is-pdp-transitioning');
 
-              // 3. Trigger CSS push-back animation for PDP main
               if (pdpMain) {
                 pdpMain.classList.add('is-pdp-leaving');
               }
 
-              // 4. After CSS transition finishes (0.4s), instant scroll snap to editorial
-              //    Use 'instant' instead of 'smooth' to prevent iOS touch cancellation mid-gesture.
               const TRANSITION_MS = 400;
               setTimeout(() => {
-                // Calculate absolute target position after body is unlocked
                 const targetY = editorialContainer.getBoundingClientRect().top + window.scrollY;
 
-                // Unlock body before scrolling to avoid scroll locking
                 document.body.classList.remove('is-pdp-transitioning');
-
                 window.scrollTo({ top: targetY, behavior: 'instant' });
 
-                // Cleanup animation class
                 if (pdpMain) {
                   pdpMain.classList.remove('is-pdp-leaving');
                 }
 
-                // Update header contrast for the first slide of editorial
                 const fullpageInstance = window.fullpageScrollInstance;
                 if (fullpageInstance?.swiper?.slides?.[0]) {
                   fullpageInstance.updateHeaderContrast(fullpageInstance.swiper.slides[0]);
@@ -368,14 +393,8 @@ if (!customElements.get('product-fullscreen')) {
                   window.headerContrastController.detectSectionMode();
                 }
               }, TRANSITION_MS);
-
-              return;
             }
           }
-        }, { passive: true, signal });
-
-        contentColumn.addEventListener('touchend', () => {
-          isTouchActive = false;
         }, { passive: true, signal });
       }
 
@@ -422,9 +441,6 @@ if (!customElements.get('product-fullscreen')) {
           return;
         }
 
-        // Collapse to peek mode when user scrolls back to document top.
-        // expandSheet is now driven by gallery swipe-up (touchend) — NOT by scrollY —
-        // to prevent mid-gesture layout thrash that causes jank on real devices.
         if (window.scrollY <= 0 && isLocked && contentColumn && contentColumn.scrollTop <= 0) {
           collapseSheet(false);
         }

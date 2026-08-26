@@ -27,7 +27,7 @@ product-buy-buttons,
 .pdp-size-drawer {
   width: 100%;
   position: fixed;
-  bottom: 0;
+  bottom: 1px;
   left: 0;
   right: 0;
   z-index: 999;
@@ -37,13 +37,25 @@ product-buy-buttons,
   display: flex;
   flex-direction: column;
   padding-bottom: env(safe-area-inset-bottom, 0px);
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+
+  &.is-hidden-by-section,
+  body.is-pdp-transitioning &,
+  body.is-editorial-active & {
+    transform: translateY(100%) !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
 
   @media (min-width: 901px) {
     position: static;
-    transform: none;
+    transform: none !important;
+    opacity: 1 !important;
+    pointer-events: auto !important;
     box-shadow: none;
     background: transparent;
     display: block;
+    margin-top: 0;
     margin-bottom: 20px;
   }
 }
@@ -436,8 +448,8 @@ product-buy-buttons,
   order: 3;
   border-left: none;
   border-right: none;
-  border-bottom: none;
   border-top: 1px solid rgba(0, 0, 0, 0.50);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.50);
   background-color: var(--color-white, #ffffff);
 
   @media (min-width: 901px) {
