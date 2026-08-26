@@ -14,7 +14,7 @@
       "name": "Hero Fullscreen",
       "settings": {
         "media_type": "image",
-        "image_desktop": "shopify://shop_images/HP_Hero.jpg",
+        "image_desktop": "shopify://shop_images/Artboard_1.png",
         "video_desktop": "shopify://files/videos/homepage3.mp4",
         "video_mobile": "shopify://files/videos/story.mp4",
         "video_url_desktop": "",
@@ -36,7 +36,7 @@
           "type": "item",
           "settings": {
             "media_type": "image",
-            "desktop_image": "shopify://shop_images/Artboard_1a.jpg",
+            "desktop_image": "shopify://shop_images/Artboard_2-1.png",
             "desktop_video_url": "",
             "mobile_video_url": "",
             "text": "The Delano",
@@ -47,7 +47,7 @@
           "type": "item",
           "settings": {
             "media_type": "image",
-            "desktop_image": "shopify://shop_images/HP_1b.jpg",
+            "desktop_image": "shopify://shop_images/Artboard_2a.png",
             "desktop_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
             "mobile_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
             "text": "Shop Now",
@@ -88,7 +88,7 @@
       "name": "Featured Image",
       "settings": {
         "header_contrast_mode": "dark",
-        "desktop_image": "shopify://shop_images/HP_3.jpg",
+        "desktop_image": "shopify://shop_images/Artboard_2-4.png",
         "image_link": "",
         "text_left": "The",
         "text_left_link": "#",
@@ -121,7 +121,7 @@
           "type": "item",
           "settings": {
             "media_type": "image",
-            "desktop_image": "shopify://shop_images/Artboard_2.jpg",
+            "desktop_image": "shopify://shop_images/Artboard_2-2.png",
             "desktop_video_url": "",
             "mobile_video_url": "",
             "text": "The Sedgwick",
@@ -132,7 +132,7 @@
           "type": "item",
           "settings": {
             "media_type": "image",
-            "desktop_image": "shopify://shop_images/Artboard_2-1.jpg",
+            "desktop_image": "shopify://shop_images/Artboard_2-3.png",
             "desktop_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
             "mobile_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
             "text": "Shop Now",
