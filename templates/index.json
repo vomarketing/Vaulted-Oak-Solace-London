@@ -14,13 +14,12 @@
       "name": "Hero Fullscreen",
       "settings": {
         "media_type": "image",
-        "image_desktop": "shopify://shop_images/03a48d106dae488ca858875dcb4be083d9d6f13d.jpg",
-        "image_mobile": "shopify://shop_images/03a48d106dae488ca858875dcb4be083d9d6f13d.jpg",
+        "image_desktop": "shopify://shop_images/HP_Hero.jpg",
         "video_desktop": "shopify://files/videos/homepage3.mp4",
         "video_mobile": "shopify://files/videos/story.mp4",
         "video_url_desktop": "",
         "video_url_mobile": "",
-        "show_overlay": true,
+        "show_overlay": false,
         "overlay_opacity": 40,
         "overlay_color": "#000000",
         "header_contrast_mode": "light",
@@ -37,8 +36,7 @@
           "type": "item",
           "settings": {
             "media_type": "image",
-            "desktop_image": "shopify://shop_images/Image_18.png",
-            "mobile_image": "shopify://shop_images/Image_18.png",
+            "desktop_image": "shopify://shop_images/Artboard_1a.jpg",
             "desktop_video_url": "",
             "mobile_video_url": "",
             "text": "The Delano",
@@ -48,7 +46,8 @@
         "item_cjJJ49": {
           "type": "item",
           "settings": {
-            "media_type": "video",
+            "media_type": "image",
+            "desktop_image": "shopify://shop_images/HP_1b.jpg",
             "desktop_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
             "mobile_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
             "text": "Shop Now",
@@ -88,8 +87,6 @@
       "name": "Featured Image",
       "settings": {
         "header_contrast_mode": "dark",
-        "desktop_image": "shopify://shop_images/Image_25.png",
-        "mobile_image": "shopify://shop_images/Image_26.png",
         "image_link": "",
         "text_left": "The Annie",
         "text_left_link": "#",
@@ -102,8 +99,6 @@
       "name": "Hero Fullscreen",
       "settings": {
         "media_type": "image",
-        "image_desktop": "shopify://shop_images/Module_5_d9f299ea-0297-409d-aa4d-c7e2c1ce2483.png",
-        "image_mobile": "shopify://shop_images/Module_5__1.png",
         "video_url_desktop": "",
         "video_url_mobile": "",
         "show_overlay": true,
@@ -134,8 +129,6 @@
       "name": "Hero Fullscreen",
       "settings": {
         "media_type": "image",
-        "image_desktop": "shopify://shop_images/Module_7.png",
-        "image_mobile": "shopify://shop_images/Module_7__1.png",
         "video_url_desktop": "",
         "video_url_mobile": "",
         "show_overlay": true,
