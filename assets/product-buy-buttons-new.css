@@ -513,7 +513,7 @@ product-buy-buttons,
 
 .pdp-cta-wishlist {
   position: relative;
-  width: 44px;
+  width: 60px;
   height: 100%;
   border-left: 1px solid rgba(0, 0, 0, 0.50);
   flex-shrink: 0;
