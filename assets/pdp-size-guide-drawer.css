@@ -130,6 +130,12 @@
   @media (min-width: 768px) {
     object-fit: contain;
   }
+
+  img {
+  .pdp-size-guide-modal--no-packshot & {
+      object-fit: cover !important;
+    }
+  }
 }
 
 .pdp-size-guide__contact {
@@ -544,6 +550,10 @@
     top: 36px;
     left: 40px;
     z-index: 1;
+  }
+
+  .pdp-size-guide-modal--no-packshot & {
+    color: var(--color-white);
   }
 }
 

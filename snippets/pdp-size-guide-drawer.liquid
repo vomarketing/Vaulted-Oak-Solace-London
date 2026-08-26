@@ -16,7 +16,7 @@
   endif
 
   assign fit_notes = product.metafields.custom.fit_notes
-  assign packshot_image = product.metafields.custom.packshot_image.value | default: product.metafields.custom.packshot_image
+  assign packshot_image = product.metafields.custom.packshot_image.value | default: product.metafields.custom.packshot_image | default: product.featured_image
   assign custom_table = size_guide_table | default: product.metafields.Detail.Size_Guide_Table
   assign contact_text = product.metafields.custom.size_guide_contact_text
 
@@ -41,7 +41,7 @@
 -%}
 
 <div
-  class="drw-Drawer drw-Drawer-fromRight pdp-size-guide-drawer pdp-size-guide-modal js-pdp-size-guide-modal"
+  class="drw-Drawer drw-Drawer-fromRight pdp-size-guide-drawer pdp-size-guide-modal js-pdp-size-guide-modal{% if product.metafields.custom.packshot_image == blank %} pdp-size-guide-modal--no-packshot{% endif %}"
   data-module-drawers-drawer="pdp-size-guide"
   data-module-drawers-move-me="root"
   id="pdp-size-guide-drawer"
