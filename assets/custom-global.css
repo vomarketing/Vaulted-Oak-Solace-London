@@ -85,11 +85,11 @@ body.template-product[data-fullpage-scroll] {
 
   @media (max-width: 900px) {
     .pdp-new__main {
-      will-change: transform, opacity;
       transition: transform 0.55s cubic-bezier(0.25, 1, 0.5, 1), opacity 0.45s ease;
     }
 
     .pdp-new__main.is-pdp-leaving {
+      will-change: transform, opacity;
       transform: translateY(-15%);
       opacity: 0;
     }

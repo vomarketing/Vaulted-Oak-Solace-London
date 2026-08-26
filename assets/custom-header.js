@@ -75,10 +75,12 @@ if (!window.SolaceHeaderContrast) {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
               const target = entry.target;
-              const mode = target.getAttribute('data-header-mode') || target.querySelector('[data-header-mode]')?.getAttribute('data-header-mode') || 'light';
+              if (window.scrollY > 100 && target.closest('.pdp-new__gallery-column')) {
+                return;
+              }
+              const mode = target.getAttribute('data-header-mode') || target.querySelector('[data-header-mode]')?.getAttribute('data-header-mode') || 'dark';
               const isSplit = !!target.closest('.pdp-new__main, .pdp-new__gallery-column');
-              this.setSplit(isSplit);
-              this.setMode(mode);
+              this.updateContrast(mode, isSplit);
             }
           });
         },
@@ -95,11 +97,37 @@ if (!window.SolaceHeaderContrast) {
     detectSectionMode() {
       const headerHeight = this.getHeaderHeight();
       const triggerY = headerHeight / 2;
+
+      // 1. If on product page with editorial swiper active
+      const editorialContainer = document.querySelector('.pdp-editorial-swiper');
+      if (editorialContainer && window.scrollY >= editorialContainer.offsetTop - 60) {
+        const fullpageInstance = window.fullpageScrollInstance;
+        if (fullpageInstance && fullpageInstance.swiper && fullpageInstance.swiper.slides) {
+          const activeSlide = fullpageInstance.swiper.slides[fullpageInstance.swiper.activeIndex || 0];
+          if (activeSlide) {
+            const mode = activeSlide.getAttribute('data-header-mode') || activeSlide.querySelector('[data-header-mode]')?.getAttribute('data-header-mode') || 'dark';
+            this.updateContrast(mode, false);
+            return;
+          }
+        }
+      }
+
+      // 1b. If in PDP section on mobile: determine strictly by active gallery image alt logic
+      const pdpNew = document.querySelector('.pdp-new');
+      if (window.innerWidth <= 900 && pdpNew) {
+        const activeGalleryItem = pdpNew.querySelector('.pdp-media-item.swiper-slide-active') || pdpNew.querySelector('.pdp-media-item');
+        if (activeGalleryItem) {
+          const mode = activeGalleryItem.getAttribute('data-header-mode') || 'light';
+          this.updateContrast(mode, false);
+          return;
+        }
+      }
+
+      // 2. Scan visible sections
       const allSections = document.querySelectorAll(this.selectors.sections);
 
       if (!allSections.length) {
-        this.setSplit(false);
-        this.setMode('dark');
+        this.updateContrast('dark', false);
         return;
       }
 
@@ -107,10 +135,15 @@ if (!window.SolaceHeaderContrast) {
       let activeSection = null;
 
       for (let i = 0; i < allSections.length; i++) {
-        const rect = allSections[i].getBoundingClientRect();
+        const section = allSections[i];
+        if (window.scrollY > 100 && section.closest('.pdp-new__gallery-column')) {
+          continue;
+        }
+
+        const rect = section.getBoundingClientRect();
         if (rect.top <= triggerY && rect.bottom > triggerY) {
-          activeMode = allSections[i].getAttribute('data-header-mode') || allSections[i].querySelector('[data-header-mode]')?.getAttribute('data-header-mode') || 'dark';
-          activeSection = allSections[i];
+          activeMode = section.getAttribute('data-header-mode') || section.querySelector('[data-header-mode]')?.getAttribute('data-header-mode') || 'dark';
+          activeSection = section;
           break;
         }
       }
@@ -121,8 +154,7 @@ if (!window.SolaceHeaderContrast) {
       }
 
       const isSplit = activeSection ? !!activeSection.closest('.pdp-new__main, .pdp-new__gallery-column') : false;
-      this.setSplit(isSplit);
-      this.setMode(activeMode || 'dark');
+      this.updateContrast(activeMode || 'dark', isSplit);
     }
 
     setSplit(isSplit) {
@@ -146,7 +178,8 @@ if (!window.SolaceHeaderContrast) {
       }
     }
 
-    updateContrast(mode) {
+    updateContrast(mode, isSplit = false) {
+      this.setSplit(isSplit);
       this.setMode(mode);
     }
 

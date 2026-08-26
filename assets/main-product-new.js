@@ -203,9 +203,9 @@ if (!customElements.get('product-fullscreen')) {
       const activeSlide = swiper.slides[swiper.activeIndex];
       if (!activeSlide) return;
 
-      const headerMode = activeSlide.getAttribute('data-header-mode');
-      if (headerMode && window.headerContrastController && typeof window.headerContrastController.updateContrast === 'function') {
-        window.headerContrastController.updateContrast(headerMode);
+      const headerMode = activeSlide.getAttribute('data-header-mode') || 'light';
+      if (window.headerContrastController && typeof window.headerContrastController.updateContrast === 'function') {
+        window.headerContrastController.updateContrast(headerMode, this.isDesktop());
       }
     }
 
@@ -345,9 +345,16 @@ if (!customElements.get('product-fullscreen')) {
                   behavior: 'smooth'
                 });
 
-                // Cleanup after animation
+                // Cleanup after animation and detect header mode at the end (chạy sau cùng)
                 setTimeout(() => {
                   if (pdpMain) pdpMain.classList.remove('is-pdp-leaving');
+
+                  const fullpageInstance = window.fullpageScrollInstance;
+                  if (fullpageInstance && fullpageInstance.swiper && fullpageInstance.swiper.slides && fullpageInstance.swiper.slides[0]) {
+                    fullpageInstance.updateHeaderContrast(fullpageInstance.swiper.slides[0]);
+                  } else if (window.headerContrastController && typeof window.headerContrastController.detectSectionMode === 'function') {
+                    window.headerContrastController.detectSectionMode();
+                  }
                 }, 600);
               });
 
