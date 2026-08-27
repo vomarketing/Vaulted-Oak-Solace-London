@@ -6,7 +6,6 @@ if (!window.FullpageScrollController) {
   class FullpageScrollController {
     static selectors = {
       mainContent: '#MainContent',
-      sections: '#MainContent > .shopify-section, #MainContent > .swiper-wrapper > .shopify-section',
       childSections: ':scope > .shopify-section, :scope > div:not(.swiper-wrapper)',
       headerContrastElements: '[data-header-mode]',
       header: '.js-header',
@@ -73,7 +72,17 @@ if (!window.FullpageScrollController) {
         this.setupIndexFullpage();
       }
 
+      this.bindNavigationEvents();
       this.bindThemeEditorEvents();
+    }
+
+    bindNavigationEvents() {
+      const { signal } = this.abortController;
+      document.addEventListener('fullpage:prevSlide', () => {
+        if (this.swiper) {
+          this.swiper.slidePrev();
+        }
+      }, { signal });
     }
 
     setupIndexFullpage() {
@@ -214,11 +223,11 @@ if (!window.FullpageScrollController) {
             if (activeSlide && !this.isProductPage) {
               this.updateHeaderContrast(activeSlide);
             }
-            this.toggleFooterVisibility(sw);
+            this.notifySlideChange(sw);
           },
           slideChangeTransitionStart: (sw) => {
             this.handleSlideChange(sw);
-            this.toggleFooterVisibility(sw);
+            this.notifySlideChange(sw);
           },
           slideChangeTransitionEnd: (sw) => {
             const activeSlide = sw.slides[sw.activeIndex];
@@ -379,13 +388,12 @@ if (!window.FullpageScrollController) {
       this.manageVideos(activeSlide);
     }
 
-    toggleFooterVisibility(swiperInstance) {
-      const footer = document.querySelector('.js-section-footer');
-      if (!footer) return;
+    notifySlideChange(swiperInstance) {
       const total = swiperInstance.slides ? swiperInstance.slides.length : 0;
-      if (!total) return;
-      const isLastSlide = swiperInstance.activeIndex === total - 1;
-      footer.classList.toggle('is-visible', isLastSlide);
+      const isLastSlide = total > 0 && swiperInstance.activeIndex === total - 1;
+      document.dispatchEvent(new CustomEvent('fullpage:slideChange', {
+        detail: { isLastSlide, activeIndex: swiperInstance.activeIndex }
+      }));
     }
 
     updateHeaderContrast(activeSlide) {

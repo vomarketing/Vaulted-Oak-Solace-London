@@ -4,21 +4,25 @@
   z-index: 0;
   width: 100%;
   pointer-events: none;
-  transition: all 0.3s ease-in-out;
+  transition: bottom 0.3s ease-in-out;
 
   &.is-visible {
     pointer-events: all;
     z-index: 1;
-    bottom: 0;
+    bottom: 100px;
+
+    @media (min-width: 901px) {
+      bottom: 0;
+    }
   }
 }
 
-.ft-Footer_Spacer {
-  display: block;
+.shopify-section--footer {
+  display: block !important;
   width: 100%;
-  height: 0;
+  height: 100%;
   pointer-events: none;
-  background: transparent;
+  background: var(--color-white);
 }
 
 .ft-Footer {
@@ -45,7 +49,7 @@
   .ft-Footer_Body {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 30px;
 
     @media (min-width: 901px) {
       flex-direction: row;
@@ -67,7 +71,7 @@
   .ft-Footer_Items {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 18px;
 
     @media (min-width: 901px) {
       flex-direction: row;
