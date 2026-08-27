@@ -52,15 +52,6 @@
           <source src="{{ video_mobile_url }}" media="(max-width: 900px)" type="video/mp4">
           <source src="{{ video_desktop_url }}" type="video/mp4">
         </video>
-
-        <button
-          type="button"
-          class="hero-fullscreen__sound-toggle js-sound-toggle is-muted"
-          aria-label="Unmute sound"
-        >
-          {%- render 'icons', icon: 'sound-muted', class: 'icon-muted js-icon-muted' -%}
-          {%- render 'icons', icon: 'sound-unmuted', class: 'icon-unmuted js-icon-unmuted' -%}
-        </button>
       {%- endif -%}
 
     {%- else -%}
@@ -108,6 +99,17 @@
       {%- endif -%}
     {%- endif -%}
   </div>
+
+  {%- if video_desktop_url != blank -%}
+    <button
+      type="button"
+      class="hero-fullscreen__sound-toggle js-sound-toggle is-muted"
+      aria-label="Unmute sound"
+    >
+      {%- render 'icons', icon: 'sound-muted', class: 'icon-muted js-icon-muted' -%}
+      {%- render 'icons', icon: 'sound-unmuted', class: 'icon-unmuted js-icon-unmuted' -%}
+    </button>
+  {%- endif -%}
 </hero-fullscreen>
 
 {% schema %}

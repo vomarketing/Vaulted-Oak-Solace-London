@@ -77,7 +77,7 @@
   }
 
   .hd-MobileNav_Icon {
-    @media (min-width: 901px) {
+    @media (min-width: 1201px) {
       color: var(--Header_CountTextColor);
       fill: var(--Header_CountTextColor);
     }
@@ -93,7 +93,7 @@
   }
 
   .hd-MobileNav_CartCount {
-    @media (min-width: 901px) {
+    @media (min-width: 1201px) {
       color: var(--Color_Primary);
     }
   }
