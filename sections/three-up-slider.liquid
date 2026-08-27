@@ -3,7 +3,18 @@
 
   assign valid_block_count = 0
   for block in section.blocks
-    if block.settings.image_desktop != blank
+    assign block_desktop_image = block.settings.image_desktop | default: block.settings.desktop_image
+    assign block_desktop_video = block.settings.desktop_video | default: block.settings.video_desktop
+    assign block_desktop_video_url = block.settings.desktop_video_url | default: block.settings.video_desktop_url
+    assign block_video_url = blank
+
+    if block_desktop_video != blank
+      assign block_video_url = block_desktop_video.sources[1].url | default: block_desktop_video.sources[0].url
+    elsif block_desktop_video_url != blank
+      assign block_video_url = block_desktop_video_url
+    endif
+
+    if block_video_url != blank or block_desktop_image != blank
       assign valid_block_count = valid_block_count | plus: 1
     endif
   endfor
@@ -22,20 +33,74 @@
         <div class="swiper-wrapper">
           {%- for block in section.blocks -%}
             {%- liquid
-              assign block_image_desktop = block.settings.image_desktop
-              assign block_image_mobile = block.settings.image_mobile
-              assign block_title = block.settings.title
+              assign desktop_image = block.settings.image_desktop | default: block.settings.desktop_image
+              assign mobile_image = block.settings.image_mobile | default: block.settings.mobile_image
+              assign desktop_video = block.settings.desktop_video | default: block.settings.video_desktop
+              assign mobile_video = block.settings.mobile_video | default: block.settings.video_mobile
 
-              if block_image_desktop == blank
+              assign desktop_video_url = blank
+              assign mobile_video_url = blank
+
+              if desktop_video != blank
+                assign desktop_video_url = desktop_video.sources[1].url | default: desktop_video.sources[0].url
+              elsif block.settings.desktop_video_url != blank
+                assign desktop_video_url = block.settings.desktop_video_url
+              elsif block.settings.video_desktop_url != blank
+                assign desktop_video_url = block.settings.video_desktop_url
+              endif
+
+              if mobile_video != blank
+                assign mobile_video_url = mobile_video.sources[1].url | default: mobile_video.sources[0].url
+              elsif block.settings.mobile_video_url != blank
+                assign mobile_video_url = block.settings.mobile_video_url
+              elsif block.settings.video_mobile_url != blank
+                assign mobile_video_url = block.settings.video_mobile_url
+              else
+                assign mobile_video_url = desktop_video_url
+              endif
+
+              if mobile_image == blank
+                assign mobile_image = desktop_image
+              endif
+
+              assign has_video = false
+              assign has_image = false
+
+              if desktop_video_url != blank
+                assign has_video = true
+              elsif desktop_image != blank
+                assign has_image = true
+              endif
+
+              if has_video == false and has_image == false
                 continue
               endif
+
+              assign block_title = block.settings.title
             -%}
-            <div class="js-slide swiper-slide">
-              {%- render 'picture',
-                image_desktop: block_image_desktop,
-                image_mobile: block_image_mobile,
-                class: 'three-up-slider__slide-image'
-              -%}
+            <div class="js-slide swiper-slide" {{ block.shopify_attributes }}>
+              {%- if has_video -%}
+                <video
+                  class="three-up-slider__slide-video"
+                  autoplay
+                  loop
+                  muted
+                  playsinline
+                  preload="metadata"
+                  {% if desktop_image != blank %}
+                    poster="{{ desktop_image | image_url: width: 1200 }}"
+                  {% endif %}
+                >
+                  <source src="{{ mobile_video_url }}" media="(max-width: 834px)" type="video/mp4">
+                  <source src="{{ desktop_video_url }}" type="video/mp4">
+                </video>
+              {%- elsif has_image -%}
+                {%- render 'picture',
+                  image_desktop: desktop_image,
+                  image_mobile: mobile_image,
+                  class: 'three-up-slider__slide-image'
+                -%}
+              {%- endif -%}
 
               {%- if block_title != blank -%}
                 <p class="three-up-slider__slide-title text-reg-14">{{ block_title }}</p>
@@ -73,18 +138,43 @@
   "blocks": [
     {
       "type": "image",
-      "name": "Image",
+      "name": "Media",
       "limit": 2,
       "settings": [
         {
           "type": "image_picker",
           "id": "image_desktop",
-          "label": "Desktop image"
+          "label": "Desktop image",
+          "info": "Used as the image or optional video poster."
         },
         {
           "type": "image_picker",
           "id": "image_mobile",
-          "label": "Mobile image"
+          "label": "Mobile image",
+          "info": "Uses desktop image when left empty."
+        },
+        {
+          "type": "video",
+          "id": "desktop_video",
+          "label": "Desktop video"
+        },
+        {
+          "type": "video",
+          "id": "mobile_video",
+          "label": "Mobile video",
+          "info": "Uses desktop video when left empty."
+        },
+        {
+          "type": "text",
+          "id": "desktop_video_url",
+          "label": "Desktop external MP4 URL",
+          "info": "Used when no desktop Shopify video is selected."
+        },
+        {
+          "type": "text",
+          "id": "mobile_video_url",
+          "label": "Mobile external MP4 URL",
+          "info": "Used when no mobile Shopify video is selected. Falls back to desktop video when empty."
         },
         {
           "type": "text",

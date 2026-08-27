@@ -74,9 +74,10 @@
       "name": "Main Product (New)",
       "settings": {
         "header_contrast_mode": "light",
-        "delivery_note": "Order by 4pm for Next Day Delivery",
         "stock_note": "Only a few left in stock",
-        "wishlist_enable": true
+        "wishlist_enable": true,
+        "size_guide": "",
+        "contact_page": ""
       }
     },
     "rich_text_NHU7La": {
@@ -95,18 +96,22 @@
     "three_up_slider_Bwqyrf": {
       "type": "three-up-slider",
       "blocks": {
-        "image_NwaTwC": {
+        "image_8Apb6h": {
           "type": "image",
           "repeater": "{{ product.metafields.custom.three_up_slider.value }}",
           "settings": {
             "image_desktop": "{{ block.repeater.desktop_image.value }}",
             "image_mobile": "{{ block.repeater.mobile_image.value }}",
+            "desktop_video": "{{ block.repeater.desktop_video_shopify.value }}",
+            "mobile_video": "{{ block.repeater.mobile_video_shopify.value }}",
+            "desktop_video_url": "{{ block.repeater.desktop_video_external.value }}",
+            "mobile_video_url": "{{ block.repeater.mobile_video_external.value }}",
             "title": "{{ block.repeater.description.value }}"
           }
         }
       },
       "block_order": [
-        "image_NwaTwC"
+        "image_8Apb6h"
       ],
       "name": "Three Up Slider",
       "settings": {
