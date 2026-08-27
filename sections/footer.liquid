@@ -1,6 +1,7 @@
 {{- 'custom-footer.css' | asset_url | stylesheet_tag -}}
+<script src="{{ 'custom-footer.js' | asset_url }}" defer="defer"></script>
 
-<footer class="ft-Footer" aria-label="Footer" data-header-mode="dark">
+<footer class="ft-Footer" aria-label="Footer">
   <div class="ft-Footer_Inner lyt-Container">
     <div class="ft-Footer_Body">
       {%- if section.settings.navigation != blank -%}
@@ -27,7 +28,7 @@
 {% schema %}
 {
   "name": "Footer",
-  "class": "js-section-header-contrast",
+  "class": "js-section-footer",
   "settings": [
     {
       "type": "link_list",

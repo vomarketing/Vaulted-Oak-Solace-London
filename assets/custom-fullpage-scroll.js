@@ -8,7 +8,6 @@ if (!window.FullpageScrollController) {
       mainContent: '#MainContent',
       sections: '#MainContent > .shopify-section, #MainContent > .swiper-wrapper > .shopify-section',
       childSections: ':scope > .shopify-section, :scope > div:not(.swiper-wrapper)',
-      footerSection: '.shopify-section-group-footer-group, .ft-Footer',
       headerContrastElements: '[data-header-mode]',
       header: '.js-header',
       pdpMain: '.pdp-new__main',
@@ -24,8 +23,7 @@ if (!window.FullpageScrollController) {
       fullpageWrapper: 'fullpage-wrapper',
       swiperSlide: 'swiper-slide',
       fullpageSlide: 'fullpage-slide',
-      shopifySection: 'shopify-section',
-      ftFooter: 'ft-Footer'
+      shopifySection: 'shopify-section'
     };
 
     constructor() {
@@ -81,46 +79,36 @@ if (!window.FullpageScrollController) {
     setupIndexFullpage() {
       if (!this.container) return;
 
-      this.container.classList.add(this.classes.swiper, this.classes.fullpageSwiper);
+      let swiperContainer = this.container.querySelector(`:scope > .${this.classes.fullpageSwiper}`);
+      if (!swiperContainer) {
+        swiperContainer = document.createElement('div');
+        swiperContainer.className = `${this.classes.swiper} ${this.classes.fullpageSwiper}`;
 
-      let wrapper = this.container.querySelector(`:scope > .${this.classes.swiperWrapper}`);
-      if (!wrapper) {
-        wrapper = document.createElement('div');
+        const wrapper = document.createElement('div');
         wrapper.className = `${this.classes.swiperWrapper} ${this.classes.fullpageWrapper}`;
 
-        const childSections = Array.from(this.container.querySelectorAll(this.selectors.childSections));
+        const childSections = Array.from(this.container.querySelectorAll(this.selectors.childSections)).filter(
+          (el) =>
+            !el.classList.contains('js-section-footer')
+        );
+
         childSections.forEach((section) => {
+          section.classList.add(this.classes.swiperSlide, this.classes.fullpageSlide);
           wrapper.appendChild(section);
         });
 
-        this.container.appendChild(wrapper);
+        swiperContainer.appendChild(wrapper);
+        this.container.appendChild(swiperContainer);
       }
-      this.wrapper = wrapper;
-
-      const footerEl = document.querySelector(this.selectors.footerSection);
-      if (footerEl) {
-        const footerSection = footerEl.closest(`.${this.classes.shopifySection}`) || footerEl;
-        if (footerSection && footerSection.parentElement !== this.wrapper) {
-          this.wrapper.appendChild(footerSection);
-        }
-      }
-
-      const sections = Array.from(this.wrapper.children).filter((el) => {
-        return el.offsetHeight > 20 || el.classList.contains(this.classes.shopifySection) || el.classList.contains(this.classes.ftFooter);
-      });
-
-      sections.forEach((section) => {
-        section.classList.add(this.classes.swiperSlide, this.classes.fullpageSlide);
-      });
-
-      this.slides = sections;
+      this.wrapper = swiperContainer.querySelector(`.${this.classes.swiperWrapper}`);
+      this.slides = Array.from(this.wrapper.children);
 
       if (this.slides.length <= 1) {
         this.dispatchReadyEvent(null);
         return;
       }
 
-      this.initSwiperInstance(this.container);
+      this.initSwiperInstance(swiperContainer);
     }
 
     setupProductHybrid() {
@@ -136,13 +124,9 @@ if (!window.FullpageScrollController) {
       const pdpIndex = allSections.indexOf(this.pdpSection);
       const editorialSections = pdpIndex !== -1 ? allSections.slice(pdpIndex + 1) : [];
 
-      const footerEl = document.querySelector(this.selectors.footerSection);
-      const footerSection = footerEl ? (footerEl.closest(`.${this.classes.shopifySection}`) || footerEl) : null;
-
-      const targetSlides = [...editorialSections];
-      if (footerSection && !targetSlides.includes(footerSection)) {
-        targetSlides.push(footerSection);
-      }
+      const targetSlides = editorialSections.filter(
+        (el) => !el.classList.contains('js-section-footer')
+      );
 
       if (!targetSlides.length) {
         this.dispatchReadyEvent(null);
@@ -196,13 +180,13 @@ if (!window.FullpageScrollController) {
           }
         },
         mousewheel: {
-          releaseOnEdges: !this.isProductPage,
+          releaseOnEdges: true,
           sensitivity: 0.8,
           thresholdDelta: 15,
           thresholdTime: 400,
           forceToAxis: true
         },
-        touchReleaseOnEdges: !this.isProductPage,
+        touchReleaseOnEdges: true,
         resistanceRatio: 0.85,
         watchOverflow: true,
         nested: true,
@@ -222,7 +206,7 @@ if (!window.FullpageScrollController) {
           pageUpDown: true
         },
         followFinger: true,
-        passiveListeners: true, // Fix: allow browser to optimize scroll performance on mobile
+        passiveListeners: true,
         on: {
           init: (sw) => {
             this.handleSlideChange(sw);
@@ -230,9 +214,11 @@ if (!window.FullpageScrollController) {
             if (activeSlide && !this.isProductPage) {
               this.updateHeaderContrast(activeSlide);
             }
+            this.toggleFooterVisibility(sw);
           },
           slideChangeTransitionStart: (sw) => {
             this.handleSlideChange(sw);
+            this.toggleFooterVisibility(sw);
           },
           slideChangeTransitionEnd: (sw) => {
             const activeSlide = sw.slides[sw.activeIndex];
@@ -321,7 +307,7 @@ if (!window.FullpageScrollController) {
       };
 
       const handleTouchMove = (e) => {
-        if (!isTouchDown || !e.touches || e.touches.length === 0 || isTransitioning || isBlockedByPDPTransition) return;
+        if (!isTouchDown || !e.touches || !e.touches.length === 0 || isTransitioning || isBlockedByPDPTransition) return;
         const currentY = e.touches[0].clientY;
         const diffY = touchStartY - currentY;
 
@@ -391,6 +377,15 @@ if (!window.FullpageScrollController) {
       if (!activeSlide) return;
 
       this.manageVideos(activeSlide);
+    }
+
+    toggleFooterVisibility(swiperInstance) {
+      const footer = document.querySelector('.js-section-footer');
+      if (!footer) return;
+      const total = swiperInstance.slides ? swiperInstance.slides.length : 0;
+      if (!total) return;
+      const isLastSlide = swiperInstance.activeIndex === total - 1;
+      footer.classList.toggle('is-visible', isLastSlide);
     }
 
     updateHeaderContrast(activeSlide) {

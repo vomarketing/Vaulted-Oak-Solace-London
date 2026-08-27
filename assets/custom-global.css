@@ -38,16 +38,19 @@
    ============================================================================= */
 
 body.template-index[data-fullpage-scroll] {
-  overflow: hidden;
-  height: 100vh;
-  height: 100dvh;
+  overflow-y: auto;
+  overflow-x: hidden;
+  height: auto;
+  min-height: 100vh;
+  overscroll-behavior-y: none;
 
   #MainContent {
     width: 100vw;
-    height: 100vh;
-    height: 100dvh;
-    overflow: hidden;
+    height: auto;
+    overflow: visible;
     position: relative;
+    z-index: 1;
+    background-color: var(--Color_Primary, #ffffff);
   }
 }
 
@@ -64,6 +67,8 @@ body.template-product[data-fullpage-scroll] {
     height: auto;
     overflow: visible;
     position: relative;
+    z-index: 1;
+    background-color: var(--Color_Primary, #ffffff);
   }
 
   .pdp-editorial-swiper {
