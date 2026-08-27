@@ -23,6 +23,10 @@
   height: 100%;
   pointer-events: none;
   background: var(--color-white);
+
+  @media (min-width: 901px) {
+    display: none !important;
+  }
 }
 
 .ft-Footer {

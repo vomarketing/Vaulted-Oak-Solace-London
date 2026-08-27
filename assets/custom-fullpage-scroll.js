@@ -83,6 +83,12 @@ if (!window.FullpageScrollController) {
           this.swiper.slidePrev();
         }
       }, { signal });
+
+      const mediaQuery = window.matchMedia('(min-width: 901px)');
+      const handleBreakpoint = () => {
+        this.setup();
+      };
+      mediaQuery.addEventListener('change', handleBreakpoint, { signal });
     }
 
     setupIndexFullpage() {
@@ -96,9 +102,12 @@ if (!window.FullpageScrollController) {
         const wrapper = document.createElement('div');
         wrapper.className = `${this.classes.swiperWrapper} ${this.classes.fullpageWrapper}`;
 
+        const isDesktop = window.innerWidth >= 901;
+
         const childSections = Array.from(this.container.querySelectorAll(this.selectors.childSections)).filter(
           (el) =>
-            !el.classList.contains('js-section-footer')
+            !el.classList.contains('js-section-footer') &&
+            !(isDesktop && el.classList.contains('shopify-section--footer'))
         );
 
         childSections.forEach((section) => {
@@ -133,8 +142,12 @@ if (!window.FullpageScrollController) {
       const pdpIndex = allSections.indexOf(this.pdpSection);
       const editorialSections = pdpIndex !== -1 ? allSections.slice(pdpIndex + 1) : [];
 
+      const isDesktop = window.innerWidth >= 901;
+
       const targetSlides = editorialSections.filter(
-        (el) => !el.classList.contains('js-section-footer')
+        (el) =>
+          !el.classList.contains('js-section-footer') &&
+          !(isDesktop && el.classList.contains('shopify-section--footer'))
       );
 
       if (!targetSlides.length) {
@@ -477,6 +490,25 @@ if (!window.FullpageScrollController) {
       }, { signal });
     }
 
+    resetDOMElements() {
+      if (!this.container) return;
+      const fullpageSwipers = this.container.querySelectorAll(`.${this.classes.fullpageSwiper}`);
+      fullpageSwipers.forEach((swiperEl) => {
+        const wrapper = swiperEl.querySelector(`.${this.classes.swiperWrapper}`);
+        if (wrapper) {
+          const slides = Array.from(wrapper.children);
+          slides.forEach((slide) => {
+            slide.classList.remove(this.classes.swiperSlide, this.classes.fullpageSlide);
+            this.container.appendChild(slide);
+          });
+        }
+        swiperEl.remove();
+      });
+      this.wrapper = null;
+      this.slides = [];
+      this.editorialContainer = null;
+    }
+
     destroy() {
       if (this.swiper) {
         try {
@@ -486,6 +518,7 @@ if (!window.FullpageScrollController) {
         }
         this.swiper = null;
       }
+      this.resetDOMElements();
       if (this.abortController) {
         this.abortController.abort();
         this.abortController = new AbortController();

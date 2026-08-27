@@ -41,7 +41,7 @@ body.template-index[data-fullpage-scroll] {
   overflow-y: auto;
   overflow-x: hidden;
   height: auto;
-  min-height: 100vh;
+  min-height: 100dvh;
   overscroll-behavior-y: none;
 
   #MainContent {
@@ -58,7 +58,7 @@ body.template-product[data-fullpage-scroll] {
   overflow-y: auto;
   overflow-x: hidden;
   height: auto;
-  min-height: 100vh;
+  min-height: 100dvh;
   /* Prevent iOS rubber-band bounce scroll at PDP -> Editorial boundary */
   overscroll-behavior-y: none;
 
