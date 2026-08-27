@@ -43,7 +43,8 @@
   padding-inline: 20px;
 }
 
-.three-up-slider__slide-image {
+.three-up-slider__slide-image,
+.three-up-slider__slide-video {
   display: block;
   width: 100%;
   height: auto;
