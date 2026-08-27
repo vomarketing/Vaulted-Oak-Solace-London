@@ -1,14 +1,10 @@
 {{ 'featured-image.css' | asset_url | stylesheet_tag }}
 
-{% liquid
+{%- liquid
   assign desktop_image = section.settings.desktop_image
   assign mobile_image = section.settings.mobile_image
   assign header_mode = section.settings.header_contrast_mode | default: 'dark'
-
-  if mobile_image == blank
-    assign mobile_image = desktop_image
-  endif
-%}
+-%}
 
 <featured-image
   class="featured-image"
@@ -16,77 +12,72 @@
   data-header-mode="{{ header_mode }}"
 >
   <div class="featured-image__inner">
-    {% if section.settings.text_left != blank %}
-      <div class="featured-image__text featured-image__text--mobile-top">
-        {% if section.settings.text_left_link != blank %}
+    {%- if section.settings.text_left != blank -%}
+      <div class="featured-image__text text-med-14 featured-image__text--mobile-top">
+        {%- if section.settings.text_left_link != blank -%}
           <a href="{{ section.settings.text_left_link }}">
-            {{ section.settings.text_left }}
+            {{ section.settings.text_left | escape }}
           </a>
-        {% else %}
-          {{ section.settings.text_left }}
-        {% endif %}
+        {%- else -%}
+          {{ section.settings.text_left | escape }}
+        {%- endif -%}
       </div>
-    {% endif %}
+    {%- endif -%}
 
-    {% if desktop_image != blank %}
-  {% if section.settings.image_link != blank %}
-    <a
-      href="{{ section.settings.image_link }}"
-      class="featured-image__media"
-    >
-      {% else %}
-      <div class="featured-image__media">
-        {% endif %}
+    {%- if desktop_image != blank -%}
+      {%- if section.settings.image_link != blank -%}
+        <a
+          href="{{ section.settings.image_link }}"
+          class="featured-image__media"
+        >
+      {%- else -%}
+        <div class="featured-image__media">
+      {%- endif -%}
 
-        <picture>
-          {% if mobile_image != blank %}
-            <source
-              media="(max-width: 1199px)"
-              srcset="{{ mobile_image | image_url: width: 1200 }}"
-            >
-          {% endif %}
-
-          {{
-          desktop_image
-          | image_url: width: 2000
-          | image_tag:
+        {%- render 'picture',
+          image_desktop: desktop_image,
+          image_mobile: mobile_image,
           class: 'featured-image__image',
-          loading: 'lazy'
-          }}
-        </picture>
+          picture_class: 'featured-image__picture',
+          breakpoint: '1199px',
+          widths: '600, 800, 1000, 1200, 1600, 2000, 2400',
+          sizes: '(min-width: 1440px) 1180px, (min-width: 1200px) 977px, (min-width: 768px) 596px, calc(100vw - 50px)'
+        -%}
 
-        {% if section.settings.image_link != blank %}
-    </a>
-    {% else %}
-  </div>
-  {% endif %}
-  {% endif %}
+      {%- if section.settings.image_link != blank -%}
+        </a>
+      {%- else -%}
+        </div>
+      {%- endif -%}
+    {%- endif -%}
 
-  <div class="featured-image__content">
-    {% if section.settings.text_left != blank %}
-      <div class="featured-image__text featured-image__text--desktop">
-        {% if section.settings.text_left_link != blank %}
-          <a href="{{ section.settings.text_left_link }}">
-            {{ section.settings.text_left }}
-          </a>
-        {% else %}
-          {{ section.settings.text_left }}
-        {% endif %}
+    {%- if section.settings.text_left != blank or section.settings.text_right != blank -%}
+      <div class="featured-image__content">
+        {%- if section.settings.text_left != blank -%}
+          <div class="featured-image__text text-med-14 featured-image__text--desktop">
+            {%- if section.settings.text_left_link != blank -%}
+              <a href="{{ section.settings.text_left_link }}">
+                {{ section.settings.text_left | escape }}
+              </a>
+            {%- else -%}
+              {{ section.settings.text_left | escape }}
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.text_right != blank -%}
+          <div class="featured-image__text text-med-14">
+            {%- if section.settings.text_right_link != blank -%}
+              <a href="{{ section.settings.text_right_link }}">
+                {{ section.settings.text_right | escape }}
+              </a>
+            {%- else -%}
+              {{ section.settings.text_right | escape }}
+            {%- endif -%}
+          </div>
+        {%- endif -%}
       </div>
-    {% endif %}
-
-    {% if section.settings.text_right != blank %}
-      <div class="featured-image__text">
-        {% if section.settings.text_right_link != blank %}
-          <a href="{{ section.settings.text_right_link }}">
-            {{ section.settings.text_right }}
-          </a>
-        {% else %}
-          {{ section.settings.text_right }}
-        {% endif %}
-      </div>
-    {% endif %}
-  </div>
+    {%- endif -%}
   </div>
 </featured-image>
 
