@@ -91,7 +91,7 @@
                     poster="{{ desktop_image | image_url: width: 1200 }}"
                   {% endif %}
                 >
-                  <source src="{{ mobile_video_url }}" media="(max-width: 834px)" type="video/mp4">
+                  <source src="{{ mobile_video_url }}" media="(max-width: 767px)" type="video/mp4">
                   <source src="{{ desktop_video_url }}" type="video/mp4">
                 </video>
               {%- elsif has_image -%}
