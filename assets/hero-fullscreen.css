@@ -113,4 +113,8 @@
   &[data-text-color="black"] .hero-fullscreen__sound-toggle {
     color: var(--color-black, #000000);
   }
+
+  .hero-fullscreen__image {
+    object-position: top;
+  }
 }
