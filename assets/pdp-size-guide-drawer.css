@@ -302,6 +302,11 @@
   width: 100%;
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
+  margin-top: 40px;
+
+  @media (min-width: 768px) {
+    margin-top: 60px;
+  }
 }
 
 .pdp-size-guide__table-wrapper--mobile {
