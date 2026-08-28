@@ -36,6 +36,7 @@ if (!window.FullpageScrollController) {
       this.editorialContainer = null;
       this.isProductPage = false;
       this.abortController = new AbortController();
+      this.footerBreakpoint = 768;
 
       if (this.canActivate()) {
         this.init();
@@ -84,7 +85,7 @@ if (!window.FullpageScrollController) {
         }
       }, { signal });
 
-      const mediaQuery = window.matchMedia('(min-width: 901px)');
+      const mediaQuery = window.matchMedia(`(min-width: ${this.footerBreakpoint}px)`);
       const handleBreakpoint = () => {
         this.setup();
       };
@@ -102,12 +103,12 @@ if (!window.FullpageScrollController) {
         const wrapper = document.createElement('div');
         wrapper.className = `${this.classes.swiperWrapper} ${this.classes.fullpageWrapper}`;
 
-        const isDesktop = window.innerWidth >= 901;
+        const isFooterExcluded = window.innerWidth >= this.footerBreakpoint;
 
         const childSections = Array.from(this.container.querySelectorAll(this.selectors.childSections)).filter(
           (el) =>
             !el.classList.contains('js-section-footer') &&
-            !(isDesktop && el.classList.contains('shopify-section--footer'))
+            !(isFooterExcluded && el.classList.contains('shopify-section--footer'))
         );
 
         childSections.forEach((section) => {
@@ -142,12 +143,12 @@ if (!window.FullpageScrollController) {
       const pdpIndex = allSections.indexOf(this.pdpSection);
       const editorialSections = pdpIndex !== -1 ? allSections.slice(pdpIndex + 1) : [];
 
-      const isDesktop = window.innerWidth >= 901;
+      const isFooterExcluded = window.innerWidth >= this.footerBreakpoint;
 
       const targetSlides = editorialSections.filter(
         (el) =>
           !el.classList.contains('js-section-footer') &&
-          !(isDesktop && el.classList.contains('shopify-section--footer'))
+          !(isFooterExcluded && el.classList.contains('shopify-section--footer'))
       );
 
       if (!targetSlides.length) {

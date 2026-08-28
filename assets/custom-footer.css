@@ -11,7 +11,7 @@
     z-index: 1;
     bottom: 100px;
 
-    @media (min-width: 901px) {
+    @media (min-width: 768px) {
       bottom: 0;
     }
   }
@@ -41,6 +41,10 @@
   color: var(--Color_Secondary, #000000);
   padding: 40px 0 30px;
 
+  @media (min-width: 768px) {
+    padding: 33px 0 37px;
+  }
+
   @media (min-width: 901px) {
     padding: 60px 0 40px;
   }
@@ -55,10 +59,14 @@
     flex-direction: column;
     gap: 30px;
 
-    @media (min-width: 901px) {
+    @media (min-width: 768px) {
       flex-direction: row;
       align-items: center;
       justify-content: space-between;
+      gap: 20px;
+    }
+
+    @media (min-width: 901px) {
       gap: 30px;
     }
   }
@@ -77,8 +85,14 @@
     flex-direction: column;
     gap: 18px;
 
-    @media (min-width: 901px) {
+    @media (min-width: 768px) {
       flex-direction: row;
+      flex-wrap: wrap;
+      gap: 20px;
+    }
+
+    @media (min-width: 901px) {
+      flex-wrap: nowrap;
       gap: 30px;
     }
   }
