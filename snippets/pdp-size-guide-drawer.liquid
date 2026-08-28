@@ -22,18 +22,18 @@
   assign contact_text = section.settings.size_guide_contact_text
 
   assign size_converter_title = section.settings.size_converter_title
-  assign size_converter_copy = section.settings.size_converter_copy
+  assign size_converter_body = section.settings.size_converter_body
 
   assign how_to_measure_title = section.settings.how_to_measure_title
-  assign how_to_measure_copy = section.settings.how_to_measure_copy | default: size_guide_obj.how_to_measure
+  assign how_to_measure_body = section.settings.how_to_measure_body | default: size_guide_obj.how_to_measure
   assign diagram_image = section.settings.measure_diagram_image | default: size_guide_obj.measurement_diagram.value | default: size_guide_obj.measurement_diagram
 
   assign bust_title = section.settings.measure_bust_title
-  assign bust_copy = section.settings.measure_bust_copy
+  assign bust_body = section.settings.measure_bust_body
   assign waist_title = section.settings.measure_waist_title
-  assign waist_copy = section.settings.measure_waist_copy
+  assign waist_body = section.settings.measure_waist_body
   assign hip_title = section.settings.measure_hip_title
-  assign hip_copy = section.settings.measure_hip_copy
+  assign hip_body = section.settings.measure_hip_body
 
   # Detect Default Region and Unit based on Shopify Localization
   assign default_region = 'UK'
@@ -182,12 +182,12 @@
               {%- if size_converter_title != blank -%}
                 <h3 class="pdp-size-guide__section-title text-med-14">{{ size_converter_title }}</h3>
               {%- endif -%}
-              {%- if size_converter_copy != blank -%}
+              {%- if size_converter_body != blank -%}
                 <div class="pdp-size-guide__section-desc text-reg-14">
-                  {%- if size_converter_copy.type == 'rich_text_field' -%}
-                    {{ size_converter_copy | metafield_tag }}
+                  {%- if size_converter_body.type == 'rich_text_field' -%}
+                    {{ size_converter_body | metafield_tag }}
                   {%- else -%}
-                    {{ size_converter_copy.value | default: size_converter_copy }}
+                    {{ size_converter_body.value | default: size_converter_body }}
                   {%- endif -%}
                 </div>
               {%- endif -%}
@@ -328,57 +328,57 @@
             </div>
           {%- endif -%}
 
-          {%- if how_to_measure_title != blank or how_to_measure_copy != blank or diagram_image != blank or bust_title != blank or waist_title != blank or hip_title != blank -%}
+          {%- if how_to_measure_title != blank or how_to_measure_body != blank or diagram_image != blank or bust_title != blank or waist_title != blank or hip_title != blank -%}
             <div class="pdp-size-guide__section pdp-size-guide__section--measure">
               {%- if how_to_measure_title != blank -%}
                 <h3 class="pdp-size-guide__section-title text-med-14">{{ how_to_measure_title }}</h3>
               {%- endif -%}
-              {%- if how_to_measure_copy != blank -%}
+              {%- if how_to_measure_body != blank -%}
                 <div class="pdp-size-guide__section-desc text-reg-14">
-                  {%- if how_to_measure_copy.type == 'rich_text_field' -%}
-                    {{ how_to_measure_copy | metafield_tag }}
+                  {%- if how_to_measure_body.type == 'rich_text_field' -%}
+                    {{ how_to_measure_body | metafield_tag }}
                   {%- else -%}
-                    {{ how_to_measure_copy.value | default: how_to_measure_copy }}
+                    {{ how_to_measure_body.value | default: how_to_measure_body }}
                   {%- endif -%}
                 </div>
               {%- endif -%}
 
               <div class="pdp-size-guide__diagram-wrapper">
                 <div class="pdp-size-guide__diagram-callouts">
-                  {%- if bust_title != blank or bust_copy != blank -%}
+                  {%- if bust_title != blank or bust_body != blank -%}
                     <div class="pdp-size-guide__diagram-row pdp-size-guide__diagram-row--bust">
                       <div class="pdp-size-guide__diagram-info">
                         {%- if bust_title != blank -%}
                           <div class="pdp-size-guide__diagram-point-title text-med-14">{{ bust_title }}</div>
                         {%- endif -%}
-                        {%- if bust_copy != blank -%}
-                          <div class="pdp-size-guide__diagram-point-desc text-reg-14">{{ bust_copy }}</div>
+                        {%- if bust_body != blank -%}
+                          <div class="pdp-size-guide__diagram-point-desc text-reg-14">{{ bust_body }}</div>
                         {%- endif -%}
                       </div>
                     </div>
                   {%- endif -%}
 
-                  {%- if waist_title != blank or waist_copy != blank -%}
+                  {%- if waist_title != blank or waist_body != blank -%}
                     <div class="pdp-size-guide__diagram-row pdp-size-guide__diagram-row--waist">
                       <div class="pdp-size-guide__diagram-info">
                         {%- if waist_title != blank -%}
                           <div class="pdp-size-guide__diagram-point-title text-med-14">{{ waist_title }}</div>
                         {%- endif -%}
-                        {%- if waist_copy != blank -%}
-                          <div class="pdp-size-guide__diagram-point-desc text-reg-14">{{ waist_copy }}</div>
+                        {%- if waist_body != blank -%}
+                          <div class="pdp-size-guide__diagram-point-desc text-reg-14">{{ waist_body }}</div>
                         {%- endif -%}
                       </div>
                     </div>
                   {%- endif -%}
 
-                  {%- if hip_title != blank or hip_copy != blank -%}
+                  {%- if hip_title != blank or hip_body != blank -%}
                     <div class="pdp-size-guide__diagram-row pdp-size-guide__diagram-row--hip">
                       <div class="pdp-size-guide__diagram-info">
                         {%- if hip_title != blank -%}
                           <div class="pdp-size-guide__diagram-point-title text-med-14">{{ hip_title }}</div>
                         {%- endif -%}
-                        {%- if hip_copy != blank -%}
-                          <div class="pdp-size-guide__diagram-point-desc text-reg-14">{{ hip_copy }}</div>
+                        {%- if hip_body != blank -%}
+                          <div class="pdp-size-guide__diagram-point-desc text-reg-14">{{ hip_body }}</div>
                         {%- endif -%}
                       </div>
                     </div>
