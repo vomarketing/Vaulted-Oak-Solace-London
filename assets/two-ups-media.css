@@ -124,6 +124,12 @@
   }
 }
 
+.two-ups-media__image {
+  @media (max-width: 900px) and (min-width: 768px) {
+    width: auto;
+  }
+}
+
 .two-ups-media__text {
   text-align: center;
 
