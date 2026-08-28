@@ -66,7 +66,14 @@
         </div>
       {%- endif -%}
       {%- if media_description != blank -%}
-        <p class="three-up-media__description text-reg-14">{{ media_description }}</p>
+        {%- liquid
+          assign desc_size = section.settings.description_font_size | default: 'text-reg-14'
+          assign desc_classes = 'three-up-media__description ' | append: desc_size
+          if section.settings.description_uppercase
+            assign desc_classes = desc_classes | append: ' uppercase'
+          endif
+        -%}
+        <p class="{{ desc_classes }}">{{ media_description }}</p>
       {%- endif -%}
     </div>
   </div>
@@ -133,9 +140,31 @@
       "visible_if": "{{ section.settings.media_type == 'video' }}"
     },
     {
-      "type": "text",
+      "type": "inline_richtext",
       "id": "media_description",
       "label": "Media description"
+    },
+    {
+      "type": "select",
+      "id": "description_font_size",
+      "label": "Description font size",
+      "options": [
+        {
+          "value": "text-reg-14",
+          "label": "14px"
+        },
+        {
+          "value": "text-reg-10",
+          "label": "10px"
+        }
+      ],
+      "default": "text-reg-14"
+    },
+    {
+      "type": "checkbox",
+      "id": "description_uppercase",
+      "label": "Description uppercase",
+      "default": false
     },
     {
       "type": "select",

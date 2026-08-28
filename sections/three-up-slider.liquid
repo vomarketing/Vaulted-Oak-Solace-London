@@ -103,7 +103,14 @@
               {%- endif -%}
 
               {%- if block_title != blank -%}
-                <p class="three-up-slider__slide-title text-reg-14">{{ block_title }}</p>
+                {%- liquid
+                  assign title_size = block.settings.font_size | default: 'text-reg-14'
+                  assign title_classes = 'three-up-slider__slide-title ' | append: title_size
+                  if block.settings.uppercase
+                    assign title_classes = title_classes | append: ' uppercase'
+                  endif
+                -%}
+                <p class="{{ title_classes }}">{{ block_title }}</p>
               {%- endif -%}
             </div>
           {%- endfor -%}
@@ -177,9 +184,31 @@
           "info": "Used when no mobile Shopify video is selected. Falls back to desktop video when empty."
         },
         {
-          "type": "text",
+          "type": "inline_richtext",
           "id": "title",
           "label": "Description"
+        },
+        {
+          "type": "select",
+          "id": "font_size",
+          "label": "Font size",
+          "options": [
+            {
+              "value": "text-reg-14",
+              "label": "14px"
+            },
+            {
+              "value": "text-reg-10",
+              "label": "10px"
+            }
+          ],
+          "default": "text-reg-14"
+        },
+        {
+          "type": "checkbox",
+          "id": "uppercase",
+          "label": "Uppercase",
+          "default": false
         }
       ]
     }

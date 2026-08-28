@@ -59,7 +59,14 @@
 
             {%- when 'description' -%}
               {%- if block.settings.content != blank -%}
-                <div class="pdp-block pdp-content__short-desc text-reg-14" {{ block.shopify_attributes }}>
+                {%- liquid
+                  assign desc_size = block.settings.font_size | default: 'text-reg-14'
+                  assign desc_classes = 'pdp-block pdp-content__short-desc ' | append: desc_size
+                  if block.settings.uppercase
+                    assign desc_classes = desc_classes | append: ' uppercase'
+                  endif
+                -%}
+                <div class="{{ desc_classes }}" {{ block.shopify_attributes }}>
                   {{ block.settings.content }}
                 </div>
               {%- endif -%}
@@ -87,7 +94,14 @@
 
                 {%- assign delivery_msg = block.settings.text -%}
                 {%- if delivery_msg != blank -%}
-                  <div class="pdp-duties-taxes__text text-med-14 italic">
+                  {%- liquid
+                    assign msg_size = block.settings.font_size | default: 'text-med-14'
+                    assign msg_classes = 'pdp-duties-taxes__text italic ' | append: msg_size
+                    if block.settings.uppercase
+                      assign msg_classes = msg_classes | append: ' uppercase'
+                    endif
+                  -%}
+                  <div class="{{ msg_classes }}">
                     {{ delivery_msg }}
                   </div>
                 {%- endif -%}

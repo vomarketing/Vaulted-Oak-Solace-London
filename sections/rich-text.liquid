@@ -3,6 +3,18 @@
   assign max_width_desktop = section.settings.max_width_desktop | at_least: 200
   assign max_width_tablet = section.settings.max_width_tablet | at_least: 200
   assign max_width_mobile = section.settings.max_width_mobile | at_least: 200
+
+  assign text_size = section.settings.text_font_size | default: 'text-reg-14'
+  assign text_classes = 'rich-text__content rte ' | append: text_size
+  if section.settings.text_uppercase
+    assign text_classes = text_classes | append: ' uppercase'
+  endif
+
+  assign link_size = section.settings.link_font_size | default: 'text-reg-14'
+  assign link_classes = 'rich-text__link ' | append: link_size
+  if section.settings.link_uppercase
+    assign link_classes = link_classes | append: ' uppercase'
+  endif
 -%}
 
 {%- if section.settings.text != blank -%}
@@ -19,7 +31,7 @@
   >
     <div class="rich-text__inner">
       {% if section.settings.text != blank %}
-        <div class="rich-text__content rte">
+        <div class="{{ text_classes }}">
           {{ section.settings.text }}
         </div>
       {% endif %}
@@ -28,12 +40,12 @@
         {% if section.settings.link != blank %}
           <a
             href="{{ section.settings.link }}"
-            class="rich-text__link"
+            class="{{ link_classes }}"
           >
             {{ section.settings.link_text }}
           </a>
         {% else %}
-          <span class="rich-text__link">
+          <span class="{{ link_classes }}">
             {{ section.settings.link_text }}
           </span>
         {% endif %}
@@ -78,7 +90,29 @@
       "label": "Text"
     },
     {
-      "type": "text",
+      "type": "select",
+      "id": "text_font_size",
+      "label": "Text font size",
+      "options": [
+        {
+          "value": "text-reg-14",
+          "label": "14px"
+        },
+        {
+          "value": "text-reg-10",
+          "label": "10px"
+        }
+      ],
+      "default": "text-reg-14"
+    },
+    {
+      "type": "checkbox",
+      "id": "text_uppercase",
+      "label": "Text uppercase",
+      "default": false
+    },
+    {
+      "type": "inline_richtext",
       "id": "link_text",
       "label": "Link text",
       "default": "Shop Collection"
@@ -87,6 +121,28 @@
       "type": "url",
       "id": "link",
       "label": "Link"
+    },
+    {
+      "type": "select",
+      "id": "link_font_size",
+      "label": "Link font size",
+      "options": [
+        {
+          "value": "text-reg-14",
+          "label": "14px"
+        },
+        {
+          "value": "text-reg-10",
+          "label": "10px"
+        }
+      ],
+      "default": "text-reg-14"
+    },
+    {
+      "type": "checkbox",
+      "id": "link_uppercase",
+      "label": "Link uppercase",
+      "default": false
     },
     {
       "type": "number",

@@ -4,6 +4,18 @@
   assign desktop_image = section.settings.desktop_image
   assign mobile_image = section.settings.mobile_image
   assign header_mode = section.settings.header_contrast_mode | default: 'dark'
+
+  assign text_left_size = section.settings.text_left_font_size | default: 'text-reg-14'
+  assign text_left_classes = text_left_size
+  if section.settings.text_left_uppercase
+    assign text_left_classes = text_left_classes | append: ' uppercase'
+  endif
+
+  assign text_right_size = section.settings.text_right_font_size | default: 'text-reg-14'
+  assign text_right_classes = text_right_size
+  if section.settings.text_right_uppercase
+    assign text_right_classes = text_right_classes | append: ' uppercase'
+  endif
 -%}
 
 <featured-image
@@ -13,13 +25,13 @@
 >
   <div class="featured-image__inner">
     {%- if section.settings.text_left != blank -%}
-      <div class="featured-image__text text-med-14 featured-image__text--mobile-top">
+      <div class="featured-image__text featured-image__text--mobile-top {{ text_left_classes }}">
         {%- if section.settings.text_left_link != blank -%}
           <a href="{{ section.settings.text_left_link }}">
-            {{ section.settings.text_left | escape }}
+            {{ section.settings.text_left }}
           </a>
         {%- else -%}
-          {{ section.settings.text_left | escape }}
+          {{ section.settings.text_left }}
         {%- endif -%}
       </div>
     {%- endif -%}
@@ -53,25 +65,25 @@
     {%- if section.settings.text_left != blank or section.settings.text_right != blank -%}
       <div class="featured-image__content">
         {%- if section.settings.text_left != blank -%}
-          <div class="featured-image__text text-med-14 featured-image__text--desktop">
+          <div class="featured-image__text featured-image__text--desktop {{ text_left_classes }}">
             {%- if section.settings.text_left_link != blank -%}
               <a href="{{ section.settings.text_left_link }}">
-                {{ section.settings.text_left | escape }}
+                {{ section.settings.text_left }}
               </a>
             {%- else -%}
-              {{ section.settings.text_left | escape }}
+              {{ section.settings.text_left }}
             {%- endif -%}
           </div>
         {%- endif -%}
 
         {%- if section.settings.text_right != blank -%}
-          <div class="featured-image__text text-med-14">
+          <div class="featured-image__text {{ text_right_classes }}">
             {%- if section.settings.text_right_link != blank -%}
               <a href="{{ section.settings.text_right_link }}">
-                {{ section.settings.text_right | escape }}
+                {{ section.settings.text_right }}
               </a>
             {%- else -%}
-              {{ section.settings.text_right | escape }}
+              {{ section.settings.text_right }}
             {%- endif -%}
           </div>
         {%- endif -%}
@@ -131,7 +143,7 @@
       "content": "Content"
     },
     {
-      "type": "text",
+      "type": "inline_richtext",
       "id": "text_left",
       "label": "First text",
       "default": "The Annie"
@@ -142,7 +154,29 @@
       "label": "First text link"
     },
     {
-      "type": "text",
+      "type": "select",
+      "id": "text_left_font_size",
+      "label": "First text font size",
+      "options": [
+        {
+          "value": "text-reg-14",
+          "label": "14px"
+        },
+        {
+          "value": "text-reg-10",
+          "label": "10px"
+        }
+      ],
+      "default": "text-reg-14"
+    },
+    {
+      "type": "checkbox",
+      "id": "text_left_uppercase",
+      "label": "First text uppercase",
+      "default": false
+    },
+    {
+      "type": "inline_richtext",
       "id": "text_right",
       "label": "Second text",
       "default": "Shop Now"
@@ -151,6 +185,28 @@
       "type": "url",
       "id": "text_right_link",
       "label": "Second text link"
+    },
+    {
+      "type": "select",
+      "id": "text_right_font_size",
+      "label": "Second text font size",
+      "options": [
+        {
+          "value": "text-reg-14",
+          "label": "14px"
+        },
+        {
+          "value": "text-reg-10",
+          "label": "10px"
+        }
+      ],
+      "default": "text-reg-14"
+    },
+    {
+      "type": "checkbox",
+      "id": "text_right_uppercase",
+      "label": "Second text uppercase",
+      "default": false
     }
   ],
   "presets": [
