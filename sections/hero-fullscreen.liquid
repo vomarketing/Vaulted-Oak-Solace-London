@@ -83,18 +83,32 @@
 
   <div class="hero-fullscreen__content">
     {%- if section.settings.heading != blank -%}
-      <h2 class="hero-fullscreen__heading text-med-14">
+      {%- liquid
+        assign heading_size = section.settings.heading_font_size | default: 'text-reg-14'
+        assign heading_classes = 'hero-fullscreen__heading ' | append: heading_size
+        if section.settings.heading_uppercase
+          assign heading_classes = heading_classes | append: ' uppercase'
+        endif
+      -%}
+      <h2 class="{{ heading_classes }}">
         {{ section.settings.heading }}
       </h2>
     {%- endif -%}
 
     {%- if section.settings.cta_text != blank -%}
+      {%- liquid
+        assign cta_size = section.settings.cta_font_size | default: 'text-reg-14'
+        assign cta_classes = 'hero-fullscreen__cta ' | append: cta_size
+        if section.settings.cta_uppercase
+          assign cta_classes = cta_classes | append: ' uppercase'
+        endif
+      -%}
       {%- if section.settings.cta_link != blank -%}
-        <a href="{{ section.settings.cta_link }}" class="hero-fullscreen__link hero-fullscreen__cta text-med-14">
+        <a href="{{ section.settings.cta_link }}" class="hero-fullscreen__link {{ cta_classes }}">
           {{ section.settings.cta_text }}
         </a>
       {%- else -%}
-        <p class="hero-fullscreen__cta text-reg-14">
+        <p class="{{ cta_classes }}">
           {{ section.settings.cta_text }}
         </p>
       {%- endif -%}
@@ -241,16 +255,42 @@
     },
     {
       "type": "header",
-      "content": "Default Content"
+      "content": "Heading"
     },
     {
-      "type": "text",
+      "type": "inline_richtext",
       "id": "heading",
       "label": "Heading",
       "default": "Resort 2027"
     },
     {
-      "type": "text",
+      "type": "select",
+      "id": "heading_font_size",
+      "label": "Heading font size",
+      "options": [
+        {
+          "value": "text-reg-14",
+          "label": "14px"
+        },
+        {
+          "value": "text-reg-10",
+          "label": "10px"
+        }
+      ],
+      "default": "text-reg-14"
+    },
+    {
+      "type": "checkbox",
+      "id": "heading_uppercase",
+      "label": "Uppercase",
+      "default": false
+    },
+    {
+      "type": "header",
+      "content": "Call To Action"
+    },
+    {
+      "type": "inline_richtext",
       "id": "cta_text",
       "label": "CTA Text",
       "default": "Shop Collection"
@@ -259,6 +299,28 @@
       "type": "url",
       "id": "cta_link",
       "label": "CTA Link"
+    },
+    {
+      "type": "select",
+      "id": "cta_font_size",
+      "label": "CTA font size",
+      "options": [
+        {
+          "value": "text-reg-14",
+          "label": "14px"
+        },
+        {
+          "value": "text-reg-10",
+          "label": "10px"
+        }
+      ],
+      "default": "text-reg-14"
+    },
+    {
+      "type": "checkbox",
+      "id": "cta_uppercase",
+      "label": "Uppercase",
+      "default": false
     }
   ],
   "presets": [
