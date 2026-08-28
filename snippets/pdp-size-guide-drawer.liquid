@@ -15,10 +15,25 @@
     assign size_guide_obj = section.settings.size_guide.value | default: section.settings.size_guide
   endif
 
+  assign fit_title = section.settings.size_guide_fit_title
   assign fit_notes = product.metafields.custom.fit_notes
   assign packshot_image = product.metafields.custom.packshot_image.value | default: product.metafields.custom.packshot_image | default: product.featured_image
   assign custom_table = size_guide_table | default: product.metafields.Detail.Size_Guide_Table
-  assign contact_text = product.metafields.custom.size_guide_contact_text
+  assign contact_text = product.metafields.custom.size_guide_contact_text | default: section.settings.size_guide_contact_text
+
+  assign size_converter_title = section.settings.size_converter_title
+  assign size_converter_copy = section.settings.size_converter_copy
+
+  assign how_to_measure_title = section.settings.how_to_measure_title
+  assign how_to_measure_copy = section.settings.how_to_measure_copy | default: size_guide_obj.how_to_measure
+  assign diagram_image = section.settings.measure_diagram_image | default: size_guide_obj.measurement_diagram.value | default: size_guide_obj.measurement_diagram
+
+  assign bust_title = section.settings.measure_bust_title
+  assign bust_copy = section.settings.measure_bust_copy
+  assign waist_title = section.settings.measure_waist_title
+  assign waist_copy = section.settings.measure_waist_copy
+  assign hip_title = section.settings.measure_hip_title
+  assign hip_copy = section.settings.measure_hip_copy
 
   # Detect Default Region and Unit based on Shopify Localization
   assign default_region = 'UK'
@@ -149,6 +164,9 @@
 
           {%- if fit_notes != blank -%}
             <div class="pdp-size-guide__section pdp-size-guide__section--fit">
+              {%- if fit_title != blank -%}
+                <h3 class="pdp-size-guide__section-title text-med-14">{{ fit_title }}</h3>
+              {%- endif -%}
               <div class="pdp-size-guide__fit-text text-reg-14">
                 {%- if fit_notes.type == 'rich_text_field' -%}
                   {{ fit_notes | metafield_tag }}
@@ -161,6 +179,19 @@
 
           {%- if chart_matrix_data != blank or custom_table != blank -%}
             <div class="pdp-size-guide__section pdp-size-guide__section--converter">
+              {%- if size_converter_title != blank -%}
+                <h3 class="pdp-size-guide__section-title text-med-14">{{ size_converter_title }}</h3>
+              {%- endif -%}
+              {%- if size_converter_copy != blank -%}
+                <div class="pdp-size-guide__section-desc text-reg-14">
+                  {%- if size_converter_copy.type == 'rich_text_field' -%}
+                    {{ size_converter_copy | metafield_tag }}
+                  {%- else -%}
+                    {{ size_converter_copy.value | default: size_converter_copy }}
+                  {%- endif -%}
+                </div>
+              {%- endif -%}
+
               {%- if custom_table != blank and chart_matrix_data == blank -%}
                 <div class="pdp-size-guide__custom-table text-reg-14">
                   {{ custom_table }}
@@ -186,7 +217,7 @@
                                     data-unit="cm"
                                     aria-pressed="{% if default_unit == 'cm' %}true{% else %}false{% endif %}"
                                   >
-                                    cM
+                                    CM
                                   </button>
                                   <span class="pdp-size-guide__unit-divider">/</span>
                                   <button
@@ -195,7 +226,7 @@
                                     data-unit="in"
                                     aria-pressed="{% if default_unit == 'in' %}true{% else %}false{% endif %}"
                                   >
-                                    iN
+                                    IN
                                   </button>
                                 </div>
                               </div>
@@ -257,7 +288,7 @@
                                 data-unit="in"
                                 aria-pressed="{% if default_unit == 'in' %}true{% else %}false{% endif %}"
                               >
-                                iN
+                                IN
                               </button>
                             </div>
                           </div>
@@ -297,33 +328,77 @@
             </div>
           {%- endif -%}
 
-          {%- if size_guide_obj.how_to_measure != blank or size_guide_obj.measurement_diagram != blank -%}
+          {%- if how_to_measure_title != blank or how_to_measure_copy != blank or diagram_image != blank or bust_title != blank or waist_title != blank or hip_title != blank -%}
             <div class="pdp-size-guide__section pdp-size-guide__section--measure">
-              <h3 class="pdp-size-guide__section-title text-med-14">How To Measure</h3>
-              {%- if size_guide_obj.how_to_measure != blank -%}
-                <div class="pdp-size-guide__section-subtitle text-reg-14">
-                  {%- if size_guide_obj.how_to_measure.type == 'rich_text_field' -%}
-                    {{ size_guide_obj.how_to_measure | metafield_tag }}
+              {%- if how_to_measure_title != blank -%}
+                <h3 class="pdp-size-guide__section-title text-med-14">{{ how_to_measure_title }}</h3>
+              {%- endif -%}
+              {%- if how_to_measure_copy != blank -%}
+                <div class="pdp-size-guide__section-desc text-reg-14">
+                  {%- if how_to_measure_copy.type == 'rich_text_field' -%}
+                    {{ how_to_measure_copy | metafield_tag }}
                   {%- else -%}
-                    {{ size_guide_obj.how_to_measure.value | default: size_guide_obj.how_to_measure }}
+                    {{ how_to_measure_copy.value | default: how_to_measure_copy }}
                   {%- endif -%}
                 </div>
               {%- endif -%}
 
-              {%- if size_guide_obj.measurement_diagram != blank -%}
-                <div class="pdp-size-guide__measure-diagram">
-                  {%- assign diagram_image = size_guide_obj.measurement_diagram.value | default: size_guide_obj.measurement_diagram -%}
-                  {{
-                    diagram_image
-                    | image_url: width: 1000
-                    | image_tag:
-                      widths: '300, 500, 600, 700, 800, 900, 1000',
-                      alt: 'How to measure diagram',
-                      class: 'pdp-size-guide__diagram-img',
-                      loading: 'lazy'
-                  }}
+              <div class="pdp-size-guide__diagram-wrapper">
+                <div class="pdp-size-guide__diagram-callouts">
+                  {%- if bust_title != blank or bust_copy != blank -%}
+                    <div class="pdp-size-guide__diagram-row pdp-size-guide__diagram-row--bust">
+                      <div class="pdp-size-guide__diagram-info">
+                        {%- if bust_title != blank -%}
+                          <div class="pdp-size-guide__diagram-point-title text-med-14">{{ bust_title }}</div>
+                        {%- endif -%}
+                        {%- if bust_copy != blank -%}
+                          <div class="pdp-size-guide__diagram-point-desc text-reg-14">{{ bust_copy }}</div>
+                        {%- endif -%}
+                      </div>
+                    </div>
+                  {%- endif -%}
+
+                  {%- if waist_title != blank or waist_copy != blank -%}
+                    <div class="pdp-size-guide__diagram-row pdp-size-guide__diagram-row--waist">
+                      <div class="pdp-size-guide__diagram-info">
+                        {%- if waist_title != blank -%}
+                          <div class="pdp-size-guide__diagram-point-title text-med-14">{{ waist_title }}</div>
+                        {%- endif -%}
+                        {%- if waist_copy != blank -%}
+                          <div class="pdp-size-guide__diagram-point-desc text-reg-14">{{ waist_copy }}</div>
+                        {%- endif -%}
+                      </div>
+                    </div>
+                  {%- endif -%}
+
+                  {%- if hip_title != blank or hip_copy != blank -%}
+                    <div class="pdp-size-guide__diagram-row pdp-size-guide__diagram-row--hip">
+                      <div class="pdp-size-guide__diagram-info">
+                        {%- if hip_title != blank -%}
+                          <div class="pdp-size-guide__diagram-point-title text-med-14">{{ hip_title }}</div>
+                        {%- endif -%}
+                        {%- if hip_copy != blank -%}
+                          <div class="pdp-size-guide__diagram-point-desc text-reg-14">{{ hip_copy }}</div>
+                        {%- endif -%}
+                      </div>
+                    </div>
+                  {%- endif -%}
                 </div>
-              {%- endif -%}
+
+                {%- if diagram_image != blank -%}
+                  <div class="pdp-size-guide__diagram-figure">
+                    {{
+                      diagram_image
+                      | image_url: width: 800
+                      | image_tag:
+                        widths: '300, 500, 600, 800',
+                        sizes: '(min-width: 901px) 280px, (min-width: 768px) 300px, 100vw',
+                        alt: 'How to measure illustration',
+                        class: 'pdp-size-guide__diagram-img',
+                        loading: 'lazy'
+                    }}
+                  </div>
+                {%- endif -%}
               </div>
             </div>
           {%- endif -%}
