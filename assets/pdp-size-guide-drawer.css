@@ -519,8 +519,8 @@
     gap: 45px;
   }
 
-  @media (min-width: 1440px) {
-    padding-left: 44px;
+  @media (min-width: 1201px) {
+    padding-left: 0;
   }
 }
 
@@ -563,6 +563,7 @@
   }
 
   @media (min-width: 1201px) {
+    width: 68%;
     max-width: 430px;
     aspect-ratio: 430/510;
   }
