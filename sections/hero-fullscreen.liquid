@@ -46,7 +46,7 @@
           playsinline
           preload="metadata"
           {% if section.settings.image_desktop != blank %}
-            poster="{{ section.settings.image_desktop | image_url: width: 1800 }}"
+            poster="{{ section.settings.image_desktop | image_url: width: 3840 }}"
           {% endif %}
         >
           <source src="{{ video_mobile_url }}" media="(max-width: 900px)" type="video/mp4">
@@ -61,7 +61,10 @@
           image_mobile: section.settings.image_mobile,
           loading: 'eager',
           fetchpriority: 'high',
-          class: 'hero-fullscreen__image'
+          class: 'hero-fullscreen__image',
+          widths: '1200, 1600, 2000, 2400, 2800, 3200, 3840',
+          widths_mobile: '600, 800, 1000, 1200, 1400, 1600, 1800, 2000, 2400',
+          sizes: '100vw'
         -%}
       {%- else -%}
         {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}

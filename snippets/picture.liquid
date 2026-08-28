@@ -10,7 +10,9 @@
   @param {string} [alt] - Custom alt text. Defaults to image_desktop.alt or shop.name
   @param {string} [breakpoint] - Breakpoint for the mobile source query. Defaults to '900px'
   @param {string} [sizes] - HTML sizes attribute for responsive image widths. Defaults to '100vw'
-  @param {string} [widths] - Widths for the srcset attribute. Defaults to '1200, 1600, 2000, 2400, 2800, 3200'
+  @param {string} [sizes_mobile] - HTML sizes attribute for mobile source. Defaults to sizes
+  @param {string} [widths] - Widths for the srcset attribute. Defaults to '1200, 1600, 2000, 2400, 2800, 3200, 3840'
+  @param {string} [widths_mobile] - Widths for the mobile srcset attribute. Defaults to '600, 800, 1000, 1200, 1400, 1600, 1800, 2000, 2400'
 
   @example
   {%- render 'picture',
@@ -32,27 +34,32 @@
   assign alt = alt | default: image_desktop.alt | default: shop.name | escape
   assign breakpoint = breakpoint | default: '900px'
   assign sizes = sizes | default: '100vw'
-  assign widths = widths | default: '1200, 1600, 2000, 2400, 2800, 3200'
+  assign sizes_mobile = sizes_mobile | default: sizes
+  assign widths = widths | default: '1200, 1600, 2000, 2400, 2800, 3200, 3840'
+  assign widths_mobile = widths_mobile | default: '600, 800, 1000, 1200, 1400, 1600, 1800, 2000, 2400'
 -%}
 
 {%- if image_desktop != blank -%}
   <picture{% if picture_class != blank %} class="{{ picture_class }}"{% endif %}>
     {%- if image_mobile != blank -%}
+      {%- assign widths_mobile_array = widths_mobile | split: ',' -%}
+      {%- capture mobile_srcset -%}
+        {%- for w in widths_mobile_array -%}
+          {%- assign w_clean = w | strip | plus: 0 -%}
+          {%- if forloop.first == false -%}, {% endif -%}
+          {{ image_mobile | image_url: width: w_clean }} {{ w_clean }}w
+        {%- endfor -%}
+      {%- endcapture -%}
       <source
         media="(max-width: {{ breakpoint }})"
-        srcset="
-          {{ image_mobile | image_url: width: 600 }} 600w,
-          {{ image_mobile | image_url: width: 800 }} 800w,
-          {{ image_mobile | image_url: width: 1000 }} 1000w,
-          {{ image_mobile | image_url: width: 1200 }} 1200w
-        "
-        sizes="{{ sizes }}"
+        srcset="{{ mobile_srcset | strip }}"
+        sizes="{{ sizes_mobile }}"
       >
     {%- endif -%}
 
     {{
       image_desktop
-      | image_url: width: 2400
+      | image_url: width: 2880
       | image_tag:
         loading: loading,
         fetchpriority: fetchpriority,

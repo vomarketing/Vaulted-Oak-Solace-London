@@ -61,11 +61,11 @@
     aspect-ratio: 596 / 843;
   }
 
-  @media (min-width: 910px) {
+  @media (min-width: 901px) {
     aspect-ratio: 977 / 623;
   }
 
-  @media (min-width: 1600px) {
+  @media (min-width: 1920px) {
     aspect-ratio: 1180 / 753;
   }
 }
