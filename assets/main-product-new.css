@@ -401,6 +401,14 @@ body.is-size-guide-active {
   @media (min-width: 901px) {
     margin-bottom: 45px;
   }
+
+  a,
+  .pdp-tab-help__link {
+    &:hover {
+      text-decoration: underline;
+      text-underline-offset: 4px;
+    }
+  }
 }
 
 .pdp-content__price-row {

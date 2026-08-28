@@ -23,6 +23,11 @@
   if size_guide_obj != blank or custom_table != blank
     assign has_size_guide_content = true
   endif
+
+  assign default_region = 'UK'
+  if localization.country.iso_code == 'US'
+    assign default_region = 'US'
+  endif
 -%}
 
 <product-buy-buttons
@@ -46,7 +51,7 @@
               <div class="pdp-size-row__inner">
                 <div class="pdp-size-row__header">
                   <span class="pdp-size-row__label text-reg-14">
-                    {{ option.name }}
+                    {{ default_region | upcase }} {{ option.name }}
                   </span>
                 </div>
 

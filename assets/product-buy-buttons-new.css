@@ -139,7 +139,7 @@ product-buy-buttons,
 }
 
 .pdp-size-row__label {
-  color: var(--Color_Brand, #000000);
+  color: var(--color-price);
   min-width: max-content;
   text-transform: capitalize;
 
