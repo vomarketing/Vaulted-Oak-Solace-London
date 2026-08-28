@@ -31,7 +31,9 @@
         "description_jt7ddV": {
           "type": "description",
           "settings": {
-            "content": "{{ product.description }}"
+            "content": "{{ product.description }}",
+            "font_size": "text-reg-14",
+            "uppercase": false
           }
         },
         "buy_buttons_VGTxwz": {
@@ -43,7 +45,9 @@
         "duties_taxes_d76MTJ": {
           "type": "duties_taxes",
           "settings": {
-            "text": "Prices now include customs duties, import fees and taxes. No additional charges will be incurred upon delivery."
+            "text": "Prices now include customs duties, import fees and taxes. No additional charges will be incurred upon delivery.",
+            "font_size": "text-reg-14",
+            "uppercase": false
           }
         },
         "tab_content_jWBbB7": {
@@ -77,6 +81,19 @@
         "stock_note": "Only a few left in stock",
         "wishlist_enable": true,
         "size_guide": "",
+        "size_guide_fit_title": "Fit",
+        "size_converter_title": "Size Converter",
+        "size_converter_body": "<p>Use your body measurements below to find your closest size.</p>",
+        "how_to_measure_title": "How To Measure",
+        "how_to_measure_body": "<p>Measure directly against the body without pulling the tape tight. Compare your measurements with the size chart above.</p>",
+        "measure_diagram_image": "shopify://shop_images/Illustration_1.png",
+        "measure_bust_title": "Bust",
+        "measure_bust_body": "Measure around the fullest part of the bust, keeping the tape level.",
+        "measure_waist_title": "Waist",
+        "measure_waist_body": "Measure around the narrowest part of the waist.",
+        "measure_hip_title": "Low Hip",
+        "measure_hip_body": "With your feet together, measure around the fullest part of the hips.",
+        "size_guide_contact_text": "<p>Questions about size, fit & fabric? <a href=\"/pages/contact\">Contact us</a><br/>Available UK business hours Mon - Fri, 9am - 5pm.</p>",
         "contact_page": ""
       }
     },
@@ -86,8 +103,12 @@
       "settings": {
         "header_contrast_mode": "dark",
         "text": "{{ product.metafields.custom.richtext_content_1 | metafield_tag }}",
+        "text_font_size": "text-reg-14",
+        "text_uppercase": false,
         "link_text": "",
         "link": "",
+        "link_font_size": "text-reg-14",
+        "link_uppercase": false,
         "max_width_desktop": 807,
         "max_width_tablet": 589,
         "max_width_mobile": 305
@@ -106,7 +127,9 @@
             "mobile_video": "{{ block.repeater.mobile_video_shopify.value }}",
             "desktop_video_url": "{{ block.repeater.desktop_video_external.value }}",
             "mobile_video_url": "{{ block.repeater.mobile_video_external.value }}",
-            "title": "{{ block.repeater.description.value }}"
+            "title": "{{ block.repeater.description.value }}",
+            "font_size": "text-reg-14",
+            "uppercase": false
           }
         }
       },
@@ -130,6 +153,8 @@
         "video_desktop_url": "{{ product.metafields.custom.three_up_media.value.desktop_video_external.value }}",
         "video_mobile_url": "{{ product.metafields.custom.three_up_media.value.mobile_video_external.value }}",
         "media_description": "{{ product.metafields.custom.three_up_media.value.description.value }}",
+        "description_font_size": "text-reg-14",
+        "description_uppercase": false,
         "header_contrast_mode": "dark"
       }
     },
@@ -148,8 +173,12 @@
       "settings": {
         "header_contrast_mode": "dark",
         "text": "{{ product.metafields.custom.richtext_content_2 | metafield_tag }}",
+        "text_font_size": "text-reg-14",
+        "text_uppercase": false,
         "link_text": "",
         "link": "",
+        "link_font_size": "text-reg-14",
+        "link_uppercase": false,
         "max_width_desktop": 910,
         "max_width_tablet": 589,
         "max_width_mobile": 305
