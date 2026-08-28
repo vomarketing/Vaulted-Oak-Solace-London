@@ -504,6 +504,12 @@ if (!window.FullpageScrollController) {
         }
         swiperEl.remove();
       });
+
+      // After destroying swiper, the footer slide is on top of the child DOM list.
+      // Push the footer slide on mobile to the bottom of the DOM list.
+      const footerSlide = this.container.querySelector('.shopify-section--footer');
+      if (footerSlide) this.container.append(footerSlide);
+
       this.wrapper = null;
       this.slides = [];
       this.editorialContainer = null;
