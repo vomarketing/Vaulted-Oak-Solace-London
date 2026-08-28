@@ -3,6 +3,19 @@
   @param {product} product - Product Liquid object
 {%- enddoc -%}
 
+{%- liquid
+  assign move_first_to_last = false
+  if product.media.size > 1
+    for tag in product.tags
+      assign downcased_tag = tag | downcase
+      if downcased_tag == 'first-image-last'
+        assign move_first_to_last = true
+        break
+      endif
+    endfor
+  endif
+-%}
+
 <div
   class="pdp-zoom-modal js-pdp-zoom-modal"
   id="pdp-zoom-modal"
@@ -20,11 +33,48 @@
   </button>
 
   <div class="pdp-zoom-modal__container js-pdp-zoom-container">
-    {%- for media in product.media -%}
+    {%- if move_first_to_last -%}
+      {%- for media in product.media offset: 1 -%}
+        {%- assign visual_index = forloop.index0 -%}
+        <div
+          class="pdp-zoom-modal__item js-pdp-zoom-item"
+          id="pdp-zoom-item-{{ visual_index }}"
+          data-zoom-index="{{ visual_index }}"
+        >
+          {%- if media.media_type == 'image' -%}
+            {%- render 'responsive-image',
+              image: media,
+              width: 3304,
+              height: 4472,
+              wrapper_class: 'pdp-zoom-modal__rsp-image',
+              img_class: 'pdp-zoom-modal__img' -%}
+          {%- elsif media.media_type == 'video' -%}
+            <div class="pdp-zoom-modal__video-wrapper" style="aspect-ratio: {{ media.aspect_ratio | default: 0.68 }};">
+              <video
+                class="pdp-zoom-modal__video js-pdp-zoom-video"
+                autoplay
+                loop
+                muted
+                playsinline
+                preload="metadata"
+              >
+                {%- for source in media.sources -%}
+                  <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                {%- endfor -%}
+              </video>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+
+      {%- liquid
+        assign media = product.media.first
+        assign visual_index = product.media.size | minus: 1
+      -%}
       <div
         class="pdp-zoom-modal__item js-pdp-zoom-item"
-        id="pdp-zoom-item-{{ forloop.index0 }}"
-        data-zoom-index="{{ forloop.index0 }}"
+        id="pdp-zoom-item-{{ visual_index }}"
+        data-zoom-index="{{ visual_index }}"
       >
         {%- if media.media_type == 'image' -%}
           {%- render 'responsive-image',
@@ -50,6 +100,39 @@
           </div>
         {%- endif -%}
       </div>
-    {%- endfor -%}
+
+    {%- else -%}
+      {%- for media in product.media -%}
+        <div
+          class="pdp-zoom-modal__item js-pdp-zoom-item"
+          id="pdp-zoom-item-{{ forloop.index0 }}"
+          data-zoom-index="{{ forloop.index0 }}"
+        >
+          {%- if media.media_type == 'image' -%}
+            {%- render 'responsive-image',
+              image: media,
+              width: 3304,
+              height: 4472,
+              wrapper_class: 'pdp-zoom-modal__rsp-image',
+              img_class: 'pdp-zoom-modal__img' -%}
+          {%- elsif media.media_type == 'video' -%}
+            <div class="pdp-zoom-modal__video-wrapper" style="aspect-ratio: {{ media.aspect_ratio | default: 0.68 }};">
+              <video
+                class="pdp-zoom-modal__video js-pdp-zoom-video"
+                autoplay
+                loop
+                muted
+                playsinline
+                preload="metadata"
+              >
+                {%- for source in media.sources -%}
+                  <source src="{{ source.url }}" type="{{ source.mime_type }}">
+                {%- endfor -%}
+              </video>
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endfor -%}
+    {%- endif -%}
   </div>
 </div>
