@@ -589,3 +589,56 @@ if (!customElements.get('product-fullscreen')) {
 
   customElements.define('product-fullscreen', ProductFullscreen);
 }
+
+if (!customElements.get('product-fullscreen-anchor')) {
+  class ProductFullscreenAnchor extends HTMLElement {
+    constructor() {
+      super();
+    }
+
+    connectedCallback() {
+      this.position = this.getAttribute('data-position') || 'bottom';
+      this.initObserver();
+    }
+
+    initObserver() {
+      let lastScrollY = window.scrollY;
+      const observerConfig = {
+        callback: (entries) => {
+          entries.forEach((entry) => {
+            const targetRect = entry.boundingClientRect;
+            const currentScrollY = window.scrollY;
+            const isScrollingDown = currentScrollY > lastScrollY;
+            const offset = 100;
+            if (entry.isIntersecting && targetRect.top > 0) {
+              if (this.position === 'top' && targetRect.top < offset) {
+                window.scrollTo({
+                  top: 0,
+                  behavior: 'smooth'
+                })
+              }
+              if (this.position === 'bottom' && targetRect.top > window.innerHeight - offset && isScrollingDown) {
+                const productFullscreen = document.querySelector('product-fullscreen');
+                const top = Math.ceil(productFullscreen?.getBoundingClientRect().height);
+                window.scrollTo({
+                  top,
+                  behavior: 'smooth'
+                })
+              }
+            }
+
+            lastScrollY = currentScrollY;
+          });
+        },
+        options: {
+          threshold: [0, 1]
+        }
+      }
+      const observer = new IntersectionObserver(observerConfig.callback, observerConfig.options);
+
+      observer.observe(this);
+    }
+  }
+
+  customElements.define('product-fullscreen-anchor', ProductFullscreenAnchor);
+}

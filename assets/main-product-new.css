@@ -11,6 +11,10 @@
   }
 }
 
+.shopify-section-main-product-new {
+  position: relative;
+}
+
 body.is-zoom-modal-active,
 body.is-size-guide-active {
   .lyt-Header,
@@ -849,4 +853,23 @@ body.is-size-guide-active {
   height: auto;
   display: block;
   object-fit: cover;
+}
+
+product-fullscreen-anchor {
+  position: absolute;
+  left: 0;
+  z-index: -1;
+  display: block;
+  width: 100%;
+  height: 10px;
+  opacity: 0;
+  pointer-events: none;
+
+  &[data-position="bottom"] {
+    bottom: -100px;
+  }
+
+  &[data-position="top"] {
+    bottom: 0;
+  }
 }
