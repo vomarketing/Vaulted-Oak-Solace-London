@@ -55,21 +55,38 @@ body.template-index[data-fullpage-scroll] {
 }
 
 body.template-product[data-fullpage-scroll] {
-  overflow-y: auto;
-  overflow-x: hidden;
-  height: auto;
-  min-height: 100dvh;
-  /* Prevent iOS rubber-band bounce scroll at PDP -> Editorial boundary */
-  overscroll-behavior-y: none;
-  scroll-snap-type: y proximity;
+  @media (max-width: 900px) {
+    overflow: hidden !important;
+    height: 100vh !important;
+    height: 100dvh !important;
 
-  #MainContent {
-    width: 100%;
+    #MainContent {
+      width: 100%;
+      height: 100% !important;
+      overflow: hidden !important;
+      position: relative;
+      z-index: 1;
+      background-color: var(--Color_Primary, #ffffff);
+    }
+  }
+
+  @media (min-width: 901px) {
+    overflow-y: auto;
+    overflow-x: hidden;
     height: auto;
-    overflow: visible;
-    position: relative;
-    z-index: 1;
-    background-color: var(--Color_Primary, #ffffff);
+    min-height: 100dvh;
+    /* Prevent iOS rubber-band bounce scroll at PDP -> Editorial boundary */
+    overscroll-behavior-y: none;
+    scroll-snap-type: y proximity;
+
+    #MainContent {
+      width: 100%;
+      height: auto;
+      overflow: visible;
+      position: relative;
+      z-index: 1;
+      background-color: var(--Color_Primary, #ffffff);
+    }
   }
 
   .pdp-editorial-swiper {

@@ -9,11 +9,16 @@
   &.is-visible {
     pointer-events: all;
     z-index: 1;
-    bottom: 100px;
+    bottom: 0;
 
     @media (min-width: 768px) {
       bottom: 0;
     }
+  }
+
+  body.template-product:not(.is-editorial-active) & {
+    display: none !important;
+    pointer-events: none !important;
   }
 }
 

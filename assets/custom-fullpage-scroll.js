@@ -496,7 +496,10 @@ if (!window.FullpageScrollController) {
 
     notifySlideChange(swiperInstance) {
       const total = swiperInstance.slides ? swiperInstance.slides.length : 0;
-      const isLastSlide = total > 0 && swiperInstance.activeIndex === total - 1;
+      let isLastSlide = total > 0 && swiperInstance.activeIndex === total - 1;
+      if (this.isProductPage && !document.body.classList.contains(this.classes.editorialActive)) {
+        isLastSlide = false;
+      }
       document.dispatchEvent(new CustomEvent('fullpage:slideChange', {
         detail: { isLastSlide, activeIndex: swiperInstance.activeIndex }
       }));

@@ -37,6 +37,12 @@ if (!window.FooterRevealController) {
     }
 
     _syncFromSwiper() {
+      const isPDP = document.body.classList.contains('template-product');
+      if (isPDP && !document.body.classList.contains('is-editorial-active')) {
+        this.setVisible(false);
+        return;
+      }
+
       if (window.fullpageScrollInstance?.swiper) {
         const sw = window.fullpageScrollInstance.swiper;
         const total = sw.slides ? sw.slides.length : 0;
@@ -49,6 +55,13 @@ if (!window.FooterRevealController) {
       const maxAttempts = 50;
       const timer = setInterval(() => {
         attempts++;
+        const isPDPLive = document.body.classList.contains('template-product');
+        if (isPDPLive && !document.body.classList.contains('is-editorial-active')) {
+          clearInterval(timer);
+          this.setVisible(false);
+          return;
+        }
+
         if (window.fullpageScrollInstance?.swiper) {
           clearInterval(timer);
           const sw = window.fullpageScrollInstance.swiper;

@@ -13,6 +13,11 @@
 
 .shopify-section-main-product-new {
   position: relative;
+
+  @media (max-width: 900px) {
+    height: 100%;
+    overflow: hidden;
+  }
 }
 
 body.is-zoom-modal-active,
@@ -33,19 +38,25 @@ body.is-size-guide-active {
 
 .pdp-new {
   position: relative;
+  display: block;
   width: 100%;
   background-color: var(--color-white, #ffffff);
   color: var(--color-black, #000000);
   overflow-x: hidden;
-  --pdp-mobile-gallery-height: min(727px, calc(100dvh - 110px));
+  --pdp-mobile-gallery-height: 65dvh;
   --pdp-header-height: 60px;
 
-  @media (min-width: 768px) {
-    --pdp-mobile-gallery-height: min(1023px, calc(100dvh - 120px));
+  @media (max-width: 900px) {
+    height: 100vh;
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow: hidden;
   }
 
   @media (min-width: 901px) {
     overflow-x: visible;
+    height: auto;
+    max-height: none;
   }
 }
 
@@ -54,20 +65,29 @@ body.is-size-guide-active {
   width: 100%;
   display: block;
 
+  @media (max-width: 900px) {
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+  }
+
   @media (min-width: 901px) {
     display: grid;
     grid-template-columns: minmax(0, 6fr) minmax(0, 4fr);
     align-items: flex-start;
+    height: auto;
+    overflow: visible;
   }
 }
 
 .pdp-new__gallery-column {
-  position: sticky;
+  position: absolute;
   top: 0;
   left: 0;
   width: 100vw;
-  height: var(--pdp-mobile-gallery-height, 727px);
-  max-height: 727px;
+  height: 65vh;
+  height: 65dvh;
+  max-height: 65dvh;
   overflow: hidden;
   z-index: 1;
   min-width: 0;
@@ -75,11 +95,6 @@ body.is-size-guide-active {
 
   &.is-locked {
     pointer-events: none !important;
-  }
-
-  @media (min-width: 768px) {
-    height: var(--pdp-mobile-gallery-height, 1023px);
-    max-height: 1023px;
   }
 
   @media (min-width: 901px) {
@@ -100,50 +115,48 @@ body.is-size-guide-active {
 }
 
 .pdp-new__content-column {
-  position: relative;
-  z-index: 3;
+  position: absolute;
+  top: 65vh;
+  top: 65dvh;
+  left: 0;
   width: 100%;
+  height: calc(100vh - 52px);
+  height: calc(100dvh - 52px);
+  max-height: calc(100dvh - 52px);
   box-sizing: border-box;
   background-color: var(--color-white, #ffffff);
-  padding: 14px 0 60px;
+  padding: 14px 0 90px;
   box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.08);
-  min-height: calc(100dvh - 52px);
   touch-action: pan-y;
   isolation: isolate;
+  z-index: 3;
+  transition: top 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  overflow-y: hidden;
+  will-change: top;
 
   @media (min-width: 768px) {
-    padding: 20px 0 60px;
+    padding: 20px 0 90px;
   }
 
   &.is-locked-top {
     @media (max-width: 900px) {
-      position: sticky;
       top: 52px;
-      height: calc(100dvh - 52px);
-      max-height: calc(100dvh - 52px);
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
       overscroll-behavior: contain;
     }
   }
 
-  /* Prevent iOS sticky jump bug during editorial mix animation */
-  body.is-pdp-transitioning &.is-locked-top,
-  body.is-editorial-active &.is-locked-top {
-    @media (max-width: 900px) {
-      position: fixed;
-      top: 52px;
-      left: 0;
-      width: 100%;
-      z-index: 10;
-    }
-  }
-
   @media (min-width: 901px) {
     position: sticky;
     top: 0;
+    left: auto;
+    width: 100%;
     height: 100dvh;
+    max-height: none;
     min-height: 0;
+    transform: none;
+    transition: none;
     overflow-y: auto;
     max-width: none;
     scrollbar-width: none;
@@ -243,7 +256,7 @@ body.is-size-guide-active {
   &.swiper-slide {
     width: 100% !important;
     height: 100% !important;
-    max-height: 727px;
+    max-height: none;
     overflow: hidden;
     display: flex;
     align-items: center;
@@ -251,10 +264,6 @@ body.is-size-guide-active {
     background-color: var(--color-white, #ffffff);
     margin: 0 !important;
     padding: 0 !important;
-
-    @media (min-width: 768px) {
-      max-height: 1023px;
-    }
 
     @media (min-width: 901px) {
       position: sticky;

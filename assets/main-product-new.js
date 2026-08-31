@@ -237,40 +237,11 @@ if (!customElements.get('product-fullscreen')) {
         
         if (this.swiper) {
           this.swiper.allowTouchMove = false;
-          // Force Swiper to instantly snap back to its correct position to avoid conflicting animations with window.scrollTo
-          this.swiper.setTransition(0);
-          if (this.swiper.snapGrid && this.swiper.snapGrid[this.swiper.activeIndex] !== undefined) {
-            this.swiper.setTranslate(-this.swiper.snapGrid[this.swiper.activeIndex]);
-          }
         }
         
         if (galleryColumn) galleryColumn.classList.add(this.classes.galleryLocked);
         this.classList.add(this.classes.contentExpanded);
-
-        const headerHeight = 52; // Hardcode to 52px for transparent header UX
-        const galleryHeight = galleryColumn ? galleryColumn.offsetHeight : 727;
-        const targetScroll = Math.max(0, galleryHeight - headerHeight);
-
-        if (animate) {
-          window.scrollTo({
-            top: targetScroll,
-            behavior: 'smooth'
-          });
-          
-          // Delay locking the height/overflow until the smooth scroll completes
-          // This prevents Safari from aggressively jumping when DOM height shrinks during a scroll animation
-          setTimeout(() => {
-            if (isLocked && contentColumn) {
-              contentColumn.classList.add(this.classes.contentLockedTop);
-            }
-          }, 400);
-        } else {
-          contentColumn.classList.add(this.classes.contentLockedTop);
-          window.scrollTo({
-            top: targetScroll,
-            behavior: 'instant'
-          });
-        }
+        contentColumn.classList.add(this.classes.contentLockedTop);
       };
 
       const collapseSheet = (animate = true) => {
@@ -281,13 +252,6 @@ if (!customElements.get('product-fullscreen')) {
         this.classList.remove(this.classes.contentExpanded);
         contentColumn.classList.remove(this.classes.contentLockedTop);
         contentColumn.scrollTop = 0;
-
-        if (animate && window.scrollY > 0) {
-          window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-          });
-        }
       };
 
       // Tap on Sheet Handle to toggle Peek vs Expanded
@@ -415,7 +379,7 @@ if (!customElements.get('product-fullscreen')) {
         }, { passive: true, signal });
       }
 
-      // Sync on window scroll
+      // Sync on resize / breakpoint
       const checkScrollState = () => {
         if (!this.isMobile()) {
           if (isLocked) {
@@ -425,15 +389,9 @@ if (!customElements.get('product-fullscreen')) {
             this.classList.remove(this.classes.contentExpanded);
             if (contentColumn) contentColumn.classList.remove(this.classes.contentLockedTop);
           }
-          return;
-        }
-
-        if (window.scrollY <= 0 && isLocked && contentColumn && contentColumn.scrollTop <= 0) {
-          collapseSheet(false);
         }
       };
 
-      window.addEventListener('scroll', checkScrollState, { passive: true, signal });
       window.addEventListener('resize', checkScrollState, { passive: true, signal });
 
       checkScrollState();
