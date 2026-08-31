@@ -4,14 +4,26 @@
 
 if (!window.FullpageScrollController) {
   class FullpageScrollController {
+    static config = {
+      footerBreakpoint: 768,
+      mobileBreakpoint: 900,
+      animationDuration: 650,
+      desktopWheelThreshold: 45,
+      mobileSwipeThreshold: 40
+    };
+
     static selectors = {
       mainContent: '#MainContent',
       childSections: ':scope > .shopify-section, :scope > div:not(.swiper-wrapper)',
       headerContrastElements: '[data-header-mode]',
       header: '.js-header',
       pdpMain: '.pdp-new__main',
-      pdpNew: '.pdp-new',
-      videos: 'video'
+      pdpNew: '.js-pdp-new',
+      pdpGallery: '.js-pdp-gallery-column',
+      pdpContent: '.js-pdp-content-column',
+      footerSection: '.shopify-section--footer, .js-section-footer',
+      videos: 'video',
+      ignoreScrollElements: '.drawer, .js-pdp-zoom-modal, .drw-Drawers, .js-cart-drawer'
     };
 
     static classes = {
@@ -22,12 +34,54 @@ if (!window.FullpageScrollController) {
       fullpageWrapper: 'fullpage-wrapper',
       swiperSlide: 'swiper-slide',
       fullpageSlide: 'fullpage-slide',
-      shopifySection: 'shopify-section'
+      shopifySection: 'shopify-section',
+      editorialActive: 'is-editorial-active',
+      pdpTransitioning: 'is-pdp-transitioning',
+      pdpPinned: 'is-pdp-pinned'
     };
 
+    static events = {
+      toEditorial: 'pdp:transition:to-editorial',
+      fromEditorial: 'pdp:transition:from-editorial',
+      sheetBottomOverscroll: 'pdp:sheet:bottom-overscroll',
+      slideChange: 'fullpage:slideChange',
+      ready: 'fullpage:ready'
+    };
+
+    static states = {
+      PDP_IDLE: 'pdp:idle',
+      TO_EDITORIAL: 'transition:to-editorial',
+      EDITORIAL_IDLE: 'editorial:idle',
+      TO_PDP: 'transition:to-pdp'
+    };
+
+    static awaitSwiper() {
+      return new Promise((resolve) => {
+        if (window.Swiper) {
+          resolve();
+          return;
+        }
+        let retries = 0;
+        const maxRetries = 100;
+        const check = setInterval(() => {
+          if (window.Swiper) {
+            clearInterval(check);
+            resolve();
+          } else if (retries >= maxRetries) {
+            clearInterval(check);
+            console.warn('Swiper load timeout');
+            resolve();
+          }
+          retries++;
+        }, 50);
+      });
+    }
+
     constructor() {
+      this.config = FullpageScrollController.config;
       this.selectors = FullpageScrollController.selectors;
       this.classes = FullpageScrollController.classes;
+      this.events = FullpageScrollController.events;
       this.swiper = null;
       this.container = document.querySelector(this.selectors.mainContent);
       this.wrapper = null;
@@ -36,7 +90,10 @@ if (!window.FullpageScrollController) {
       this.editorialContainer = null;
       this.isProductPage = false;
       this.abortController = new AbortController();
-      this.footerBreakpoint = 768;
+      this.footerBreakpoint = this.config.footerBreakpoint;
+      this.state = FullpageScrollController.states.PDP_IDLE;
+      this.wheelDeltaAccumulator = 0;
+      this.wheelTimeout = null;
 
       if (this.canActivate()) {
         this.init();
@@ -48,19 +105,11 @@ if (!window.FullpageScrollController) {
     }
 
     init() {
-      if (!window.Swiper) {
-        const checkSwiper = setInterval(() => {
-          if (window.Swiper) {
-            clearInterval(checkSwiper);
-            this.setup();
-          }
-        }, 50);
-
-        setTimeout(() => clearInterval(checkSwiper), 5000);
-        return;
-      }
-
-      this.setup();
+      FullpageScrollController.awaitSwiper().then(() => {
+        if (window.Swiper) {
+          this.setup();
+        }
+      });
     }
 
     setup() {
@@ -271,12 +320,11 @@ if (!window.FullpageScrollController) {
       if (!this.isProductPage || !this.pdpSection || !this.editorialContainer) return;
       const { signal } = this.abortController;
 
-      let isTransitioning = false;
-
       const activateEditorial = () => {
-        if (isTransitioning || document.body.classList.contains('is-editorial-active')) return;
-        isTransitioning = true;
-        document.body.classList.add('is-pdp-transitioning', 'is-editorial-active');
+        if (this.state === FullpageScrollController.states.TO_EDITORIAL || this.state === FullpageScrollController.states.EDITORIAL_IDLE) return;
+        this.state = FullpageScrollController.states.TO_EDITORIAL;
+
+        document.body.classList.add(this.classes.pdpPinned, this.classes.pdpTransitioning, this.classes.editorialActive);
 
         if (this.pdpSection) {
           this.pdpSection.setAttribute('aria-hidden', 'true');
@@ -295,19 +343,20 @@ if (!window.FullpageScrollController) {
         }
 
         setTimeout(() => {
-          document.body.classList.remove('is-pdp-transitioning');
+          document.body.classList.remove(this.classes.pdpTransitioning);
           if (this.swiper && this.swiper.mousewheel && typeof this.swiper.mousewheel.enable === 'function') {
             this.swiper.mousewheel.enable();
           }
-          isTransitioning = false;
-        }, 650);
+          this.state = FullpageScrollController.states.EDITORIAL_IDLE;
+        }, this.config.animationDuration);
       };
 
       const deactivateEditorial = () => {
-        if (isTransitioning || !document.body.classList.contains('is-editorial-active')) return;
-        isTransitioning = true;
-        document.body.classList.add('is-pdp-transitioning');
-        document.body.classList.remove('is-editorial-active');
+        if (this.state === FullpageScrollController.states.TO_PDP || this.state === FullpageScrollController.states.PDP_IDLE) return;
+        this.state = FullpageScrollController.states.TO_PDP;
+
+        document.body.classList.add(this.classes.pdpTransitioning);
+        document.body.classList.remove(this.classes.editorialActive);
 
         if (this.pdpSection) {
           this.pdpSection.removeAttribute('aria-hidden');
@@ -321,87 +370,124 @@ if (!window.FullpageScrollController) {
           window.headerContrastController.detectSectionMode();
         }
 
+        document.dispatchEvent(new CustomEvent(this.events.fromEditorial));
+
         setTimeout(() => {
-          document.body.classList.remove('is-pdp-transitioning');
+          document.body.classList.remove(this.classes.pdpTransitioning, this.classes.pdpPinned);
           if (this.swiper && this.swiper.mousewheel && typeof this.swiper.mousewheel.enable === 'function') {
             this.swiper.mousewheel.enable();
           }
-          isTransitioning = false;
-        }, 650);
+          this.state = FullpageScrollController.states.PDP_IDLE;
+        }, this.config.animationDuration);
       };
 
-      document.addEventListener('pdp:transition:to-editorial', activateEditorial, { signal });
-      document.addEventListener('pdp:transition:from-editorial', deactivateEditorial, { signal });
+      // Listen for Mobile Events from main-product-new.js
+      document.addEventListener(this.events.sheetBottomOverscroll, activateEditorial, { signal });
+      document.addEventListener(this.events.toEditorial, activateEditorial, { signal });
+      document.addEventListener(this.events.fromEditorial, deactivateEditorial, { signal });
+
+      // Listen for Mobile Swipe Down on Editorial Container to return to PDP
+      if (this.editorialContainer) {
+        let edTouchStartY = 0;
+        let edTouchStartX = 0;
+        
+        this.editorialContainer.addEventListener('touchstart', (e) => {
+          if (e.touches && e.touches.length > 0) {
+            edTouchStartY = e.touches[0].clientY;
+            edTouchStartX = e.touches[0].clientX;
+          }
+        }, { passive: true, signal });
+
+        this.editorialContainer.addEventListener('touchend', (e) => {
+          if (!e.changedTouches || e.changedTouches.length === 0) return;
+          const diffY = edTouchStartY - e.changedTouches[0].clientY; // > 0 is swipe up, < 0 is swipe down
+          const diffX = Math.abs(edTouchStartX - e.changedTouches[0].clientX);
+          
+          const isMobile = window.matchMedia(`(max-width: ${this.config.mobileBreakpoint}px)`).matches;
+          if (isMobile && this.state === FullpageScrollController.states.EDITORIAL_IDLE) {
+            // User swipes DOWN to go UP to PDP (return back)
+            if (this.swiper && this.swiper.activeIndex === 0 && diffY < -this.config.mobileSwipeThreshold && diffX < Math.abs(diffY) * 0.8) {
+              deactivateEditorial();
+            }
+          }
+        }, { passive: true, signal });
+      }
 
       const handleWheel = (e) => {
-        if (isTransitioning) {
-          if (e.cancelable) e.preventDefault();
+        // Prevent action if scrolling inside modals/drawers
+        if (e.target.closest(this.selectors.ignoreScrollElements)) {
           return;
         }
 
-        const isEditorialActive = document.body.classList.contains('is-editorial-active');
+        const isMobile = window.matchMedia(`(max-width: ${this.config.mobileBreakpoint}px)`).matches;
+        
+        if (this.state === FullpageScrollController.states.TO_EDITORIAL || this.state === FullpageScrollController.states.TO_PDP) {
+          if (e.cancelable && !isMobile) e.preventDefault();
+          return;
+        }
 
-        if (isEditorialActive) {
-          if (this.swiper && this.swiper.activeIndex === 0 && e.deltaY < -15) {
-            if (e.cancelable) e.preventDefault();
-            deactivateEditorial();
+        if (this.state === FullpageScrollController.states.EDITORIAL_IDLE) {
+          if (isMobile) return;
+
+          // Absorb momentum to prevent skipping the first slide and exiting prematurely
+          if (this.swiper && this.swiper.activeIndex === 0 && e.deltaY < 0) {
+            const timeSinceSlideChange = Date.now() - (this.lastSlideChangeTime || 0);
+
+            // Block exit for 800ms after arriving at slide 0 to absorb Mac trackpad momentum
+            if (timeSinceSlideChange > 800) {
+              this.wheelDeltaAccumulatorUp = (this.wheelDeltaAccumulatorUp || 0) + e.deltaY;
+              
+              if (this.wheelDeltaAccumulatorUp < -this.config.desktopWheelThreshold) {
+                if (e.cancelable) e.preventDefault();
+                deactivateEditorial();
+                this.wheelDeltaAccumulatorUp = 0;
+              }
+            } else {
+              // Still cooling down from previous slide change, absorb momentum
+              if (e.cancelable) e.preventDefault();
+              this.wheelDeltaAccumulatorUp = 0;
+            }
+          } else {
+            this.wheelDeltaAccumulatorUp = 0;
           }
           return;
         }
 
+        // We only care about desktop wheel logic in this file
+        if (isMobile) return;
+
         const isAtPageBottom = (window.innerHeight + window.scrollY) >= (document.documentElement.scrollHeight - 30);
-        const contentCol = document.querySelector('.js-pdp-content-column');
+        const contentCol = document.querySelector(this.selectors.pdpContent);
         const isContentAtBottom = contentCol ? (contentCol.scrollTop + contentCol.clientHeight >= contentCol.scrollHeight - 20) : true;
 
-        if (isAtPageBottom && isContentAtBottom && e.deltaY > 15) {
-          if (e.cancelable) e.preventDefault();
-          activateEditorial();
-        }
-      };
-
-      let touchStartY = 0;
-      let isTouchDown = false;
-
-      const handleTouchStart = (e) => {
-        if (e.touches && e.touches.length > 0) {
-          touchStartY = e.touches[0].clientY;
-          isTouchDown = true;
-        }
-      };
-
-      const handleTouchMove = (e) => {
-        if (!isTouchDown || !e.touches || e.touches.length === 0 || isTransitioning) return;
-        const currentY = e.touches[0].clientY;
-        const diffY = touchStartY - currentY;
-
-        const isEditorialActive = document.body.classList.contains('is-editorial-active');
-
-        if (isEditorialActive) {
-          if (this.swiper && this.swiper.activeIndex === 0 && diffY < -40) {
-            isTouchDown = false;
-            deactivateEditorial();
+        if (isAtPageBottom && isContentAtBottom) {
+          if (e.deltaY > 0) {
+            this.wheelDeltaAccumulator += e.deltaY;
+            if (this.wheelDeltaAccumulator > this.config.desktopWheelThreshold) {
+              if (e.cancelable) e.preventDefault();
+              activateEditorial();
+              this.wheelDeltaAccumulator = 0;
+            } else {
+              if (e.cancelable) e.preventDefault(); // Stop native scroll while accumulating
+            }
+          } else {
+            this.wheelDeltaAccumulator = 0;
           }
-          return;
+          
+          if (this.wheelTimeout) clearTimeout(this.wheelTimeout);
+          this.wheelTimeout = setTimeout(() => {
+            this.wheelDeltaAccumulator = 0;
+          }, 300);
+        } else {
+          this.wheelDeltaAccumulator = 0;
         }
-
-        const isAtPageBottom = (window.innerHeight + window.scrollY) >= (document.documentElement.scrollHeight - 30);
-        if (isAtPageBottom && diffY > 40) {
-          isTouchDown = false;
-          activateEditorial();
-        }
-      };
-
-      const handleTouchEnd = () => {
-        isTouchDown = false;
       };
 
       window.addEventListener('wheel', handleWheel, { passive: false, signal });
-      window.addEventListener('touchstart', handleTouchStart, { passive: true, signal });
-      window.addEventListener('touchmove', handleTouchMove, { passive: true, signal });
-      window.addEventListener('touchend', handleTouchEnd, { passive: true, signal });
     }
 
     handleSlideChange(swiperInstance) {
+      this.lastSlideChangeTime = Date.now();
       const activeSlide = swiperInstance.slides[swiperInstance.activeIndex];
       if (!activeSlide) return;
 
@@ -524,7 +610,8 @@ if (!window.FullpageScrollController) {
 
     destroy() {
       window._swiperIsTransitioning = false;
-      document.body.classList.remove('is-editorial-active', 'is-pdp-transitioning');
+      document.body.classList.remove(this.classes.editorialActive, this.classes.pdpTransitioning, this.classes.pdpPinned);
+      this.state = FullpageScrollController.states.PDP_IDLE;
       if (this.pdpSection) {
         this.pdpSection.removeAttribute('aria-hidden');
       }

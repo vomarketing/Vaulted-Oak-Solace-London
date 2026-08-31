@@ -122,18 +122,8 @@ if (!customElements.get('product-fullscreen')) {
       const slideCount = this.querySelectorAll(this.selectors.mediaItems).length;
       if (slideCount <= 1) return;
 
-      let retries = 0;
-      const maxRetries = 50;
-
-      const init = () => {
-        if (typeof window.Swiper === 'undefined') {
-          if (retries < maxRetries) {
-            retries++;
-            this.swiperInitTimer = setTimeout(init, 50);
-          }
-          return;
-        }
-
+      const setupSwiper = () => {
+        if (!window.Swiper) return;
         this.swiper = new window.Swiper(swiperEl, {
           direction: 'vertical',
           slidesPerView: 1,
@@ -175,7 +165,13 @@ if (!customElements.get('product-fullscreen')) {
         });
       };
 
-      init();
+      if (window.FullpageScrollController && typeof window.FullpageScrollController.awaitSwiper === 'function') {
+        window.FullpageScrollController.awaitSwiper().then(setupSwiper);
+      } else {
+        if (window.Swiper) {
+          setupSwiper();
+        }
+      }
     }
 
     handleSlideChange(swiper) {
@@ -238,12 +234,20 @@ if (!customElements.get('product-fullscreen')) {
       const expandSheet = (animate = true) => {
         if (!this.isMobile() || !contentColumn) return;
         isLocked = true;
-        if (this.swiper) this.swiper.allowTouchMove = false;
+        
+        if (this.swiper) {
+          this.swiper.allowTouchMove = false;
+          // Force Swiper to instantly snap back to its correct position to avoid conflicting animations with window.scrollTo
+          this.swiper.setTransition(0);
+          if (this.swiper.snapGrid && this.swiper.snapGrid[this.swiper.activeIndex] !== undefined) {
+            this.swiper.setTranslate(-this.swiper.snapGrid[this.swiper.activeIndex]);
+          }
+        }
+        
         if (galleryColumn) galleryColumn.classList.add(this.classes.galleryLocked);
         this.classList.add(this.classes.contentExpanded);
-        contentColumn.classList.add(this.classes.contentLockedTop);
 
-        const headerHeight = document.querySelector(this.selectors.header)?.offsetHeight || 60;
+        const headerHeight = 52; // Hardcode to 52px for transparent header UX
         const galleryHeight = galleryColumn ? galleryColumn.offsetHeight : 727;
         const targetScroll = Math.max(0, galleryHeight - headerHeight);
 
@@ -252,7 +256,16 @@ if (!customElements.get('product-fullscreen')) {
             top: targetScroll,
             behavior: 'smooth'
           });
+          
+          // Delay locking the height/overflow until the smooth scroll completes
+          // This prevents Safari from aggressively jumping when DOM height shrinks during a scroll animation
+          setTimeout(() => {
+            if (isLocked && contentColumn) {
+              contentColumn.classList.add(this.classes.contentLockedTop);
+            }
+          }, 400);
         } else {
+          contentColumn.classList.add(this.classes.contentLockedTop);
           window.scrollTo({
             top: targetScroll,
             behavior: 'instant'
@@ -290,7 +303,8 @@ if (!customElements.get('product-fullscreen')) {
         }, { signal });
       }
 
-      document.addEventListener('pdp:transition:from-editorial', () => {
+      const fromEditorialEvent = window.FullpageScrollController?.events?.fromEditorial || 'pdp:transition:from-editorial';
+      document.addEventListener(fromEditorialEvent, () => {
         if (!this.isMobile()) return;
         expandSheet(false);
         requestAnimationFrame(() => {
@@ -303,19 +317,9 @@ if (!customElements.get('product-fullscreen')) {
       let touchStartY = 0;
       let touchStartX = 0;
       let startedAtTop = false;
-      let startedAtBottom = false;
       let isTouchActive = false;
 
       if (contentColumn) {
-        if ('ResizeObserver' in window) {
-          const resizeObserver = new ResizeObserver(() => {
-            if (isTouchActive) {
-              startedAtBottom = false;
-            }
-          });
-          resizeObserver.observe(contentColumn);
-        }
-
         contentColumn.addEventListener('touchstart', (e) => {
           if (!this.isMobile() || !e.touches.length) return;
           touchStartY = e.touches[0].clientY;
@@ -325,14 +329,8 @@ if (!customElements.get('product-fullscreen')) {
           const isLockedTop = contentColumn.classList.contains(this.classes.contentLockedTop);
           if (isLockedTop) {
             startedAtTop = contentColumn.scrollTop <= 2;
-
-            const maxScrollable = contentColumn.scrollHeight - contentColumn.clientHeight;
-            startedAtBottom = maxScrollable > 5
-              ? (contentColumn.scrollTop >= maxScrollable - 5)
-              : true;
           } else {
             startedAtTop = false;
-            startedAtBottom = false;
           }
         }, { passive: true, signal });
 
@@ -354,18 +352,36 @@ if (!customElements.get('product-fullscreen')) {
           }
 
           if (isLockedTop) {
-            if (startedAtTop && diffY < -45 && diffX < Math.abs(diffY) * 0.6) {
+            // Re-read DOM dimensions on touchend to handle orientation change bugs
+            const freshScrollHeight = contentColumn.scrollHeight;
+            const freshClientHeight = contentColumn.clientHeight;
+            const freshScrollTop = contentColumn.scrollTop;
+
+            const maxScrollable = freshScrollHeight - freshClientHeight;
+            const isAtBottomNow = maxScrollable > 5
+              ? (freshScrollTop >= maxScrollable - 5)
+              : true;
+
+            if (startedAtTop && diffY < -45 && diffX < Math.abs(diffY) * 0.8) {
               collapseSheet(true);
               return;
             }
 
-            if (startedAtBottom && diffY > 40 && diffX < diffY * 0.6) {
+            const mobileSwipeThreshold = window.FullpageScrollController?.config?.mobileSwipeThreshold || 40;
+            const sheetOverscrollEvent = window.FullpageScrollController?.events?.sheetBottomOverscroll || 'pdp:sheet:bottom-overscroll';
+
+            if (isAtBottomNow && diffY > mobileSwipeThreshold && diffX < Math.abs(diffY) * 0.8) {
               const editorialContainer = document.querySelector('.pdp-editorial-swiper');
               if (!editorialContainer) return;
 
-              document.dispatchEvent(new CustomEvent('pdp:transition:to-editorial'));
+              document.dispatchEvent(new CustomEvent(sheetOverscrollEvent));
             }
           }
+        }, { passive: true, signal });
+
+        // iOS fires touchcancel (e.g. during fast scroll or system gesture) — must reset
+        contentColumn.addEventListener('touchcancel', () => {
+          isTouchActive = false;
         }, { passive: true, signal });
       }
 

@@ -107,7 +107,7 @@ body.is-size-guide-active {
   background-color: var(--color-white, #ffffff);
   padding: 14px 0 60px;
   box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.08);
-  min-height: auto;
+  min-height: calc(100dvh - 52px);
   touch-action: pan-y;
   isolation: isolate;
 
@@ -118,12 +118,24 @@ body.is-size-guide-active {
   &.is-locked-top {
     @media (max-width: 900px) {
       position: sticky;
-      top: var(--pdp-header-height, 60px);
-      height: calc(100dvh - var(--pdp-header-height, 60px));
-      max-height: calc(100dvh - var(--pdp-header-height, 60px));
+      top: 52px;
+      height: calc(100dvh - 52px);
+      max-height: calc(100dvh - 52px);
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
       overscroll-behavior: contain;
+    }
+  }
+
+  /* Prevent iOS sticky jump bug during editorial mix animation */
+  body.is-pdp-transitioning &.is-locked-top,
+  body.is-editorial-active &.is-locked-top {
+    @media (max-width: 900px) {
+      position: fixed;
+      top: 52px;
+      left: 0;
+      width: 100%;
+      z-index: 10;
     }
   }
 
@@ -159,6 +171,16 @@ body.is-size-guide-active {
     z-index: -1;
     background-color: transparent;
   }
+
+  /* &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: var(--color-white);
+    display: block;
+    width: 100vw;
+    height: 100dvh;
+  } */
 }
 
 .pdp-sheet-handle {

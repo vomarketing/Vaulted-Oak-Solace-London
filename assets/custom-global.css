@@ -82,20 +82,22 @@ body.template-product[data-fullpage-scroll] {
     overflow: hidden;
     z-index: 5;
     transform: translate3d(0, 100%, 0);
-    transition: transform 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94), visibility 0s linear 600ms;
+    transition: transform 650ms cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 650ms;
     visibility: hidden;
     pointer-events: none;
     will-change: transform;
   }
 
-  &.is-editorial-active {
+  &.is-pdp-pinned, &.is-editorial-active {
     overflow: hidden !important;
+  }
 
+  &.is-editorial-active {
     .pdp-editorial-swiper {
       transform: translate3d(0, 0, 0);
       visibility: visible;
       pointer-events: auto;
-      transition: transform 600ms cubic-bezier(0.25, 0.46, 0.45, 0.94), visibility 0s linear 0s;
+      transition: transform 650ms cubic-bezier(0.16, 1, 0.3, 1), visibility 0s linear 0s;
     }
   }
 
@@ -114,7 +116,8 @@ body.template-product[data-fullpage-scroll] {
 
 /* Lock body scroll during PDP -> Editorial transition. */
 body.is-pdp-transitioning {
-  overflow: hidden;
+  pointer-events: none !important;
+  overflow: hidden !important;
 }
 
 
