@@ -269,6 +269,10 @@ product-buy-buttons,
   @media (min-width: 901px) {
     display: none;
   }
+
+  &.hidden {
+    display: none;
+  }
 }
 
 .pdp-option-row {
@@ -330,7 +334,7 @@ product-buy-buttons,
 
 .pdp-size-drawer.is-waitlist-mode .pdp-size-row {
   display: none;
-  
+
   @media (min-width: 901px) {
     display: block;
   }
