@@ -329,7 +329,7 @@
     {
       "type": "duties_taxes",
       "name": "Duties & Taxes",
-      "limit": 1,
+      "limit": 2,
       "settings": [
         {
           "type": "inline_richtext",
@@ -358,6 +358,28 @@
           "id": "uppercase",
           "label": "Uppercase",
           "default": false
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_responsive",
+          "label": "Enable Responsive"
+        },
+        {
+          "type": "select",
+          "id": "responsive_target",
+          "label": "Responsive screen",
+          "options": [
+            {
+              "label": "Mobile",
+              "value": "mobile"
+            },
+            {
+              "label": "Desktop",
+              "value": "desktop"
+            }
+          ],
+          "default": "mobile",
+          "visible_if": "{{ block.settings.enable_responsive }}"
         }
       ]
     },
@@ -371,6 +393,19 @@
           "id": "text",
           "label": "Note Text",
           "info": "Optional override for status and delivery notes"
+        }
+      ]
+    },
+    {
+      "type": "question_notes",
+      "name": "Question Notes",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Questions about size, fit or fabric?"
         }
       ]
     },

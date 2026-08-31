@@ -62,11 +62,15 @@
 
 .custom-tab__panels {
   position: relative;
-  padding-top: 20px;
+  padding-top: 0;
   transition: height var(--transition-smooth);
 
   &.is-animating {
     overflow: hidden;
+  }
+
+  &:has(.custom-tab__panel.is-active) {
+    padding-top: 20px;
   }
 }
 

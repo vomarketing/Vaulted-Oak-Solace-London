@@ -16,6 +16,16 @@
 
   assign size_guide_table = product.metafields.Detail.Size_Guide_Table
   assign related_color_handles = product.metafields.custom.related_products.value | default: product.metafields.Detail.Related_Products | split: '|'
+
+  assign has_size_guide = false
+  if size_guide_table != blank or product.metafields.custom.size_guide != blank or section.settings.size_guide != blank or product.metafields.Detail.Size_Guide_Table != blank
+    assign has_size_guide = true
+  endif
+
+  assign has_contact = false
+  if section.settings.contact_page != blank
+    assign has_contact = true
+  endif
 -%}
 
 <div class="pdp-content js-pdp-content">
@@ -81,7 +91,17 @@
               -%}
 
             {%- when 'duties_taxes', 'status_notes' -%}
-              <div class="pdp-block pdp-block--duties-taxes text-reg-10 italic" {{ block.shopify_attributes }}>
+              {%- liquid
+                assign enable_responsive = block.settings.enable_responsive | default: false
+                assign responsive_target = block.settings.responsive_target | default: 'mobile'
+
+                assign block_class = 'pdp-block pdp-block--duties-taxes text-reg-10 italic'
+                if enable_responsive
+                  assign block_responsive_class = 'pdp-block--' | append: responsive_target | prepend: ' '
+                  assign block_class = block_class | append: block_responsive_class
+                endif
+              -%}
+              <div class="{{- block_class -}}" {{ block.shopify_attributes }}>
                 {%- if section.settings.stock_note != blank -%}
                   <div
                     class="prd-Status_Stock js-pdp-stock-status text-reg-14"
@@ -179,27 +199,10 @@
                 </div>
               {%- endif -%}
 
-            {%- when 'tab_content' -%}
-              <div class="pdp-block pdp-block--tab-content" {{ block.shopify_attributes }}>
-                {%- render 'product-tab-content',
-                  description: block.settings.description,
-                  fabric_care: block.settings.fabric_care,
-                  size_fit: block.settings.size_fit,
-                  shipping_returns: block.settings.shipping_returns,
-                  uid: block.id
-                -%}
-                {%- assign has_size_guide = false -%}
-                {%- if size_guide_table != blank or product.metafields.custom.size_guide != blank or section.settings.size_guide != blank or product.metafields.Detail.Size_Guide_Table != blank -%}
-                  {%- assign has_size_guide = true -%}
-                {%- endif -%}
-                {%- assign has_contact = false -%}
-                {%- if section.settings.contact_page != blank -%}
-                  {%- assign has_contact = true -%}
-                {%- endif -%}
-
+            {%- when 'question_notes' -%}
                 {%- if has_size_guide or has_contact -%}
-                  <div class="pdp-tab-help text-reg-14">
-                    Questions about size, fit or fabric?
+                  <div class="pdp-block pdp-block--question-notes">
+                    {{- block.settings.question | default: 'Questions about size, fit or fabric?' -}}
                     {% if has_size_guide %}
                       View
                       <button type="button" class="pdp-tab-help__link js-pdp-size-guide-trigger text-reg-14">
@@ -214,6 +217,16 @@
                     {% endif %}
                   </div>
                 {%- endif -%}
+
+            {%- when 'tab_content' -%}
+              <div class="pdp-block pdp-block--tab-content" {{ block.shopify_attributes }}>
+                {%- render 'product-tab-content',
+                  description: block.settings.description,
+                  fabric_care: block.settings.fabric_care,
+                  size_fit: block.settings.size_fit,
+                  shipping_returns: block.settings.shipping_returns,
+                  uid: block.id
+                -%}
               </div>
           {%- endcase -%}
         {%- endfor -%}
