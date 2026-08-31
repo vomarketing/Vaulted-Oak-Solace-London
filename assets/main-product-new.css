@@ -43,7 +43,7 @@ body.is-size-guide-active {
   background-color: var(--color-white, #ffffff);
   color: var(--color-black, #000000);
   overflow-x: hidden;
-  --pdp-mobile-gallery-height: 65dvh;
+  --pdp-mobile-gallery-height: 80dvh;
   --pdp-header-height: 60px;
 
   @media (max-width: 900px) {
@@ -85,9 +85,9 @@ body.is-size-guide-active {
   top: 0;
   left: 0;
   width: 100vw;
-  height: 65vh;
-  height: 65dvh;
-  max-height: 65dvh;
+  height: 80vh;
+  height: 80dvh;
+  max-height: 80dvh;
   overflow: hidden;
   z-index: 1;
   min-width: 0;
@@ -116,8 +116,8 @@ body.is-size-guide-active {
 
 .pdp-new__content-column {
   position: absolute;
-  top: 65vh;
-  top: 65dvh;
+  top: 80vh;
+  top: 80dvh;
   left: 0;
   width: 100%;
   height: calc(100vh - 52px);
@@ -412,15 +412,10 @@ body.is-size-guide-active {
 
   &.pdp-block--title {
     display: flex;
-    flex-direction: row;
-    gap: 72px;
+    flex-direction: column;
+    gap: 10px;
     align-items: flex-start;
     margin-bottom: 22px;
-
-    @media (min-width: 768px) {
-      flex-direction: column;
-      gap: 10px;
-    }
 
     @media (min-width: 901px) {
       margin-bottom: 45px;
@@ -458,16 +453,11 @@ body.is-size-guide-active {
 
 .pdp-content__price-row {
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
+  gap: 10px;
   align-items: flex-end;
-  gap: 4px;
   min-width: 87px;
   flex-shrink: 0;
-
-  @media (min-width: 768px) {
-    flex-direction: row;
-    gap: 10px;
-  }
 }
 
 .pdp-content__price-wrapper {
