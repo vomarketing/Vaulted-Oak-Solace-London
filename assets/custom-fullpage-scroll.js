@@ -272,14 +272,42 @@ if (!window.FullpageScrollController) {
       const { signal } = this.abortController;
 
       let isTransitioning = false;
-      let isBlockedByPDPTransition = false;
 
-      document.addEventListener('pdp:transition:to-editorial', () => {
-        isBlockedByPDPTransition = true;
+      const activateEditorial = () => {
+        if (isTransitioning || document.body.classList.contains('is-editorial-active')) return;
+        isTransitioning = true;
+        document.body.classList.add('is-editorial-active');
+
+        if (this.swiper) {
+          this.swiper.slideTo(0, 0);
+          const activeSlide = this.swiper.slides[0];
+          if (activeSlide) {
+            this.updateHeaderContrast(activeSlide);
+            this.manageVideos(activeSlide);
+          }
+        }
+
         setTimeout(() => {
-          isBlockedByPDPTransition = false;
-        }, 550);
-      }, { signal });
+          isTransitioning = false;
+        }, 650);
+      };
+
+      const deactivateEditorial = () => {
+        if (isTransitioning || !document.body.classList.contains('is-editorial-active')) return;
+        isTransitioning = true;
+        document.body.classList.remove('is-editorial-active');
+
+        if (window.headerContrastController && typeof window.headerContrastController.detectSectionMode === 'function') {
+          window.headerContrastController.detectSectionMode();
+        }
+
+        setTimeout(() => {
+          isTransitioning = false;
+        }, 650);
+      };
+
+      document.addEventListener('pdp:transition:to-editorial', activateEditorial, { signal });
+      document.addEventListener('pdp:transition:from-editorial', deactivateEditorial, { signal });
 
       const handleWheel = (e) => {
         if (isTransitioning) {
@@ -287,47 +315,23 @@ if (!window.FullpageScrollController) {
           return;
         }
 
-        const pdpBottom = this.editorialContainer ? this.editorialContainer.offsetTop : (this.pdpSection.offsetTop + this.pdpSection.offsetHeight);
-        const currentScrollY = window.scrollY;
-        const viewportBottom = currentScrollY + window.innerHeight;
+        const isEditorialActive = document.body.classList.contains('is-editorial-active');
 
-        if (this.swiper && this.swiper.activeIndex === 0 && e.deltaY < -15) {
-          if (currentScrollY >= pdpBottom - 60) {
+        if (isEditorialActive) {
+          if (this.swiper && this.swiper.activeIndex === 0 && e.deltaY < -15) {
             if (e.cancelable) e.preventDefault();
-            isTransitioning = true;
-
-            if (window.innerWidth <= 900) {
-              document.dispatchEvent(new CustomEvent('pdp:transition:from-editorial'));
-            } else {
-              window.scrollTo({
-                top: Math.max(0, pdpBottom - window.innerHeight - 80),
-                behavior: 'smooth'
-              });
-            }
-
-            setTimeout(() => {
-              isTransitioning = false;
-            }, 700);
-            return;
+            deactivateEditorial();
           }
+          return;
         }
 
-        if (currentScrollY < pdpBottom - 30 && viewportBottom >= pdpBottom - 20 && e.deltaY > 15) {
-          if (this.swiper && this.swiper.activeIndex === 0) {
-            if (e.cancelable) e.preventDefault();
-            isTransitioning = true;
-            window.scrollTo({
-              top: pdpBottom,
-              behavior: 'smooth'
-            });
-            setTimeout(() => {
-              isTransitioning = false;
-              if (this.swiper && this.swiper.slides && this.swiper.slides[0]) {
-                this.updateHeaderContrast(this.swiper.slides[0]);
-              }
-            }, 700);
-            return;
-          }
+        const isAtPageBottom = (window.innerHeight + window.scrollY) >= (document.documentElement.scrollHeight - 30);
+        const contentCol = document.querySelector('.js-pdp-content-column');
+        const isContentAtBottom = contentCol ? (contentCol.scrollTop + contentCol.clientHeight >= contentCol.scrollHeight - 20) : true;
+
+        if (isAtPageBottom && isContentAtBottom && e.deltaY > 15) {
+          if (e.cancelable) e.preventDefault();
+          activateEditorial();
         }
       };
 
@@ -342,58 +346,24 @@ if (!window.FullpageScrollController) {
       };
 
       const handleTouchMove = (e) => {
-        if (!isTouchDown || !e.touches || !e.touches.length === 0 || isTransitioning || isBlockedByPDPTransition) return;
+        if (!isTouchDown || !e.touches || e.touches.length === 0 || isTransitioning) return;
         const currentY = e.touches[0].clientY;
         const diffY = touchStartY - currentY;
 
-        const pdpBottom = this.editorialContainer ? this.editorialContainer.offsetTop : (this.pdpSection.offsetTop + this.pdpSection.offsetHeight);
-        const currentScrollY = window.scrollY;
-        const viewportBottom = currentScrollY + window.innerHeight;
+        const isEditorialActive = document.body.classList.contains('is-editorial-active');
 
-        if (this.swiper && this.swiper.activeIndex === 0 && diffY < -40) {
-          if (currentScrollY >= pdpBottom - 60) {
-            isTransitioning = true;
+        if (isEditorialActive) {
+          if (this.swiper && this.swiper.activeIndex === 0 && diffY < -40) {
             isTouchDown = false;
-
-            if (window.innerWidth <= 900) {
-              document.dispatchEvent(new CustomEvent('pdp:transition:from-editorial'));
-            } else {
-              window.scrollTo({
-                top: Math.max(0, pdpBottom - window.innerHeight - 80),
-                behavior: 'smooth'
-              });
-            }
-
-            setTimeout(() => {
-              isTransitioning = false;
-              if (window.headerContrastController && typeof window.headerContrastController.detectSectionMode === 'function') {
-                window.headerContrastController.detectSectionMode();
-              }
-            }, 700);
-            return;
+            deactivateEditorial();
           }
-        }
-
-        if (window.innerWidth <= 900 || (e.target && e.target.closest && e.target.closest('.pdp-new'))) {
           return;
         }
 
-        if (currentScrollY < pdpBottom - 30 && viewportBottom >= pdpBottom - 100 && diffY > 35) {
-          if (this.swiper && this.swiper.activeIndex === 0) {
-            isTransitioning = true;
-            isTouchDown = false;
-            window.scrollTo({
-              top: pdpBottom,
-              behavior: 'smooth'
-            });
-            setTimeout(() => {
-              isTransitioning = false;
-              if (this.swiper && this.swiper.slides && this.swiper.slides[0]) {
-                this.updateHeaderContrast(this.swiper.slides[0]);
-              }
-            }, 700);
-            return;
-          }
+        const isAtPageBottom = (window.innerHeight + window.scrollY) >= (document.documentElement.scrollHeight - 30);
+        if (isAtPageBottom && diffY > 40) {
+          isTouchDown = false;
+          activateEditorial();
         }
       };
 

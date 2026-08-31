@@ -42,16 +42,22 @@ product-buy-buttons,
   &.is-hidden-by-section,
   body.is-pdp-transitioning &,
   body.is-editorial-active & {
-    transform: translateY(100%) !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
+    transform: translateY(100%);
+    opacity: 0;
+    pointer-events: none;
+
+    @media (min-width: 901px) {
+      transform: none;
+      opacity: 1;
+      pointer-events: auto;
+    }
   }
 
   @media (min-width: 901px) {
     position: static;
-    transform: none !important;
-    opacity: 1 !important;
-    pointer-events: auto !important;
+    transform: none;
+    opacity: 1;
+    pointer-events: auto;
     box-shadow: none;
     background: transparent;
     display: block;

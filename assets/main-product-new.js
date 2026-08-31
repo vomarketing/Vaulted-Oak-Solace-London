@@ -363,36 +363,9 @@ if (!customElements.get('product-fullscreen')) {
 
             if (startedAtBottom && diffY > 40 && diffX < diffY * 0.6) {
               const editorialContainer = document.querySelector('.pdp-editorial-swiper');
-              const pdpMain = this.querySelector('.pdp-new__main');
-
               if (!editorialContainer) return;
 
               document.dispatchEvent(new CustomEvent('pdp:transition:to-editorial'));
-
-              document.body.classList.add('is-pdp-transitioning');
-
-              if (pdpMain) {
-                pdpMain.classList.add('is-pdp-leaving');
-              }
-
-              const TRANSITION_MS = 400;
-              setTimeout(() => {
-                const targetY = editorialContainer.getBoundingClientRect().top + window.scrollY;
-
-                document.body.classList.remove('is-pdp-transitioning');
-                window.scrollTo({ top: targetY, behavior: 'instant' });
-
-                if (pdpMain) {
-                  pdpMain.classList.remove('is-pdp-leaving');
-                }
-
-                const fullpageInstance = window.fullpageScrollInstance;
-                if (fullpageInstance?.swiper?.slides?.[0]) {
-                  fullpageInstance.updateHeaderContrast(fullpageInstance.swiper.slides[0]);
-                } else if (window.headerContrastController?.detectSectionMode) {
-                  window.headerContrastController.detectSectionMode();
-                }
-              }, TRANSITION_MS);
             }
           }
         }, { passive: true, signal });
@@ -594,49 +567,6 @@ if (!customElements.get('product-fullscreen-anchor')) {
   class ProductFullscreenAnchor extends HTMLElement {
     constructor() {
       super();
-    }
-
-    connectedCallback() {
-      this.position = this.getAttribute('data-position') || 'bottom';
-      this.initObserver();
-    }
-
-    initObserver() {
-      let lastScrollY = window.scrollY;
-      const observerConfig = {
-        callback: (entries) => {
-          entries.forEach((entry) => {
-            const targetRect = entry.boundingClientRect;
-            const currentScrollY = window.scrollY;
-            const isScrollingDown = currentScrollY > lastScrollY;
-            const offset = 100;
-            if (entry.isIntersecting && targetRect.top > 0) {
-              if (this.position === 'top' && targetRect.top < offset) {
-                window.scrollTo({
-                  top: 0,
-                  behavior: 'smooth'
-                })
-              }
-              if (this.position === 'bottom' && targetRect.top > window.innerHeight - offset && isScrollingDown) {
-                const productFullscreen = document.querySelector('product-fullscreen');
-                const top = Math.ceil(productFullscreen?.getBoundingClientRect().height);
-                window.scrollTo({
-                  top,
-                  behavior: 'smooth'
-                })
-              }
-            }
-
-            lastScrollY = currentScrollY;
-          });
-        },
-        options: {
-          threshold: [0, 1]
-        }
-      }
-      const observer = new IntersectionObserver(observerConfig.callback, observerConfig.options);
-
-      observer.observe(this);
     }
   }
 
