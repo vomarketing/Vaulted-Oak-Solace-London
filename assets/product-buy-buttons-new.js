@@ -90,7 +90,7 @@ if (!customElements.get('product-buy-buttons')) {
         if (this.isSizeDrawerOpen() && sizeDrawer && !sizeDrawer.contains(e.target)) {
           if (submitBtn && submitBtn.contains(e.target)) return;
           if (backdrop && backdrop.contains(e.target)) return;
-          
+
           if (e.target.closest('.drw-Drawer') || e.target.closest('.js-Drawers_Backdrop') || e.target.closest('.drw-Drawers_Backdrop')) return;
           if (e.target.closest('[data-module-drawers-trigger]')) return;
 
@@ -391,6 +391,7 @@ if (!customElements.get('product-buy-buttons')) {
             if (isMobile) {
               if (isAvailable) {
                 this.collapseSizeDrawer(false);
+                this.dataset.sizeChosen = 'false';
                 const form = this.closest('form') || document.getElementById(`product-form-${this.dataset.sectionId}`);
                 if (form) {
                   if (typeof form.requestSubmit === 'function') {
