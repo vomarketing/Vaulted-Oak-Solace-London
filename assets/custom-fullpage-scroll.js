@@ -210,7 +210,7 @@ if (!window.FullpageScrollController) {
           forceToAxis: true
         },
         touchReleaseOnEdges: true,
-        resistanceRatio: 0.85,
+        resistanceRatio: 0.65,
         watchOverflow: true,
         nested: true,
         a11y: {
@@ -240,14 +240,26 @@ if (!window.FullpageScrollController) {
             this.notifySlideChange(sw);
           },
           slideChangeTransitionStart: (sw) => {
+            window._swiperIsTransitioning = true;
             this.handleSlideChange(sw);
+            const activeSlide = sw.slides[sw.activeIndex];
+            if (activeSlide && !this.isProductPage) {
+              this.updateHeaderContrast(activeSlide);
+            }
             this.notifySlideChange(sw);
           },
           slideChangeTransitionEnd: (sw) => {
+            window._swiperIsTransitioning = false;
             const activeSlide = sw.slides[sw.activeIndex];
             if (activeSlide) {
               this.updateHeaderContrast(activeSlide);
             }
+          },
+          transitionStart: () => {
+            window._swiperIsTransitioning = true;
+          },
+          transitionEnd: () => {
+            window._swiperIsTransitioning = false;
           }
         }
       });
@@ -517,6 +529,7 @@ if (!window.FullpageScrollController) {
     }
 
     destroy() {
+      window._swiperIsTransitioning = false;
       if (this.swiper) {
         try {
           this.swiper.destroy(true, true);

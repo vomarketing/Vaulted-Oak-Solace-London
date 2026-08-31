@@ -21,22 +21,35 @@ if (!window.SolaceHeaderContrast) {
       this.observer = null;
       this.isTicking = false;
       this.currentMode = null;
+      this.sections = [];
+      this.headerHeight = 80;
 
       this.init();
     }
 
     init() {
+      this.cacheHeaderHeight();
       this.setupStickyState();
       this.setupObserver();
       this.detectSectionMode();
       this.bindEvents();
     }
 
-    getHeaderHeight() {
+    cacheHeaderHeight() {
       if (this.headerWrapper && this.headerWrapper.offsetHeight > 0) {
-        return this.headerWrapper.offsetHeight;
+        this.headerHeight = this.headerWrapper.offsetHeight;
+      } else {
+        this.headerHeight = this.header ? this.header.offsetHeight || 80 : 80;
       }
-      return this.header ? this.header.offsetHeight || 80 : 80;
+    }
+
+    getModeFromElement(el) {
+      if (!el) return 'dark';
+      return (
+        el.getAttribute('data-header-mode') ||
+        el.querySelector('[data-header-mode]')?.getAttribute('data-header-mode') ||
+        'dark'
+      );
     }
 
     setupStickyState() {
@@ -60,26 +73,24 @@ if (!window.SolaceHeaderContrast) {
         this.observer.disconnect();
       }
 
-      const allSections = document.querySelectorAll(this.selectors.sections);
-      if (!allSections.length) {
+      this.sections = Array.from(document.querySelectorAll(this.selectors.sections));
+      if (!this.sections.length) {
         this.setMode('dark');
         return;
       }
 
-      const headerHeight = this.getHeaderHeight();
       const rootMarginTop = 0;
-      const rootMarginBottom = -(window.innerHeight - Math.max(headerHeight, 20));
+      const rootMarginBottom = -(window.innerHeight - Math.max(this.headerHeight, 20));
 
       this.observer = new IntersectionObserver(
         (entries) => {
+          if (window._swiperIsTransitioning) return;
+
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
-              const target = entry.target;
-              if (window.scrollY > 100 && target.closest('.pdp-new__gallery-column')) {
-                return;
-              }
-              const mode = target.getAttribute('data-header-mode') || target.querySelector('[data-header-mode]')?.getAttribute('data-header-mode') || 'dark';
-              const isSplit = !!target.closest('.pdp-new__main, .pdp-new__gallery-column');
+              if (window._swiperIsTransitioning) return;
+              const mode = this.getModeFromElement(entry.target);
+              const isSplit = !!entry.target.closest('.pdp-new__main, .pdp-new__gallery-column');
               this.updateContrast(mode, isSplit);
             }
           });
@@ -87,46 +98,20 @@ if (!window.SolaceHeaderContrast) {
         {
           root: null,
           rootMargin: `${rootMarginTop}px 0px ${rootMarginBottom}px 0px`,
-          threshold: 0
+          threshold: 0.05
         }
       );
 
-      allSections.forEach((section) => this.observer.observe(section));
+      this.sections.forEach((section) => this.observer.observe(section));
     }
 
     detectSectionMode() {
-      const headerHeight = this.getHeaderHeight();
-      const triggerY = headerHeight / 2;
+      if (window._swiperIsTransitioning) return;
 
-      // 1. If on product page with editorial swiper active
-      const editorialContainer = document.querySelector('.pdp-editorial-swiper');
-      if (editorialContainer && window.scrollY >= editorialContainer.offsetTop - 60) {
-        const fullpageInstance = window.fullpageScrollInstance;
-        if (fullpageInstance && fullpageInstance.swiper && fullpageInstance.swiper.slides) {
-          const activeSlide = fullpageInstance.swiper.slides[fullpageInstance.swiper.activeIndex || 0];
-          if (activeSlide) {
-            const mode = activeSlide.getAttribute('data-header-mode') || activeSlide.querySelector('[data-header-mode]')?.getAttribute('data-header-mode') || 'dark';
-            this.updateContrast(mode, false);
-            return;
-          }
-        }
-      }
+      const triggerY = this.headerHeight / 2;
+      const allSections = this.sections;
 
-      // 1b. If in PDP section on mobile: determine strictly by active gallery image alt logic
-      const pdpNew = document.querySelector('.pdp-new');
-      if (window.innerWidth <= 900 && pdpNew) {
-        const activeGalleryItem = pdpNew.querySelector('.pdp-media-item.swiper-slide-active') || pdpNew.querySelector('.pdp-media-item');
-        if (activeGalleryItem) {
-          const mode = activeGalleryItem.getAttribute('data-header-mode') || 'light';
-          this.updateContrast(mode, false);
-          return;
-        }
-      }
-
-      // 2. Scan visible sections
-      const allSections = document.querySelectorAll(this.selectors.sections);
-
-      if (!allSections.length) {
+      if (!allSections || !allSections.length) {
         this.updateContrast('dark', false);
         return;
       }
@@ -136,20 +121,16 @@ if (!window.SolaceHeaderContrast) {
 
       for (let i = 0; i < allSections.length; i++) {
         const section = allSections[i];
-        if (window.scrollY > 100 && section.closest('.pdp-new__gallery-column')) {
-          continue;
-        }
-
         const rect = section.getBoundingClientRect();
         if (rect.top <= triggerY && rect.bottom > triggerY) {
-          activeMode = section.getAttribute('data-header-mode') || section.querySelector('[data-header-mode]')?.getAttribute('data-header-mode') || 'dark';
+          activeMode = this.getModeFromElement(section);
           activeSection = section;
           break;
         }
       }
 
       if (!activeMode && window.scrollY === 0 && allSections.length > 0) {
-        activeMode = allSections[0].getAttribute('data-header-mode') || allSections[0].querySelector('[data-header-mode]')?.getAttribute('data-header-mode') || 'dark';
+        activeMode = this.getModeFromElement(allSections[0]);
         activeSection = allSections[0];
       }
 
@@ -185,10 +166,13 @@ if (!window.SolaceHeaderContrast) {
 
     bindEvents() {
       window.addEventListener('scroll', () => {
+        if (window._swiperIsTransitioning) return;
         if (!this.isTicking) {
           this.isTicking = true;
           window.requestAnimationFrame(() => {
-            this.detectSectionMode();
+            if (!window._swiperIsTransitioning) {
+              this.detectSectionMode();
+            }
             this.isTicking = false;
           });
         }
@@ -198,6 +182,7 @@ if (!window.SolaceHeaderContrast) {
       window.addEventListener('resize', () => {
         clearTimeout(resizeTimer);
         resizeTimer = setTimeout(() => {
+          this.cacheHeaderHeight();
           this.setupObserver();
           this.detectSectionMode();
         }, 150);
@@ -215,6 +200,7 @@ if (!window.SolaceHeaderContrast) {
     }
 
     refresh() {
+      this.cacheHeaderHeight();
       this.setupObserver();
       this.detectSectionMode();
     }

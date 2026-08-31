@@ -69,11 +69,13 @@
   .hd-Header_Logo svg {
     color: var(--Header_TextColor);
     fill: var(--Header_TextColor);
+    transition: color 0.3s ease, fill 0.3s ease;
   }
 
   .hd-Nav_Cart,
   .hd-MobileNav_Cart {
     background-color: var(--Color_Primary);
+    transition: background-color 0.3s ease, color 0.3s ease;
   }
 
   .hd-MobileNav_Icon {
