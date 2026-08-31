@@ -202,6 +202,8 @@ body.is-size-guide-active {
 
   @media (min-width: 901px) {
     height: auto;
+    display: block;
+    overflow: visible;
     transform: none !important;
   }
 }
@@ -233,10 +235,18 @@ body.is-size-guide-active {
     }
 
     @media (min-width: 901px) {
+      position: sticky;
+      top: 0;
+      z-index: var(--media-z-index, 1);
+      width: 100% !important;
       height: auto !important;
       max-height: none !important;
       overflow: visible;
       display: block;
+      background-color: var(--color-white, #ffffff);
+      box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.03);
+      scroll-snap-align: start;
+      scroll-snap-stop: normal;
     }
   }
 }

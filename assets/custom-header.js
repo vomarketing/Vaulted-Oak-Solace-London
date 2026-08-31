@@ -119,7 +119,7 @@ if (!window.SolaceHeaderContrast) {
       let activeMode = null;
       let activeSection = null;
 
-      for (let i = 0; i < allSections.length; i++) {
+      for (let i = allSections.length - 1; i >= 0; i--) {
         const section = allSections[i];
         const rect = section.getBoundingClientRect();
         if (rect.top <= triggerY && rect.bottom > triggerY) {

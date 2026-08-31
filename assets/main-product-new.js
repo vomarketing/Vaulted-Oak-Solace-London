@@ -8,8 +8,6 @@ if (!customElements.get('product-fullscreen')) {
       mediaGallery: '.js-pdp-media-gallery',
       mediaList: '.js-pdp-media-list',
       mediaItems: '.js-pdp-media-item',
-      swiper: '.js-pdp-swiper',
-      slides: '.js-pdp-slide',
       videos: '.js-pdp-video',
       galleryColumn: '.js-pdp-gallery-column',
       contentColumn: '.js-pdp-content-column',
@@ -118,10 +116,10 @@ if (!customElements.get('product-fullscreen')) {
       if (!this.isMobile()) return;
       if (this.swiper) return;
 
-      const swiperEl = this.querySelector(this.selectors.swiper);
+      const swiperEl = this.querySelector(this.selectors.mediaGallery);
       if (!swiperEl) return;
 
-      const slideCount = this.querySelectorAll(this.selectors.slides).length;
+      const slideCount = this.querySelectorAll(this.selectors.mediaItems).length;
       if (slideCount <= 1) return;
 
       let retries = 0;
