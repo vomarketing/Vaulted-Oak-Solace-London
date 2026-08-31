@@ -14,12 +14,13 @@
       "name": "Hero Fullscreen",
       "settings": {
         "media_type": "image",
-        "image_desktop": "shopify://shop_images/Artboard_1.png",
+        "image_desktop": "shopify://shop_images/03a48d106dae488ca858875dcb4be083d9d6f13d.jpg",
+        "image_mobile": "shopify://shop_images/03a48d106dae488ca858875dcb4be083d9d6f13d.jpg",
         "video_desktop": "shopify://files/videos/homepage3.mp4",
         "video_mobile": "shopify://files/videos/story.mp4",
         "video_url_desktop": "",
         "video_url_mobile": "",
-        "show_overlay": false,
+        "show_overlay": true,
         "overlay_opacity": 40,
         "overlay_color": "#000000",
         "header_contrast_mode": "light",
@@ -36,7 +37,8 @@
           "type": "item",
           "settings": {
             "media_type": "image",
-            "desktop_image": "shopify://shop_images/Artboard_2-1.png",
+            "desktop_image": "shopify://shop_images/Image_18.png",
+            "mobile_image": "shopify://shop_images/Image_18.png",
             "desktop_video_url": "",
             "mobile_video_url": "",
             "text": "The Delano",
@@ -46,8 +48,7 @@
         "item_cjJJ49": {
           "type": "item",
           "settings": {
-            "media_type": "image",
-            "desktop_image": "shopify://shop_images/Artboard_2a.png",
+            "media_type": "video",
             "desktop_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
             "mobile_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
             "text": "Shop Now",
@@ -70,7 +71,6 @@
       "name": "Hero Fullscreen",
       "settings": {
         "media_type": "video",
-        "video_desktop": "shopify://files/videos/290726 SOLACE RESORT 27 SEPTEMBER 02 WEB.mp4",
         "video_url_desktop": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
         "video_url_mobile": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
         "show_overlay": false,
@@ -88,9 +88,10 @@
       "name": "Featured Image",
       "settings": {
         "header_contrast_mode": "dark",
-        "desktop_image": "shopify://shop_images/Artboard_2-4.png",
+        "desktop_image": "shopify://shop_images/Image_25.png",
+        "mobile_image": "shopify://shop_images/Image_26.png",
         "image_link": "",
-        "text_left": "The",
+        "text_left": "The Annie",
         "text_left_link": "#",
         "text_right": "Shop Now",
         "text_right_link": "#"
@@ -100,11 +101,12 @@
       "type": "hero-fullscreen",
       "name": "Hero Fullscreen",
       "settings": {
-        "media_type": "video",
-        "video_desktop": "shopify://files/videos/290726 SOLACE RESORT 27 SEPTEMBER 01 WEB.mp4",
+        "media_type": "image",
+        "image_desktop": "shopify://shop_images/Module_5_d9f299ea-0297-409d-aa4d-c7e2c1ce2483.png",
+        "image_mobile": "shopify://shop_images/Module_5__1.png",
         "video_url_desktop": "",
         "video_url_mobile": "",
-        "show_overlay": false,
+        "show_overlay": true,
         "overlay_opacity": 40,
         "overlay_color": "rgba(0,0,0,0)",
         "header_contrast_mode": "light",
@@ -114,40 +116,36 @@
         "cta_link": "#"
       }
     },
-    "two_ups_media_CT3jaP": {
-      "type": "two-ups-media",
-      "blocks": {
-        "item_XzHKeE": {
-          "type": "item",
-          "settings": {
-            "media_type": "image",
-            "desktop_image": "shopify://shop_images/Artboard_2-2.png",
-            "desktop_video_url": "",
-            "mobile_video_url": "",
-            "text": "The Sedgwick",
-            "link": "#"
-          }
-        },
-        "item_wrJAd7": {
-          "type": "item",
-          "settings": {
-            "media_type": "image",
-            "desktop_image": "shopify://shop_images/Artboard_2-3.png",
-            "desktop_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
-            "mobile_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
-            "text": "Shop Now",
-            "link": "#"
-          }
-        }
-      },
-      "block_order": [
-        "item_XzHKeE",
-        "item_wrJAd7"
-      ],
-      "name": "Two Ups Media",
+    "rich_text_QkDcqw": {
+      "type": "rich-text",
+      "name": "Rich text",
       "settings": {
-        "color_scheme": "light",
-        "header_contrast_mode": "dark"
+        "header_contrast_mode": "dark",
+        "text": "<p>The resort 2027 collection lets fabrication and technique driving the design process, the pair describe their aesthetic as “Bold, confident, refined. Modern futurism balanced with timeless minimalism”. The result is a distinctly graphic collection defined by precision cuts, craftsmanship and a signature look of sophistication.</p>",
+        "link_text": "Shop Collection",
+        "link": "#",
+        "max_width_desktop": 910,
+        "max_width_tablet": 589,
+        "max_width_mobile": 305
+      }
+    },
+    "hero_fullscreen_rzid96": {
+      "type": "hero-fullscreen",
+      "name": "Hero Fullscreen",
+      "settings": {
+        "media_type": "image",
+        "image_desktop": "shopify://shop_images/Module_7.png",
+        "image_mobile": "shopify://shop_images/Module_7__1.png",
+        "video_url_desktop": "",
+        "video_url_mobile": "",
+        "show_overlay": true,
+        "overlay_opacity": 20,
+        "overlay_color": "#000000",
+        "header_contrast_mode": "light",
+        "text_color": "white",
+        "heading": "Resort 2027",
+        "cta_text": "Shop Collection",
+        "cta_link": "#"
       }
     },
     "rich_text_PG7mfm": {
@@ -170,7 +168,8 @@
     "hero_fullscreen_hGpWfC",
     "featured_image_bdxxic",
     "hero_fullscreen_PPmfBH",
-    "two_ups_media_CT3jaP",
+    "rich_text_QkDcqw",
+    "hero_fullscreen_rzid96",
     "rich_text_PG7mfm"
   ]
 }

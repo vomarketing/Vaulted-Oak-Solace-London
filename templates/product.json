@@ -80,7 +80,7 @@
         "header_contrast_mode": "light",
         "stock_note": "Only a few left in stock",
         "wishlist_enable": true,
-        "size_guide": "",
+        "size_guide": "solace-standard-dress-guide",
         "size_guide_fit_title": "Fit",
         "size_converter_title": "Size Converter",
         "size_converter_body": "<p>Use your body measurements below to find your closest size.</p>",
@@ -94,7 +94,7 @@
         "measure_hip_title": "Low Hip",
         "measure_hip_body": "With your feet together, measure around the fullest part of the hips.",
         "size_guide_contact_text": "<p>Questions about size, fit & fabric? <a href=\"/pages/contact\">Contact us</a><br/>Available UK business hours Mon - Fri, 9am - 5pm.</p>",
-        "contact_page": ""
+        "contact_page": "shopify://pages/contact"
       }
     },
     "rich_text_NHU7La": {
@@ -162,7 +162,7 @@
       "type": "related-products",
       "name": "Related Products",
       "settings": {
-        "title": "shop resort 2027",
+        "title": "Shop Resort 2027",
         "products": "{{ product.metafields.custom.recommended_products.value }}",
         "header_contrast_mode": "dark"
       }
