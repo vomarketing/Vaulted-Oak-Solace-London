@@ -221,7 +221,7 @@ if (!window.FullpageScrollController) {
         creativeEffect: {
           prev: {
             shadow: false,
-            translate: [0, 0, 0]
+            translate: [0, 0, -1]
           },
           next: {
             translate: [0, '100%', 0]
