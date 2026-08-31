@@ -577,8 +577,6 @@ if (!customElements.get('product-buy-buttons')) {
           body: JSON.stringify(klaviyoPayload)
         });
 
-        console.log(klaviyoRes, 'error')
-
         if (klaviyoRes.ok || klaviyoRes.status === 200 || klaviyoRes.status === 201 || klaviyoRes.status === 202 || klaviyoRes.status === 409) {
           onComplete(true, successMsg);
         } else if (klaviyoRes.status === 429) {

@@ -41,6 +41,9 @@ if (!customElements.get('product-fullscreen')) {
       this.classes = ProductFullscreen.classes;
       this.swiper = null;
       this.swiperInitTimer = null;
+      this.canLeaveLastSlide = false;
+      this.lastSlideCooldownTimer = null;
+      window._pdpCanTransitionToEditorial = false;
     }
 
     isDesktop() {
@@ -55,8 +58,9 @@ if (!customElements.get('product-fullscreen')) {
       this.abortController = new AbortController();
 
       this.initMediaObserver();
-      this.initMobileSwiper();
+      this.initGallerySwiper();
       this.initMobileScrollController();
+      this.initContentColumnDesktopScroll();
       this.initZoomModal();
       this.initDrawersMovement();
 
@@ -71,15 +75,43 @@ if (!customElements.get('product-fullscreen')) {
       }, { signal: this.abortController.signal });
 
       this.mql = window.matchMedia('(min-width: 901px)');
-      this.handleMediaChange = (e) => {
-        if (e.matches) {
-          this.destroyMobileSwiper();
-        } else {
-          this.initMobileSwiper();
+      this.handleMediaChange = () => {
+        if (this.swiper) {
+          this.swiper.update();
         }
       };
 
       this.mql.addEventListener('change', this.handleMediaChange);
+    }
+
+    initContentColumnDesktopScroll() {
+      const contentCol = this.querySelector(this.selectors.contentColumn);
+      if (!contentCol) return;
+      const { signal } = this.abortController;
+
+      const checkContentBottom = () => {
+        if (this.isMobile()) return;
+        const atBottom = contentCol.scrollTop + contentCol.clientHeight >= contentCol.scrollHeight - 15;
+        if (atBottom) {
+          window._pdpCanTransitionToEditorial = true;
+          document.dispatchEvent(new CustomEvent('pdp:can-transition', { detail: { canLeave: true } }));
+        } else {
+          if (this.swiper && !this.canLeaveLastSlide) {
+            window._pdpCanTransitionToEditorial = false;
+            document.dispatchEvent(new CustomEvent('pdp:can-transition', { detail: { canLeave: false } }));
+          }
+        }
+      };
+
+      contentCol.addEventListener('scroll', checkContentBottom, { passive: true, signal });
+
+      contentCol.addEventListener('wheel', (e) => {
+        if (this.isMobile()) return;
+        const atBottom = contentCol.scrollTop + contentCol.clientHeight >= contentCol.scrollHeight - 5;
+        if (atBottom && e.deltaY > 20) {
+          document.dispatchEvent(new CustomEvent('pdp:slide-next'));
+        }
+      }, { passive: true, signal });
     }
 
     updateExternalPriceAndStock(price, comparePrice, inventoryQty) {
@@ -114,8 +146,7 @@ if (!customElements.get('product-fullscreen')) {
       }
     }
 
-    initMobileSwiper() {
-      if (!this.isMobile()) return;
+    initGallerySwiper() {
       if (this.swiper) return;
 
       const swiperEl = this.querySelector(this.selectors.swiper);
@@ -140,14 +171,28 @@ if (!customElements.get('product-fullscreen')) {
           direction: 'vertical',
           slidesPerView: 1,
           spaceBetween: 0,
-          speed: 350,
+          speed: 600,
+          effect: 'creative',
+          creativeEffect: {
+            prev: {
+              shadow: false,
+              translate: [0, 0, -1]
+            },
+            next: {
+              translate: [0, '100%', 0]
+            }
+          },
           mousewheel: {
             releaseOnEdges: true,
-            sensitivity: 1
+            sensitivity: 0.8,
+            thresholdDelta: 15,
+            thresholdTime: 400,
+            forceToAxis: true
           },
           touchReleaseOnEdges: true,
-          resistanceRatio: 0.7,
+          resistanceRatio: 0.65,
           watchOverflow: true,
+          nested: true,
           a11y: {
             enabled: true,
             prevSlideMessage: 'Previous media',
@@ -160,21 +205,75 @@ if (!customElements.get('product-fullscreen')) {
           },
           keyboard: {
             enabled: true,
-            onlyInViewport: true
+            onlyInViewport: true,
+            pageUpDown: true
           },
+          followFinger: true,
+          passiveListeners: true,
           on: {
             init: (swiper) => {
               this.handleSlideChange(swiper);
               this.updateHeaderContrast(swiper);
+              const isAtEnd = swiper.isEnd || swiper.activeIndex >= swiper.slides.length - 1;
+              if (isAtEnd) {
+                this.lastSlideCooldownTimer = setTimeout(() => {
+                  this.canLeaveLastSlide = true;
+                  window._pdpCanTransitionToEditorial = true;
+                  document.dispatchEvent(new CustomEvent('pdp:can-transition', { detail: { canLeave: true } }));
+                }, 500);
+              } else {
+                this.canLeaveLastSlide = false;
+                window._pdpCanTransitionToEditorial = false;
+                document.dispatchEvent(new CustomEvent('pdp:can-transition', { detail: { canLeave: false } }));
+              }
             },
             slideChangeTransitionStart: (swiper) => {
+              window._swiperIsTransitioning = true;
+              this.canLeaveLastSlide = false;
+              window._pdpCanTransitionToEditorial = false;
+              document.dispatchEvent(new CustomEvent('pdp:can-transition', { detail: { canLeave: false } }));
+              if (this.lastSlideCooldownTimer) {
+                clearTimeout(this.lastSlideCooldownTimer);
+                this.lastSlideCooldownTimer = null;
+              }
               this.handleSlideChange(swiper);
+              this.updateHeaderContrast(swiper);
             },
             slideChangeTransitionEnd: (swiper) => {
+              window._swiperIsTransitioning = false;
               this.updateHeaderContrast(swiper);
+              const isAtEnd = swiper.isEnd || swiper.activeIndex >= swiper.slides.length - 1;
+
+              if (isAtEnd) {
+                if (this.lastSlideCooldownTimer) {
+                  clearTimeout(this.lastSlideCooldownTimer);
+                }
+                this.lastSlideCooldownTimer = setTimeout(() => {
+                  this.canLeaveLastSlide = true;
+                  window._pdpCanTransitionToEditorial = true;
+                  document.dispatchEvent(new CustomEvent('pdp:can-transition', { detail: { canLeave: true } }));
+                }, 500);
+              } else {
+                this.canLeaveLastSlide = false;
+                window._pdpCanTransitionToEditorial = false;
+                document.dispatchEvent(new CustomEvent('pdp:can-transition', { detail: { canLeave: false } }));
+              }
+            },
+            transitionStart: () => {
+              window._swiperIsTransitioning = true;
+            },
+            transitionEnd: () => {
+              window._swiperIsTransitioning = false;
             }
           }
         });
+
+        swiperEl.addEventListener('wheel', (e) => {
+          if (this.isMobile()) return;
+          if (this.canLeaveLastSlide && e.deltaY > 20) {
+            document.dispatchEvent(new CustomEvent('pdp:slide-next'));
+          }
+        }, { passive: true, signal: this.abortController.signal });
       };
 
       init();
@@ -185,14 +284,16 @@ if (!customElements.get('product-fullscreen')) {
       const activeSlide = swiper.slides[swiper.activeIndex];
       if (!activeSlide) return;
 
-      const allVideos = this.querySelectorAll(this.selectors.videos);
-      allVideos.forEach((video) => {
+      const allVideos = this.querySelectorAll(this.selectors.videos) || [];
+
+      allVideos.length > 0 && allVideos.forEach((video) => {
         if (video.closest('.swiper-slide') !== activeSlide) {
           video.pause();
         }
       });
 
       const activeVideo = activeSlide.querySelector(this.selectors.videos);
+
       if (activeVideo) {
         activeVideo.play().catch(() => {});
       }
@@ -209,7 +310,54 @@ if (!customElements.get('product-fullscreen')) {
       }
     }
 
-    destroyMobileSwiper() {
+    updateCurrentHeaderContrast() {
+      if (this.swiper) {
+        this.updateHeaderContrast(this.swiper);
+      } else {
+        const activeSlide = this.querySelector('.swiper-slide-active') || this.querySelector(this.selectors.slides);
+        const headerMode = activeSlide ? (activeSlide.getAttribute('data-header-mode') || 'light') : 'light';
+        if (window.headerContrastController && typeof window.headerContrastController.updateContrast === 'function') {
+          window.headerContrastController.updateContrast(headerMode, this.isDesktop());
+        }
+      }
+    }
+
+    canLeaveToEditorial(target) {
+      if (this.isMobile()) return false;
+
+      if (target && target.closest(this.selectors.galleryColumn)) {
+
+        if (!this.swiper || !this.swiper.slides || this.swiper.slides.length <= 1) {
+          return true;
+        }
+
+        return !!window._pdpCanTransitionToEditorial;
+      }
+
+      if (target && target.closest(this.selectors.contentColumn)) {
+        const contentCol = this.querySelector(this.selectors.contentColumn);
+
+        if (contentCol) {
+          return contentCol.scrollTop + contentCol.clientHeight >= contentCol.scrollHeight - 15;
+        }
+
+        return true;
+      }
+
+      if (!this.swiper || !this.swiper.slides || this.swiper.slides.length <= 1) {
+        return true;
+      }
+      return !!window._pdpCanTransitionToEditorial;
+    }
+
+    destroySwiper() {
+      window._swiperIsTransitioning = false;
+      window._pdpCanTransitionToEditorial = false;
+      if (this.lastSlideCooldownTimer) {
+        clearTimeout(this.lastSlideCooldownTimer);
+        this.lastSlideCooldownTimer = null;
+      }
+      this.canLeaveLastSlide = false;
       if (this.swiperInitTimer) {
         clearTimeout(this.swiperInitTimer);
         this.swiperInitTimer = null;
@@ -244,22 +392,6 @@ if (!customElements.get('product-fullscreen')) {
         if (galleryColumn) galleryColumn.classList.add(this.classes.galleryLocked);
         this.classList.add(this.classes.contentExpanded);
         contentColumn.classList.add(this.classes.contentLockedTop);
-
-        const headerHeight = document.querySelector(this.selectors.header)?.offsetHeight || 60;
-        const galleryHeight = galleryColumn ? galleryColumn.offsetHeight : 727;
-        const targetScroll = Math.max(0, galleryHeight - headerHeight);
-
-        if (animate) {
-          window.scrollTo({
-            top: targetScroll,
-            behavior: 'smooth'
-          });
-        } else {
-          window.scrollTo({
-            top: targetScroll,
-            behavior: 'instant'
-          });
-        }
       };
 
       const collapseSheet = (animate = true) => {
@@ -270,13 +402,6 @@ if (!customElements.get('product-fullscreen')) {
         this.classList.remove(this.classes.contentExpanded);
         contentColumn.classList.remove(this.classes.contentLockedTop);
         contentColumn.scrollTop = 0;
-
-        if (animate && window.scrollY > 0) {
-          window.scrollTo({
-            top: 0,
-            behavior: 'smooth'
-          });
-        }
       };
 
       // Tap on Sheet Handle to toggle Peek vs Expanded
@@ -362,37 +487,7 @@ if (!customElements.get('product-fullscreen')) {
             }
 
             if (startedAtBottom && diffY > 40 && diffX < diffY * 0.6) {
-              const editorialContainer = document.querySelector('.pdp-editorial-swiper');
-              const pdpMain = this.querySelector('.pdp-new__main');
-
-              if (!editorialContainer) return;
-
-              document.dispatchEvent(new CustomEvent('pdp:transition:to-editorial'));
-
-              document.body.classList.add('is-pdp-transitioning');
-
-              if (pdpMain) {
-                pdpMain.classList.add('is-pdp-leaving');
-              }
-
-              const TRANSITION_MS = 400;
-              setTimeout(() => {
-                const targetY = editorialContainer.getBoundingClientRect().top + window.scrollY;
-
-                document.body.classList.remove('is-pdp-transitioning');
-                window.scrollTo({ top: targetY, behavior: 'instant' });
-
-                if (pdpMain) {
-                  pdpMain.classList.remove('is-pdp-leaving');
-                }
-
-                const fullpageInstance = window.fullpageScrollInstance;
-                if (fullpageInstance?.swiper?.slides?.[0]) {
-                  fullpageInstance.updateHeaderContrast(fullpageInstance.swiper.slides[0]);
-                } else if (window.headerContrastController?.detectSectionMode) {
-                  window.headerContrastController.detectSectionMode();
-                }
-              }, TRANSITION_MS);
+              document.dispatchEvent(new CustomEvent('pdp:slide-next'));
             }
           }
         }, { passive: true, signal });
@@ -570,7 +665,7 @@ if (!customElements.get('product-fullscreen')) {
     }
 
     disconnectedCallback() {
-      this.destroyMobileSwiper();
+      this.destroySwiper();
 
       if (this.mql) {
         this.mql.removeEventListener('change', this.handleMediaChange);
@@ -594,49 +689,6 @@ if (!customElements.get('product-fullscreen-anchor')) {
   class ProductFullscreenAnchor extends HTMLElement {
     constructor() {
       super();
-    }
-
-    connectedCallback() {
-      this.position = this.getAttribute('data-position') || 'bottom';
-      this.initObserver();
-    }
-
-    initObserver() {
-      let lastScrollY = window.scrollY;
-      const observerConfig = {
-        callback: (entries) => {
-          entries.forEach((entry) => {
-            const targetRect = entry.boundingClientRect;
-            const currentScrollY = window.scrollY;
-            const isScrollingDown = currentScrollY > lastScrollY;
-            const offset = 100;
-            if (entry.isIntersecting && targetRect.top > 0) {
-              if (this.position === 'top' && targetRect.top < offset) {
-                window.scrollTo({
-                  top: 0,
-                  behavior: 'smooth'
-                })
-              }
-              if (this.position === 'bottom' && targetRect.top > window.innerHeight - offset && isScrollingDown) {
-                const productFullscreen = document.querySelector('product-fullscreen');
-                const top = Math.ceil(productFullscreen?.getBoundingClientRect().height);
-                window.scrollTo({
-                  top,
-                  behavior: 'smooth'
-                })
-              }
-            }
-
-            lastScrollY = currentScrollY;
-          });
-        },
-        options: {
-          threshold: [0, 1]
-        }
-      }
-      const observer = new IntersectionObserver(observerConfig.callback, observerConfig.options);
-
-      observer.observe(this);
     }
   }
 

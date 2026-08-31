@@ -34,9 +34,10 @@ body.is-size-guide-active {
 .pdp-new {
   position: relative;
   width: 100%;
+  height: 100%;
   background-color: var(--color-white, #ffffff);
   color: var(--color-black, #000000);
-  overflow-x: hidden;
+  overflow: hidden;
   --pdp-mobile-gallery-height: min(727px, calc(100dvh - 110px));
   --pdp-header-height: 60px;
 
@@ -52,17 +53,20 @@ body.is-size-guide-active {
 .pdp-new__main {
   position: relative;
   width: 100%;
+  height: 100%;
   display: block;
 
   @media (min-width: 901px) {
     display: grid;
     grid-template-columns: minmax(0, 6fr) minmax(0, 4fr);
     align-items: flex-start;
+    background-color: var(--color-white, #ffffff);
+    gap: 0;
   }
 }
 
 .pdp-new__gallery-column {
-  position: sticky;
+  position: relative;
   top: 0;
   left: 0;
   width: 100vw;
@@ -83,15 +87,15 @@ body.is-size-guide-active {
   }
 
   @media (min-width: 901px) {
-    position: relative;
-    top: auto;
+    position: sticky;
+    top: 0;
     left: auto;
     width: 100%;
-    height: auto;
-    max-height: none;
-    overflow: visible;
-    z-index: auto;
-    touch-action: auto;
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow: hidden;
+    z-index: 1;
+    touch-action: pan-y;
 
     &.is-locked {
       pointer-events: auto !important;
@@ -100,28 +104,30 @@ body.is-size-guide-active {
 }
 
 .pdp-new__content-column {
-  position: relative;
+  position: absolute;
+  top: calc(100% - 130px);
+  bottom: 0;
+  left: 0;
+  right: 0;
   z-index: 3;
   width: 100%;
   box-sizing: border-box;
   background-color: var(--color-white, #ffffff);
-  padding: 14px 0 60px;
+  padding: 14px 0 calc(90px + env(safe-area-inset-bottom, 0px));
   box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.08);
   min-height: auto;
   touch-action: pan-y;
-  isolation: isolate;
+  transition: top 0.35s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  overflow-y: hidden;
 
   @media (min-width: 768px) {
-    padding: 20px 0 60px;
+    padding: 20px 0 calc(90px + env(safe-area-inset-bottom, 0px));
   }
 
   &.is-locked-top {
     @media (max-width: 900px) {
-      position: sticky;
       top: var(--pdp-header-height, 60px);
-      height: calc(100dvh - var(--pdp-header-height, 60px));
-      max-height: calc(100dvh - var(--pdp-header-height, 60px));
-      overflow-y: auto;
+      overflow-y: auto !important;
       -webkit-overflow-scrolling: touch;
       overscroll-behavior: contain;
     }
@@ -130,9 +136,15 @@ body.is-size-guide-active {
   @media (min-width: 901px) {
     position: sticky;
     top: 0;
+    left: auto;
+    right: auto;
+    bottom: auto;
     height: 100dvh;
+    max-height: none;
+    transform: none !important;
+    transition: none !important;
     min-height: 0;
-    overflow-y: auto;
+    overflow-y: auto !important;
     max-width: none;
     scrollbar-width: none;
     -ms-overflow-style: none;
@@ -144,6 +156,8 @@ body.is-size-guide-active {
     padding-bottom: 80px;
     touch-action: auto;
     isolation: auto;
+    margin-left: -1px;
+    width: calc(100% + 1px);
 
     &::-webkit-scrollbar {
       display: none;
@@ -199,11 +213,6 @@ body.is-size-guide-active {
   margin: 0;
   padding: 0;
   gap: 0;
-
-  @media (min-width: 901px) {
-    height: auto;
-    transform: none !important;
-  }
 }
 
 .pdp-media-item {
@@ -233,10 +242,13 @@ body.is-size-guide-active {
     }
 
     @media (min-width: 901px) {
-      height: auto !important;
-      max-height: none !important;
-      overflow: visible;
-      display: block;
+      height: 100dvh !important;
+      max-height: 100dvh !important;
+      overflow: hidden;
+      display: flex !important;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+      transform: translate3d(0, 0, 0);
     }
   }
 }
@@ -255,8 +267,8 @@ body.is-size-guide-active {
   cursor: pointer;
 
   @media (min-width: 901px) {
-    height: auto !important;
-    display: block !important;
+    height: 100% !important;
+    display: flex !important;
   }
 }
 
@@ -279,12 +291,8 @@ body.is-size-guide-active {
   }
 
   @media (min-width: 901px) {
-    height: auto !important;
-    aspect-ratio: 9 / 11 !important;
-  }
-
-  @media (min-width: 1441px) {
-    aspect-ratio: 3 / 4 !important;
+    height: 100% !important;
+    aspect-ratio: auto !important;
   }
 }
 
@@ -301,6 +309,13 @@ body.is-size-guide-active {
   line-height: 0;
   object-fit: cover;
   object-position: top;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
+
+  @media (min-width: 901px) {
+    width: calc(100% + 1px);
+  }
 }
 
 .pdp-media-item--placeholder {
