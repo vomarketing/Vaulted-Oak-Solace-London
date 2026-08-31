@@ -252,7 +252,7 @@ body.is-size-guide-active {
   padding: 0;
   line-height: 0;
   font-size: 0;
-  cursor: url(/cdn/shop/files/zoom-in.svg?v=1610038902), auto;
+  cursor: pointer;
 
   @media (min-width: 901px) {
     height: auto !important;
