@@ -145,59 +145,39 @@ if (!window.FullpageScrollController) {
 
       const isFooterExcluded = window.innerWidth >= this.footerBreakpoint;
 
-      const targetEditorialSlides = editorialSections.filter(
+      const targetSlides = editorialSections.filter(
         (el) =>
           !el.classList.contains('js-section-footer') &&
           !(isFooterExcluded && el.classList.contains('shopify-section--footer'))
       );
 
-      // Unified Master-Nested Swiper Architecture (Desktop & Mobile)
-      const allTargetSlides = [this.pdpSection, ...targetEditorialSlides];
+      if (!targetSlides.length) {
+        this.dispatchReadyEvent(null);
+        return;
+      }
 
-      let swiperContainer = this.container.querySelector(`:scope > .${this.classes.fullpageSwiper}`);
-      if (!swiperContainer) {
-        swiperContainer = document.createElement('div');
-        swiperContainer.className = `${this.classes.swiper} ${this.classes.fullpageSwiper}`;
+      let editorialContainer = this.container.querySelector(`.${this.classes.editorialSwiper}`);
+      if (!editorialContainer) {
+        editorialContainer = document.createElement('div');
+        editorialContainer.className = `${this.classes.swiper} ${this.classes.fullpageSwiper} ${this.classes.editorialSwiper}`;
 
         const wrapper = document.createElement('div');
         wrapper.className = `${this.classes.swiperWrapper} ${this.classes.fullpageWrapper}`;
 
-        allTargetSlides.forEach((section) => {
+        targetSlides.forEach((section) => {
           section.classList.add(this.classes.swiperSlide, this.classes.fullpageSlide);
           wrapper.appendChild(section);
         });
 
-        swiperContainer.appendChild(wrapper);
-        this.container.appendChild(swiperContainer);
+        editorialContainer.appendChild(wrapper);
+        this.container.appendChild(editorialContainer);
       }
-      this.wrapper = swiperContainer.querySelector(`.${this.classes.swiperWrapper}`);
-      this.slides = allTargetSlides;
+      this.editorialContainer = editorialContainer;
+      this.wrapper = editorialContainer.querySelector(`.${this.classes.swiperWrapper}`);
+      this.slides = targetSlides;
 
-      this.initSwiperInstance(swiperContainer);
-      this.bindPDPControlEvents();
-    }
-
-    bindPDPControlEvents() {
-      if (!this.swiper || !this.isProductPage) return;
-      const { signal } = this.abortController;
-
-      if (this.swiper.activeIndex === 0) {
-        this.swiper.allowSlideNext = !!window._pdpCanTransitionToEditorial;
-      }
-
-      document.addEventListener('pdp:can-transition', (e) => {
-        const canLeave = e.detail?.canLeave ?? false;
-        if (this.swiper && this.swiper.activeIndex === 0) {
-          this.swiper.allowSlideNext = canLeave;
-        }
-      }, { signal });
-
-      document.addEventListener('pdp:slide-next', () => {
-        if (this.swiper && this.swiper.activeIndex === 0) {
-          this.swiper.allowSlideNext = true;
-          this.swiper.slideNext();
-        }
-      }, { signal });
+      this.initSwiperInstance(this.editorialContainer);
+      this.bindHybridScrollEvents();
     }
 
     initSwiperInstance(targetElement) {
@@ -232,8 +212,7 @@ if (!window.FullpageScrollController) {
         touchReleaseOnEdges: true,
         resistanceRatio: 0.65,
         watchOverflow: true,
-        noSwiping: true,
-        noSwipingSelector: '.pdp-new__gallery-column, .pdp-new__content-column, .pdp-media-gallery, input, textarea, select, option, button',
+        nested: true,
         a11y: {
           enabled: true,
           prevSlideMessage: 'Previous section',
@@ -254,75 +233,26 @@ if (!window.FullpageScrollController) {
         on: {
           init: (sw) => {
             this.handleSlideChange(sw);
-            if (this.isProductPage) {
-              if (sw.activeIndex === 0) {
-                sw.allowSlideNext = !!window._pdpCanTransitionToEditorial;
-                const pdpEl = document.querySelector('product-fullscreen');
-                if (pdpEl && typeof pdpEl.updateCurrentHeaderContrast === 'function') {
-                  pdpEl.updateCurrentHeaderContrast();
-                }
-              } else {
-                const activeSlide = sw.slides[sw.activeIndex];
-                if (activeSlide) {
-                  this.updateHeaderContrast(activeSlide);
-                }
-              }
-            } else {
-              const activeSlide = sw.slides[sw.activeIndex];
-              if (activeSlide && !this.isProductPage) {
-                this.updateHeaderContrast(activeSlide);
-              }
+            const activeSlide = sw.slides[sw.activeIndex];
+            if (activeSlide && !this.isProductPage) {
+              this.updateHeaderContrast(activeSlide);
             }
             this.notifySlideChange(sw);
           },
           slideChangeTransitionStart: (sw) => {
             window._swiperIsTransitioning = true;
             this.handleSlideChange(sw);
-
-            if (this.isProductPage) {
-              if (sw.activeIndex === 0) {
-                const pdpEl = document.querySelector('product-fullscreen');
-                if (pdpEl && typeof pdpEl.updateCurrentHeaderContrast === 'function') {
-                  pdpEl.updateCurrentHeaderContrast();
-                }
-              } else {
-                const activeSlide = sw.slides[sw.activeIndex];
-                if (activeSlide) {
-                  this.updateHeaderContrast(activeSlide);
-                }
-              }
-            } else {
-              const activeSlide = sw.slides[sw.activeIndex];
-              if (activeSlide && !this.isProductPage) {
-                this.updateHeaderContrast(activeSlide);
-              }
+            const activeSlide = sw.slides[sw.activeIndex];
+            if (activeSlide && !this.isProductPage) {
+              this.updateHeaderContrast(activeSlide);
             }
-
             this.notifySlideChange(sw);
           },
           slideChangeTransitionEnd: (sw) => {
             window._swiperIsTransitioning = false;
-
-            if (this.isProductPage) {
-              if (sw.activeIndex === 0) {
-                sw.allowSlideNext = !!window._pdpCanTransitionToEditorial;
-                const pdpEl = document.querySelector('product-fullscreen');
-                if (pdpEl && typeof pdpEl.updateCurrentHeaderContrast === 'function') {
-                  pdpEl.updateCurrentHeaderContrast();
-                }
-              } else {
-                sw.allowSlideNext = true;
-                sw.allowSlidePrev = true;
-                const activeSlide = sw.slides[sw.activeIndex];
-                if (activeSlide) {
-                  this.updateHeaderContrast(activeSlide);
-                }
-              }
-            } else {
-              const activeSlide = sw.slides[sw.activeIndex];
-              if (activeSlide) {
-                this.updateHeaderContrast(activeSlide);
-              }
+            const activeSlide = sw.slides[sw.activeIndex];
+            if (activeSlide) {
+              this.updateHeaderContrast(activeSlide);
             }
           },
           transitionStart: () => {
@@ -335,6 +265,146 @@ if (!window.FullpageScrollController) {
       });
 
       this.dispatchReadyEvent(this.swiper);
+    }
+
+    bindHybridScrollEvents() {
+      if (!this.isProductPage || !this.pdpSection || !this.editorialContainer) return;
+      const { signal } = this.abortController;
+
+      let isTransitioning = false;
+      let isBlockedByPDPTransition = false;
+
+      document.addEventListener('pdp:transition:to-editorial', () => {
+        isBlockedByPDPTransition = true;
+        setTimeout(() => {
+          isBlockedByPDPTransition = false;
+        }, 550);
+      }, { signal });
+
+      const handleWheel = (e) => {
+        if (isTransitioning) {
+          if (e.cancelable) e.preventDefault();
+          return;
+        }
+
+        const pdpBottom = this.editorialContainer ? this.editorialContainer.offsetTop : (this.pdpSection.offsetTop + this.pdpSection.offsetHeight);
+        const currentScrollY = window.scrollY;
+        const viewportBottom = currentScrollY + window.innerHeight;
+
+        if (this.swiper && this.swiper.activeIndex === 0 && e.deltaY < -15) {
+          if (currentScrollY >= pdpBottom - 60) {
+            if (e.cancelable) e.preventDefault();
+            isTransitioning = true;
+
+            if (window.innerWidth <= 900) {
+              document.dispatchEvent(new CustomEvent('pdp:transition:from-editorial'));
+            } else {
+              window.scrollTo({
+                top: Math.max(0, pdpBottom - window.innerHeight - 80),
+                behavior: 'smooth'
+              });
+            }
+
+            setTimeout(() => {
+              isTransitioning = false;
+            }, 700);
+            return;
+          }
+        }
+
+        if (currentScrollY < pdpBottom - 30 && viewportBottom >= pdpBottom - 20 && e.deltaY > 15) {
+          if (this.swiper && this.swiper.activeIndex === 0) {
+            if (e.cancelable) e.preventDefault();
+            isTransitioning = true;
+            window.scrollTo({
+              top: pdpBottom,
+              behavior: 'smooth'
+            });
+            setTimeout(() => {
+              isTransitioning = false;
+              if (this.swiper && this.swiper.slides && this.swiper.slides[0]) {
+                this.updateHeaderContrast(this.swiper.slides[0]);
+              }
+            }, 700);
+            return;
+          }
+        }
+      };
+
+      let touchStartY = 0;
+      let isTouchDown = false;
+
+      const handleTouchStart = (e) => {
+        if (e.touches && e.touches.length > 0) {
+          touchStartY = e.touches[0].clientY;
+          isTouchDown = true;
+        }
+      };
+
+      const handleTouchMove = (e) => {
+        if (!isTouchDown || !e.touches || !e.touches.length === 0 || isTransitioning || isBlockedByPDPTransition) return;
+        const currentY = e.touches[0].clientY;
+        const diffY = touchStartY - currentY;
+
+        const pdpBottom = this.editorialContainer ? this.editorialContainer.offsetTop : (this.pdpSection.offsetTop + this.pdpSection.offsetHeight);
+        const currentScrollY = window.scrollY;
+        const viewportBottom = currentScrollY + window.innerHeight;
+
+        if (this.swiper && this.swiper.activeIndex === 0 && diffY < -40) {
+          if (currentScrollY >= pdpBottom - 60) {
+            isTransitioning = true;
+            isTouchDown = false;
+
+            if (window.innerWidth <= 900) {
+              document.dispatchEvent(new CustomEvent('pdp:transition:from-editorial'));
+            } else {
+              window.scrollTo({
+                top: Math.max(0, pdpBottom - window.innerHeight - 80),
+                behavior: 'smooth'
+              });
+            }
+
+            setTimeout(() => {
+              isTransitioning = false;
+              if (window.headerContrastController && typeof window.headerContrastController.detectSectionMode === 'function') {
+                window.headerContrastController.detectSectionMode();
+              }
+            }, 700);
+            return;
+          }
+        }
+
+        if (window.innerWidth <= 900 || (e.target && e.target.closest && e.target.closest('.pdp-new'))) {
+          return;
+        }
+
+        if (currentScrollY < pdpBottom - 30 && viewportBottom >= pdpBottom - 100 && diffY > 35) {
+          if (this.swiper && this.swiper.activeIndex === 0) {
+            isTransitioning = true;
+            isTouchDown = false;
+            window.scrollTo({
+              top: pdpBottom,
+              behavior: 'smooth'
+            });
+            setTimeout(() => {
+              isTransitioning = false;
+              if (this.swiper && this.swiper.slides && this.swiper.slides[0]) {
+                this.updateHeaderContrast(this.swiper.slides[0]);
+              }
+            }, 700);
+            return;
+          }
+        }
+      };
+
+      const handleTouchEnd = () => {
+        isTouchDown = false;
+      };
+
+      window.addEventListener('wheel', handleWheel, { passive: false, signal });
+      window.addEventListener('touchstart', handleTouchStart, { passive: true, signal });
+      window.addEventListener('touchmove', handleTouchMove, { passive: true, signal });
+      window.addEventListener('touchend', handleTouchEnd, { passive: true, signal });
     }
 
     handleSlideChange(swiperInstance) {
