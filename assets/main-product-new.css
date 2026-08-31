@@ -594,10 +594,20 @@ body.is-size-guide-active {
   flex-shrink: 0;
   width: 59px;
   height: 80px;
+  opacity: 0.3;
+  transition: opacity 0.3s ease-in-out;
+
+  &:hover {
+    opacity: 1;
+  }
 
   .rsp-Image {
     width: 100%;
     height: 100%;
+  }
+
+  .rsp-Image_Image {
+    opacity: 1 !important;
   }
 }
 
@@ -616,10 +626,6 @@ body.is-size-guide-active {
     object-fit: cover;
     display: block;
   }
-
-  &:hover {
-    opacity: 0.75;
-  }
 }
 
 .pdp-colorways__link {
@@ -629,59 +635,6 @@ body.is-size-guide-active {
 .pdp-colorways__link--disabled {
   opacity: 0.3;
 }
-
-/* .drw-Drawer {
-  position: fixed;
-  top: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 100;
-  width: 100%;
-  max-width: 480px;
-  background-color: var(--Color_Primary, #ffffff);
-  color: var(--Color_Secondary, #000000);
-  box-shadow: -2px 0 20px rgba(0, 0, 0, 0.08);
-  transform: translateX(100%);
-  transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.075);
-  overflow-y: auto;
-
-  &.is-active {
-    transform: translateX(0);
-  }
-}
-
-.util-Drawer-active .drw-Drawer {
-  transform: translateX(0);
-}
-
-.drw-Drawer_Close {
-  position: absolute;
-  top: 25px;
-  right: 25px;
-  z-index: 5;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  width: 16px;
-  height: 16px;
-}
-
-.drw-Drawer_Inner {
-  padding: 80px 35px 50px;
-}
-
-.drw-Drawer_Header {
-  margin-bottom: 30px;
-}
-
-.drw-Drawer_Title {
-  margin: 0 0 6px;
-}
-
-.drw-Drawer_Product {
-  margin: 0;
-  opacity: 0.6;
-} */
 
 .pdp-recommended-section {
   padding: 60px 0;
