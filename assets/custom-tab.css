@@ -62,6 +62,7 @@
 
 .custom-tab__panels {
   position: relative;
+  padding-top: 20px;
   transition: height var(--transition-smooth);
 
   &.is-animating {
@@ -70,7 +71,6 @@
 }
 
 .custom-tab__panel {
-  padding-top: 20px;
   transition:
     opacity var(--transition-base),
     transform var(--transition-base),
@@ -121,6 +121,12 @@
     opacity var(--transition-base),
     transform var(--transition-base),
     visibility 0s;
+
+  @media (min-width: 901px) {
+    max-height: var(--custom-tab-max-height, 180px);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

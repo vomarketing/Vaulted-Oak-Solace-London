@@ -22,6 +22,7 @@ if (!customElements.get('custom-tab')) {
       this.activeIndex = -1;
       this.reduceMotion = null;
       this.animationTimer = null;
+      this.abortController = null;
 
       this.clickHandler = this.onClick.bind(this);
       this.keydownHandler = this.onKeydown.bind(this);
@@ -29,6 +30,9 @@ if (!customElements.get('custom-tab')) {
     }
 
     connectedCallback() {
+      this.abortController = new AbortController();
+      const { signal } = this.abortController;
+
       this.nav = this.querySelector(this.selectors.nav);
       this.panelsEl = this.querySelector(this.selectors.panels);
       this.toggles = Array.from(this.querySelectorAll(this.selectors.toggle));
@@ -41,12 +45,39 @@ if (!customElements.get('custom-tab')) {
 
       this.panels.forEach((panel) => panel.removeAttribute('hidden'));
 
+      this.calculateDesktopPanelHeights();
+
       const expanded = this.toggles.findIndex((toggle) => toggle.getAttribute('aria-expanded') === 'true');
       this.setActive(expanded, { animate: false, scroll: false });
 
-      this.nav.addEventListener('click', this.clickHandler);
-      this.nav.addEventListener('keydown', this.keydownHandler);
-      this.panelsEl.addEventListener('transitionend', this.transitionEndHandler);
+      this.nav.addEventListener('click', this.clickHandler, { signal });
+      this.nav.addEventListener('keydown', this.keydownHandler, { signal });
+      this.panelsEl.addEventListener('transitionend', this.transitionEndHandler, { signal });
+
+      let resizeTimer;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(() => {
+          this.calculateDesktopPanelHeights();
+        }, 150);
+      }, { passive: true, signal });
+    }
+
+    calculateDesktopPanelHeights() {
+      if (window.innerWidth <= 900 || !this.panels || !this.panels.length) {
+        this.style.removeProperty('--custom-tab-max-height');
+        return;
+      }
+
+      const heights = this.panels.map((panel) => {
+        return panel.scrollHeight || panel.offsetHeight;
+      }).filter((h) => h > 20);
+
+      if (heights.length > 0) {
+        const minHeight = Math.min(...heights);
+        const appliedHeight = Math.max(100, minHeight);
+        this.style.setProperty('--custom-tab-max-height', `${appliedHeight}px`);
+      }
     }
 
     onClick(event) {
@@ -95,6 +126,11 @@ if (!customElements.get('custom-tab')) {
       const shouldAnimate = animate && !this.reduceMotion.matches;
       const startHeight = shouldAnimate ? this.panelsEl.offsetHeight : 0;
 
+      if (shouldAnimate && startHeight > 0) {
+        this.panelsEl.style.height = `${startHeight}px`;
+        this.panelsEl.classList.add(this.classes.isAnimating);
+      }
+
       this.toggles.forEach((toggle, i) => {
         toggle.setAttribute('aria-expanded', i === targetIndex ? 'true' : 'false');
       });
@@ -106,6 +142,7 @@ if (!customElements.get('custom-tab')) {
 
         if (isActive) {
           panel.setAttribute('tabindex', '0');
+          panel.scrollTop = 0;
         } else {
           panel.removeAttribute('tabindex');
         }
@@ -119,7 +156,10 @@ if (!customElements.get('custom-tab')) {
 
     animateHeight(startHeight) {
       const endHeight = this.panelsEl.offsetHeight;
-      if (startHeight === endHeight) return;
+      if (startHeight === endHeight) {
+        this.resetHeight();
+        return;
+      }
 
       window.clearTimeout(this.animationTimer);
       this.panelsEl.classList.add(this.classes.isAnimating);
@@ -155,13 +195,9 @@ if (!customElements.get('custom-tab')) {
     }
 
     disconnectedCallback() {
-      if (this.nav) {
-        this.nav.removeEventListener('click', this.clickHandler);
-        this.nav.removeEventListener('keydown', this.keydownHandler);
-      }
-
-      if (this.panelsEl) {
-        this.panelsEl.removeEventListener('transitionend', this.transitionEndHandler);
+      if (this.abortController) {
+        this.abortController.abort();
+        this.abortController = null;
       }
 
       window.clearTimeout(this.animationTimer);
