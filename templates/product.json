@@ -47,7 +47,9 @@
           "settings": {
             "text": "Prices now include customs duties, import fees and taxes. No additional charges will be incurred upon delivery.",
             "font_size": "text-reg-14",
-            "uppercase": false
+            "uppercase": false,
+            "enable_responsive": true,
+            "responsive_target": "desktop"
           }
         },
         "tab_content_jWBbB7": {
@@ -57,6 +59,22 @@
             "fabric_care": "{{ product.metafields.custom.fabric_care | metafield_tag }}",
             "size_fit": "{{ product.metafields.custom.size_fit | metafield_tag }}",
             "shipping_returns": "{{ product.metafields.custom.shipping_returns | metafield_tag }}"
+          }
+        },
+        "duties_taxes_KWFFHd": {
+          "type": "duties_taxes",
+          "settings": {
+            "text": "Prices now include customs duties, import fees and taxes. No additional charges will be incurred upon delivery.",
+            "font_size": "text-reg-14",
+            "uppercase": false,
+            "enable_responsive": true,
+            "responsive_target": "mobile"
+          }
+        },
+        "question_notes_K6GTGn": {
+          "type": "question_notes",
+          "settings": {
+            "question": "Questions about size, fit or fabric?"
           }
         },
         "colorways_UnqVeT": {
@@ -73,6 +91,8 @@
         "buy_buttons_VGTxwz",
         "duties_taxes_d76MTJ",
         "tab_content_jWBbB7",
+        "duties_taxes_KWFFHd",
+        "question_notes_K6GTGn",
         "colorways_UnqVeT"
       ],
       "name": "Main Product (New)",
