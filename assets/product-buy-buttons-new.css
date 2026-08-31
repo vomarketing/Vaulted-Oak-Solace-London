@@ -381,6 +381,7 @@ product-buy-buttons,
   width: 100%;
   box-sizing: border-box;
   transition: border-color 0.2s ease;
+  padding-bottom: 11px;
 
   &.is-highlight {
     border-bottom-color: #d93838;
@@ -417,7 +418,6 @@ product-buy-buttons,
 .pdp-bis-box__submit {
   background: transparent;
   border: none;
-  padding-bottom: 11px;
   color: var(--Color_Brand, #000000);
   cursor: pointer;
   white-space: nowrap;
