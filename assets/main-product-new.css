@@ -749,6 +749,7 @@ body.is-size-guide-active {
   color: var(--color-white);
   border: none;
   cursor: pointer;
+  text-transform: capitalize;
 
   &:hover {
     text-decoration: underline;
