@@ -175,7 +175,7 @@ if (!customElements.get('product-fullscreen')) {
           creativeEffect: {
             prev: {
               shadow: false,
-              translate: [0, 0, -1]
+              translate: [0, 0, 0]
             },
             next: {
               translate: [0, '100%', 0]
