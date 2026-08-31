@@ -116,27 +116,28 @@
       "type": "video",
       "id": "video_desktop",
       "label": "Desktop video",
+      "info": "Recommended: 2356 x 1504 px (2x Retina, 714:456 landscape aspect ratio). MP4 format.",
       "visible_if": "{{ section.settings.media_type == 'video' }}"
     },
     {
       "type": "video",
       "id": "video_mobile",
       "label": "Mobile video",
-      "info": "Uses desktop video when left empty.",
+      "info": "Recommended: 630 x 986 px (2x Retina, 275:431 portrait aspect ratio). Uses desktop video when left empty. MP4 format.",
       "visible_if": "{{ section.settings.media_type == 'video' }}"
     },
     {
       "type": "text",
       "id": "video_desktop_url",
       "label": "Desktop external MP4 URL",
-      "info": "Used when no desktop Shopify video is selected.",
+      "info": "Recommended: 2356 x 1504 px (714:456 landscape aspect ratio). Used when no desktop Shopify video is selected.",
       "visible_if": "{{ section.settings.media_type == 'video' }}"
     },
     {
       "type": "text",
       "id": "video_mobile_url",
       "label": "Mobile external MP4 URL",
-      "info": "Used when no mobile Shopify video is selected. Falls back to desktop video when empty.",
+      "info": "Recommended: 630 x 986 px (275:431 portrait aspect ratio). Used when no mobile Shopify video is selected. Falls back to desktop video when empty.",
       "visible_if": "{{ section.settings.media_type == 'video' }}"
     },
     {
