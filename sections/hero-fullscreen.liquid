@@ -118,11 +118,11 @@
   {%- if video_desktop_url != blank -%}
     <button
       type="button"
-      class="hero-fullscreen__sound-toggle js-sound-toggle is-muted"
-      aria-label="Unmute sound"
+      class="hero-fullscreen__playback-toggle js-playback-toggle"
+      aria-label="Pause video"
     >
-      {%- render 'icons', icon: 'sound-muted', class: 'icon-muted js-icon-muted' -%}
-      {%- render 'icons', icon: 'sound-unmuted', class: 'icon-unmuted js-icon-unmuted' -%}
+      {%- render 'icons', icon: 'pause', class: 'icon-pause js-icon-pause' -%}
+      {%- render 'icons', icon: 'play', class: 'icon-play js-icon-play' -%}
     </button>
   {%- endif -%}
 </hero-fullscreen>

@@ -5,50 +5,67 @@ if (!customElements.get('hero-fullscreen')) {
 
       this.selectors = {
         video: '.js-hero-video',
-        soundBtn: '.js-sound-toggle'
+        playbackBtn: '.js-playback-toggle'
       };
 
       this.classes = {
-        isMuted: 'is-muted'
+        isPaused: 'is-paused'
       };
 
       this.video = null;
-      this.soundBtn = null;
+      this.playbackBtn = null;
       this.observer = null;
-      this.soundHandler = null;
+      this.playbackHandler = null;
+      this.onPlay = null;
+      this.onPause = null;
+      this.userPaused = false;
     }
 
     connectedCallback() {
       this.video = this.querySelector(this.selectors.video);
-      this.soundBtn = this.querySelector(this.selectors.soundBtn);
+      this.playbackBtn = this.querySelector(this.selectors.playbackBtn);
 
-      this.initSoundToggle();
+      if (this.video) {
+        this.video.muted = true;
+      }
+
+      this.initPlaybackToggle();
       this.initIntersection();
     }
 
-    initSoundToggle() {
-      if (!this.soundBtn || !this.video) return;
+    initPlaybackToggle() {
+      if (!this.playbackBtn || !this.video) return;
 
-      this.setSoundState(true);
+      this.setPlaybackState(this.video.paused);
 
-      this.soundHandler = (event) => {
+      this.playbackHandler = (event) => {
         event.preventDefault();
         event.stopPropagation();
 
-        this.setSoundState(!this.video.muted);
+        if (this.video.paused) {
+          this.userPaused = false;
+          this.video.play().catch(() => {});
+        } else {
+          this.userPaused = true;
+          this.video.pause();
+        }
       };
 
-      this.soundBtn.addEventListener('click', this.soundHandler);
+      this.onPlay = () => this.setPlaybackState(false);
+      this.onPause = () => this.setPlaybackState(true);
+
+      this.playbackBtn.addEventListener('click', this.playbackHandler);
+      this.video.addEventListener('play', this.onPlay);
+      this.video.addEventListener('pause', this.onPause);
     }
 
-    setSoundState(isMuted) {
-      if (!this.video || !this.soundBtn) return;
+    setPlaybackState(isPaused) {
+      if (!this.playbackBtn) return;
 
-      this.video.muted = isMuted;
-      this.soundBtn.classList.toggle(this.classes.isMuted, isMuted);
-      this.soundBtn.setAttribute(
+      this.playbackBtn.classList.toggle(this.classes.isPaused, isPaused);
+      this.playbackBtn.setAttribute(
         'aria-label',
-        isMuted ? 'Unmute sound' : 'Mute sound'
+        isPaused ? 'Play video' : 'Pause video'
       );
     }
 
@@ -60,7 +77,9 @@ if (!customElements.get('hero-fullscreen')) {
           (entries) => {
             entries.forEach((entry) => {
               if (entry.isIntersecting) {
-                this.video.play().catch(() => {});
+                if (!this.userPaused) {
+                  this.video.play().catch(() => {});
+                }
               } else {
                 this.video.pause();
               }
@@ -83,13 +102,24 @@ if (!customElements.get('hero-fullscreen')) {
         this.observer = null;
       }
 
-      if (this.soundHandler && this.soundBtn) {
-        this.soundBtn.removeEventListener('click', this.soundHandler);
-        this.soundHandler = null;
+      if (this.playbackHandler && this.playbackBtn) {
+        this.playbackBtn.removeEventListener('click', this.playbackHandler);
+        this.playbackHandler = null;
+      }
+
+      if (this.video) {
+        if (this.onPlay) {
+          this.video.removeEventListener('play', this.onPlay);
+          this.onPlay = null;
+        }
+        if (this.onPause) {
+          this.video.removeEventListener('pause', this.onPause);
+          this.onPause = null;
+        }
       }
 
       this.video = null;
-      this.soundBtn = null;
+      this.playbackBtn = null;
     }
   }
 
