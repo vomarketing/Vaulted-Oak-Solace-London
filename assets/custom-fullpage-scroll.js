@@ -192,11 +192,16 @@ if (!window.FullpageScrollController) {
         }
       }, { signal });
 
+      let slideNextCooldown = false;
       document.addEventListener('pdp:slide-next', () => {
-        if (this.swiper && this.swiper.activeIndex === 0) {
-          this.swiper.allowSlideNext = true;
-          this.swiper.slideNext();
-        }
+        if (!this.swiper || this.swiper.activeIndex !== 0) return;
+        if (window._swiperIsTransitioning || slideNextCooldown) return;
+
+        slideNextCooldown = true;
+        setTimeout(() => { slideNextCooldown = false; }, 800);
+
+        this.swiper.allowSlideNext = true;
+        this.swiper.slideNext();
       }, { signal });
     }
 
@@ -380,11 +385,7 @@ if (!window.FullpageScrollController) {
         const allVideos = this.wrapper.querySelectorAll(this.selectors.videos);
         allVideos.forEach((video) => {
           if (!activeSlide.contains(video)) {
-            try {
-              video.pause();
-            } catch (e) {
-              console.log('errors: ', e);
-            }
+            try { video.pause(); } catch (_e) {}
           }
         });
       }
@@ -398,9 +399,7 @@ if (!window.FullpageScrollController) {
               playPromise.catch(() => {});
             }
           }
-        } catch (e) {
-          console.log('errors: ', e);
-        }
+        } catch (_e) {}
       });
     }
 
@@ -463,9 +462,7 @@ if (!window.FullpageScrollController) {
       if (this.swiper) {
         try {
           this.swiper.destroy(true, true);
-        } catch (e) {
-          console.log('errors: ', e);
-        }
+        } catch (_e) {}
         this.swiper = null;
       }
       this.resetDOMElements();

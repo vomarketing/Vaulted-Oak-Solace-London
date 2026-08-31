@@ -89,17 +89,15 @@ if (!customElements.get('product-fullscreen')) {
       if (!contentCol) return;
       const { signal } = this.abortController;
 
+      // Content column is a secondary signal — only grants canLeave.
+      // Gallery Swiper owns the authoritative _pdpCanTransitionToEditorial state.
       const checkContentBottom = () => {
         if (this.isMobile()) return;
         const atBottom = contentCol.scrollTop + contentCol.clientHeight >= contentCol.scrollHeight - 15;
-        if (atBottom) {
+        if (atBottom && this.canLeaveLastSlide) {
+          // Both gallery AND content are at end — safe to allow transition
           window._pdpCanTransitionToEditorial = true;
           document.dispatchEvent(new CustomEvent('pdp:can-transition', { detail: { canLeave: true } }));
-        } else {
-          if (this.swiper && !this.canLeaveLastSlide) {
-            window._pdpCanTransitionToEditorial = false;
-            document.dispatchEvent(new CustomEvent('pdp:can-transition', { detail: { canLeave: false } }));
-          }
         }
       };
 
@@ -107,6 +105,7 @@ if (!customElements.get('product-fullscreen')) {
 
       contentCol.addEventListener('wheel', (e) => {
         if (this.isMobile()) return;
+        if (window._swiperIsTransitioning) return;
         const atBottom = contentCol.scrollTop + contentCol.clientHeight >= contentCol.scrollHeight - 5;
         if (atBottom && e.deltaY > 20) {
           document.dispatchEvent(new CustomEvent('pdp:slide-next'));
@@ -270,6 +269,7 @@ if (!customElements.get('product-fullscreen')) {
 
         swiperEl.addEventListener('wheel', (e) => {
           if (this.isMobile()) return;
+          if (window._swiperIsTransitioning) return;
           if (this.canLeaveLastSlide && e.deltaY > 20) {
             document.dispatchEvent(new CustomEvent('pdp:slide-next'));
           }
@@ -288,14 +288,16 @@ if (!customElements.get('product-fullscreen')) {
 
       allVideos.length > 0 && allVideos.forEach((video) => {
         if (video.closest('.swiper-slide') !== activeSlide) {
-          video.pause();
+          try { video.pause(); } catch (_e) {}
         }
       });
 
       const activeVideo = activeSlide.querySelector(this.selectors.videos);
 
       if (activeVideo) {
-        activeVideo.play().catch(() => {});
+        try {
+          activeVideo.play().catch(() => {});
+        } catch (_e) {}
       }
     }
 
@@ -363,7 +365,9 @@ if (!customElements.get('product-fullscreen')) {
         this.swiperInitTimer = null;
       }
       if (this.swiper) {
-        this.swiper.destroy(true, true);
+        try {
+          this.swiper.destroy(true, true);
+        } catch (_e) {}
         this.swiper = null;
       }
       const galleryColumn = this.querySelector(this.selectors.galleryColumn);
@@ -523,28 +527,24 @@ if (!customElements.get('product-fullscreen')) {
         }, { passive: true, signal });
       }
 
-      // Sync on window scroll
-      const checkScrollState = () => {
-        if (!this.isMobile()) {
-          if (isLocked) {
-            isLocked = false;
-            if (this.swiper) this.swiper.allowTouchMove = true;
-            if (galleryColumn) galleryColumn.classList.remove(this.classes.galleryLocked);
-            this.classList.remove(this.classes.contentExpanded);
-            if (contentColumn) contentColumn.classList.remove(this.classes.contentLockedTop);
-          }
-          return;
-        }
-
-        if (window.scrollY <= 0 && isLocked && contentColumn && contentColumn.scrollTop <= 0) {
-          collapseSheet(false);
+      // On resize: reset mobile lock state if switched to desktop
+      const onResize = () => {
+        if (!this.isMobile() && isLocked) {
+          isLocked = false;
+          if (this.swiper) this.swiper.allowTouchMove = true;
+          if (galleryColumn) galleryColumn.classList.remove(this.classes.galleryLocked);
+          this.classList.remove(this.classes.contentExpanded);
+          if (contentColumn) contentColumn.classList.remove(this.classes.contentLockedTop);
         }
       };
 
-      window.addEventListener('scroll', checkScrollState, { passive: true, signal });
-      window.addEventListener('resize', checkScrollState, { passive: true, signal });
+      let resizeTimer = null;
+      window.addEventListener('resize', () => {
+        clearTimeout(resizeTimer);
+        resizeTimer = setTimeout(onResize, 120);
+      }, { passive: true, signal });
 
-      checkScrollState();
+      onResize();
     }
 
     initMediaObserver() {
