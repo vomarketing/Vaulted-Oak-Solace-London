@@ -161,7 +161,7 @@
         "type": "image_picker",
         "id": "password_image",
         "label": "Image",
-        "info": "Size: 1440 x 900 px"
+        "info": "Recommended: 3840 x 2160 px (2x Retina full width 16:9) or 2880 x 1800 px."
       }
     ]
   },
