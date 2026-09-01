@@ -12,10 +12,20 @@
 }
 
 .two-ups-media__inner {
-  --header-offset-mobile: 52px;
   --two-ups-media-gap: 16px;
   --two-ups-media-max-width: 190px;
-  --two-ups-media-max-height: 269px;
+  --two-ups-media-caption: 40px;
+
+  /* The header sits over this section, so the top padding must clear it before
+     it honours the design value. Heights come from .hd-Header in custom-header.css. */
+  --two-ups-media-header-offset: 52px;
+  --two-ups-media-header-gap: clamp(12px, 3dvh, 24px);
+  --two-ups-media-pad-top-design: 0px;
+  --two-ups-media-pad-top: max(
+    calc(var(--two-ups-media-header-offset) + var(--two-ups-media-header-gap)),
+    var(--two-ups-media-pad-top-design)
+  );
+  --two-ups-media-pad-bottom: clamp(16px, 4dvh, 36px);
 
   display: flex;
   flex-direction: column;
@@ -25,48 +35,54 @@
   width: 100%;
   min-height: 100dvh;
   margin: 0 auto;
-  padding: calc(var(--header-offset-mobile) + 24px) 25px 36px;
+  padding: var(--two-ups-media-pad-top) 25px var(--two-ups-media-pad-bottom);
   gap: var(--two-ups-media-gap);
   box-sizing: border-box;
 
   @media (min-width: 403px) {
-    --two-ups-media-gap: 16px;
     --two-ups-media-max-width: 220px;
-    --two-ups-media-max-height: 311px;
   }
 
   @media (min-width: 768px) {
     --two-ups-media-gap: 20px;
     --two-ups-media-max-width: 260px;
-    --two-ups-media-max-height: 368px;
+    --two-ups-media-header-offset: 56px;
+    --two-ups-media-pad-bottom: clamp(16px, 4dvh, 40px);
 
     max-width: 385px;
-    padding: calc(var(--header-offset-mobile) + 24px) 25px 40px;
   }
 
   @media (min-width: 901px) {
     --two-ups-media-gap: 100px;
     --two-ups-media-max-width: 440px;
+    --two-ups-media-pad-top-design: 40px;
+    --two-ups-media-pad-bottom: clamp(24px, 5dvh, 40px);
 
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
     grid-template-rows: 1fr;
     justify-items: center;
     max-width: 1030px;
-    padding: 40px 25px;
+  }
+
+  @media (min-width: 1201px) {
+    --two-ups-media-header-offset: 104px;
   }
 
   @media (min-width: 1440px) {
+    --two-ups-media-pad-top-design: clamp(40px, 14dvh, 200px);
+    --two-ups-media-pad-bottom: clamp(28px, 10dvh, 140px);
+
     max-width: 1029px;
-    padding: 200px 25px 140px;
   }
 
   @media (min-width: 1920px) {
     --two-ups-media-gap: 120px;
     --two-ups-media-max-width: 531px;
+    --two-ups-media-pad-top-design: clamp(40px, 12dvh, 164px);
+    --two-ups-media-pad-bottom: clamp(28px, 7dvh, 100px);
 
     max-width: 1232px;
-    padding: 164px 25px 100px;
   }
 }
 
@@ -77,6 +93,7 @@
   justify-content: center;
   width: 100%;
   max-width: var(--two-ups-media-max-width);
+  min-height: 0;
 
   @media (min-width: 901px) {
     height: 100%;
@@ -88,6 +105,7 @@
   width: 100%;
   justify-content: center;
   align-items: center;
+  min-height: 0;
   color: inherit;
   text-decoration: none;
 
@@ -96,22 +114,26 @@
     width: 100%;
     justify-content: center;
     align-items: center;
+    min-height: 0;
   }
 }
 
+/* Height leads and width follows, so a short viewport shrinks the whole image
+   instead of letting object-fit crop the model out of frame. */
 .two-ups-media__image,
 .two-ups-media__video {
   display: block;
-  width: 100%;
+  width: auto;
   height: auto;
+  max-width: 100%;
   aspect-ratio: 236 / 334;
   object-fit: cover;
 
+  /* Two items stack on mobile, so each one gets half of what is left. */
   @media (max-width: 900px) {
-    max-width: 100%;
-    max-height: min(
-      var(--two-ups-media-max-height),
-      calc((100dvh - var(--header-offset-mobile, 60px) - 60px - var(--two-ups-media-gap) - 48px) / 2)
+    max-height: calc(
+      (100dvh - var(--two-ups-media-pad-top) - var(--two-ups-media-pad-bottom)
+        - var(--two-ups-media-gap) - (2 * var(--two-ups-media-caption))) / 2
     );
   }
 
@@ -120,19 +142,15 @@
   }
 
   @media (min-width: 901px) {
-    width: 100%;
     aspect-ratio: 440 / 623;
-    max-height: calc(100dvh - clamp(180px, 24dvh, 260px));
+    max-height: calc(
+      100dvh - var(--two-ups-media-pad-top) - var(--two-ups-media-pad-bottom)
+        - var(--two-ups-media-caption)
+    );
   }
 
   @media (min-width: 1920px) {
     aspect-ratio: 531 / 753;
-  }
-}
-
-.two-ups-media__image {
-  @media (max-width: 900px) and (min-width: 768px) {
-    width: auto;
   }
 }
 
