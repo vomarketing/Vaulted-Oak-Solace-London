@@ -40,7 +40,7 @@
           "type": "item",
           "settings": {
             "media_type": "image",
-            "desktop_image": "shopify://shop_images/Artboard_2-1.png",
+            "desktop_image": "shopify://shop_images/2_Block_B.jpg",
             "desktop_video_url": "",
             "mobile_video_url": "",
             "text": "The Delano",
@@ -53,7 +53,7 @@
           "type": "item",
           "settings": {
             "media_type": "image",
-            "desktop_image": "shopify://shop_images/Artboard_2a.png",
+            "desktop_image": "shopify://shop_images/2_Block_A.jpg",
             "desktop_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
             "mobile_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
             "text": "Shop Now",
