@@ -45,7 +45,7 @@
         "duties_taxes_d76MTJ": {
           "type": "duties_taxes",
           "settings": {
-            "text": "Prices now include customs duties, import fees and taxes. No additional charges will be incurred upon delivery.",
+            "text": "Prices now include all applicable import duties. No additional charges upon delivery",
             "font_size": "text-reg-14",
             "uppercase": false,
             "enable_responsive": true,
