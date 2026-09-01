@@ -223,6 +223,12 @@ body.is-size-guide-active {
 
   &.swiper {
     touch-action: pan-y;
+
+    /* Swiper's own stylesheet sets overflow:hidden, which would make this element
+       the scroll container for the sticky media items and stop them pinning. */
+    @media (min-width: 901px) {
+      overflow: visible;
+    }
   }
 }
 
@@ -270,9 +276,10 @@ body.is-size-guide-active {
       top: 0;
       z-index: var(--media-z-index, 1);
       width: 100% !important;
-      height: auto !important;
+      height: 100vh !important;
+      height: 100dvh !important;
       max-height: none !important;
-      overflow: visible;
+      overflow: hidden;
       display: block;
       background-color: var(--color-white, #ffffff);
       box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.03);
@@ -296,7 +303,7 @@ body.is-size-guide-active {
   cursor: pointer;
 
   @media (min-width: 901px) {
-    height: auto !important;
+    height: 100% !important;
     display: block !important;
   }
 }
@@ -320,12 +327,8 @@ body.is-size-guide-active {
   }
 
   @media (min-width: 901px) {
-    height: auto !important;
-    aspect-ratio: 9 / 11 !important;
-  }
-
-  @media (min-width: 1441px) {
-    aspect-ratio: 3 / 4 !important;
+    height: 100% !important;
+    aspect-ratio: auto !important;
   }
 }
 
@@ -342,6 +345,10 @@ body.is-size-guide-active {
   line-height: 0;
   object-fit: cover;
   object-position: top;
+
+  @media (min-width: 901px) {
+    object-position: center;
+  }
 }
 
 .pdp-media-item--placeholder {
