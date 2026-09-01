@@ -45,7 +45,7 @@
         "duties_taxes_d76MTJ": {
           "type": "duties_taxes",
           "settings": {
-            "text": "<strong>Prices at checkout now include all duties and taxes. No additional charges upon delivery</strong>",
+            "text": "Prices at checkout now include all duties and taxes. No additional charges upon delivery",
             "font_size": "text-reg-14",
             "uppercase": false,
             "enable_responsive": true,
