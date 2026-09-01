@@ -22,6 +22,11 @@
     display: none;
   }
 
+  @media (min-width: 901px) {
+    justify-content: space-between;
+    gap: 0;
+  }
+
   @media (max-width: 900px) {
     margin-inline: calc(var(--custom-tab-gutter) * -1);
     padding-inline: var(--custom-tab-gutter);
@@ -168,4 +173,3 @@
   text-underline-offset: 4px;
   cursor: pointer;
 }
-

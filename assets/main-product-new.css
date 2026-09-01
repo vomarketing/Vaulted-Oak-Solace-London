@@ -73,7 +73,7 @@ body.is-size-guide-active {
 
   @media (min-width: 901px) {
     display: grid;
-    grid-template-columns: minmax(0, 6fr) minmax(0, 4fr);
+    grid-template-columns: minmax(0, 59.6875%) minmax(0, 40.3125%);
     align-items: flex-start;
     height: auto;
     overflow: visible;
@@ -273,7 +273,7 @@ body.is-size-guide-active {
 
     @media (min-width: 901px) {
       position: sticky;
-      top: min(0px, calc(100dvh - 73.333333vw));
+      top: min(0px, calc(100dvh - 72.951389vw));
       bottom: auto;
       z-index: var(--media-z-index, 1);
       width: 100% !important;
@@ -288,7 +288,7 @@ body.is-size-guide-active {
     }
 
     @media (min-width: 1441px) {
-      top: min(0px, calc(100dvh - 80vw));
+      top: min(0px, calc(100dvh - 79.583333vw));
     }
   }
 }
@@ -375,6 +375,11 @@ body.is-size-guide-active {
   flex-direction: column;
 
   @media (min-width: 901px) {
+    --type-14-size: 12px;
+    --type-14-line-height: 16px;
+    --type-10-size: 12px;
+    --type-10-line-height: 16px;
+
     max-width: 570px;
     margin: 0 auto;
     flex: 1 0 auto;
