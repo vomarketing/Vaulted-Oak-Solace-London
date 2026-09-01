@@ -14,7 +14,7 @@
       "name": "Hero Fullscreen",
       "settings": {
         "media_type": "image",
-        "image_desktop": "shopify://shop_images/Artboard_1.png",
+        "image_desktop": "shopify://shop_images/Hero.jpg",
         "video_desktop": "shopify://files/videos/homepage3.mp4",
         "video_mobile": "shopify://files/videos/story.mp4",
         "video_url_desktop": "",
