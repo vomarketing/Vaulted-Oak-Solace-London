@@ -73,6 +73,7 @@
         },
         "question_notes_K6GTGn": {
           "type": "question_notes",
+          "disabled": true,
           "settings": {
             "question": "Questions about size, fit or fabric?"
           }
