@@ -166,7 +166,7 @@
       "type": "three-up-media",
       "name": "Three Up Media",
       "settings": {
-        "media_type": "video",
+        "media_type": "image",
         "image_desktop": "{{ product.metafields.custom.three_up_media.value.desktop_image.value }}",
         "image_mobile": "{{ product.metafields.custom.three_up_media.value.mobile_image.value }}",
         "video_desktop": "{{ product.metafields.custom.three_up_media.value.desktop_video_shopify.value }}",
@@ -193,7 +193,7 @@
       "name": "Rich text",
       "settings": {
         "header_contrast_mode": "dark",
-        "text": "{{ product.metafields.custom.richtext_content_2 | metafield_tag }}",
+        "text": "<p>{{ product.metafields.custom.richtext_content_2 | metafield_tag }}</p>",
         "text_font_size": "text-reg-14",
         "text_uppercase": false,
         "link_text": "",
