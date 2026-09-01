@@ -509,6 +509,21 @@ product-buy-buttons,
     color: var(--Color_Primary, #ffffff);
   }
 
+  @media (min-width: 901px) {
+    &:hover:before {
+      transform: scaleY(0);
+    }
+
+    &:hover {
+      color: var(--Color_Brand, #000000);
+    }
+
+    &:hover .pdp-cta-submit__text {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+  }
+
   &[disabled] {
     opacity: 0.6;
     cursor: pointer;
