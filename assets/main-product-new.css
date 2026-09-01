@@ -273,18 +273,22 @@ body.is-size-guide-active {
 
     @media (min-width: 901px) {
       position: sticky;
-      top: 0;
+      top: min(0px, calc(100dvh - 73.333333vw));
+      bottom: auto;
       z-index: var(--media-z-index, 1);
       width: 100% !important;
-      height: 100vh !important;
-      height: 100dvh !important;
+      height: auto !important;
       max-height: none !important;
-      overflow: hidden;
+      overflow: visible;
       display: block;
       background-color: var(--color-white, #ffffff);
       box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.03);
       scroll-snap-align: start;
       scroll-snap-stop: normal;
+    }
+
+    @media (min-width: 1441px) {
+      top: min(0px, calc(100dvh - 80vw));
     }
   }
 }
@@ -303,7 +307,7 @@ body.is-size-guide-active {
   cursor: pointer;
 
   @media (min-width: 901px) {
-    height: 100% !important;
+    height: auto !important;
     display: block !important;
   }
 }
@@ -327,8 +331,12 @@ body.is-size-guide-active {
   }
 
   @media (min-width: 901px) {
-    height: 100% !important;
-    aspect-ratio: auto !important;
+    height: auto !important;
+    aspect-ratio: 9 / 11 !important;
+  }
+
+  @media (min-width: 1441px) {
+    aspect-ratio: 3 / 4 !important;
   }
 }
 
@@ -345,10 +353,6 @@ body.is-size-guide-active {
   line-height: 0;
   object-fit: cover;
   object-position: top;
-
-  @media (min-width: 901px) {
-    object-position: center;
-  }
 }
 
 .pdp-media-item--placeholder {
