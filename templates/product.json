@@ -64,7 +64,7 @@
         "duties_taxes_KWFFHd": {
           "type": "duties_taxes",
           "settings": {
-            "text": "Prices now include customs duties, import fees and taxes. No additional charges will be incurred upon delivery.",
+            "text": "Prices now include import duties and fees. No additional charges upon delivery",
             "font_size": "text-reg-14",
             "uppercase": false,
             "enable_responsive": true,
