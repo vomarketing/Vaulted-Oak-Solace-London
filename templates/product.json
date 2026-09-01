@@ -45,7 +45,7 @@
         "duties_taxes_d76MTJ": {
           "type": "duties_taxes",
           "settings": {
-            "text": "Prices at checkout now include all duties and taxes. No additional charges upon delivery.",
+            "text": "<strong>Prices at checkout now include all duties and taxes. No additional charges upon delivery</strong>",
             "font_size": "text-reg-14",
             "uppercase": false,
             "enable_responsive": true,
@@ -104,17 +104,17 @@
         "size_guide": "solace-standard-dress-guide",
         "size_guide_fit_title": "Fit",
         "size_converter_title": "Size Converter",
-        "size_converter_body": "<p>Use your body measurements below to find your closest size.</p>",
+        "size_converter_body": "<p>Find your closest size by comparing your body measurements with the size guide below. If you're between sizes, choose according to your preferred fit</p>",
         "how_to_measure_title": "How To Measure",
-        "how_to_measure_body": "<p>Measure directly against the body without pulling the tape tight. Compare your measurements with the size chart above.</p>",
+        "how_to_measure_body": "<p>Measure directly against the body without pulling the tape tight. Compare your measurements with the size chart above</p>",
         "measure_diagram_image": "shopify://shop_images/Illustration_1.png",
         "measure_bust_title": "Bust",
-        "measure_bust_body": "Measure around the fullest part of the bust, keeping the tape level.",
+        "measure_bust_body": "Measure around the fullest part of the bust, keeping the tape level",
         "measure_waist_title": "Waist",
-        "measure_waist_body": "Measure around the narrowest part of the waist.",
+        "measure_waist_body": "Measure around the narrowest part of the waist",
         "measure_hip_title": "Low Hip",
-        "measure_hip_body": "With your feet together, measure around the fullest part of the hips.",
-        "size_guide_contact_text": "<p>Questions about size, fit & fabric? <a href=\"/pages/contact\">Contact us</a><br/>Available UK business hours Mon - Fri, 9am - 5pm.</p>",
+        "measure_hip_body": "With your feet together, measure around the fullest part of the hips",
+        "size_guide_contact_text": "<p>Questions about size, fit & fabric? <a href=\"/pages/contact\">Contact us</a><br/>Available UK business hours Mon - Fri, 9am - 5pm</p>",
         "contact_page": "shopify://pages/contact"
       }
     },
