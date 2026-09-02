@@ -130,6 +130,13 @@
     </div>
 
     <main role="main" id="MainContent">
+      {%- comment -%}
+        The homepage sections carry only H2s, so give the page a hidden H1
+        with the shop name to anchor the heading outline.
+      {%- endcomment -%}
+      {%- if request.page_type == 'index' -%}
+        <h1 class="util-ScreenReaderOnly">{{ shop.name }}</h1>
+      {%- endif -%}
       {{ content_for_layout }}
       {% comment %} {{ content_for_index }} {% endcomment %}
        <div class="shopify-section shopify-section--footer"></div>
