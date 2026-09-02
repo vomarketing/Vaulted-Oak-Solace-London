@@ -198,7 +198,7 @@
 
 @media (min-width: 1201px) {
   .hd-Header_Inner.lyt-Container {
-    padding-inline: 40px;
+    padding-inline: 40px 35px;
   }
 
   .hd-Header_Logo {
@@ -209,5 +209,13 @@
   .hd-Nav_Cart {
     width: 19px;
     height: 19px;
+  }
+
+  .hd-Header_Body {
+    align-items: start;
+  }
+
+  .hd-Header_Nav {
+    margin-top: 1px;
   }
 }

@@ -381,7 +381,7 @@ body.is-size-guide-active {
     --type-10-line-height: 16px;
 
     max-width: 570px;
-    margin: 0 auto;
+    margin: 0 max(0px, calc(50% - 287px)) 0 max(0px, calc(50% - 283px));
     flex: 1 0 auto;
   }
 }
@@ -435,8 +435,7 @@ body.is-size-guide-active {
     margin-bottom: 22px;
 
     @media (min-width: 901px) {
-      gap: 5px;
-      margin-bottom: 35px;
+      margin-bottom: 45px;
     }
   }
 
@@ -519,7 +518,7 @@ body.is-size-guide-active {
   color: var(--color-black, #000000);
 
   @media (min-width: 901px) {
-    margin-bottom: 40px;
+    margin-bottom: 45px;
   }
 }
 
@@ -598,10 +597,6 @@ body.is-size-guide-active {
 
 .prd-Related_Header {
   margin-bottom: 15px;
-
-  @media (min-width: 901px) {
-    margin-bottom: 10px;
-  }
 }
 
 .prd-Related_Title {
