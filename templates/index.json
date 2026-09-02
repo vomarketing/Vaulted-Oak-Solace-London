@@ -42,7 +42,7 @@
             "desktop_image": "shopify://shop_images/Artboard_3.jpg",
             "desktop_video_url": "",
             "mobile_video_url": "",
-            "text": "The Delano",
+            "text": "The Newman",
             "text_font_size": "text-reg-14",
             "text_uppercase": false,
             "link": "#"
@@ -151,6 +151,7 @@
         "item_XzHKeE",
         "item_wrJAd7"
       ],
+      "disabled": true,
       "name": "Two Ups Media",
       "settings": {
         "color_scheme": "light",
