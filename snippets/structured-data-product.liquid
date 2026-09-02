@@ -28,7 +28,9 @@
   assign currency_code = cart.currency.iso_code | default: shop.currency
   # strip_html leaves HTML entities behind; decode the common ones so the
   # snippet does not show a literal "&amp;" in search results.
-  assign description = product.description | strip_html | replace: '&nbsp;', ' ' | replace: '&quot;', '"' | replace: '&#39;', "'" | replace: '&lt;', '<' | replace: '&gt;', '>' | replace: '&amp;', '&' | strip
+  # Block-level closing tags become spaces first so paragraphs and list
+  # items do not run together once the tags are stripped.
+  assign description = product.description | replace: '</p>', ' ' | replace: '</li>', ' ' | replace: '<br>', ' ' | replace: '<br/>', ' ' | replace: '<br />', ' ' | strip_html | replace: '&nbsp;', ' ' | replace: '&quot;', '"' | replace: '&#39;', "'" | replace: '&lt;', '<' | replace: '&gt;', '>' | replace: '&amp;', '&' | strip
 
   assign image_urls_string = ''
   for image in product.images limit: 8

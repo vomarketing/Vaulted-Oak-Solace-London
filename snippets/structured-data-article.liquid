@@ -25,7 +25,9 @@
   assign article_id = article_url | append: '#article'
   # strip_html leaves HTML entities behind; decode the common ones so the
   # snippet does not show a literal "&amp;" in search results.
-  assign description = article.excerpt_or_content | strip_html | replace: '&nbsp;', ' ' | replace: '&quot;', '"' | replace: '&#39;', "'" | replace: '&lt;', '<' | replace: '&gt;', '>' | replace: '&amp;', '&' | strip | truncate: 300
+  # Block-level closing tags become spaces first so paragraphs and list
+  # items do not run together once the tags are stripped.
+  assign description = article.excerpt_or_content | replace: '</p>', ' ' | replace: '</li>', ' ' | replace: '<br>', ' ' | replace: '<br/>', ' ' | replace: '<br />', ' ' | strip_html | replace: '&nbsp;', ' ' | replace: '&quot;', '"' | replace: '&#39;', "'" | replace: '&lt;', '<' | replace: '&gt;', '>' | replace: '&amp;', '&' | strip | truncate: 300
 
   assign image_url = ''
   if article.image
