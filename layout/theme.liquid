@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
     <meta name="author" content="By Association Only" />
     <link rel="preconnect" href="https://js.klevu.com">
-    <link rel="stylesheet" href="https://use.typekit.net/ojr8oqr.css">
+    <link rel="preconnect" href="https://use.typekit.net" crossorigin>
 
 
 
@@ -57,6 +57,15 @@
       {{ 'hero-fullscreen.css' | inline_asset_content }}
     </style>
 
+    {% comment %}
+      Adobe Fonts kit (futura-pt only) is not used above the fold, so it must
+      not block render: a print-media stylesheet is fetched at low priority,
+      then switched to all media once it arrives. Kept below layout.theme.css
+      so the theme stylesheet is discovered first.
+    {% endcomment %}
+    <link rel="stylesheet" href="https://use.typekit.net/ojr8oqr.css" media="print" onload="this.media='all'">
+    <noscript><link rel="stylesheet" href="https://use.typekit.net/ojr8oqr.css"></noscript>
+
     {%- render 'head-script' -%}
 
     {%- render 'typekit' -%}
@@ -65,7 +74,6 @@
     {{ '//cdn.shopify.com/s/javascripts/currencies.js' | script_tag }}
     {%- render 'script-tags', layout: 'theme' -%}
 
-    <link href="https://vjs.zencdn.net/7.10.2/video-js.css" rel="stylesheet" />
     <script src="{{ 'custom-fullpage-scroll.js' | asset_url }}" defer="defer"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer="defer"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
@@ -121,8 +129,6 @@
     {%- render 'newsletter-modal' -%}
 
     {%- render 'drawers' -%}
-
-    <script src="https://vjs.zencdn.net/7.10.2/video.min.js" defer="defer"></script>
 
     {%- render 'klevu-foot' -%}
 

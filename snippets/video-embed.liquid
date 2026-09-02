@@ -21,6 +21,35 @@
 
   {%- assign img_url = video_poster | img_url: '' -%}
 
+  {% comment %}
+    Video.js is loaded here, next to its only consumer, rather than in
+    layout/theme.liquid, so pages without an embed never request it.
+    Several embeds can share a page: the browser fetches a stylesheet URL
+    once, and the script is guarded so it is injected once.
+  {% endcomment %}
+  <link href="https://vjs.zencdn.net/7.10.2/video-js.css" rel="stylesheet">
+  <script>
+    (function () {
+      if (window.__videojsRequested) return;
+      window.__videojsRequested = true;
+
+      function loadVideoJs() {
+        var script = document.createElement('script');
+        script.src = 'https://vjs.zencdn.net/7.10.2/video.min.js';
+        document.head.appendChild(script);
+      }
+
+      // Video.js auto-setup runs once, right after the library executes, and
+      // only initialises the <video data-setup> elements that exist by then.
+      // Wait for the full DOM so every embed on the page is picked up.
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', loadVideoJs);
+      } else {
+        loadVideoJs();
+      }
+    })();
+  </script>
+
   <div class="vid-Embed" style="--Video_AspectRatio:{{ video_aspect_ratio }};">
   
     <video class="vid-Embed_Video video-js" 
