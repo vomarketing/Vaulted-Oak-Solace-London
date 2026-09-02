@@ -26,8 +26,8 @@
         "heading": "Resort 2027",
         "heading_font_size": "text-reg-14",
         "heading_uppercase": false,
-        "cta_text": "Shop Collection",
-        "cta_link": "shopify://collections",
+        "cta_text": "Shop The Collection",
+        "cta_link": "shopify://collections/resort-27",
         "cta_font_size": "text-reg-14",
         "cta_uppercase": false
       }
@@ -117,24 +117,6 @@
         "cta_uppercase": false
       }
     },
-    "featured_image_bdxxic": {
-      "type": "featured-image",
-      "disabled": true,
-      "name": "Featured Image",
-      "settings": {
-        "header_contrast_mode": "dark",
-        "desktop_image": "shopify://shop_images/Hero_2.jpg",
-        "image_link": "",
-        "text_left": "The",
-        "text_left_link": "#",
-        "text_left_font_size": "text-reg-14",
-        "text_left_uppercase": false,
-        "text_right": "Shop Now",
-        "text_right_link": "#",
-        "text_right_font_size": "text-reg-14",
-        "text_right_uppercase": false
-      }
-    },
     "rich_text_PG7mfm": {
       "type": "rich-text",
       "name": "Rich text",
@@ -214,6 +196,24 @@
       "settings": {
         "color_scheme": "light",
         "header_contrast_mode": "dark"
+      }
+    },
+    "featured_image_bdxxic": {
+      "type": "featured-image",
+      "disabled": true,
+      "name": "Featured Image",
+      "settings": {
+        "header_contrast_mode": "dark",
+        "desktop_image": "shopify://shop_images/Hero_2.jpg",
+        "image_link": "",
+        "text_left": "The",
+        "text_left_link": "#",
+        "text_left_font_size": "text-reg-14",
+        "text_left_uppercase": false,
+        "text_right": "Shop Now",
+        "text_right_link": "#",
+        "text_right_font_size": "text-reg-14",
+        "text_right_uppercase": false
       }
     }
   },
