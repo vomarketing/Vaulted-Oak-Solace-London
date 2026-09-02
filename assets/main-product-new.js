@@ -534,13 +534,3 @@ if (!customElements.get('product-fullscreen')) {
 
   customElements.define('product-fullscreen', ProductFullscreen);
 }
-
-if (!customElements.get('product-fullscreen-anchor')) {
-  class ProductFullscreenAnchor extends HTMLElement {
-    constructor() {
-      super();
-    }
-  }
-
-  customElements.define('product-fullscreen-anchor', ProductFullscreenAnchor);
-}
