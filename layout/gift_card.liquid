@@ -34,8 +34,9 @@
 
     {%- render 'typekit' -%}
 
-    {{ "//cdn.shopify.com/s/shopify/shopify_common.js" | script_tag }}
-    {{ "//cdn.shopify.com/s/javascripts/currencies.js" | script_tag }}
+    {% comment %} Legacy Shopify helpers, unreferenced by the theme; deferred rather than removed for now (see layout/theme.liquid). {% endcomment %}
+    <script src="//cdn.shopify.com/s/shopify/shopify_common.js" defer="defer"></script>
+    <script src="//cdn.shopify.com/s/javascripts/currencies.js" defer="defer"></script>
     {%- render 'script-tags', layout: 'theme' -%}
 
     {{ content_for_header }}

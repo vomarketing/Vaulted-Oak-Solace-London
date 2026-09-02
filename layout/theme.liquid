@@ -7,6 +7,7 @@
     <meta name="author" content="By Association Only" />
     <link rel="preconnect" href="https://js.klevu.com">
     <link rel="preconnect" href="https://use.typekit.net" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net">
 
 
 
@@ -70,13 +71,21 @@
 
     {%- render 'typekit' -%}
 
-    {{ '//cdn.shopify.com/s/shopify/shopify_common.js' | script_tag }}
-    {{ '//cdn.shopify.com/s/javascripts/currencies.js' | script_tag }}
+
+    <script src="//cdn.shopify.com/s/shopify/shopify_common.js" defer="defer"></script>
+    <script src="//cdn.shopify.com/s/javascripts/currencies.js" defer="defer"></script>
     {%- render 'script-tags', layout: 'theme' -%}
 
     <script src="{{ 'custom-fullpage-scroll.js' | asset_url }}" defer="defer"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer="defer"></script>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css">
+    {% comment %}
+      Swiper CSS is preloaded and applied on arrival instead of blocking render.
+      It is small and needed soon after first paint (PDP sliders are in markup),
+      so a high-priority preload is used rather than the low-priority print-media
+      trick used for Typekit above.
+    {% endcomment %}
+    <link rel="preload" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
+    <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"></noscript>
 
     {{ content_for_header }}
 
