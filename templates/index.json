@@ -13,10 +13,9 @@
       "type": "hero-fullscreen",
       "name": "Hero Fullscreen",
       "settings": {
-        "media_type": "image",
+        "media_type": "video",
         "image_desktop": "shopify://shop_images/Hero.jpg",
-        "video_desktop": "shopify://files/videos/homepage3.mp4",
-        "video_mobile": "shopify://files/videos/story.mp4",
+        "video_desktop": "shopify://files/videos/290726 SOLACE RESORT 27 SEPTEMBER 01 WEB.mp4",
         "video_url_desktop": "",
         "video_url_mobile": "",
         "show_overlay": false,
