@@ -1,4 +1,4 @@
-{{ 'hero-fullscreen.css' | asset_url | stylesheet_tag }}
+{% comment %} hero-fullscreen.css is inlined once in layout/theme.liquid because this section can repeat on a page. {% endcomment %}
 <script src="{{ 'hero-fullscreen.js' | asset_url }}" defer="defer"></script>
 
 {%- liquid

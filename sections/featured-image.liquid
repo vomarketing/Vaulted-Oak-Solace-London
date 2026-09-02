@@ -1,4 +1,6 @@
-{{ 'featured-image.css' | asset_url | stylesheet_tag }}
+<style>
+  {{ 'featured-image.css' | inline_asset_content }}
+</style>
 
 {%- liquid
   assign desktop_image = section.settings.desktop_image

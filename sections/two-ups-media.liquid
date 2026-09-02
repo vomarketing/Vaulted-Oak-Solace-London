@@ -1,4 +1,6 @@
-{{ 'two-ups-media.css' | asset_url | stylesheet_tag }}
+<style>
+  {{ 'two-ups-media.css' | inline_asset_content }}
+</style>
 
 {% liquid
   assign color_scheme = section.settings.color_scheme | default: 'light'

@@ -5,6 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
     <meta name="author" content="By Association Only" />
+    <link rel="preconnect" href="https://js.klevu.com">
     <link rel="stylesheet" href="https://use.typekit.net/ojr8oqr.css">
 
 
@@ -46,7 +47,15 @@
     {%- render 'variables' -%}
     {%- render 'style-tags', layout: 'theme' -%}
     {%- render 'typography' -%}
-    {{ 'custom-global.css' | asset_url | stylesheet_tag }}
+    {% comment %}
+      Inlined: small above-the-fold CSS, avoids two render-blocking requests.
+      hero-fullscreen.css lives here rather than in its section because the
+      section can repeat on a page (4x on the homepage).
+    {% endcomment %}
+    <style>
+      {{ 'custom-global.css' | inline_asset_content }}
+      {{ 'hero-fullscreen.css' | inline_asset_content }}
+    </style>
 
     {%- render 'head-script' -%}
 

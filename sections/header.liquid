@@ -81,7 +81,9 @@
   {% endif %}
 </style>
 
-{{ 'custom-header.css' | asset_url | stylesheet_tag }}
+<style>
+  {{ 'custom-header.css' | inline_asset_content }}
+</style>
 <script src="{{ 'custom-header.js' | asset_url }}" defer="defer"></script>
 
 <header
