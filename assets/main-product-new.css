@@ -177,7 +177,7 @@ body.is-size-guide-active {
 
   @media (min-width: 1441px) {
     padding-top: 153px;
-    padding-bottom: 100px;
+    padding-bottom: 61px;
   }
 
   .is-zoom-modal-active & {
@@ -402,6 +402,7 @@ body.is-size-guide-active {
   @media (min-width: 901px) {
     display: flex;
     flex-direction: column;
+    flex: 1 0 auto;
   }
 }
 
@@ -434,7 +435,8 @@ body.is-size-guide-active {
     margin-bottom: 22px;
 
     @media (min-width: 901px) {
-      margin-bottom: 45px;
+      gap: 5px;
+      margin-bottom: 35px;
     }
   }
 
@@ -517,7 +519,7 @@ body.is-size-guide-active {
   color: var(--color-black, #000000);
 
   @media (min-width: 901px) {
-    margin-bottom: 45px;
+    margin-bottom: 40px;
   }
 }
 
@@ -596,6 +598,10 @@ body.is-size-guide-active {
 
 .prd-Related_Header {
   margin-bottom: 15px;
+
+  @media (min-width: 901px) {
+    margin-bottom: 10px;
+  }
 }
 
 .prd-Related_Title {
