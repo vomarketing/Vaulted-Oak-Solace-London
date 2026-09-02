@@ -294,50 +294,6 @@
   </div>
 </div>  {% endcomment %}
 
-{%- capture same_as -%}
-  {%- if settings.social_twitter_link != blank -%}|{{ settings.social_twitter_link }}{%- endif -%}
-  {%- if settings.social_facebook_link != blank -%}|{{ settings.social_facebook_link }}{%- endif -%}
-  {%- if settings.social_pinterest_link != blank -%}|{{ settings.social_pinterest_link }}{%- endif -%}
-  {%- if settings.social_instagram_link != blank -%}|{{ settings.social_instagram_link }}{%- endif -%}
-  {%- if settings.social_tumblr_link != blank -%}|{{ settings.social_tumblr_link }}{%- endif -%}
-  {%- if settings.social_snapchat_link != blank -%}|{{ settings.social_snapchat_link }}{%- endif -%}
-  {%- if settings.social_youtube_link != blank -%}|{{ settings.social_youtube_link }}{%- endif -%}
-  {%- if settings.social_vimeo_link != blank -%}|{{ settings.social_vimeo_link }}{%- endif -%}
-{%- endcapture -%}
-{%- assign same_as = same_as | remove_first: '|' | strip | split: '|' -%}
-
-<script type="application/ld+json">
-  {
-    "@context": "http://schema.org",
-    "@type": "Organization",
-    "name": "{{ shop.name }}",
-    "logo": "{{ section.settings.logo | image_url: width: 200 }}",
-    {% if same_as != blank %}
-    "sameAs": [
-      {% for item in same_as %}
-      "{{ item }}"{% unless forloop.last %}{% endunless %}
-  {% endfor %}
-    ],
-    {% endif %}
-    "url": "{{ shop.url }}{{ page.url }}"
-  }
-</script>
-
-{%- if template.name == 'index' -%}
-  <script type="application/ld+json">
-    {
-      "@context": "http://schema.org",
-      "@type": "WebSite",
-      "name": "{{ shop.name }}",
-      "potentialAction": {
-        "@type": "SearchAction",
-        "target": "{{ shop.url }}/search?q={search_term_string}",
-        "query-input": "required name=search_term_string"
-      },
-      "url": "{{ shop.url }}"
-    }
-  </script>
-{%- endif -%}
 <script>
   document.addEventListener('DOMContentLoaded', function () {
     var header = document.querySelector('.hd-Header');
