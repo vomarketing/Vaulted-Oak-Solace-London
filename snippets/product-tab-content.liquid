@@ -8,6 +8,8 @@
   @param {string} size_fit
   @param {string} shipping_returns
   @param {string} [uid] - Unique suffix for the tab/panel ids. Defaults to 'product-tab'.
+  @param {string} [clearance_target] - Selector of a later sibling block the open panel must keep on screen on desktop.
+  @param {number} [clearance_gap] - Minimum space in px between the open panel and the clearance target.
 
   @example
   {%- render 'product-tab-content',
@@ -42,7 +44,13 @@
   {{- 'custom-tab.css' | asset_url | stylesheet_tag -}}
   <script src="{{ 'custom-tab.js' | asset_url }}" defer="defer"></script>
 
-  <custom-tab class="custom-tab">
+  <custom-tab
+    class="custom-tab"
+    {% if clearance_target != blank %}
+      data-clearance-target="{{ clearance_target }}"
+      data-clearance-gap="{{ clearance_gap | default: 0 }}"
+    {% endif %}
+  >
     <div class="js-tab-nav custom-tab__nav" aria-label="Product information">
       {%- for key in tab_keys -%}
         {%- liquid

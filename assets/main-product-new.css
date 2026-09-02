@@ -43,8 +43,15 @@ body.is-size-guide-active {
   background-color: var(--color-white, #ffffff);
   color: var(--color-black, #000000);
   overflow-x: hidden;
-  --pdp-mobile-gallery-height: 65dvh;
+  /* The peek height shows the sheet handle, the title and the price above the buy bar, and keeps the description under it. */
+  --pdp-mobile-peek-height: 150px;
+  --pdp-mobile-gallery-height: calc(100dvh - var(--pdp-mobile-peek-height) - env(safe-area-inset-bottom, 0px));
   --pdp-header-height: 60px;
+
+  /* The sheet handle margin and the sheet padding grow at 768px, so the peek grows with them. */
+  @media (min-width: 768px) and (max-width: 900px) {
+    --pdp-mobile-peek-height: 180px;
+  }
 
   @media (max-width: 900px) {
     height: 100vh;
@@ -85,9 +92,8 @@ body.is-size-guide-active {
   top: 0;
   left: 0;
   width: 100vw;
-  height: 65vh;
-  height: 65dvh;
-  max-height: 65dvh;
+  height: var(--pdp-mobile-gallery-height);
+  max-height: var(--pdp-mobile-gallery-height);
   overflow: hidden;
   z-index: 1;
   min-width: 0;
@@ -116,8 +122,7 @@ body.is-size-guide-active {
 
 .pdp-new__content-column {
   position: absolute;
-  top: 65vh;
-  top: 65dvh;
+  top: var(--pdp-mobile-gallery-height);
   left: 0;
   width: 100%;
   height: calc(100vh - 52px);
@@ -482,16 +487,9 @@ body.is-size-guide-active {
 
 .pdp-content__price-row {
   display: flex;
-  flex-direction: column;
+  flex-wrap: wrap;
   align-items: flex-end;
-  gap: 4px;
-  min-width: 87px;
-  flex-shrink: 0;
-
-  @media (min-width: 768px) {
-    flex-direction: row;
-    gap: 10px;
-  }
+  gap: 10px;
 }
 
 .pdp-content__price-wrapper {
@@ -880,23 +878,4 @@ body.is-size-guide-active {
   height: auto;
   display: block;
   object-fit: cover;
-}
-
-product-fullscreen-anchor {
-  position: absolute;
-  left: 0;
-  z-index: -1;
-  display: block;
-  width: 100%;
-  height: 10px;
-  opacity: 0;
-  pointer-events: none;
-
-  &[data-position="bottom"] {
-    bottom: -100px;
-  }
-
-  &[data-position="top"] {
-    bottom: 0;
-  }
 }

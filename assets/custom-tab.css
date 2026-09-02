@@ -130,7 +130,7 @@
     visibility 0s;
 
   @media (min-width: 901px) {
-    max-height: var(--custom-tab-max-height, 180px);
+    max-height: var(--custom-tab-max-height, none);
     overflow-y: auto;
     overscroll-behavior: contain;
   }

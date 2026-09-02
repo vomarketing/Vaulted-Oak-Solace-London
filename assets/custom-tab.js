@@ -23,6 +23,9 @@ if (!customElements.get('custom-tab')) {
       this.reduceMotion = null;
       this.animationTimer = null;
       this.abortController = null;
+      this.clearanceTargetSelector = '';
+      this.clearanceGap = 0;
+      this.minPanelHeight = 48;
 
       this.clickHandler = this.onClick.bind(this);
       this.keydownHandler = this.onKeydown.bind(this);
@@ -42,10 +45,10 @@ if (!customElements.get('custom-tab')) {
       if (this.toggles.length !== this.panels.length) return;
 
       this.reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+      this.clearanceTargetSelector = this.dataset.clearanceTarget || '';
+      this.clearanceGap = parseInt(this.dataset.clearanceGap, 10) || 0;
 
       this.panels.forEach((panel) => panel.removeAttribute('hidden'));
-
-      this.calculateDesktopPanelHeights();
 
       const expanded = this.toggles.findIndex((toggle) => toggle.getAttribute('aria-expanded') === 'true');
       this.setActive(expanded, { animate: false, scroll: false });
@@ -57,27 +60,43 @@ if (!customElements.get('custom-tab')) {
       let resizeTimer;
       window.addEventListener('resize', () => {
         clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(() => {
-          this.calculateDesktopPanelHeights();
-        }, 150);
+        resizeTimer = setTimeout(() => this.applyDesktopClearance(), 150);
       }, { passive: true, signal });
     }
 
-    calculateDesktopPanelHeights() {
-      if (window.innerWidth <= 900 || !this.panels || !this.panels.length) {
+    findScrollContainer() {
+      let node = this.parentElement;
+
+      while (node && node !== document.body) {
+        const overflowY = getComputedStyle(node).overflowY;
+        if (overflowY === 'auto' || overflowY === 'scroll') return node;
+        node = node.parentElement;
+      }
+
+      return null;
+    }
+
+    applyDesktopClearance() {
+      const activePanel = this.panels[this.activeIndex];
+      const container = window.innerWidth > 900 && this.clearanceTargetSelector ? this.findScrollContainer() : null;
+
+      if (!activePanel || !container) {
         this.style.removeProperty('--custom-tab-max-height');
         return;
       }
 
-      const heights = this.panels.map((panel) => {
-        return panel.scrollHeight || panel.offsetHeight;
-      }).filter((h) => h > 20);
+      const target = container.querySelector(this.clearanceTargetSelector);
+      const targetFollowsTabs = target && Boolean(this.compareDocumentPosition(target) & Node.DOCUMENT_POSITION_FOLLOWING);
+      const reservedBelow = (targetFollowsTabs ? target.offsetHeight : 0)
+        + parseFloat(getComputedStyle(container).paddingBottom)
+        + this.clearanceGap;
 
-      if (heights.length > 0) {
-        const minHeight = Math.min(...heights);
-        const appliedHeight = Math.max(100, minHeight);
-        this.style.setProperty('--custom-tab-max-height', `${appliedHeight}px`);
-      }
+      const panelTop = activePanel.getBoundingClientRect().top
+        - container.getBoundingClientRect().top
+        + container.scrollTop;
+      const available = container.clientHeight - reservedBelow - panelTop;
+
+      this.style.setProperty('--custom-tab-max-height', `${Math.max(this.minPanelHeight, Math.floor(available))}px`);
     }
 
     onClick(event) {
@@ -149,6 +168,7 @@ if (!customElements.get('custom-tab')) {
       });
 
       this.activeIndex = targetIndex;
+      this.applyDesktopClearance();
 
       if (shouldAnimate) this.animateHeight(startHeight);
       if (scroll && targetIndex > -1) this.scrollToggleIntoView(this.toggles[targetIndex]);

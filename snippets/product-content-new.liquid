@@ -201,7 +201,7 @@
 
             {%- when 'question_notes' -%}
                 {%- if has_size_guide or has_contact -%}
-                  <div class="pdp-block pdp-block--question-notes">
+                  <div class="pdp-block pdp-block--question-notes pdp-block--mobile text-reg-14" {{ block.shopify_attributes }}>
                     {{- block.settings.question | default: 'Questions about size, fit or fabric?' -}}
                     {% if has_size_guide %}
                       View
@@ -225,7 +225,9 @@
                   fabric_care: block.settings.fabric_care,
                   size_fit: block.settings.size_fit,
                   shipping_returns: block.settings.shipping_returns,
-                  uid: block.id
+                  uid: block.id,
+                  clearance_target: '.pdp-block--colorways',
+                  clearance_gap: 60
                 -%}
               </div>
           {%- endcase -%}
