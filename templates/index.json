@@ -32,6 +32,46 @@
         "cta_uppercase": false
       }
     },
+    "two_ups_media_HyFTNx": {
+      "type": "two-ups-media",
+      "blocks": {
+        "item_TX7wpi": {
+          "type": "item",
+          "settings": {
+            "media_type": "image",
+            "desktop_image": "shopify://shop_images/Artboard_3.jpg",
+            "desktop_video_url": "",
+            "mobile_video_url": "",
+            "text": "The Delano",
+            "text_font_size": "text-reg-14",
+            "text_uppercase": false,
+            "link": "#"
+          }
+        },
+        "item_cjJJ49": {
+          "type": "item",
+          "settings": {
+            "media_type": "image",
+            "desktop_image": "shopify://shop_images/Artboard_3-1.jpg",
+            "desktop_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
+            "mobile_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
+            "text": "Shop Now",
+            "text_font_size": "text-reg-14",
+            "text_uppercase": false,
+            "link": "#"
+          }
+        }
+      },
+      "block_order": [
+        "item_TX7wpi",
+        "item_cjJJ49"
+      ],
+      "name": "Two Ups Media",
+      "settings": {
+        "color_scheme": "light",
+        "header_contrast_mode": "dark"
+      }
+    },
     "two_ups_media_CT3jaP": {
       "type": "two-ups-media",
       "blocks": {
@@ -92,46 +132,6 @@
         "cta_link": "#",
         "cta_font_size": "text-reg-14",
         "cta_uppercase": false
-      }
-    },
-    "two_ups_media_HyFTNx": {
-      "type": "two-ups-media",
-      "blocks": {
-        "item_TX7wpi": {
-          "type": "item",
-          "settings": {
-            "media_type": "image",
-            "desktop_image": "shopify://shop_images/Artboard_3.jpg",
-            "desktop_video_url": "",
-            "mobile_video_url": "",
-            "text": "The Delano",
-            "text_font_size": "text-reg-14",
-            "text_uppercase": false,
-            "link": "#"
-          }
-        },
-        "item_cjJJ49": {
-          "type": "item",
-          "settings": {
-            "media_type": "image",
-            "desktop_image": "shopify://shop_images/Artboard_3-1.jpg",
-            "desktop_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
-            "mobile_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
-            "text": "Shop Now",
-            "text_font_size": "text-reg-14",
-            "text_uppercase": false,
-            "link": "#"
-          }
-        }
-      },
-      "block_order": [
-        "item_TX7wpi",
-        "item_cjJJ49"
-      ],
-      "name": "Two Ups Media",
-      "settings": {
-        "color_scheme": "light",
-        "header_contrast_mode": "dark"
       }
     },
     "featured_image_bdxxic": {
@@ -195,11 +195,11 @@
   },
   "order": [
     "hero_fullscreen_8gXhRJ",
-    "two_ups_media_CT3jaP",
-    "hero_fullscreen_hGpWfC",
     "two_ups_media_HyFTNx",
-    "featured_image_bdxxic",
+    "hero_fullscreen_hGpWfC",
     "hero_fullscreen_PPmfBH",
+    "two_ups_media_CT3jaP",
+    "featured_image_bdxxic",
     "rich_text_PG7mfm"
   ]
 }
