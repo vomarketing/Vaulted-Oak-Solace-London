@@ -76,10 +76,6 @@
 
   &:has(.custom-tab__panel.is-active) {
     padding-top: 20px;
-
-    @media (min-width: 901px) {
-      padding-top: 15px;
-    }
   }
 }
 
