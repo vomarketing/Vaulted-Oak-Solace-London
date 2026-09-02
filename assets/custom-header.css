@@ -195,3 +195,19 @@
 .hd-Header_NavBackdropLogo {
   color: var(--color-black);
 }
+
+@media (min-width: 1201px) {
+  .hd-Header_Inner.lyt-Container {
+    padding-inline: 40px;
+  }
+
+  .hd-Header_Logo {
+    --Logo_Width: 241px;
+    --Logo_Height: 25px;
+  }
+
+  .hd-Nav_Cart {
+    width: 19px;
+    height: 19px;
+  }
+}
