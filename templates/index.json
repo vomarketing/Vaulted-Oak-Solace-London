@@ -117,47 +117,6 @@
         "cta_uppercase": false
       }
     },
-    "two_ups_media_CT3jaP": {
-      "type": "two-ups-media",
-      "blocks": {
-        "item_XzHKeE": {
-          "type": "item",
-          "settings": {
-            "media_type": "image",
-            "desktop_image": "shopify://shop_images/2_Block_C.jpg",
-            "desktop_video_url": "",
-            "mobile_video_url": "",
-            "text": "The Sedgwick",
-            "text_font_size": "text-reg-14",
-            "text_uppercase": false,
-            "link": "#"
-          }
-        },
-        "item_wrJAd7": {
-          "type": "item",
-          "settings": {
-            "media_type": "image",
-            "desktop_image": "shopify://shop_images/2_Block_D.jpg",
-            "desktop_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
-            "mobile_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
-            "text": "Shop Now",
-            "text_font_size": "text-reg-14",
-            "text_uppercase": false,
-            "link": "#"
-          }
-        }
-      },
-      "block_order": [
-        "item_XzHKeE",
-        "item_wrJAd7"
-      ],
-      "disabled": true,
-      "name": "Two Ups Media",
-      "settings": {
-        "color_scheme": "light",
-        "header_contrast_mode": "dark"
-      }
-    },
     "featured_image_bdxxic": {
       "type": "featured-image",
       "disabled": true,
@@ -215,6 +174,47 @@
         "cta_font_size": "text-reg-14",
         "cta_uppercase": false
       }
+    },
+    "two_ups_media_CT3jaP": {
+      "type": "two-ups-media",
+      "blocks": {
+        "item_XzHKeE": {
+          "type": "item",
+          "settings": {
+            "media_type": "image",
+            "desktop_image": "shopify://shop_images/2_Block_C.jpg",
+            "desktop_video_url": "",
+            "mobile_video_url": "",
+            "text": "The Sedgwick",
+            "text_font_size": "text-reg-14",
+            "text_uppercase": false,
+            "link": "#"
+          }
+        },
+        "item_wrJAd7": {
+          "type": "item",
+          "settings": {
+            "media_type": "image",
+            "desktop_image": "shopify://shop_images/2_Block_D.jpg",
+            "desktop_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
+            "mobile_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
+            "text": "Shop Now",
+            "text_font_size": "text-reg-14",
+            "text_uppercase": false,
+            "link": "#"
+          }
+        }
+      },
+      "block_order": [
+        "item_XzHKeE",
+        "item_wrJAd7"
+      ],
+      "disabled": true,
+      "name": "Two Ups Media",
+      "settings": {
+        "color_scheme": "light",
+        "header_contrast_mode": "dark"
+      }
     }
   },
   "order": [
@@ -222,9 +222,9 @@
     "two_ups_media_HyFTNx",
     "hero_fullscreen_hGpWfC",
     "hero_fullscreen_PPmfBH",
-    "two_ups_media_CT3jaP",
-    "featured_image_bdxxic",
     "rich_text_PG7mfm",
-    "hero_fullscreen_fnD3ha"
+    "hero_fullscreen_fnD3ha",
+    "two_ups_media_CT3jaP",
+    "featured_image_bdxxic"
   ]
 }
