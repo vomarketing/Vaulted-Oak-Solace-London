@@ -88,8 +88,8 @@
         "heading": "Resort 2027",
         "heading_font_size": "text-reg-14",
         "heading_uppercase": false,
-        "cta_text": "Shop Collection",
-        "cta_link": "#",
+        "cta_text": "Shop The Collection",
+        "cta_link": "shopify://collections/resort-27",
         "cta_font_size": "text-reg-14",
         "cta_uppercase": false
       }
