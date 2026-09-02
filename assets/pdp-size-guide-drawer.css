@@ -562,6 +562,12 @@
     gap: 20px;
     margin-top: 60px;
   }
+
+  @media (min-width: 1600px) {
+    max-width: 720px;
+    margin-left: auto;
+    margin-right: auto;
+  }
 }
 
 .pdp-size-guide__diagram-callouts {
