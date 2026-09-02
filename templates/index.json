@@ -32,107 +32,6 @@
         "cta_uppercase": false
       }
     },
-    "two_ups_media_HyFTNx": {
-      "type": "two-ups-media",
-      "blocks": {
-        "item_TX7wpi": {
-          "type": "item",
-          "settings": {
-            "media_type": "image",
-            "desktop_image": "shopify://shop_images/2_Block_B.jpg",
-            "desktop_video_url": "",
-            "mobile_video_url": "",
-            "text": "The Delano",
-            "text_font_size": "text-reg-14",
-            "text_uppercase": false,
-            "link": "#"
-          }
-        },
-        "item_cjJJ49": {
-          "type": "item",
-          "settings": {
-            "media_type": "image",
-            "desktop_image": "shopify://shop_images/2_Block_A.jpg",
-            "desktop_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
-            "mobile_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
-            "text": "Shop Now",
-            "text_font_size": "text-reg-14",
-            "text_uppercase": false,
-            "link": "#"
-          }
-        }
-      },
-      "block_order": [
-        "item_TX7wpi",
-        "item_cjJJ49"
-      ],
-      "name": "Two Ups Media",
-      "settings": {
-        "color_scheme": "light",
-        "header_contrast_mode": "dark"
-      }
-    },
-    "hero_fullscreen_hGpWfC": {
-      "type": "hero-fullscreen",
-      "name": "Hero Fullscreen",
-      "settings": {
-        "media_type": "video",
-        "video_desktop": "shopify://files/videos/290726 SOLACE RESORT 27 SEPTEMBER 02 WEB.mp4",
-        "video_url_desktop": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
-        "video_url_mobile": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
-        "show_overlay": false,
-        "overlay_opacity": 40,
-        "overlay_color": "#000000",
-        "header_contrast_mode": "light",
-        "text_color": "white",
-        "heading": "Resort 2027",
-        "heading_font_size": "text-reg-14",
-        "heading_uppercase": false,
-        "cta_text": "Shop Collection",
-        "cta_link": "#",
-        "cta_font_size": "text-reg-14",
-        "cta_uppercase": false
-      }
-    },
-    "featured_image_bdxxic": {
-      "type": "featured-image",
-      "name": "Featured Image",
-      "settings": {
-        "header_contrast_mode": "dark",
-        "desktop_image": "shopify://shop_images/1_Block.jpg",
-        "image_link": "",
-        "text_left": "The",
-        "text_left_link": "#",
-        "text_left_font_size": "text-reg-14",
-        "text_left_uppercase": false,
-        "text_right": "Shop Now",
-        "text_right_link": "#",
-        "text_right_font_size": "text-reg-14",
-        "text_right_uppercase": false
-      }
-    },
-    "hero_fullscreen_PPmfBH": {
-      "type": "hero-fullscreen",
-      "name": "Hero Fullscreen",
-      "settings": {
-        "media_type": "video",
-        "video_desktop": "shopify://files/videos/290726 SOLACE RESORT 27 SEPTEMBER 01 WEB.mp4",
-        "video_url_desktop": "",
-        "video_url_mobile": "",
-        "show_overlay": false,
-        "overlay_opacity": 40,
-        "overlay_color": "rgba(0,0,0,0)",
-        "header_contrast_mode": "light",
-        "text_color": "white",
-        "heading": "Resort 2027",
-        "heading_font_size": "text-reg-14",
-        "heading_uppercase": false,
-        "cta_text": "Shop Collection",
-        "cta_link": "#",
-        "cta_font_size": "text-reg-14",
-        "cta_uppercase": false
-      }
-    },
     "two_ups_media_CT3jaP": {
       "type": "two-ups-media",
       "blocks": {
@@ -173,6 +72,109 @@
         "header_contrast_mode": "dark"
       }
     },
+    "hero_fullscreen_hGpWfC": {
+      "type": "hero-fullscreen",
+      "name": "Hero Fullscreen",
+      "settings": {
+        "media_type": "video",
+        "video_desktop": "shopify://files/videos/290726 SOLACE RESORT 27 SEPTEMBER 02 WEB.mp4",
+        "video_url_desktop": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
+        "video_url_mobile": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
+        "show_overlay": false,
+        "overlay_opacity": 40,
+        "overlay_color": "#000000",
+        "header_contrast_mode": "light",
+        "text_color": "white",
+        "heading": "Resort 2027",
+        "heading_font_size": "text-reg-14",
+        "heading_uppercase": false,
+        "cta_text": "Shop Collection",
+        "cta_link": "#",
+        "cta_font_size": "text-reg-14",
+        "cta_uppercase": false
+      }
+    },
+    "two_ups_media_HyFTNx": {
+      "type": "two-ups-media",
+      "blocks": {
+        "item_TX7wpi": {
+          "type": "item",
+          "settings": {
+            "media_type": "image",
+            "desktop_image": "shopify://shop_images/Artboard_3.jpg",
+            "desktop_video_url": "",
+            "mobile_video_url": "",
+            "text": "The Delano",
+            "text_font_size": "text-reg-14",
+            "text_uppercase": false,
+            "link": "#"
+          }
+        },
+        "item_cjJJ49": {
+          "type": "item",
+          "settings": {
+            "media_type": "image",
+            "desktop_image": "shopify://shop_images/Artboard_3-1.jpg",
+            "desktop_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
+            "mobile_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
+            "text": "Shop Now",
+            "text_font_size": "text-reg-14",
+            "text_uppercase": false,
+            "link": "#"
+          }
+        }
+      },
+      "block_order": [
+        "item_TX7wpi",
+        "item_cjJJ49"
+      ],
+      "name": "Two Ups Media",
+      "settings": {
+        "color_scheme": "light",
+        "header_contrast_mode": "dark"
+      }
+    },
+    "featured_image_bdxxic": {
+      "type": "featured-image",
+      "disabled": true,
+      "name": "Featured Image",
+      "settings": {
+        "header_contrast_mode": "dark",
+        "desktop_image": "shopify://shop_images/1_Block.jpg",
+        "image_link": "",
+        "text_left": "The",
+        "text_left_link": "#",
+        "text_left_font_size": "text-reg-14",
+        "text_left_uppercase": false,
+        "text_right": "Shop Now",
+        "text_right_link": "#",
+        "text_right_font_size": "text-reg-14",
+        "text_right_uppercase": false
+      }
+    },
+    "hero_fullscreen_PPmfBH": {
+      "type": "hero-fullscreen",
+      "name": "Hero Fullscreen",
+      "settings": {
+        "media_type": "image",
+        "image_desktop": "shopify://shop_images/Hero_2.jpg",
+        "video_desktop": "shopify://files/videos/290726 SOLACE RESORT 27 SEPTEMBER 01 WEB.mp4",
+        "video_url_desktop": "",
+        "video_url_mobile": "",
+        "show_overlay": false,
+        "overlay_opacity": 40,
+        "overlay_color": "rgba(0,0,0,0)",
+        "header_contrast_mode": "light",
+        "text_color": "white",
+        "heading": "Resort 2027",
+        "heading_font_size": "text-reg-14",
+        "heading_uppercase": false,
+        "cta_text": "Shop Collection",
+        "cta_link": "#",
+        "cta_font_size": "text-reg-14",
+        "cta_uppercase": false
+      }
+    },
     "rich_text_PG7mfm": {
       "type": "rich-text",
       "name": "Rich text",
@@ -193,11 +195,11 @@
   },
   "order": [
     "hero_fullscreen_8gXhRJ",
-    "two_ups_media_HyFTNx",
+    "two_ups_media_CT3jaP",
     "hero_fullscreen_hGpWfC",
+    "two_ups_media_HyFTNx",
     "featured_image_bdxxic",
     "hero_fullscreen_PPmfBH",
-    "two_ups_media_CT3jaP",
     "rich_text_PG7mfm"
   ]
 }
