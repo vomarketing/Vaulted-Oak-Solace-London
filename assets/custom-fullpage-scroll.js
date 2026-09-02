@@ -141,6 +141,19 @@ if (!window.FullpageScrollController) {
       mediaQuery.addEventListener('change', handleBreakpoint, { signal });
     }
 
+    /**
+     * An empty section wrapper is hidden by CSS, and Swiper drops a hidden slide
+     * from its position grid but not from its slide list, so the last slide
+     * becomes unreachable. The footer placeholder is empty by design.
+     *
+     * @param {Element} section
+     * @returns {boolean}
+     */
+    rendersContent(section) {
+      if (section.classList.contains('shopify-section--footer')) return true;
+      return !section.matches(':empty');
+    }
+
     setupIndexFullpage() {
       if (!this.container) return;
 
@@ -156,6 +169,7 @@ if (!window.FullpageScrollController) {
 
         const childSections = Array.from(this.container.querySelectorAll(this.selectors.childSections)).filter(
           (el) =>
+            this.rendersContent(el) &&
             !el.classList.contains('js-section-footer') &&
             !(isFooterExcluded && el.classList.contains('shopify-section--footer'))
         );
@@ -196,6 +210,7 @@ if (!window.FullpageScrollController) {
 
       const targetSlides = editorialSections.filter(
         (el) =>
+          this.rendersContent(el) &&
           !el.classList.contains('js-section-footer') &&
           !(isFooterExcluded && el.classList.contains('shopify-section--footer'))
       );
