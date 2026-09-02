@@ -8,6 +8,17 @@
   if section.settings.media_type == 'video'
     assign is_video = true
   endif
+
+  # Only the first section in the template is the LCP candidate. Later heroes
+  # must not compete with it for bandwidth, so their image lazy-loads.
+  # section.index is 1-based and only set inside JSON templates and section
+  # groups; when it is missing, keep eager so nothing above the fold regresses.
+  assign image_loading = 'lazy'
+  assign image_fetchpriority = 'auto'
+  if section.index == blank or section.index == 1
+    assign image_loading = 'eager'
+    assign image_fetchpriority = 'high'
+  endif
 -%}
 
 <hero-fullscreen
@@ -59,8 +70,8 @@
         {%- render 'picture',
           image_desktop: section.settings.image_desktop,
           image_mobile: section.settings.image_mobile,
-          loading: 'eager',
-          fetchpriority: 'high',
+          loading: image_loading,
+          fetchpriority: image_fetchpriority,
           class: 'hero-fullscreen__image',
           sizes: '100vw'
         -%}

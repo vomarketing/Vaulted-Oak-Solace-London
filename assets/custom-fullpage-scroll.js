@@ -259,6 +259,11 @@ if (!window.FullpageScrollController) {
       this.swiper = new window.Swiper(targetElement, {
         direction: 'vertical',
         slidesPerView: 1,
+        // Hero images below the first slide use loading="lazy" (LCP fix). This
+        // container clips off-screen slides, so native lazy loading would not
+        // start until a slide is already entering; let Swiper un-lazy the
+        // adjacent slide instead.
+        lazyPreloadPrevNext: 1,
         spaceBetween: 0,
         speed: 600,
         effect: 'creative',
