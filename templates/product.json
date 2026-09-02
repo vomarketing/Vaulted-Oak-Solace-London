@@ -98,7 +98,7 @@
       ],
       "name": "Main Product (New)",
       "settings": {
-        "header_contrast_mode": "light",
+        "header_contrast_mode": "dark",
         "stock_note": "Only a few left in stock",
         "wishlist_enable": true,
         "size_guide": "",
