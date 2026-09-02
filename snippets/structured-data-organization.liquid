@@ -17,6 +17,7 @@
 {%- liquid
   assign organization_id = shop.url | append: '/#organization'
   assign website_id = shop.url | append: '/#website'
+  assign search_target = shop.url | append: '/search?q={search_term_string}'
 
   assign logo_url = ''
   if settings.share_image != blank
@@ -90,7 +91,7 @@
   "publisher": { "@id": {{ organization_id | json }} },
   "potentialAction": {
     "@type": "SearchAction",
-    "target": {{ shop.url | append: '/search?q={search_term_string}' | json }},
+    "target": {{ search_target | json }},
     "query-input": "required name=search_term_string"
   }
 }
