@@ -196,6 +196,13 @@
   color: var(--color-black);
 }
 
+@media (min-width: 768px) {
+  .hd-Header_Logo {
+    --Logo_Width: 219px;
+    --Logo_Height: 23px;
+  }
+}
+
 @media (min-width: 1201px) {
   .hd-Header_Inner.lyt-Container {
     padding-inline: 40px 35px;
