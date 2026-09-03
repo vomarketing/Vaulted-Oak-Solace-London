@@ -41,7 +41,7 @@
           "settings": {
             "show_wishlist": true,
             "show_question_notes": true,
-            "question": "Questions about size, fit or fabric? Contact us"
+            "question": "Questions about size, fit or fabric?"
           }
         },
         "duties_taxes_d76MTJ": {
@@ -119,7 +119,7 @@
         "measure_hip_title": "Low Hip",
         "measure_hip_body": "With your feet together, measure around the fullest part of the hips",
         "size_guide_contact_text": "<p>Questions about size, fit & fabric? <a href=\"/pages/contact\">Contact us</a><br/>Available UK business hours Monday - Friday, 9am - 5pm</p>",
-        "contact_page": ""
+        "contact_page": "shopify://pages/contact"
       }
     },
     "rich_text_NHU7La": {
