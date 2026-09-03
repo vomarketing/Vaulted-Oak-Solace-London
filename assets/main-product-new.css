@@ -80,10 +80,14 @@ body.is-size-guide-active {
 
   @media (min-width: 901px) {
     display: grid;
-    grid-template-columns: minmax(0, 59.6875%) minmax(0, 40.3125%);
+    grid-template-columns: minmax(0, 60.42%) minmax(0, 39.58%);
     align-items: flex-start;
     height: auto;
     overflow: visible;
+  }
+
+  @media (min-width: 1600px) {
+    grid-template-columns: minmax(0, 59.6875%) minmax(0, 40.3125%);
   }
 }
 
@@ -386,7 +390,7 @@ body.is-size-guide-active {
     --type-10-line-height: 16px;
 
     max-width: 570px;
-    margin: 0 max(0px, calc(50% - 287px)) 0 max(0px, calc(50% - 283px));
+    margin: 0 max(0px, calc(50% - 287px)) 0 max(0px, calc(50% - 285px));
     flex: 1 0 auto;
   }
 }

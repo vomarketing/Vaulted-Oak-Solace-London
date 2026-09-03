@@ -35,8 +35,8 @@
   assign breakpoint = breakpoint | default: '900px'
   assign sizes = sizes | default: '100vw'
   assign sizes_mobile = sizes_mobile | default: sizes
-  assign widths = widths | default: '1200, 1600, 1920, 2000, 2400, 2800, 3200, 3840, 4000, 4500, 5000'
-  assign widths_mobile = widths_mobile | default: '600, 800, 1000, 1200, 1400, 1600, 1800, 2000, 2400'
+  assign widths = widths | default: '1200, 1600, 1920, 2400, 2800, 3200, 3840, 4000, 4500, 5000'
+  assign widths_mobile = widths_mobile | default: '600, 800, 1000, 1200, 1400, 1600, 1800, 1920, 2400'
   assign width_retina = image_desktop.width | at_most: 3840
 
   assign desktop_widths = widths | append: ', ' | append: image_desktop.width
