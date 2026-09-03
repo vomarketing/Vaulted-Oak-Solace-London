@@ -187,7 +187,7 @@
       "type": "related-products",
       "name": "Related Products",
       "settings": {
-        "title": "Shop Resort 2027",
+        "title": "Shop The Collection",
         "products": "{{ product.metafields.custom.recommended_products.value }}",
         "header_contrast_mode": "dark"
       }
