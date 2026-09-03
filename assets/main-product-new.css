@@ -820,6 +820,10 @@ body.is-size-guide-active {
     top: 40px;
     right: 40px;
   }
+
+  .pdp-zoom-modal[data-header-mode="dark"] & {
+    color: var(--color-black);
+  }
 }
 
 .pdp-zoom-modal__container {
