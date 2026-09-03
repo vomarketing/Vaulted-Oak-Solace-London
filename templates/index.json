@@ -117,6 +117,23 @@
         "cta_uppercase": false
       }
     },
+    "featured_image_bdxxic": {
+      "type": "featured-image",
+      "name": "Featured Image",
+      "settings": {
+        "header_contrast_mode": "dark",
+        "desktop_image": "shopify://shop_images/Hero_2.jpg",
+        "image_link": "",
+        "text_left": "The Collection",
+        "text_left_link": "#",
+        "text_left_font_size": "text-reg-14",
+        "text_left_uppercase": false,
+        "text_right": "Shop Now",
+        "text_right_link": "#",
+        "text_right_font_size": "text-reg-14",
+        "text_right_uppercase": false
+      }
+    },
     "rich_text_PG7mfm": {
       "type": "rich-text",
       "name": "Rich text",
@@ -197,23 +214,6 @@
         "color_scheme": "light",
         "header_contrast_mode": "dark"
       }
-    },
-    "featured_image_bdxxic": {
-      "type": "featured-image",
-      "name": "Featured Image",
-      "settings": {
-        "header_contrast_mode": "dark",
-        "desktop_image": "shopify://shop_images/Hero_2.jpg",
-        "image_link": "",
-        "text_left": "The Collection",
-        "text_left_link": "#",
-        "text_left_font_size": "text-reg-14",
-        "text_left_uppercase": false,
-        "text_right": "Shop Now",
-        "text_right_link": "#",
-        "text_right_font_size": "text-reg-14",
-        "text_right_uppercase": false
-      }
     }
   },
   "order": [
@@ -221,9 +221,9 @@
     "two_ups_media_HyFTNx",
     "hero_fullscreen_hGpWfC",
     "hero_fullscreen_PPmfBH",
+    "featured_image_bdxxic",
     "rich_text_PG7mfm",
     "hero_fullscreen_fnD3ha",
-    "two_ups_media_CT3jaP",
-    "featured_image_bdxxic"
+    "two_ups_media_CT3jaP"
   ]
 }
