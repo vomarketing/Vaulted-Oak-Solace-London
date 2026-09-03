@@ -44,6 +44,11 @@ body.template-index[data-fullpage-scroll] {
   min-height: 100dvh;
   overscroll-behavior-y: none;
 
+  @media (min-width: 901px) {
+    --type-14-size: 12px;
+    --type-14-line-height: 16px;
+  }
+
   #MainContent {
     width: 100vw;
     height: auto;

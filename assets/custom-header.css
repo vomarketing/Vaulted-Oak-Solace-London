@@ -36,9 +36,9 @@
 
   .hd-Nav_Link {
     font-family: var(--font-family-primary);
-    font-size: var(--type-14-size);
+    font-size: 12px;
     font-weight: var(--font-weight-medium);
-    line-height: var(--type-14-line-height);
+    line-height: 16px;
     text-transform: capitalize;
   }
 
