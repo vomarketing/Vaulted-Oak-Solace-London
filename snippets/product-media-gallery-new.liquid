@@ -32,6 +32,10 @@
               assign header_mode = 'light'
             endif
 
+            if settings.pdp_scroll_type == 'normal'
+              assign header_mode = 'dark'
+            endif
+
             assign is_video = false
             if media.media_type == 'video' or media.media_type == 'external_video'
               assign is_video = true

@@ -96,6 +96,8 @@ if (!window.FullpageScrollController) {
       this.wheelDeltaAccumulator = 0;
       this.wheelTimeout = null;
 
+      console.log(this.canActivate());
+
       if (this.canActivate()) {
         this.init();
       }
@@ -409,7 +411,7 @@ if (!window.FullpageScrollController) {
       if (this.editorialContainer) {
         let edTouchStartY = 0;
         let edTouchStartX = 0;
-        
+
         this.editorialContainer.addEventListener('touchstart', (e) => {
           if (e.touches && e.touches.length > 0) {
             edTouchStartY = e.touches[0].clientY;
@@ -421,7 +423,7 @@ if (!window.FullpageScrollController) {
           if (!e.changedTouches || e.changedTouches.length === 0) return;
           const diffY = edTouchStartY - e.changedTouches[0].clientY; // > 0 is swipe up, < 0 is swipe down
           const diffX = Math.abs(edTouchStartX - e.changedTouches[0].clientX);
-          
+
           const isMobile = window.matchMedia(`(max-width: ${this.config.mobileBreakpoint}px)`).matches;
           if (isMobile && this.state === FullpageScrollController.states.EDITORIAL_IDLE) {
             // User swipes DOWN to go UP to PDP (return back)
@@ -439,7 +441,7 @@ if (!window.FullpageScrollController) {
         }
 
         const isMobile = window.matchMedia(`(max-width: ${this.config.mobileBreakpoint}px)`).matches;
-        
+
         if (this.state === FullpageScrollController.states.TO_EDITORIAL || this.state === FullpageScrollController.states.TO_PDP) {
           if (e.cancelable && !isMobile) e.preventDefault();
           return;
@@ -455,7 +457,7 @@ if (!window.FullpageScrollController) {
             // Block exit for 800ms after arriving at slide 0 to absorb Mac trackpad momentum
             if (timeSinceSlideChange > 800) {
               this.wheelDeltaAccumulatorUp = (this.wheelDeltaAccumulatorUp || 0) + e.deltaY;
-              
+
               if (this.wheelDeltaAccumulatorUp < -this.config.desktopWheelThreshold) {
                 if (e.cancelable) e.preventDefault();
                 deactivateEditorial();
@@ -493,7 +495,7 @@ if (!window.FullpageScrollController) {
           } else {
             this.wheelDeltaAccumulator = 0;
           }
-          
+
           if (this.wheelTimeout) clearTimeout(this.wheelTimeout);
           this.wheelTimeout = setTimeout(() => {
             this.wheelDeltaAccumulator = 0;
