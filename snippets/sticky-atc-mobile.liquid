@@ -1,0 +1,183 @@
+{%- doc -%}
+  @param {product} product
+  @param {string} [section_id]
+  @param {section} [section]
+{%- enddoc -%}
+
+{{ 'sticky-atc-mobile.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'sticky-atc-mobile.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign has_size_option = false
+  for option in product.options_with_values
+    assign downcased_name = option.name | downcase
+    if downcased_name contains 'size'
+      assign has_size_option = true
+      break
+    endif
+  endfor
+  assign current_variant = product.selected_or_first_available_variant
+-%}
+
+<sticky-atc-mobile
+  class="pdp-sticky-atc-mobile js-sticky-atc-mobile"
+  id="PdpStickyAtcMobile"
+  data-product-id="{{ product.id }}"
+  data-section-id="{{ section_id }}"
+  data-initial-variant-id="{{ current_variant.id }}"
+  data-product-available="{{ product.available }}"
+  data-has-size-option="{{ has_size_option }}"
+  data-size-chosen="false"
+  aria-hidden="true"
+>
+  <div class="pdp-size-drawer__backdrop js-sticky-atc-backdrop" aria-hidden="true"></div>
+
+  <div class="pdp-size-drawer js-sticky-atc-drawer" aria-expanded="false">
+    {%- if has_size_option -%}
+      <div class="pdp-size-drawer__inner js-sticky-atc-inner">
+        {%- for option in product.options_with_values -%}
+          {%- assign downcased_name = option.name | downcase -%}
+          {%- if downcased_name contains 'size' -%}
+            <div class="pdp-size-row" data-option-index="{{ forloop.index0 }}">
+              <div class="pdp-size-row__inner">
+                <div class="pdp-size-row__header">
+                  <span class="pdp-size-row__label text-reg-14">
+                    {{ option.name }}
+                  </span>
+                </div>
+
+                <div class="pdp-size-row__list">
+                  {%- assign option_idx = forloop.index0 -%}
+                  {%- for value in option.values -%}
+                    {%- liquid
+                      assign variant_for_value = null
+                      for v in product.variants
+                        assign match = true
+                        for option2 in product.options_with_values
+                          assign o_idx = forloop.index0
+                          if o_idx == option_idx
+                            if v.options[o_idx] != value
+                              assign match = false
+                            endif
+                          else
+                            if v.options[o_idx] != current_variant.options[o_idx]
+                              assign match = false
+                            endif
+                          endif
+                        endfor
+                        if match
+                          assign variant_for_value = v
+                          break
+                        endif
+                      endfor
+
+                      assign is_avail = false
+                      assign inventory_qty = 0
+                      if variant_for_value != null
+                        assign is_avail = variant_for_value.available
+                        assign inventory_qty = variant_for_value.inventory_quantity
+                      endif
+                    -%}
+
+                    <div class="pdp-size-row__item" data-stock="{{ inventory_qty }}">
+                      <button
+                        type="button"
+                        class="pdp-size-row__btn text-reg-14 js-sticky-atc-size-btn{% unless is_avail %} pdp-size-row__btn--oos{% endunless %}"
+                        data-value="{{ value | escape }}"
+                        data-variant-id="{{ variant_for_value.id }}"
+                        data-available="{{ is_avail }}"
+                        data-stock="{{ inventory_qty }}"
+                        aria-pressed="false"
+                      >
+                        <span class="pdp-size-row__btn-text">{{ value }}</span>
+                        {%- unless is_avail -%}
+                          <span class="pdp-size-row__waitlist-label text-reg-14 hidden">{{ 'products.product.join_waitlist' | t }}</span>
+                        {%- endunless -%}
+                      </button>
+                    </div>
+                  {%- endfor -%}
+                </div>
+              </div>
+            </div>
+          {%- endif -%}
+        {%- endfor -%}
+
+      </div>
+    {%- endif -%}
+
+    <div class="pdp-cta-row">
+      <button
+        class="pdp-cta-submit text-med-14 js-sticky-atc-submit"
+        type="button"
+        name="add"
+      >
+        <span
+          class="pdp-cta-submit__text js-sticky-atc-submit-text text-med-14"
+          data-translation-add-to-cart="{{ 'products.product.add_to_bag' | t }}"
+          data-translation-sold-out="{{ 'products.product.sold_out' | t }}"
+          data-translation-waitlist="{{ 'products.product.join_waitlist' | t }}"
+          data-translation-size-guide="{{ 'products.product.size_fit_guide' | t }}"
+        >
+          {%- if product.available -%}
+            {{ 'products.product.add_to_bag' | t }}
+          {%- else -%}
+            {{ 'products.product.join_waitlist' | t }}
+          {%- endif -%}
+        </span>
+      </button>
+
+      {%- if settings.wishlist_enable or section.settings.wishlist_enable -%}
+        <div class="pdp-cta-wishlist js-sticky-atc-wishlist">
+          <button
+            type="button"
+            class="pdp-cta-wishlist__btn js-Wishlist_Button js-Wishlist_Button-add"
+            {%- unless customer -%}data-module-drawers-trigger="wishlist"{%- endunless -%}
+            data-variant="{{ current_variant.id }}"
+            data-product="{{ product.id }}"
+            data-pTitle="{{ product.title | escape }}"
+            data-ptitle="{{ product.title | escape }}"
+            aria-label="{{ 'wishlist.add_to_wishlist' | t }}"
+            title="{{ 'wishlist.add_to_wishlist' | t }}"
+          >
+            <span class="pdp-cta-wishlist__icons">
+              {%- render 'icons', icon: 'wishlist', class: 'pdp-cta-wishlist__icon' -%}
+            </span>
+          </button>
+        </div>
+      {%- endif -%}
+    </div>
+
+    <div class="pdp-bis-box js-sticky-atc-bis-box" aria-hidden="true">
+      <p class="pdp-bis-box__title text-reg-14">
+        {{ settings.bis_message | default: 'Notify me when this size is back in stock.' }}
+      </p>
+      <div class="pdp-bis-box__form">
+        <div class="pdp-bis-box__input-wrapper">
+          <input
+            type="email"
+            class="pdp-bis-box__input text-reg-14 js-sticky-atc-bis-email"
+            placeholder="{{ settings.bis_placeholder | default: 'Email Address' }}"
+            autocomplete="email"
+            aria-label="Email Address"
+          >
+          <button
+            type="button"
+            class="pdp-bis-box__submit text-reg-14 js-sticky-atc-bis-submit"
+            data-product-id="{{ product.id }}"
+          >
+            {{ settings.bis_button_text | default: 'Submit' }}
+          </button>
+        </div>
+        <div
+          class="pdp-bis-box__response text-reg-14 js-sticky-atc-bis-response"
+          role="status"
+          aria-live="polite"
+          aria-hidden="true"
+          data-success="{{ settings.bis_success_message | default: 'Thank you for joining the waitlist.<br>We’ll notify you if this size becomes available.' }}"
+          data-error="{{ settings.bis_error_message | default: 'Something went wrong. Please try again.' }}"
+          data-invalid-email="Please enter a valid email address."
+        ></div>
+      </div>
+    </div>
+  </div>
+</sticky-atc-mobile>

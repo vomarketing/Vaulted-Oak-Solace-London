@@ -7,8 +7,8 @@ if (!window.FullpageScrollController) {
     static config = {
       footerBreakpoint: 768,
       mobileBreakpoint: 900,
-      animationDuration: 600,
-      desktopWheelThreshold: 15,
+      animationDuration: 650,
+      desktopWheelThreshold: 55,
       mobileSwipeThreshold: 40
     };
 
