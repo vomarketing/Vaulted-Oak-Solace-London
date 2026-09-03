@@ -583,6 +583,11 @@ product-buy-buttons,
   }
 }
 
+.pdp-size-drawer.is-open .pdp-cta-wishlist,
+.pdp-size-drawer.is-expanded .pdp-cta-wishlist {
+  display: none !important;
+}
+
 .pdp-bis-box__form {
   @media (min-width: 768px) {
     max-width: 361px;

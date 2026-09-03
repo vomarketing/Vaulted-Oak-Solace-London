@@ -668,13 +668,17 @@
 .pdp-size-row__help {
   display: none;
 
-  @media (min-width: 1201px) {
+  @media (min-width: 901px) {
     display: block;
+    margin-top: 20px;
     margin-bottom: 45px;
   }
 
-  a {
+  a,
+  .pdp-tab-help__link {
     text-decoration: none;
+    color: inherit;
+    cursor: pointer;
 
     &:hover {
       text-decoration: underline;

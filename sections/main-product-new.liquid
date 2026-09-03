@@ -47,6 +47,10 @@
   {%- render 'product-media-zoom-modal-new', product: product -%}
 </product-fullscreen>
 
+{%- if section.settings.enable_sticky_atc_mobile -%}
+  {%- render 'sticky-atc-mobile', product: product, section_id: section.id, section: section -%}
+{%- endif -%}
+
 <script type="application/ld+json">
 {
   "@context": "https://schema.org/",
@@ -171,6 +175,13 @@
       "type": "checkbox",
       "id": "wishlist_enable",
       "label": "Enable Wishlist",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sticky_atc_mobile",
+      "label": "Sticky Add to Bag on lower sections (Scroll up only)",
+      "info": "Shows the sticky Add to Bag CTA on mobile when scrolling back up in lower content sections.",
       "default": true
     },
     {
@@ -324,6 +335,22 @@
           "id": "show_wishlist",
           "label": "Show Wishlist Button",
           "default": true
+        },
+        {
+          "type": "header",
+          "content": "Question Notes (Desktop only)"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_question_notes",
+          "label": "Show Question Notes on Desktop",
+          "default": true
+        },
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question",
+          "default": "Questions about size, fit or fabric?"
         }
       ]
     },
@@ -404,13 +431,35 @@
     {
       "type": "question_notes",
       "name": "Question Notes",
-      "limit": 1,
+      "limit": 2,
       "settings": [
         {
           "type": "text",
           "id": "question",
           "label": "Question",
           "default": "Questions about size, fit or fabric?"
+        },
+        {
+          "type": "checkbox",
+          "id": "enable_responsive",
+          "label": "Enable Responsive"
+        },
+        {
+          "type": "select",
+          "id": "responsive_target",
+          "label": "Responsive screen",
+          "options": [
+            {
+              "label": "Mobile",
+              "value": "mobile"
+            },
+            {
+              "label": "Desktop",
+              "value": "desktop"
+            }
+          ],
+          "default": "mobile",
+          "visible_if": "{{ block.settings.enable_responsive }}"
         }
       ]
     },
