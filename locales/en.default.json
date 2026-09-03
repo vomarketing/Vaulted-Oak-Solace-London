@@ -361,7 +361,7 @@
       "on_sale_from_html": "{{ price }}",
       "from_text_html": "{{ price }}",
       "quantity": "Quantity",
-      "add_to_cart": "Add to Cart",
+      "add_to_cart": "Add To Cart",
       "add_to_bag": "Add To Bag",
       "size_guide": "Size Guide",
       "please_choose": "Select A Size",
