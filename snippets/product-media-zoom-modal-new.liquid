@@ -43,9 +43,9 @@
           assign header_mode = default_header_mode
           assign alt_lower = media.alt | downcase
           if alt_lower contains 'header:dark'
-            assign header_mode = 'light'
-          elsif alt_lower contains 'header:light'
             assign header_mode = 'dark'
+          elsif alt_lower contains 'header:light'
+            assign header_mode = 'light'
           endif
         -%}
         <div
@@ -89,9 +89,9 @@
         assign header_mode = default_header_mode
         assign alt_lower = media.alt | downcase
         if alt_lower contains 'header:dark'
-          assign header_mode = 'light'
-        elsif alt_lower contains 'header:light'
           assign header_mode = 'dark'
+        elsif alt_lower contains 'header:light'
+          assign header_mode = 'light'
         endif
       -%}
       <div
@@ -134,9 +134,9 @@
           assign header_mode = default_header_mode
           assign alt_lower = media.alt | downcase
           if alt_lower contains 'header:dark'
-            assign header_mode = 'light'
-          elsif alt_lower contains 'header:light'
             assign header_mode = 'dark'
+          elsif alt_lower contains 'header:light'
+            assign header_mode = 'light'
           endif
         -%}
         <div

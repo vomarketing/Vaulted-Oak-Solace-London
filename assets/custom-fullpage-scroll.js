@@ -594,6 +594,13 @@ if (!window.FullpageScrollController) {
       document.dispatchEvent(new CustomEvent('fullpage:ready', {
         detail: { instance: this, swiper: swiperInstance }
       }));
+
+      if (!this.isProductPage) {
+        const activeSlide = swiperInstance?.slides?.[swiperInstance.activeIndex] || this.slides[0];
+        if (activeSlide) {
+          requestAnimationFrame(() => this.updateHeaderContrast(activeSlide));
+        }
+      }
     }
 
     bindThemeEditorEvents() {
