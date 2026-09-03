@@ -77,8 +77,8 @@
           "type": "question_notes",
           "settings": {
             "question": "Questions about size, fit or fabric?",
-            "enable_responsive": true,
-            "responsive_target": "mobile"
+            "enable_responsive": false,
+            "responsive_target": "desktop"
           }
         },
         "colorways_UnqVeT": {
