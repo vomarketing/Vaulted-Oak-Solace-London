@@ -1,4 +1,8 @@
 .three-up-slider {
+  --three-up-slider-pad-top: clamp(32px, 7dvh, 72px);
+  --three-up-slider-pad-bottom: clamp(32px, 7dvh, 72px);
+  --three-up-slider-caption: 40px;
+
   position: relative;
   display: flex;
   flex-direction: column;
@@ -6,12 +10,14 @@
   width: 100vw;
   min-height: 100dvh;
   overflow: hidden;
-  padding-block: clamp(32px, 7dvh, 72px);
+  padding-top: var(--three-up-slider-pad-top);
+  padding-bottom: var(--three-up-slider-pad-bottom);
   background-color: var(--color-white, #ffffff);
   color: var(--color-black, #000000);
 
   @media (min-width: 768px) {
-    padding-block: clamp(40px, 8dvh, 96px);
+    --three-up-slider-pad-top: clamp(40px, 8dvh, 96px);
+    --three-up-slider-pad-bottom: clamp(40px, 8dvh, 96px);
 
     .three-up-slider__swiper {
       padding-inline: 60px;
@@ -19,7 +25,8 @@
   }
 
   @media (min-width: 901px) {
-    padding-block: clamp(48px, 9dvh, 120px);
+    --three-up-slider-pad-top: clamp(48px, 9dvh, 120px);
+    --three-up-slider-pad-bottom: clamp(48px, 9dvh, 120px);
   }
 
   @media (min-width: 1201px) {
@@ -30,7 +37,8 @@
   }
 
   @media (min-width: 1441px) {
-    padding-block: clamp(56px, 10dvh, 160px);
+    --three-up-slider-pad-top: clamp(56px, 10dvh, 160px);
+    --three-up-slider-pad-bottom: clamp(56px, 10dvh, 160px);
 
     .three-up-slider__swiper {
       max-width: 1538px;
@@ -41,15 +49,39 @@
 
 .three-up-slider__swiper {
   padding-inline: 20px;
+
+  .swiper-slide {
+    display: flex;
+    flex-direction: column;
+    height: auto;
+    min-height: 0;
+
+    picture {
+      display: flex;
+      width: 100%;
+      min-height: 0;
+    }
+  }
 }
 
+/* Height leads and width follows, so a short viewport shrinks the whole image
+   instead of letting object-fit crop the model out of frame. */
 .three-up-slider__slide-image,
 .three-up-slider__slide-video {
   display: block;
   width: 100%;
   height: auto;
-  aspect-ratio: 268/380;
+  aspect-ratio: 268 / 380;
   object-fit: cover;
+
+  @media (min-width: 901px) {
+    width: auto;
+    max-width: 100%;
+    max-height: calc(
+      100dvh - var(--three-up-slider-pad-top) - var(--three-up-slider-pad-bottom)
+        - var(--three-up-slider-caption)
+    );
+  }
 }
 
 .three-up-slider__slide-title {
