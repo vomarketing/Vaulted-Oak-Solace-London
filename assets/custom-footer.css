@@ -1,17 +1,38 @@
 .shopify-section-group-footer-group {
   position: fixed;
-  bottom: -100px;
-  z-index: 0;
+  top: 0;
+  left: 0;
   width: 100%;
+  height: 100dvh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
   pointer-events: none;
-  transition: bottom 0.3s ease-in-out;
+  background-color: var(--Color_Primary, #ffffff);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease-in-out, visibility 0.3s ease-in-out;
 
   &.is-visible {
     pointer-events: all;
     z-index: 1;
-    bottom: 0;
+    opacity: 1;
+    visibility: visible;
+  }
 
-    @media (min-width: 768px) {
+  @media (min-width: 768px) {
+    top: auto;
+    bottom: -100px;
+    height: auto;
+    display: block;
+    background-color: transparent;
+    opacity: 1;
+    visibility: visible;
+    transition: bottom 0.3s ease-in-out;
+
+    &.is-visible,
+    &:has(.is-visible) {
       bottom: 0;
     }
   }
@@ -62,17 +83,21 @@
   .ft-Footer_Body {
     display: flex;
     flex-direction: column;
+    align-items: center;
+    text-align: center;
     gap: 30px;
 
     @media (min-width: 768px) {
       flex-direction: row;
       align-items: center;
-      justify-content: space-between;
+      justify-content: center;
+      text-align: left;
       gap: 20px;
     }
 
     @media (min-width: 901px) {
       gap: 30px;
+      justify-content: space-between;
     }
   }
 
@@ -88,21 +113,39 @@
   .ft-Footer_Items {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 18px;
 
     @media (min-width: 768px) {
       flex-direction: row;
       flex-wrap: wrap;
+      justify-content: center;
       gap: 20px;
+      padding: 0;
     }
 
     @media (min-width: 901px) {
       flex-wrap: nowrap;
+      justify-content: flex-start;
+      max-width: none;
       gap: 30px;
+      padding: 0;
     }
   }
 
-  .ft-Footer_Navigation,
+  .ft-Footer_Navigation {
+    margin: 0;
+
+    @media (min-width: 768px) {
+      display: flex;
+      justify-content: center;
+    }
+
+    @media (min-width: 901px) {
+      display: block;
+    }
+  }
+
   .ft-Footer_Text {
     margin: 0;
   }
