@@ -94,7 +94,10 @@
 
     {% comment %} {%- render 'cookie-banner' -%} {% endcomment %}
 
-    <div class="lyt-Header js-header-wrapper">
+    <div
+      class="lyt-Header js-header-wrapper"
+      {% if template.name == 'index' %}data-header-mode="light"{% endif %}
+    >
       {%- sections 'header-group' -%}
     </div>
 

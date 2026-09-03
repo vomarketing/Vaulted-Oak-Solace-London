@@ -92,6 +92,7 @@
   data-module="header"
   data-module-lazy
   data-sticky="{%- if section.settings.enable_sticky_header -%}true{%- else -%}false{%- endif -%}"
+  {% if template.name == 'index' %}data-header-mode="light"{% endif %}
   data-header-active-class="hd-Header-dropdownActive"
   data-header-item-active-class="hd-Nav_Item-dropdownActive"
 >
