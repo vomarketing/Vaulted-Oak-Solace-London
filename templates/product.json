@@ -39,7 +39,9 @@
         "buy_buttons_VGTxwz": {
           "type": "buy_buttons",
           "settings": {
-            "show_wishlist": true
+            "show_wishlist": true,
+            "show_question_notes": true,
+            "question": "Questions about size, fit or fabric? Contact us"
           }
         },
         "duties_taxes_d76MTJ": {
@@ -74,7 +76,9 @@
         "question_notes_K6GTGn": {
           "type": "question_notes",
           "settings": {
-            "question": "Questions about size, fit or fabric?"
+            "question": "Questions about size, fit or fabric?",
+            "enable_responsive": false,
+            "responsive_target": "mobile"
           }
         },
         "colorways_UnqVeT": {
@@ -100,6 +104,7 @@
         "header_contrast_mode": "dark",
         "stock_note": "Only a few left in stock",
         "wishlist_enable": true,
+        "enable_sticky_atc_mobile": true,
         "size_guide": "",
         "size_guide_fit_title": "Fit",
         "size_converter_title": "Size Guide",
