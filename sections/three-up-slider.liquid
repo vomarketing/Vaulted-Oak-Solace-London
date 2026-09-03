@@ -91,14 +91,17 @@
                     poster="{{ desktop_image | image_url: width: 1200 }}"
                   {% endif %}
                 >
-                  <source src="{{ mobile_video_url }}" media="(max-width: 767px)" type="video/mp4">
+                  <source src="{{ mobile_video_url }}" media="(max-width: 900px)" type="video/mp4">
                   <source src="{{ desktop_video_url }}" type="video/mp4">
                 </video>
               {%- elsif has_image -%}
                 {%- render 'picture',
                   image_desktop: desktop_image,
                   image_mobile: mobile_image,
-                  class: 'three-up-slider__slide-image'
+                  class: 'three-up-slider__slide-image',
+                  breakpoint: '900px',
+                  widths: '400, 600, 800, 1000, 1200, 1600, 1920',
+                  widths_mobile: '400, 600, 800, 1000, 1200, 1600, 1920'
                 -%}
               {%- endif -%}
 

@@ -55,14 +55,17 @@
           data-header-mode="{{ header_mode }}"
         >
           {%- if media.media_type == 'image' -%}
-            {%- render 'responsive-image',
-              image: media,
-              width: 3304,
-              height: 4472,
-              wrapper_class: 'pdp-zoom-modal__rsp-image',
-              img_class: 'pdp-zoom-modal__img' -%}
+            {%- render 'picture',
+              image_desktop: media,
+              class: 'pdp-zoom-modal__img',
+              picture_class: 'pdp-zoom-modal__picture',
+              loading: 'lazy',
+              alt: media.alt,
+              widths: '375, 550, 750, 900, 1100, 1200, 1500, 1800, 2000, 2400',
+              sizes: '100vw'
+            -%}
           {%- elsif media.media_type == 'video' -%}
-            <div class="pdp-zoom-modal__video-wrapper" style="aspect-ratio: {{ media.aspect_ratio | default: 0.68 }};">
+            <div class="pdp-zoom-modal__video-wrapper" style="aspect-ratio: {{ media.aspect_ratio | default: 0.75 }};">
               <video
                 class="pdp-zoom-modal__video js-pdp-zoom-video"
                 autoplay
@@ -98,14 +101,17 @@
         data-header-mode="{{ header_mode }}"
       >
         {%- if media.media_type == 'image' -%}
-          {%- render 'responsive-image',
-            image: media,
-            width: 3304,
-            height: 4472,
-            wrapper_class: 'pdp-zoom-modal__rsp-image',
-            img_class: 'pdp-zoom-modal__img' -%}
+          {%- render 'picture',
+            image_desktop: media,
+            class: 'pdp-zoom-modal__img',
+            picture_class: 'pdp-zoom-modal__picture',
+            loading: 'lazy',
+            alt: media.alt,
+            widths: '375, 550, 750, 900, 1100, 1200, 1500, 1800, 2000, 2400',
+            sizes: '100vw'
+          -%}
         {%- elsif media.media_type == 'video' -%}
-          <div class="pdp-zoom-modal__video-wrapper" style="aspect-ratio: {{ media.aspect_ratio | default: 0.68 }};">
+          <div class="pdp-zoom-modal__video-wrapper" style="aspect-ratio: {{ media.aspect_ratio | default: 0.75 }};">
             <video
               class="pdp-zoom-modal__video js-pdp-zoom-video"
               autoplay
@@ -140,14 +146,17 @@
           data-header-mode="{{ header_mode }}"
         >
           {%- if media.media_type == 'image' -%}
-            {%- render 'responsive-image',
-              image: media,
-              width: 3304,
-              height: 4472,
-              wrapper_class: 'pdp-zoom-modal__rsp-image',
-              img_class: 'pdp-zoom-modal__img' -%}
+            {%- render 'picture',
+              image_desktop: media,
+              class: 'pdp-zoom-modal__img',
+              picture_class: 'pdp-zoom-modal__picture',
+              loading: 'lazy',
+              alt: media.alt,
+              widths: '375, 550, 750, 900, 1100, 1200, 1500, 1800, 2000, 2400',
+              sizes: '100vw'
+            -%}
           {%- elsif media.media_type == 'video' -%}
-            <div class="pdp-zoom-modal__video-wrapper" style="aspect-ratio: {{ media.aspect_ratio | default: 0.68 }};">
+            <div class="pdp-zoom-modal__video-wrapper" style="aspect-ratio: {{ media.aspect_ratio | default: 0.75 }};">
               <video
                 class="pdp-zoom-modal__video js-pdp-zoom-video"
                 autoplay

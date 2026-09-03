@@ -50,7 +50,7 @@
   pointer-events: none;
   background: var(--color-white);
 
-  @media (min-width: 901px) {
+  @media (min-width: 1201px) {
     display: none !important;
   }
 }
@@ -71,7 +71,7 @@
     padding: 33px 0 37px;
   }
 
-  @media (min-width: 901px) {
+  @media (min-width: 1201px) {
     padding: 60px 0 40px;
   }
 
@@ -95,7 +95,7 @@
       gap: 20px;
     }
 
-    @media (min-width: 901px) {
+    @media (min-width: 1201px) {
       gap: 30px;
       justify-content: space-between;
     }
@@ -124,7 +124,7 @@
       padding: 0;
     }
 
-    @media (min-width: 901px) {
+    @media (min-width: 1201px) {
       flex-wrap: nowrap;
       justify-content: flex-start;
       max-width: none;
@@ -141,7 +141,7 @@
       justify-content: center;
     }
 
-    @media (min-width: 901px) {
+    @media (min-width: 1201px) {
       display: block;
     }
   }
