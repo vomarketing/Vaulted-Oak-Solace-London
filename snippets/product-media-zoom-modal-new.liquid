@@ -4,6 +4,8 @@
 {%- enddoc -%}
 
 {%- liquid
+  assign default_header_mode = section.settings.header_contrast_mode | default: 'light'
+
   assign move_first_to_last = false
   if product.media.size > 1
     for tag in product.tags
@@ -23,6 +25,7 @@
   aria-modal="true"
   aria-label="Fullscreen Product Media Zoom"
   aria-hidden="true"
+  data-header-mode="{{ default_header_mode }}"
 >
   <button
     type="button"
@@ -35,11 +38,21 @@
   <div class="pdp-zoom-modal__container js-pdp-zoom-container">
     {%- if move_first_to_last -%}
       {%- for media in product.media offset: 1 -%}
-        {%- assign visual_index = forloop.index0 -%}
+        {%- liquid
+          assign visual_index = forloop.index0
+          assign header_mode = default_header_mode
+          assign alt_lower = media.alt | downcase
+          if alt_lower contains 'header:dark'
+            assign header_mode = 'dark'
+          elsif alt_lower contains 'header:light'
+            assign header_mode = 'light'
+          endif
+        -%}
         <div
           class="pdp-zoom-modal__item js-pdp-zoom-item"
           id="pdp-zoom-item-{{ visual_index }}"
           data-zoom-index="{{ visual_index }}"
+          data-header-mode="{{ header_mode }}"
         >
           {%- if media.media_type == 'image' -%}
             {%- render 'responsive-image',
@@ -70,11 +83,19 @@
       {%- liquid
         assign media = product.media.first
         assign visual_index = product.media.size | minus: 1
+        assign header_mode = default_header_mode
+        assign alt_lower = media.alt | downcase
+        if alt_lower contains 'header:dark'
+          assign header_mode = 'dark'
+        elsif alt_lower contains 'header:light'
+          assign header_mode = 'light'
+        endif
       -%}
       <div
         class="pdp-zoom-modal__item js-pdp-zoom-item"
         id="pdp-zoom-item-{{ visual_index }}"
         data-zoom-index="{{ visual_index }}"
+        data-header-mode="{{ header_mode }}"
       >
         {%- if media.media_type == 'image' -%}
           {%- render 'responsive-image',
@@ -103,10 +124,20 @@
 
     {%- else -%}
       {%- for media in product.media -%}
+        {%- liquid
+          assign header_mode = default_header_mode
+          assign alt_lower = media.alt | downcase
+          if alt_lower contains 'header:dark'
+            assign header_mode = 'dark'
+          elsif alt_lower contains 'header:light'
+            assign header_mode = 'light'
+          endif
+        -%}
         <div
           class="pdp-zoom-modal__item js-pdp-zoom-item"
           id="pdp-zoom-item-{{ forloop.index0 }}"
           data-zoom-index="{{ forloop.index0 }}"
+          data-header-mode="{{ header_mode }}"
         >
           {%- if media.media_type == 'image' -%}
             {%- render 'responsive-image',

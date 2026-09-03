@@ -39,6 +39,7 @@ if (!customElements.get('product-fullscreen')) {
       this.classes = ProductFullscreen.classes;
       this.swiper = null;
       this.swiperInitTimer = null;
+      this.zoomModeObserver = null;
     }
 
     isDesktop() {
@@ -477,13 +478,59 @@ if (!customElements.get('product-fullscreen')) {
 
       const targetItem = zoomModal.querySelector('#pdp-zoom-item-' + index);
       if (targetItem) {
+        this.setZoomHeaderMode(targetItem.getAttribute('data-header-mode'));
         setTimeout(() => {
           targetItem.scrollIntoView({ behavior: 'auto', block: 'start' });
+          this.observeZoomHeaderMode();
           if (window.lazySizes && typeof window.lazySizes.loader.checkElems === 'function') {
             window.lazySizes.loader.checkElems();
           }
         }, 50);
       }
+    }
+
+    observeZoomHeaderMode() {
+      this.unobserveZoomHeaderMode();
+
+      const zoomModal = this.querySelector(this.selectors.zoomModal);
+      const zoomCloseBtn = this.querySelector(this.selectors.zoomClose);
+      if (!zoomModal || !zoomCloseBtn || !('IntersectionObserver' in window)) return;
+
+      const closeRect = zoomCloseBtn.getBoundingClientRect();
+      const bottomInset = zoomModal.clientHeight - closeRect.bottom;
+
+      this.zoomModeObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              this.setZoomHeaderMode(entry.target.getAttribute('data-header-mode'));
+            }
+          });
+        },
+        {
+          root: zoomModal,
+          // Each zoomed image is taller than the window, so a visibility threshold never
+          // fires. The margin shrinks the root to the strip behind the close button instead.
+          rootMargin: `-${closeRect.top}px 0px -${bottomInset}px 0px`,
+          threshold: 0
+        }
+      );
+
+      zoomModal.querySelectorAll(this.selectors.zoomItems).forEach((item) => this.zoomModeObserver.observe(item));
+    }
+
+    unobserveZoomHeaderMode() {
+      if (this.zoomModeObserver) {
+        this.zoomModeObserver.disconnect();
+        this.zoomModeObserver = null;
+      }
+    }
+
+    setZoomHeaderMode(mode) {
+      const zoomModal = this.querySelector(this.selectors.zoomModal);
+      if (!zoomModal || !mode) return;
+      if (zoomModal.getAttribute('data-header-mode') === mode) return;
+      zoomModal.setAttribute('data-header-mode', mode);
     }
 
     closeZoomModal() {
@@ -494,6 +541,7 @@ if (!customElements.get('product-fullscreen')) {
       zoomModal.setAttribute('aria-hidden', 'true');
       document.body.classList.remove(this.classes.scrollLocked);
       document.body.classList.remove(this.classes.zoomModalActive);
+      this.unobserveZoomHeaderMode();
     }
 
     isZoomOpen() {
@@ -525,6 +573,7 @@ if (!customElements.get('product-fullscreen')) {
         this.observer.disconnect();
         this.observer = null;
       }
+      this.unobserveZoomHeaderMode();
       if (this.abortController) {
         this.abortController.abort();
         this.abortController = null;
