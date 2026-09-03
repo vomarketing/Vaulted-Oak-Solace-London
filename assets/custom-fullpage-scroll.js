@@ -7,8 +7,8 @@ if (!window.FullpageScrollController) {
     static config = {
       footerBreakpoint: 768,
       mobileBreakpoint: 900,
-      animationDuration: 650,
-      desktopWheelThreshold: 45,
+      animationDuration: 600,
+      desktopWheelThreshold: 15,
       mobileSwipeThreshold: 40
     };
 
@@ -475,19 +475,20 @@ if (!window.FullpageScrollController) {
         // We only care about desktop wheel logic in this file
         if (isMobile) return;
 
-        const isAtPageBottom = (window.innerHeight + window.scrollY) >= (document.documentElement.scrollHeight - 30);
+        const maxScroll = Math.max(document.documentElement.scrollHeight, document.body.scrollHeight);
+        const isAtPageBottom = (window.innerHeight + window.scrollY) >= (maxScroll - 40);
         const contentCol = document.querySelector(this.selectors.pdpContent);
+        const isTargetingContent = !!(e.target && e.target.closest && e.target.closest(this.selectors.pdpContent));
         const isContentAtBottom = contentCol ? (contentCol.scrollTop + contentCol.clientHeight >= contentCol.scrollHeight - 20) : true;
+        const canTriggerEditorial = isTargetingContent ? (isAtPageBottom && isContentAtBottom) : isAtPageBottom;
 
-        if (isAtPageBottom && isContentAtBottom) {
+        if (canTriggerEditorial) {
           if (e.deltaY > 0) {
             this.wheelDeltaAccumulator += e.deltaY;
             if (this.wheelDeltaAccumulator > this.config.desktopWheelThreshold) {
               if (e.cancelable) e.preventDefault();
               activateEditorial();
               this.wheelDeltaAccumulator = 0;
-            } else {
-              if (e.cancelable) e.preventDefault(); // Stop native scroll while accumulating
             }
           } else {
             this.wheelDeltaAccumulator = 0;
@@ -496,7 +497,7 @@ if (!window.FullpageScrollController) {
           if (this.wheelTimeout) clearTimeout(this.wheelTimeout);
           this.wheelTimeout = setTimeout(() => {
             this.wheelDeltaAccumulator = 0;
-          }, 300);
+          }, 500);
         } else {
           this.wheelDeltaAccumulator = 0;
         }

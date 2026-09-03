@@ -299,6 +299,12 @@ body.is-size-guide-active {
     @media (min-width: 1441px) {
       top: min(0px, calc(100dvh - 79.583333vw));
     }
+
+    &:last-child {
+       @media (min-width: 901px) {
+        scroll-snap-align: end;
+       }
+    }
   }
 }
 
