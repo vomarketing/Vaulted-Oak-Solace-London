@@ -44,11 +44,6 @@ body.template-index[data-fullpage-scroll] {
   min-height: 100dvh;
   overscroll-behavior-y: none;
 
-  @media (min-width: 901px) {
-    --type-14-size: 12px;
-    --type-14-line-height: 16px;
-  }
-
   #MainContent {
     width: 100vw;
     height: auto;
@@ -206,4 +201,30 @@ body.is-pdp-transitioning {
   .shopify-section {
     background-color: transparent;
   }
+}
+
+.template-collection {
+  .clc-Hero_Title,
+  .clc-Hero_Text,
+  .clc-Control,
+  .clc-Filters,
+  .drw-Drawer_Title {
+    font-size: 12px;
+    line-height: 16px;
+  }
+}
+
+.template-page {
+  .pg-Page_Title,
+  .pg-Page_Text,
+  .pg-Nav {
+    font-size: 12px;
+    line-height: 16px;
+  }
+}
+
+.drw-Nav_Link {
+  font-size: 12px;
+  font-weight: var(--font-weight-regular);
+  line-height: 16px;
 }
