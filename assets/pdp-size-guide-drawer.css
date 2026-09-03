@@ -161,12 +161,13 @@
 
 .pdp-size-guide__packshot-img {
   display: block;
-  width: 100%;
+  width: calc(100% - 72px);
   height: 100%;
-  object-fit: cover;
+  margin: 0 auto;
+  object-fit: contain;
 
   @media (min-width: 768px) {
-    object-fit: contain;
+    width: 100%;
   }
 
   @media (min-width: 1201px) {
