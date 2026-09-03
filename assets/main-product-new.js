@@ -158,6 +158,7 @@ if (!customElements.get('product-fullscreen')) {
             },
             slideChangeTransitionStart: (swiper) => {
               this.handleSlideChange(swiper);
+              this.updateHeaderContrast(swiper);
             },
             slideChangeTransitionEnd: (swiper) => {
               this.updateHeaderContrast(swiper);
