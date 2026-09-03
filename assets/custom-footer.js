@@ -28,11 +28,22 @@ if (!window.FooterRevealController) {
 
       if (!this.footer) return;
 
+      this.updateFooterHeight();
       this.bindEvents();
       this.checkVisibility();
 
       if (document.body.hasAttribute('data-fullpage-scroll')) {
         this._syncFromSwiper();
+      }
+    }
+
+    updateFooterHeight() {
+      if (!this.footer) return;
+      const footerEl = this.footer.querySelector('.ft-Footer') || this.footer;
+      const height = footerEl.offsetHeight || this.footer.offsetHeight || 0;
+      if (height > 0) {
+        document.documentElement.style.setProperty('--footer-height', `${Math.round(height)}px`);
+        document.documentElement.setAttribute('data-footer-height', `${Math.round(height)}px`);
       }
     }
 
@@ -77,6 +88,9 @@ if (!window.FooterRevealController) {
     setVisible(isVisible) {
       if (!this.footer) return;
       this.footer.classList.toggle(this.classes.isVisible, isVisible);
+      if (isVisible) {
+        this.updateFooterHeight();
+      }
     }
 
     checkVisibility() {
@@ -101,8 +115,14 @@ if (!window.FooterRevealController) {
       const { signal } = this.abortController;
 
       window.addEventListener('scroll', () => this.checkVisibility(), { passive: true, signal });
-      window.addEventListener('resize', () => this.checkVisibility(), { passive: true, signal });
-      window.addEventListener('load', () => this.checkVisibility(), { passive: true, signal });
+      window.addEventListener('resize', () => {
+        this.updateFooterHeight();
+        this.checkVisibility();
+      }, { passive: true, signal });
+      window.addEventListener('load', () => {
+        this.updateFooterHeight();
+        this.checkVisibility();
+      }, { passive: true, signal });
 
       document.addEventListener('fullpage:slideChange', (e) => {
         if (e.detail && typeof e.detail.isLastSlide === 'boolean') {
@@ -111,6 +131,7 @@ if (!window.FooterRevealController) {
       }, { signal });
 
       document.addEventListener('fullpage:ready', (e) => {
+        this.updateFooterHeight();
         if (!e.detail?.swiper) return;
         const sw = e.detail.swiper;
         const total = sw.slides ? sw.slides.length : 0;
@@ -125,6 +146,7 @@ if (!window.FooterRevealController) {
         setTimeout(() => {
           this.footer = document.querySelector(this.selectors.footer);
           this.mainContent = document.querySelector(this.selectors.mainContent);
+          this.updateFooterHeight();
           this.checkVisibility();
         }, 100);
       };
@@ -178,6 +200,8 @@ if (!window.FooterRevealController) {
         this.abortController.abort();
         this.abortController = new AbortController();
       }
+      document.documentElement.style.removeProperty('--footer-height');
+      document.documentElement.removeAttribute('data-footer-height');
     }
   }
 
