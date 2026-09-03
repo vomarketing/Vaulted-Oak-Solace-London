@@ -470,9 +470,10 @@
 /* Mobile Measurement Row Grid inside cell */
 .pdp-size-guide__mobile-th-content {
   display: flex;
-  flex-direction: column;
-  align-items: flex-start;
+  flex-direction: row;
+  align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
   gap: 1px;
   text-transform: capitalize;
 
