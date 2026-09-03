@@ -37,7 +37,8 @@ if (!window.FullpageScrollController) {
       shopifySection: 'shopify-section',
       editorialActive: 'is-editorial-active',
       pdpTransitioning: 'is-pdp-transitioning',
-      pdpPinned: 'is-pdp-pinned'
+      pdpPinned: 'is-pdp-pinned',
+      isLastSlide: 'is-last-slide'
     };
 
     static events = {
@@ -141,6 +142,19 @@ if (!window.FullpageScrollController) {
       mediaQuery.addEventListener('change', handleBreakpoint, { signal });
     }
 
+    /**
+     * An empty section wrapper is hidden by CSS, and Swiper drops a hidden slide
+     * from its position grid but not from its slide list, so the last slide
+     * becomes unreachable. The footer placeholder is empty by design.
+     *
+     * @param {Element} section
+     * @returns {boolean}
+     */
+    rendersContent(section) {
+      if (section.classList.contains('shopify-section--footer')) return true;
+      return !section.matches(':empty');
+    }
+
     setupIndexFullpage() {
       if (!this.container) return;
 
@@ -156,6 +170,7 @@ if (!window.FullpageScrollController) {
 
         const childSections = Array.from(this.container.querySelectorAll(this.selectors.childSections)).filter(
           (el) =>
+            this.rendersContent(el) &&
             !el.classList.contains('js-section-footer') &&
             !(isFooterExcluded && el.classList.contains('shopify-section--footer'))
         );
@@ -170,6 +185,7 @@ if (!window.FullpageScrollController) {
       }
       this.wrapper = swiperContainer.querySelector(`.${this.classes.swiperWrapper}`);
       this.slides = Array.from(this.wrapper.children);
+      this.updateLastSlide();
 
       if (this.slides.length <= 1) {
         this.dispatchReadyEvent(null);
@@ -196,6 +212,7 @@ if (!window.FullpageScrollController) {
 
       const targetSlides = editorialSections.filter(
         (el) =>
+          this.rendersContent(el) &&
           !el.classList.contains('js-section-footer') &&
           !(isFooterExcluded && el.classList.contains('shopify-section--footer'))
       );
@@ -224,6 +241,7 @@ if (!window.FullpageScrollController) {
       this.editorialContainer = editorialContainer;
       this.wrapper = editorialContainer.querySelector(`.${this.classes.swiperWrapper}`);
       this.slides = targetSlides;
+      this.updateLastSlide();
 
       this.initSwiperInstance(this.editorialContainer);
       this.bindHybridScrollEvents();
@@ -281,6 +299,7 @@ if (!window.FullpageScrollController) {
         passiveListeners: true,
         on: {
           init: (sw) => {
+            this.updateLastSlide(sw);
             this.handleSlideChange(sw);
             const activeSlide = sw.slides[sw.activeIndex];
             if (activeSlide && !this.isProductPage) {
@@ -484,6 +503,17 @@ if (!window.FullpageScrollController) {
       };
 
       window.addEventListener('wheel', handleWheel, { passive: false, signal });
+    }
+
+    updateLastSlide(swiperInstance) {
+      const slides = swiperInstance?.slides ? Array.from(swiperInstance.slides) : (this.slides ? Array.from(this.slides) : []);
+      if (!slides.length) return;
+
+      const lastIndex = slides.length - 1;
+      slides.forEach((slide, index) => {
+        const isLast = index === lastIndex;
+        slide.classList.toggle(this.classes.isLastSlide, isLast);
+      });
     }
 
     handleSlideChange(swiperInstance) {

@@ -66,21 +66,29 @@
 
   .hero-fullscreen__playback-toggle {
     position: absolute;
-    bottom: 30px;
-    right: 25px;
+    bottom: 20px;
+    right: 20px;
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 40px;
-    height: 40px;
+    width: 20px;
+    height: 20px;
     z-index: 6;
     background: transparent;
     border: none;
-    padding: 6px;
+    padding: 0;
     cursor: pointer;
     color: var(--color-white, #ffffff);
     opacity: 0.85;
     transition: opacity 0.2s ease;
+
+    @media (min-width: 901px) {
+      right: 30px;
+    }
+
+    @media (min-width: 1440px) {
+      right: 35px;
+    }
 
     &:hover {
       opacity: 1;
