@@ -200,13 +200,12 @@
     },
     "featured_image_bdxxic": {
       "type": "featured-image",
-      "disabled": true,
       "name": "Featured Image",
       "settings": {
         "header_contrast_mode": "dark",
         "desktop_image": "shopify://shop_images/Hero_2.jpg",
         "image_link": "",
-        "text_left": "The",
+        "text_left": "The Collection",
         "text_left_link": "#",
         "text_left_font_size": "text-reg-14",
         "text_left_uppercase": false,
