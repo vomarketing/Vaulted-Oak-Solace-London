@@ -202,3 +202,29 @@ body.is-pdp-transitioning {
     background-color: transparent;
   }
 }
+
+.template-collection {
+  .clc-Hero_Title,
+  .clc-Hero_Text,
+  .clc-Control,
+  .clc-Filters,
+  .drw-Drawer_Title {
+    font-size: 12px;
+    line-height: 16px;
+  }
+}
+
+.template-page {
+  .pg-Page_Title,
+  .pg-Page_Text,
+  .pg-Nav {
+    font-size: 12px;
+    line-height: 16px;
+  }
+}
+
+.drw-Nav_Link {
+  font-size: 12px;
+  font-weight: var(--font-weight-regular);
+  line-height: 16px;
+}

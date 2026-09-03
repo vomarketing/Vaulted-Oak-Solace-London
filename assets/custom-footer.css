@@ -110,7 +110,7 @@
   .ft-Footer_Text {
     font-family: var(--font-family-primary);
     font-size: var(--type-14-size);
-    font-weight: var(--font-weight-medium);
+    font-weight: var(--font-weight-regular);
     line-height: var(--type-14-line-height);
     text-transform: capitalize;
   }
