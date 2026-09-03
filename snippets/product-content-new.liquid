@@ -1,5 +1,8 @@
 {%- doc -%}
   Product Content Component (New PDP)
+  @param {product} product
+  @param {variant} [current_variant]
+  @param {section} [section]
 {%- enddoc -%}
 
 {%- liquid
@@ -201,7 +204,19 @@
 
             {%- when 'question_notes' -%}
                 {%- if has_size_guide or has_contact -%}
-                  <div class="pdp-block pdp-block--question-notes pdp-block--mobile text-reg-14" {{ block.shopify_attributes }}>
+                  {%- liquid
+                    assign enable_responsive = block.settings.enable_responsive | default: false
+                    assign responsive_target = block.settings.responsive_target
+
+                    assign block_class = 'pdp-block pdp-block--question-notes text-reg-14'
+                    if enable_responsive
+                      assign block_responsive_class = 'pdp-block--' | append: responsive_target | prepend: ' '
+                      assign block_class = block_class | append: block_responsive_class
+                    else
+                      assign block_class = block_class | append: ' pdp-block--mobile'
+                    endif
+                  -%}
+                  <div class="{{- block_class -}}" {{ block.shopify_attributes }}>
                     {{- block.settings.question | default: 'Questions about size, fit or fabric?' -}}
                     {% if has_size_guide %}
                       View
