@@ -9,18 +9,20 @@
   --featured-image-max-width: 325px;
   --featured-image-pad-inline: 25px;
   --featured-image-line: 20px;
-  --featured-image-text-gap: clamp(16px, 4dvh, 40px);
+  --featured-image-text-gap: 14px;
 
   --featured-image-caption: calc(2 * (var(--featured-image-line) + var(--featured-image-text-gap)));
 
+  /* The header sits over this section, so the top padding must clear it before
+     it honours the design value. Heights come from .hd-Header in custom-header.css. */
   --featured-image-header-offset: 52px;
   --featured-image-header-gap: clamp(12px, 3dvh, 24px);
-  --featured-image-pad-top-design: clamp(24px, 6dvh, 40px);
+  --featured-image-pad-top-design: 0px;
   --featured-image-pad-top: max(
     calc(var(--featured-image-header-offset) + var(--featured-image-header-gap)),
     var(--featured-image-pad-top-design)
   );
-  --featured-image-pad-bottom: clamp(24px, 6dvh, 48px);
+  --featured-image-pad-bottom: clamp(16px, 4dvh, 36px);
   --featured-image-media-max-height: calc(
     100dvh - var(--featured-image-pad-top) - var(--featured-image-pad-bottom)
       - var(--featured-image-caption)
@@ -28,7 +30,7 @@
 
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: center;
   align-items: center;
   width: 100%;
 
@@ -47,9 +49,9 @@
   @media (min-width: 768px) {
     --featured-image-ratio: 596 / 843;
     --featured-image-max-width: 646px;
+    --featured-image-text-gap: 16px;
     --featured-image-header-offset: 56px;
-    --featured-image-pad-top-design: clamp(32px, 8dvh, 70px);
-    --featured-image-pad-bottom: clamp(32px, 8dvh, 70px);
+    --featured-image-pad-bottom: clamp(16px, 4dvh, 40px);
   }
 
   @media (min-width: 901px) {
@@ -61,6 +63,7 @@
   }
 
   @media (min-width: 1200px) {
+    --featured-image-text-gap: clamp(16px, 4dvh, 40px);
     --featured-image-caption: calc(var(--featured-image-line) + var(--featured-image-text-gap));
   }
 
@@ -71,8 +74,6 @@
   @media (min-width: 1440px) {
     --featured-image-pad-top-design: clamp(40px, 14dvh, 200px);
     --featured-image-pad-bottom: clamp(28px, 10dvh, 140px);
-
-    justify-content: center;
   }
 
   @media (min-width: 1600px) {
