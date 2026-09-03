@@ -45,6 +45,17 @@ if (!customElements.get('product-buy-buttons')) {
     connectedCallback() {
       this.abortController = new AbortController();
 
+      const attrVariantId = this.getAttribute('data-initial-variant-id');
+      if (!attrVariantId) {
+        const fallback = this.querySelector(this.selectors.masterSelect)?.value ?? '';
+        if (process?.env?.NODE_ENV !== 'production') {
+          console.warn('[ProductBuyButtons] data-initial-variant-id missing, falling back to masterSelect value:', fallback || '(empty)');
+        }
+        this.initialVariantId = fallback;
+      } else {
+        this.initialVariantId = attrVariantId;
+      }
+
       this.initSizeDrawer();
       this.initVariantSelection();
       this.initBisForm();
@@ -81,7 +92,15 @@ if (!customElements.get('product-buy-buttons')) {
       }, { signal });
 
       document.addEventListener('click', (e) => {
-        if (!this.isMobile()) return;
+        if (!this.isMobile()) {
+          const bisBox = this.querySelector(this.selectors.bisBox);
+          if (bisBox && bisBox.classList.contains('is-active') && !this.contains(e.target)) {
+            bisBox.classList.remove('is-active');
+            bisBox.setAttribute('aria-hidden', 'true');
+            this.removeVariantParamFromUrl();
+          }
+          return;
+        }
 
         const sizeDrawer = this.querySelector(this.selectors.sizeDrawer);
         const submitBtn = this.querySelector(this.selectors.submitButton);
@@ -158,6 +177,17 @@ if (!customElements.get('product-buy-buttons')) {
       }
       document.body.classList.add('is-size-drawer-open');
 
+      // Size pop-up view converts CTA to "Size & Fit Guide"
+      if (this.isMobile()) {
+        const submitText = this.querySelector(this.selectors.submitText);
+        const submitBtn = this.querySelector(this.selectors.submitButton);
+        if (submitText) {
+          const guideText = submitText.getAttribute('data-translation-size-guide');
+          submitText.textContent = guideText;
+          if (submitBtn) submitBtn.setAttribute('aria-label', guideText);
+        }
+      }
+
       this.dispatchEvent(new CustomEvent('size-drawer:open', {
         bubbles: true,
         detail: { target: this }
@@ -187,11 +217,26 @@ if (!customElements.get('product-buy-buttons')) {
       }
       document.body.classList.remove('is-size-drawer-open');
 
-      if (resetSelection) {
-        const submitText = this.querySelector(this.selectors.submitText);
-        if (submitText) {
-          submitText.textContent = submitText.getAttribute('data-translation-add-to-cart') || 'Add To Bag';
+      // Restore resting CTA text on collapse
+      const submitText = this.querySelector(this.selectors.submitText);
+      const submitBtn = this.querySelector(this.selectors.submitButton);
+      if (submitText) {
+        let label;
+        if (resetSelection) {
+          label = submitText.getAttribute('data-translation-add-to-cart') || 'Add To Bag';
+        } else {
+          const masterSelect = this.querySelector(this.selectors.masterSelect);
+          const selectedOption = masterSelect ? masterSelect.options[masterSelect.selectedIndex] : null;
+          const isAvail = selectedOption ? selectedOption.getAttribute('data-available') === 'true' : true;
+          const addText = submitText.getAttribute('data-translation-add-to-cart') || 'Add To Bag';
+          const waitlistText = submitText.getAttribute('data-translation-waitlist') || 'Join The Waitlist';
+          label = isAvail ? addText : waitlistText;
         }
+        submitText.textContent = label;
+        if (submitBtn) submitBtn.setAttribute('aria-label', label);
+      }
+
+      if (resetSelection) {
         if (this.dataset.hasSizeOption === 'true') {
           this.dataset.sizeChosen = 'false';
         }
@@ -201,6 +246,17 @@ if (!customElements.get('product-buy-buttons')) {
           btn.setAttribute('aria-pressed', 'false');
           btn.setAttribute('aria-current', 'false');
         });
+
+        const masterSelect = this.querySelector(this.selectors.masterSelect);
+        if (this.initialVariantId && masterSelect && masterSelect.value !== this.initialVariantId) {
+          masterSelect.value = this.initialVariantId;
+          const defaultOpt = masterSelect.querySelector(`option[value="${this.initialVariantId}"]`);
+          if (defaultOpt) {
+            this.updateVariantState(defaultOpt, { skipUrlUpdate: true });
+          }
+        }
+
+        this.removeVariantParamFromUrl();
 
         this.dispatchEvent(new CustomEvent('waitlist:mode-change', {
           bubbles: true,
@@ -259,15 +315,22 @@ if (!customElements.get('product-buy-buttons')) {
           const sizeChosen = this.dataset.sizeChosen === 'true';
 
           if (isMobile && hasSizeOption) {
-            if (!sizeChosen) {
+            const sizeDrawer = this.querySelector(this.selectors.sizeDrawer);
+            const isWaitlist = sizeDrawer && sizeDrawer.classList.contains(this.classes.waitlistMode);
+
+            if (!sizeChosen && !isWaitlist) {
               e.preventDefault();
               if (!this.isSizeDrawerExpanded()) {
                 this.expandSizeDrawer();
               } else {
-                const sizeRow = this.querySelector('.pdp-size-row');
-                if (sizeRow) {
-                  sizeRow.classList.add('is-highlight');
-                  setTimeout(() => sizeRow.classList.remove('is-highlight'), 1000);
+                // Size pop-up view CTA opens "Size & Fit" guide
+                this.collapseSizeDrawer(true);
+                const guideModal = document.querySelector('pdp-size-guide');
+                if (guideModal && typeof guideModal.openModal === 'function') {
+                  guideModal.openModal();
+                } else {
+                  const guideTrigger = document.querySelector('.js-pdp-size-guide-trigger');
+                  guideTrigger?.click();
                 }
               }
               return;
@@ -578,8 +641,6 @@ if (!customElements.get('product-buy-buttons')) {
           body: JSON.stringify(klaviyoPayload)
         });
 
-        console.log(klaviyoRes, 'error')
-
         if (klaviyoRes.ok || klaviyoRes.status === 200 || klaviyoRes.status === 201 || klaviyoRes.status === 202 || klaviyoRes.status === 409) {
           onComplete(true, successMsg);
         } else if (klaviyoRes.status === 429) {
@@ -606,7 +667,7 @@ if (!customElements.get('product-buy-buttons')) {
       }
     }
 
-    updateVariantState(variantOption) {
+    updateVariantState(variantOption, { skipUrlUpdate = false } = {}) {
       const isAvailable = variantOption.getAttribute('data-available') === 'true';
       const price = variantOption.getAttribute('data-price');
       const priceNoDecimals = variantOption.getAttribute('data-price-no-decimals') || price;
@@ -668,7 +729,7 @@ if (!customElements.get('product-buy-buttons')) {
         bisTrigger.dataset.variantId = variantId;
       }
 
-      if (window.history && window.history.replaceState) {
+      if (!skipUrlUpdate && window.history && window.history.replaceState) {
         const currentUrl = new URL(window.location.href);
         currentUrl.searchParams.set('variant', variantId);
         window.history.replaceState({ path: currentUrl.toString() }, '', currentUrl.toString());
@@ -730,6 +791,17 @@ if (!customElements.get('product-buy-buttons')) {
           }
         }
       }, { signal });
+    }
+
+    removeVariantParamFromUrl() {
+      if (window.history && window.history.replaceState) {
+        const currentUrl = new URL(window.location.href);
+        if (currentUrl.searchParams.has('variant')) {
+          currentUrl.searchParams.delete('variant');
+          const cleanUrl = currentUrl.pathname + (currentUrl.search ? currentUrl.search : '') + currentUrl.hash;
+          window.history.replaceState({ path: cleanUrl }, '', cleanUrl);
+        }
+      }
     }
   }
 

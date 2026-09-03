@@ -29,6 +29,8 @@
   class="pdp-block pdp-block--purchase-actions"
   data-section-id="{{ section.id }}"
   data-product-id="{{ product.id }}"
+  data-initial-variant-id="{{ current_variant.id }}"
+  data-product-available="{{ product.available }}"
   data-has-size-option="{{ has_size_option }}"
   data-size-chosen="{% if has_size_option %}false{% else %}true{% endif %}"
   data-klaviyo-account="{{ klaviyo_company_id }}"
@@ -141,13 +143,23 @@
               </select>
             </div>
 
-            {%- if section.settings.contact_page != blank -%}
-              <div class="pdp-size-row__help text-reg-14">
-                Questions about size, fit or fabric?
-                <a href="{{ section.settings.contact_page }}" class="pdp-tab-help__link text-reg-14">
-                  {{- 'products.product.contact_us' | t -}}
-                </a>
-              </div>
+            {%- assign show_question = block.settings.show_question_notes | default: true -%}
+            {%- if show_question -%}
+              {%- assign question_text = block.settings.question -%}
+              {%- assign has_contact = false -%}
+              {%- if section.settings.contact_page != blank -%}
+                {%- assign has_contact = true -%}
+              {%- endif -%}
+              {%- if has_size_guide_content or has_contact -%}
+                <div class="pdp-size-row__help text-reg-14">
+                  {{- question_text -}}
+                  {% if has_contact %}
+                    <a href="{{ section.settings.contact_page }}" class="pdp-tab-help__link text-reg-14">
+                      {{- 'products.product.contact_us' | t -}}
+                    </a>
+                  {% endif %}
+                </div>
+              {%- endif -%}
             {%- endif -%}
 
           {%- else -%}
@@ -213,6 +225,7 @@
           data-translation-add-to-cart="{{ 'products.product.add_to_bag' | t }}"
           data-translation-sold-out="{{ 'products.product.sold_out' | t }}"
           data-translation-waitlist="{{ 'products.product.join_waitlist' | t }}"
+          data-translation-size-guide="{{ 'products.product.size_fit_guide' | t }}"
         >
           {%- if current_variant.available -%}
             {{ 'products.product.add_to_bag' | t }}
