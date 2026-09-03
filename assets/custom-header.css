@@ -122,6 +122,12 @@
     width: 100%;
     z-index: var(--z-header, 90);
     background-color: transparent;
+
+    &.is-scrolled {
+      body:not([data-fullpage-scroll]) & {
+        background-color: var(--color-white, #FFFFFF);
+      }
+    }
   }
 
   .hd-Nav_Cart {

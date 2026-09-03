@@ -41,6 +41,8 @@ if (!window.SolaceHeaderContrast) {
       } else {
         this.headerHeight = this.header ? this.header.offsetHeight || 80 : 80;
       }
+
+      this.setCssVars();
     }
 
     getModeFromElement(el) {
@@ -203,6 +205,10 @@ if (!window.SolaceHeaderContrast) {
       this.cacheHeaderHeight();
       this.setupObserver();
       this.detectSectionMode();
+    }
+
+    setCssVars() {
+      document.body.style.setProperty('--header-height', `${Math.ceil(this.headerHeight)}px`);
     }
   }
 
