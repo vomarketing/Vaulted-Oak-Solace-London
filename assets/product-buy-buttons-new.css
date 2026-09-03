@@ -513,11 +513,6 @@ product-buy-buttons,
     &:hover {
       color: var(--Color_Brand, #000000);
     }
-
-    &:hover .pdp-cta-submit__text {
-      text-decoration: underline;
-      text-underline-offset: 3px;
-    }
   }
 
   &[disabled] {
@@ -563,10 +558,6 @@ product-buy-buttons,
   line-height: 0;
   transition: background-color 0.2s ease, opacity 0.2s ease;
 
-  &:hover {
-    background-color: rgba(0, 0, 0, 0.04);
-  }
-
   .pdp-cta-wishlist__icons {
     display: flex;
     align-items: center;
@@ -580,11 +571,12 @@ product-buy-buttons,
     display: block;
 
     path {
-      transition: fill 0.2s ease;
+      transition: fill 0.3s ease;
     }
   }
 
-  &.iwishAdded {
+  &.iwishAdded,
+  &:hover {
     .pdp-cta-wishlist__icon path {
       fill: var(--Color_Brand, #000000);
     }
