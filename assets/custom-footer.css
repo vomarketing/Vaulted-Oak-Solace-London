@@ -37,7 +37,12 @@
     }
   }
 
-  body.template-product:not(.is-editorial-active) & {
+  body:not([data-fullpage-scroll]) & {
+    position: relative;
+    height: auto;
+  }
+
+  body.template-product:not(.is-editorial-active)[data-fullpage-scroll] & {
     display: none !important;
     pointer-events: none !important;
   }

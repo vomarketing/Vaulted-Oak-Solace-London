@@ -139,6 +139,23 @@ body.template-product[data-fullpage-scroll] {
   }
 }
 
+body:not([data-fullpage-scroll]) {
+  --header-height: 52px;
+
+  @media (min-width: 768px) {
+    --header-height: 59px;
+  }
+
+  @media (min-width: 1201px) {
+    --header-height: 109px;
+  }
+
+  #MainContent {
+    padding-top: var(--header-height);
+    transition: all 0.3s ease-in-out;
+  }
+}
+
 /* Lock body scroll during PDP -> Editorial transition. */
 body.is-pdp-transitioning {
   pointer-events: none !important;
