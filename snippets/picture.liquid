@@ -11,8 +11,8 @@
   @param {string} [breakpoint] - Breakpoint for the mobile source query. Defaults to '900px'
   @param {string} [sizes] - HTML sizes attribute for responsive image widths. Defaults to '100vw'
   @param {string} [sizes_mobile] - HTML sizes attribute for mobile source. Defaults to sizes
-  @param {string} [widths] - Widths for the srcset attribute. Defaults to '1200, 1600, 2000, 2400, 2800, 3200, 3840'
-  @param {string} [widths_mobile] - Widths for the mobile srcset attribute. Defaults to '600, 800, 1000, 1200, 1400, 1600, 1800, 2000, 2400'
+  @param {string} [widths] - Widths for the srcset attribute. Defaults to '375, 550, 750, 900, 1100, 1200, 1500, 1780, 1920, 2400, 2800, 3200, 3840'
+  @param {string} [widths_mobile] - Widths for the mobile srcset attribute. Defaults to '375, 550, 600, 750, 800, 1000, 1200, 1400, 1600, 1800, 1920, 2400'
 
   @example
   {%- render 'picture',
@@ -35,8 +35,8 @@
   assign breakpoint = breakpoint | default: '900px'
   assign sizes = sizes | default: '100vw'
   assign sizes_mobile = sizes_mobile | default: sizes
-  assign widths = widths | default: '1200, 1600, 1920, 2400, 2800, 3200, 3840, 4000, 4500, 5000'
-  assign widths_mobile = widths_mobile | default: '600, 800, 1000, 1200, 1400, 1600, 1800, 1920, 2400'
+  assign widths = widths | default: '375, 550, 750, 900, 1100, 1200, 1500, 1780, 1920, 2400, 2800, 3200, 3840, 4000, 4500, 5000'
+  assign widths_mobile = widths_mobile | default: '375, 550, 600, 750, 800, 1000, 1200, 1400, 1600, 1800, 1920, 2400'
   assign width_retina = image_desktop.width | at_most: 3840
 
   assign desktop_widths = widths | append: ', ' | append: image_desktop.width
