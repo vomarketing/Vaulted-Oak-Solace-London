@@ -64,13 +64,24 @@
     {{ content_for_header }}
 
     {%- render 'klevu-head' -%}
- 
+
   </head>
 
+  {%- liquid
+    assign enable_fullpage_scroll = false
+
+    if template.name == 'index'
+      assign enable_fullpage_scroll = true
+    elsif template.name == 'product'
+      if settings.pdp_scroll_type == 'slider'
+        assign enable_fullpage_scroll = true
+      endif
+    endif
+  -%}
   <body
     id="{{ page_title | handle }}"
     class="lyt-Site template-{{ template.name | handle }} thm-{{ settings.theme }} {% if settings.bar_enabled %}thm-AnnouncementBar{% endif %}"
-    {%- if template.name == 'index' or template.name == 'product' %}data-fullpage-scroll{%- endif -%}
+    {%- if enable_fullpage_scroll %}data-fullpage-scroll{%- endif -%}
   >
     <a
       class="util-ScreenReaderOnly"

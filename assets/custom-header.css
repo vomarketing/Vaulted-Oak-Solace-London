@@ -135,7 +135,7 @@
   }
 }
 
-.template-product .hd-Header:not(.hd-Header-dropdownActive):not(.hd-Header-searchActive) {
+.template-product[data-fullpage-scroll] .hd-Header:not(.hd-Header-dropdownActive):not(.hd-Header-searchActive) {
   @media (min-width: 901px) {
     &[data-header-split="true"] {
       &[data-header-mode="light"] {

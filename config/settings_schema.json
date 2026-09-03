@@ -20,6 +20,27 @@
     ]
   },
   {
+    "name": "PDP",
+    "settings": [
+      {
+        "type": "select",
+        "id": "pdp_scroll_type",
+        "label": "Scroll Type",
+        "options": [
+          {
+            "label": "Normal",
+            "value": "normal"
+          },
+          {
+            "label": "Slider",
+            "value": "slider"
+          }
+        ],
+        "default": "slider"
+      }
+    ]
+  },
+  {
     "name": "App Icons",
     "settings": [
       {

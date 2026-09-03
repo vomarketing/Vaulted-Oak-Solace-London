@@ -42,7 +42,7 @@
     height: auto;
   }
 
-  body.template-product:not(.is-editorial-active) & {
+  body.template-product:not(.is-editorial-active)[data-fullpage-scroll] & {
     display: none !important;
     pointer-events: none !important;
   }

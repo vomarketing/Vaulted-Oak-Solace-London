@@ -137,6 +137,7 @@ if (!window.SolaceHeaderContrast) {
       }
 
       const isSplit = activeSection ? !!activeSection.closest('.pdp-new__main, .pdp-new__gallery-column') : false;
+
       this.updateContrast(activeMode || 'dark', isSplit);
     }
 
