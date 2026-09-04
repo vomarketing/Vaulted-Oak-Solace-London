@@ -34,11 +34,12 @@
     padding: 42px 0;
   }
 
-  .hd-Nav_Link {
+  .hd-Nav_Link,
+  .hd-Nav_ChildLink {
     font-family: var(--font-family-primary);
-    font-size: var(--type-14-size);
-    font-weight: var(--font-weight-medium);
-    line-height: var(--type-14-line-height);
+    font-size: 12px;
+    font-weight: var(--font-weight-regular);
+    line-height: 16px;
     text-transform: capitalize;
   }
 

@@ -29,6 +29,7 @@
     },
     "search": {
       "title": "Search for products on our site",
+      "results_for": "Search results for \"{{ terms }}\"",
       "placeholder": "Search our store",
       "submit": "Search",
       "heading": {
@@ -193,6 +194,7 @@
   "collections": {
     "general": {
       "no_matches": "Sorry, there are no products in this collection",
+      "list_title": "Collections",
       "link_title": "Browse our {{ title }} collection",
       "shop_now": "Shop now",
       "filter": "Filter",

@@ -158,6 +158,7 @@ if (!customElements.get('product-fullscreen')) {
             },
             slideChangeTransitionStart: (swiper) => {
               this.handleSlideChange(swiper);
+              this.updateHeaderContrast(swiper);
             },
             slideChangeTransitionEnd: (swiper) => {
               this.updateHeaderContrast(swiper);
@@ -201,6 +202,21 @@ if (!customElements.get('product-fullscreen')) {
       const headerMode = activeSlide.getAttribute('data-header-mode') || 'light';
       if (window.headerContrastController && typeof window.headerContrastController.updateContrast === 'function') {
         window.headerContrastController.updateContrast(headerMode, this.isDesktop());
+      }
+    }
+
+    restoreMediaHeaderContrast() {
+      const activeSlide = this.swiper?.slides?.[this.swiper.activeIndex]
+        || this.querySelector(this.selectors.mediaItems);
+      if (!activeSlide) return;
+
+      const headerMode = activeSlide.getAttribute('data-header-mode') || 'light';
+      if (window.headerContrastController && typeof window.headerContrastController.updateContrast === 'function') {
+        window.headerContrastController.updateContrast(headerMode, false);
+      } else {
+        document.dispatchEvent(new CustomEvent('header:set-mode', {
+          detail: { mode: headerMode }
+        }));
       }
     }
 
@@ -253,6 +269,7 @@ if (!customElements.get('product-fullscreen')) {
         this.classList.remove(this.classes.contentExpanded);
         contentColumn.classList.remove(this.classes.contentLockedTop);
         contentColumn.scrollTop = 0;
+        requestAnimationFrame(() => this.restoreMediaHeaderContrast());
       };
 
       // Tap on Sheet Handle to toggle Peek vs Expanded

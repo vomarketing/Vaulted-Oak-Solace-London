@@ -136,6 +136,18 @@
   }
 }
 
+@media (min-width: 901px) {
+  .custom-tab__panels,
+  .custom-tab__panel,
+  .custom-tab__panel.is-active {
+    transition: none;
+  }
+
+  .custom-tab__panel:not(.is-active) {
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .custom-tab__nav {
     scroll-behavior: auto;

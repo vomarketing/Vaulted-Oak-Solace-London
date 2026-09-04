@@ -54,6 +54,29 @@ if (!window.SolaceHeaderContrast) {
       );
     }
 
+    getHomepageActiveSlide() {
+      if (!document.body.classList.contains('template-index') || !document.body.hasAttribute('data-fullpage-scroll')) {
+        return null;
+      }
+
+      const swiper = window.fullpageScrollInstance?.swiper;
+      if (!swiper?.slides) return null;
+
+      return swiper.slides[swiper.activeIndex] || null;
+    }
+
+    getMobilePdpActiveMedia() {
+      if (!document.body.classList.contains('template-product') || !window.matchMedia('(max-width: 900px)').matches) {
+        return null;
+      }
+
+      const product = document.querySelector('.js-pdp-new');
+      if (!product || product.classList.contains('is-content-expanded')) return null;
+
+      return product.querySelector('.js-pdp-media-item.swiper-slide-active')
+        || product.querySelector('.js-pdp-media-item');
+    }
+
     setupStickyState() {
       const isSticky = this.header.getAttribute('data-sticky') === 'true';
       if (!isSticky) return;
@@ -75,9 +98,13 @@ if (!window.SolaceHeaderContrast) {
         this.observer.disconnect();
       }
 
-      this.sections = Array.from(document.querySelectorAll(this.selectors.sections));
+      const isMobile = window.matchMedia('(max-width: 900px)').matches;
+      this.sections = Array.from(document.querySelectorAll(this.selectors.sections)).filter((section) => {
+        if (section.closest('.fullpage-swiper')) return false;
+        if (isMobile && section.matches('.js-pdp-media-item')) return false;
+        return true;
+      });
       if (!this.sections.length) {
-        this.setMode('dark');
         return;
       }
 
@@ -91,6 +118,7 @@ if (!window.SolaceHeaderContrast) {
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
               if (window._swiperIsTransitioning) return;
+              if (entry.target.closest('.fullpage-swiper')) return;
               const mode = this.getModeFromElement(entry.target);
               const isSplit = !!entry.target.closest('.pdp-new__main, .pdp-new__gallery-column');
               this.updateContrast(mode, isSplit);
@@ -109,6 +137,18 @@ if (!window.SolaceHeaderContrast) {
 
     detectSectionMode() {
       if (window._swiperIsTransitioning) return;
+
+      const homepageActiveSlide = this.getHomepageActiveSlide();
+      if (homepageActiveSlide) {
+        this.updateContrast(this.getModeFromElement(homepageActiveSlide), false);
+        return;
+      }
+
+      const pdpActiveMedia = this.getMobilePdpActiveMedia();
+      if (pdpActiveMedia) {
+        this.updateContrast(this.getModeFromElement(pdpActiveMedia), false);
+        return;
+      }
 
       const triggerY = this.headerHeight / 2;
       const allSections = this.sections;
@@ -163,6 +203,12 @@ if (!window.SolaceHeaderContrast) {
     }
 
     updateContrast(mode, isSplit = false) {
+      const homepageActiveSlide = this.getHomepageActiveSlide();
+      if (homepageActiveSlide) {
+        mode = this.getModeFromElement(homepageActiveSlide);
+        isSplit = false;
+      }
+
       this.setSplit(isSplit);
       this.setMode(mode);
     }
@@ -221,17 +267,30 @@ if (!window.SolaceHeaderContrast) {
     }
   };
 
+  const handleFullpageReady = (event) => {
+    if (window.headerContrastController) {
+      window.headerContrastController.refresh();
+    } else {
+      initHeaderController();
+    }
+
+    const swiper = event.detail?.swiper;
+    const activeSlide = swiper?.slides?.[swiper.activeIndex];
+    if (activeSlide && window.headerContrastController) {
+      window.headerContrastController.updateContrast(
+        window.headerContrastController.getModeFromElement(activeSlide),
+        false
+      );
+    }
+  };
+
   if (document.body.hasAttribute('data-fullpage-scroll')) {
-    document.addEventListener('fullpage:ready', initHeaderController);
+    document.addEventListener('fullpage:ready', handleFullpageReady);
 
     if (window.fullpageScrollInstance && window.fullpageScrollInstance.swiper) {
       initHeaderController();
-    } else if (document.readyState === 'loading') {
-      document.addEventListener('DOMContentLoaded', () => {
-        setTimeout(initHeaderController, 60);
-      });
     } else {
-      setTimeout(initHeaderController, 60);
+      setTimeout(initHeaderController, 5500);
     }
   } else {
     if (document.readyState === 'loading') {

@@ -142,7 +142,8 @@ if (!customElements.get('custom-tab')) {
       const { animate = true, scroll = true } = options;
       const targetIndex = this.toggles[index] && this.panels[index] ? index : -1;
 
-      const shouldAnimate = animate && !this.reduceMotion.matches;
+
+      const shouldAnimate = animate && !this.reduceMotion.matches && window.innerWidth <= 900;
       const startHeight = shouldAnimate ? this.panelsEl.offsetHeight : 0;
 
       if (shouldAnimate && startHeight > 0) {

@@ -18,7 +18,9 @@
 -%}
 
 {%- if section.settings.text != blank -%}
-  {{ 'rich-text.css' | asset_url | stylesheet_tag }}
+  <style>
+    {{ 'rich-text.css' | inline_asset_content }}
+  </style>
   <rich-text
     class="rich-text"
     id="RichText-{{ section.id }}"
