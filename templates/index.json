@@ -119,6 +119,7 @@
     },
     "featured_image_bdxxic": {
       "type": "featured-image",
+      "disabled": true,
       "name": "Featured Image",
       "settings": {
         "header_contrast_mode": "dark",
@@ -222,8 +223,8 @@
     "hero_fullscreen_hGpWfC",
     "hero_fullscreen_PPmfBH",
     "featured_image_bdxxic",
-    "rich_text_PG7mfm",
     "hero_fullscreen_fnD3ha",
+    "rich_text_PG7mfm",
     "two_ups_media_CT3jaP"
   ]
 }
