@@ -130,10 +130,6 @@
       }
     }
   }
-
-  .hd-Nav_Cart {
-    margin-top: 2px;
-  }
 }
 
 .template-product[data-fullpage-scroll] .hd-Header:not(.hd-Header-dropdownActive):not(.hd-Header-searchActive) {
@@ -231,5 +227,9 @@
 
   .hd-Header_Nav {
     margin-top: 1px;
+  }
+
+  .hd-Nav_Items {
+    align-items: center;
   }
 }
