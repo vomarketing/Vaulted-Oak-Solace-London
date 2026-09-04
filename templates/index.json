@@ -14,7 +14,6 @@
       "name": "Hero Fullscreen",
       "settings": {
         "media_type": "video",
-        "image_desktop": "shopify://shop_images/Hero.jpg",
         "video_desktop": "shopify://files/videos/290726 SOLACE RESORT 27 SEPTEMBER 01 WEB.mp4",
         "video_url_desktop": "",
         "video_url_mobile": "",
@@ -100,7 +99,7 @@
       "settings": {
         "media_type": "image",
         "image_desktop": "shopify://shop_images/Hero_2_3ad46946-9660-49da-8f31-1c8c08c2e702.jpg",
-        "video_desktop": "shopify://files/videos/290726 SOLACE RESORT 27 SEPTEMBER 01 WEB.mp4",
+        "image_mobile": "shopify://shop_images/1_Block_Mobile.jpg",
         "video_url_desktop": "",
         "video_url_mobile": "",
         "show_overlay": false,
@@ -141,6 +140,7 @@
       "settings": {
         "media_type": "image",
         "image_desktop": "shopify://shop_images/Hero.jpg",
+        "image_mobile": "shopify://shop_images/Hero_Mobile_6b18e6dc-811a-4f32-86a3-dd19cc14762c.jpg",
         "video_desktop": "shopify://files/videos/290726 SOLACE RESORT 27 SEPTEMBER 02 WEB.mp4",
         "video_url_desktop": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
         "video_url_mobile": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
@@ -163,7 +163,7 @@
       "name": "Rich text",
       "settings": {
         "header_contrast_mode": "dark",
-        "text": "<p>Solace London is a British womenswear brand founded by Laura Taylor and Ryan Holliday-Stevens in 2013. Longtime friends and collaborators, the duo share a dynamic background spanning design, production, retail, marketing and creative direction. Their combined sensibilities are visible in pieces that continuously blur the line between statement making and wearability.</p>",
+        "text": "<p>Solace London is a British womenswear brand founded by Laura Taylor and Ryan Holliday-Stevens in 2013. Longtime friends and collaborators, the duo share a dynamic background spanning design, production, retail, marketing and creative direction. Their combined sensibilities are visible in pieces that continuously blur the line between statement making and wearability</p>",
         "text_font_size": "text-reg-14",
         "text_uppercase": false,
         "link_text": "",
