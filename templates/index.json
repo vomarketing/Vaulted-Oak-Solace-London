@@ -82,7 +82,7 @@
         "show_overlay": false,
         "overlay_opacity": 40,
         "overlay_color": "#000000",
-        "header_contrast_mode": "light",
+        "header_contrast_mode": "dark",
         "text_color": "white",
         "heading": "Resort 2027",
         "heading_font_size": "text-reg-14",
