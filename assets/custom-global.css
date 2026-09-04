@@ -228,3 +228,8 @@ body.is-pdp-transitioning {
   font-weight: var(--font-weight-regular);
   line-height: 16px;
 }
+
+.mod-Newsletter .klaviyo-form button,
+.pg-Newsletter_Form .klaviyo-form button {
+  width: 140px !important;
+}
