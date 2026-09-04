@@ -48,6 +48,7 @@
     },
     "search": {
       "title": "Søg efter produkter på vores site",
+      "results_for": "Søgeresultater for \"{{ terms }}\"",
       "placeholder": "Søg på vores butik",
       "submit": "Søg",
       "heading": {
@@ -121,6 +122,7 @@
   "collections": {
     "general": {
       "no_matches": "Beklager, der er ingen produkter i denne samling",
+      "list_title": "Kollektioner",
       "link_title": "Vis vores {{ title }} samling"
     }
   },

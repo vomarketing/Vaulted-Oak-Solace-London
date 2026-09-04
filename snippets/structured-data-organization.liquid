@@ -1,0 +1,99 @@
+{%- comment -%}
+  Organization JSON-LD (every page) and WebSite JSON-LD (homepage only).
+
+  Rendered once from layout/theme.liquid. This block previously lived in
+  sections/header.liquid, where it read a `logo` setting the section never
+  defined (so the live site emitted Shopify's no-image placeholder) and built
+  the sameAs array without commas between entries.
+
+  Every dynamic value goes through the `json` filter so quotes or line breaks
+  in shop settings cannot break the document. Optional keys are emitted with a
+  leading comma so the output never ends in a trailing comma.
+
+  The @id anchors let other blocks (Article publisher, Product seller,
+  WebSite publisher) reference this Organization instead of repeating it.
+{%- endcomment -%}
+
+{%- liquid
+  assign organization_id = shop.url | append: '/#organization'
+  assign website_id = shop.url | append: '/#website'
+  assign search_target = shop.url | append: '/search?q={search_term_string}'
+
+  assign logo_url = ''
+  if settings.share_image != blank
+    assign logo_url = settings.share_image | image_url: width: 600 | prepend: 'https:'
+  endif
+
+  assign same_as_string = ''
+  if settings.social_twitter_link != blank
+    assign same_as_string = same_as_string | append: '|' | append: settings.social_twitter_link
+  endif
+  if settings.social_facebook_link != blank
+    assign same_as_string = same_as_string | append: '|' | append: settings.social_facebook_link
+  endif
+  if settings.social_pinterest_link != blank
+    assign same_as_string = same_as_string | append: '|' | append: settings.social_pinterest_link
+  endif
+  if settings.social_instagram_link != blank
+    assign same_as_string = same_as_string | append: '|' | append: settings.social_instagram_link
+  endif
+  if settings.social_tumblr_link != blank
+    assign same_as_string = same_as_string | append: '|' | append: settings.social_tumblr_link
+  endif
+  if settings.social_snapchat_link != blank
+    assign same_as_string = same_as_string | append: '|' | append: settings.social_snapchat_link
+  endif
+  if settings.social_youtube_link != blank
+    assign same_as_string = same_as_string | append: '|' | append: settings.social_youtube_link
+  endif
+  if settings.social_vimeo_link != blank
+    assign same_as_string = same_as_string | append: '|' | append: settings.social_vimeo_link
+  endif
+  assign same_as = same_as_string | remove_first: '|' | split: '|'
+-%}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "@id": {{ organization_id | json }},
+  "name": {{ shop.name | json }},
+  "url": {{ shop.url | json }}
+  {%- if logo_url != blank -%},
+  "logo": {{ logo_url | json }}
+  {%- endif -%}
+  {%- if same_as_string != blank -%},
+  "sameAs": {{ same_as | json }}
+  {%- endif -%}
+  {%- if shop.email != blank or shop.phone != blank -%},
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "contactType": "customer service"
+    {%- if shop.email != blank -%},
+    "email": {{ shop.email | json }}
+    {%- endif -%}
+    {%- if shop.phone != blank -%},
+    "telephone": {{ shop.phone | json }}
+    {%- endif -%}
+  }
+  {%- endif -%}
+}
+</script>
+
+{%- if template.name == 'index' -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebSite",
+  "@id": {{ website_id | json }},
+  "name": {{ shop.name | json }},
+  "url": {{ shop.url | json }},
+  "publisher": { "@id": {{ organization_id | json }} },
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": {{ search_target | json }},
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
+{%- endif -%}

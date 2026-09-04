@@ -1,0 +1,100 @@
+{%- comment -%}
+  Product JSON-LD, shared by sections/main-product-new.liquid and
+  sections/main-product-gift-card.liquid:
+
+    {%- render 'structured-data-product', product: product -%}
+
+  It replaces two inline copies. The main-product-new copy was already
+  escaped; the gift card copy was the legacy version (brand typed as Thing,
+  availability taken from the product instead of each variant, http: variant
+  image URLs, unescaped strings). sections/main-product.liquid still carries
+  the legacy copy but that section is disabled in templates/product.json.
+
+  Every dynamic value goes through the `json` filter. Optional keys use a
+  leading comma so nothing ends in a trailing comma. Offers stay one per
+  variant, which Google accepts for Product rich results and merchant
+  listings. gtin is only emitted when the barcode has a valid GTIN length
+  (8, 12, 13 or 14 characters) so a stray internal code cannot trigger a
+  Search Console error. The seller points at the Organization @id emitted by
+  snippets/structured-data-organization.liquid.
+{%- endcomment -%}
+
+{%- liquid
+  assign organization_id = shop.url | append: '/#organization'
+  assign product_url = shop.url | append: product.url
+  assign product_id = product_url | append: '#product'
+  assign current_variant = product.selected_or_first_available_variant
+  assign brand_name = product.vendor | default: shop.name
+  assign currency_code = cart.currency.iso_code | default: shop.currency
+  # strip_html leaves HTML entities behind; decode the common ones so the
+  # snippet does not show a literal "&amp;" in search results.
+  # Block-level closing tags become spaces first so paragraphs and list
+  # items do not run together once the tags are stripped.
+  assign description = product.description | replace: '</p>', ' ' | replace: '</li>', ' ' | replace: '<br>', ' ' | replace: '<br/>', ' ' | replace: '<br />', ' ' | strip_html | replace: '&nbsp;', ' ' | replace: '&quot;', '"' | replace: '&#39;', "'" | replace: '&lt;', '<' | replace: '&gt;', '>' | replace: '&amp;', '&' | strip
+
+  assign image_urls_string = ''
+  for image in product.images limit: 8
+    assign image_url = image | image_url: width: 1400 | prepend: 'https:'
+    assign image_urls_string = image_urls_string | append: '|' | append: image_url
+  endfor
+  assign image_urls = image_urls_string | remove_first: '|' | split: '|'
+
+  assign product_barcode_size = current_variant.barcode | size
+-%}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Product",
+  "@id": {{ product_id | json }},
+  "name": {{ product.title | json }},
+  "url": {{ product_url | json }},
+  "brand": {
+    "@type": "Brand",
+    "name": {{ brand_name | json }}
+  }
+  {%- if description != blank -%},
+  "description": {{ description | json }}
+  {%- endif -%}
+  {%- if image_urls_string != blank -%},
+  "image": {{ image_urls | json }}
+  {%- endif -%}
+  {%- if current_variant.sku != blank -%},
+  "sku": {{ current_variant.sku | json }}
+  {%- endif -%}
+  {%- if product_barcode_size == 8 or product_barcode_size == 12 or product_barcode_size == 13 or product_barcode_size == 14 -%},
+  "gtin": {{ current_variant.barcode | json }}
+  {%- endif -%},
+  "offers": [
+    {%- for variant in product.variants -%}
+    {%- liquid
+      if product.has_only_default_variant
+        assign offer_name = product.title
+      else
+        assign offer_name = product.title | append: ' - ' | append: variant.title
+      endif
+      assign variant_barcode_size = variant.barcode | size
+    -%}
+    {
+      "@type": "Offer",
+      "url": {{ shop.url | append: variant.url | json }},
+      "name": {{ offer_name | json }},
+      "price": {{ variant.price | divided_by: 100.0 | json }},
+      "priceCurrency": {{ currency_code | json }},
+      "availability": "https://schema.org/{% if variant.available %}InStock{% else %}OutOfStock{% endif %}",
+      "itemCondition": "https://schema.org/NewCondition",
+      "seller": { "@id": {{ organization_id | json }} }
+      {%- if variant.sku != blank -%},
+      "sku": {{ variant.sku | json }}
+      {%- endif -%}
+      {%- if variant_barcode_size == 8 or variant_barcode_size == 12 or variant_barcode_size == 13 or variant_barcode_size == 14 -%},
+      "gtin": {{ variant.barcode | json }}
+      {%- endif -%}
+      {%- if variant.image -%},
+      "image": {{ variant.image | image_url: width: 1000 | prepend: 'https:' | json }}
+      {%- endif %}
+    }{% unless forloop.last %},{% endunless %}
+    {%- endfor %}
+  ]
+}
+</script>

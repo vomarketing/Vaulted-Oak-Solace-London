@@ -1,4 +1,6 @@
-{{- 'custom-footer.css' | asset_url | stylesheet_tag -}}
+<style>
+  {{ 'custom-footer.css' | inline_asset_content }}
+</style>
 <script src="{{ 'custom-footer.js' | asset_url }}" defer="defer"></script>
 
 <footer class="ft-Footer" aria-label="Footer" data-header-mode="dark">

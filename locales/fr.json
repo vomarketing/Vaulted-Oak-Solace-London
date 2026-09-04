@@ -48,6 +48,7 @@
     },
     "search": {
       "title": "Effectuez une recherche",
+      "results_for": "Résultats de recherche pour \"{{ terms }}\"",
       "placeholder": "Rechercher dans la boutique",
       "submit": "Recherche",
       "heading": {
@@ -121,6 +122,7 @@
   "collections": {
     "general": {
       "no_matches": "Aucun produit ne correspond à votre recherche.",
+      "list_title": "Collections",
       "link_title": "Consultez la collection {{ title }}"
     }
   },

@@ -1,0 +1,104 @@
+{%- comment -%}
+  BreadcrumbList JSON-LD, rendered once from layout/theme.liquid.
+
+  The theme has a visual breadcrumb with microdata in snippets/breadcrumb.liquid,
+  but nothing renders it, so the site had no breadcrumb structured data at all.
+  This snippet emits the same trails as JSON-LD without adding any markup to
+  the page. The visual snippet is left as it was.
+
+  Trails (Home is always position 1):
+    product           Home > Collection > Product   (Collection only when the URL
+                                                     is /collections/x/products/y)
+    collection        Home > Collection            (> Tags on filtered pages)
+    blog              Home > Blog                  (> Tags on filtered pages)
+    article           Home > Blog > Article
+    page              Home > Page
+    list-collections  Home > Collections
+
+  Every other page type (home, cart, search, 404, account, password, policy)
+  gets no breadcrumb. Names go through the `json` filter so quotes in titles
+  cannot break the document. The optional third item is emitted with a
+  leading comma so the list never ends in a trailing comma.
+{%- endcomment -%}
+
+{%- liquid
+  assign home_url = shop.url | append: routes.root_url
+  assign crumb_2_name = ''
+  assign crumb_2_url = ''
+  assign crumb_3_name = ''
+  assign crumb_3_url = ''
+
+  case request.page_type
+    when 'product'
+      if collection.handle != blank
+        assign crumb_2_name = collection.title
+        assign crumb_2_url = shop.url | append: collection.url
+        assign crumb_3_name = product.title
+        assign crumb_3_url = shop.url | append: product.url
+      else
+        assign crumb_2_name = product.title
+        assign crumb_2_url = shop.url | append: product.url
+      endif
+
+    when 'collection'
+      assign crumb_2_name = collection.title
+      assign crumb_2_url = shop.url | append: collection.url
+      if current_tags
+        assign crumb_3_name = current_tags | join: ' + '
+        assign crumb_3_url = shop.url | append: request.path
+      endif
+
+    when 'blog'
+      assign crumb_2_name = blog.title
+      assign crumb_2_url = shop.url | append: blog.url
+      if current_tags
+        assign crumb_3_name = current_tags | join: ' + '
+        assign crumb_3_url = shop.url | append: request.path
+      endif
+
+    when 'article'
+      assign crumb_2_name = blog.title
+      assign crumb_2_url = shop.url | append: blog.url
+      assign crumb_3_name = article.title
+      assign crumb_3_url = shop.url | append: article.url
+
+    when 'page'
+      assign crumb_2_name = page.title
+      assign crumb_2_url = shop.url | append: page.url
+
+    when 'list-collections'
+      assign crumb_2_name = page_title
+      assign crumb_2_url = shop.url | append: routes.collections_url
+  endcase
+-%}
+
+{%- if crumb_2_name != blank -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": {{ 'layout.breadcrumbs.home' | t | json }},
+      "item": {{ home_url | json }}
+    },
+    {
+      "@type": "ListItem",
+      "position": 2,
+      "name": {{ crumb_2_name | json }},
+      "item": {{ crumb_2_url | json }}
+    }
+    {%- if crumb_3_name != blank -%},
+    {
+      "@type": "ListItem",
+      "position": 3,
+      "name": {{ crumb_3_name | json }},
+      "item": {{ crumb_3_url | json }}
+    }
+    {%- endif %}
+  ]
+}
+</script>
+{%- endif -%}

@@ -48,6 +48,7 @@
     },
     "search": {
       "title": "Zoek naar producten",
+      "results_for": "Zoekresultaten voor \"{{ terms }}\"",
       "placeholder": "Zoek in onze winkel",
       "submit": "Zoeken",
       "heading": {
@@ -121,6 +122,7 @@
   "collections": {
     "general": {
       "no_matches": "Sorry, er bevinden zich geen producten in deze collectie",
+      "list_title": "Collecties",
       "link_title": "Bekijk onze {{ title }} collectie"
     }
   },

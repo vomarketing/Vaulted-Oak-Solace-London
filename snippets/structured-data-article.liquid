@@ -1,0 +1,69 @@
+{%- comment -%}
+  Article JSON-LD, rendered from sections/main-article.liquid:
+
+    {%- render 'structured-data-article', article: article -%}
+
+  It replaces an inline block that set @id from page.url (nil on article
+  pages, so every post identified itself as the homepage), wrote the title
+  and the whole body without JSON escaping, and had no dateModified.
+
+  articleBody is deliberately not emitted: Google does not use it for Article
+  rich results and it duplicated the full post inside the HTML. A short
+  description from the excerpt (or the opening of the content) is emitted
+  instead. dateCreated is also gone; Google reads datePublished and
+  dateModified only.
+
+  Dates use the shop timezone with a numeric offset (%z) instead of a
+  hard-coded "Z", which mislabelled London times as UTC. The publisher
+  carries the Organization @id from snippets/structured-data-organization.liquid
+  plus its name, so it is usable even if a parser does not merge the two blocks.
+{%- endcomment -%}
+
+{%- liquid
+  assign organization_id = shop.url | append: '/#organization'
+  assign article_url = shop.url | append: article.url
+  assign article_id = article_url | append: '#article'
+  # strip_html leaves HTML entities behind; decode the common ones so the
+  # snippet does not show a literal "&amp;" in search results.
+  # Block-level closing tags become spaces first so paragraphs and list
+  # items do not run together once the tags are stripped.
+  assign description = article.excerpt_or_content | replace: '</p>', ' ' | replace: '</li>', ' ' | replace: '<br>', ' ' | replace: '<br/>', ' ' | replace: '<br />', ' ' | strip_html | replace: '&nbsp;', ' ' | replace: '&quot;', '"' | replace: '&#39;', "'" | replace: '&lt;', '<' | replace: '&gt;', '>' | replace: '&amp;', '&' | strip | truncate: 300
+
+  assign image_url = ''
+  if article.image
+    assign image_url = article.image | image_url: width: 1400 | prepend: 'https:'
+  endif
+-%}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "@id": {{ article_id | json }},
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": {{ article_url | json }}
+  },
+  "url": {{ article_url | json }},
+  "headline": {{ article.title | json }},
+  "datePublished": {{ article.published_at | date: '%Y-%m-%dT%H:%M:%S%z' | json }},
+  "dateModified": {{ article.updated_at | date: '%Y-%m-%dT%H:%M:%S%z' | json }},
+  "author": {
+    "@type": "Person",
+    "name": {{ article.author | json }}
+  },
+  "publisher": {
+    "@type": "Organization",
+    "@id": {{ organization_id | json }},
+    "name": {{ shop.name | json }}
+  }
+  {%- if description != blank -%},
+  "description": {{ description | json }}
+  {%- endif -%}
+  {%- if image_url != blank -%},
+  "image": [
+    {{ image_url | json }}
+  ]
+  {%- endif %}
+}
+</script>

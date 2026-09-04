@@ -4,12 +4,17 @@
   window.klevu_filterDelimiter = " "
 </script>
 
-{{ '//js.klevu.com/klevu-js-v2/2.3.2/klevu.js' | script_tag }}
-{{ 'klevu-settings.js' | asset_url | script_tag }}
-{{ 'klevu-quick.js' | asset_url | script_tag }}
+{% comment %}
+  Deferred on purpose: nothing in the theme reads the `klevu` global synchronously,
+  and `defer` preserves document order, so klevu.js still runs before the
+  settings/quick/landing scripts below.
+{% endcomment %}
+<script src="https://js.klevu.com/klevu-js-v2/2.3.2/klevu.js" defer="defer"></script>
+<script src="{{ 'klevu-settings.js' | asset_url }}" defer="defer"></script>
+<script src="{{ 'klevu-quick.js' | asset_url }}" defer="defer"></script>
 
 {%- if request.page_type == "search" -%}
-  {{ 'klevu-landing.js' | asset_url | script_tag }}
-  {{ 'klevu-facets.js' | asset_url | script_tag }}
-  {{ 'klevu-landing-filter-left.js' | asset_url | script_tag }}
+  <script src="{{ 'klevu-landing.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'klevu-facets.js' | asset_url }}" defer="defer"></script>
+  <script src="{{ 'klevu-landing-filter-left.js' | asset_url }}" defer="defer"></script>
 {%- endif -%}

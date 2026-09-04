@@ -1,0 +1,56 @@
+{%- comment -%}
+  FAQPage JSON-LD, rendered from sections/faqs.liquid:
+
+    {%- render 'structured-data-faq', blocks: section.blocks -%}
+
+  It replaces an inline block that emitted bare Question nodes inside an
+  @graph with no FAQPage wrapper, used "text" where Google expects "name" on
+  the Question, and wrote titles and answers without JSON escaping.
+
+  Blocks missing either a title or an answer are skipped, because Google
+  requires both, and nothing at all is emitted when no block qualifies.
+  Answers are plain text: HTML stripped and common entities decoded. Items
+  are joined with a leading comma driven by a counter, so skipped blocks
+  cannot leave a stray comma behind.
+
+  Since August 2023 Google shows FAQ rich results only for authoritative
+  government and health sites, so this earns valid markup rather than a
+  visible change in search results.
+{%- endcomment -%}
+
+{%- assign faq_count = 0 -%}
+
+{%- capture faq_items -%}
+  {%- for block in blocks -%}
+    {%- liquid
+      assign question = block.settings.title | strip_html | strip
+      # Block-level closing tags become spaces so paragraphs and list items do
+      # not run together once the tags are stripped; then decode common entities.
+      assign answer = block.settings.text | replace: '</p>', ' ' | replace: '</li>', ' ' | replace: '<br>', ' ' | replace: '<br/>', ' ' | replace: '<br />', ' ' | strip_html | replace: '&nbsp;', ' ' | replace: '&quot;', '"' | replace: '&#39;', "'" | replace: '&lt;', '<' | replace: '&gt;', '>' | replace: '&amp;', '&' | strip
+    -%}
+    {%- if question != blank and answer != blank -%}
+      {%- if faq_count > 0 -%},{%- endif %}
+    {
+      "@type": "Question",
+      "name": {{ question | json }},
+      "acceptedAnswer": {
+        "@type": "Answer",
+        "text": {{ answer | json }}
+      }
+    }
+      {%- assign faq_count = faq_count | plus: 1 -%}
+    {%- endif -%}
+  {%- endfor -%}
+{%- endcapture -%}
+
+{%- if faq_count > 0 -%}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {{- faq_items }}
+  ]
+}
+</script>
+{%- endif -%}

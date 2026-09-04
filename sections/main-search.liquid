@@ -2,6 +2,20 @@
 
     <div class="klv-Landing_Inner lyt-Container">
 
+        {%- comment -%}
+          Hidden H1: Klevu renders the results client-side, so the section had
+          no heading at all. Uses the query when there is one.
+        {%- endcomment -%}
+        {%- liquid
+          if search.terms != blank
+            assign search_terms_escaped = search.terms | escape
+            assign search_heading = 'general.search.results_for' | t: terms: search_terms_escaped
+          else
+            assign search_heading = 'general.search.title' | t
+          endif
+        -%}
+        <h1 class="util-ScreenReaderOnly">{{ search_heading }}</h1>
+
         <form class="klv-Form" action="/search" method="GET">
             <input
                     id="SearchInput"
