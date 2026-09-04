@@ -15,17 +15,20 @@
   assign option_key = nil
 
   assign card_image = product.featured_image
-  assign has_first_image_last_tag = false
-  for tag in product.tags
-    assign downcased_tag = tag | downcase
-    if downcased_tag == 'first-image-last' or downcased_tag == 'first_image_last'
-      assign has_first_image_last_tag = true
-      break
-    endif
-  endfor
 
-  if has_first_image_last_tag and product.images.size > 1
-    assign card_image = product.images[1] | default: product.featured_image
+  if check_first_image_tag
+    assign has_first_image_last_tag = false
+    for tag in product.tags
+      assign downcased_tag = tag | downcase
+      if downcased_tag == 'first-image-last' or downcased_tag == 'first_image_last'
+        assign has_first_image_last_tag = true
+        break
+      endif
+    endfor
+
+    if has_first_image_last_tag and product.images.size > 1
+      assign card_image = product.images[1] | default: product.featured_image
+    endif
   endif
 
 -%}

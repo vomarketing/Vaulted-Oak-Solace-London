@@ -140,18 +140,18 @@
                   {%- if product.tags contains nlos_tag -%}
                     <!-- {# Do not render products with 'NLOS' tag for customers with 'ADMIN' tag #} -->
                     <div class="prd-List_Item NLOS js-Animate" data-animation="Fade" show_product="{{ show_product }}" fiter_array="{{fiter_array}}">
-                      {%- render 'product-card', product: product -%}
+                      {%- render 'product-card', product: product, check_first_image_tag: section.settings.enable_first_image_last_tag -%}
                     </div>
                   {%- else -%}
                     <div class="prd-List_Item js-Animate" data-animation="Fade" show_product="{{ show_product }}" fiter_array="{{fiter_array}}">
-                      {%- render 'product-card', product: product -%}
+                      {%- render 'product-card', product: product, check_first_image_tag: section.settings.enable_first_image_last_tag -%}
                     </div>
                   {%- endif -%}
                 {%- else -%}
                   <!-- {# Render products only if they don't have 'NLOS' tag for customers without 'ADMIN' tag #} -->
                   {%- unless product.tags contains nlos_tag -%}
                     <div class="prd-List_Item js-Animate" data-animation="Fade" show_product="{{ show_product }}" fiter_array="{{fiter_array}}">
-                      {%- render 'product-card', product: product -%}
+                      {%- render 'product-card', product: product, check_first_image_tag: section.settings.enable_first_image_last_tag -%}
                     </div>
                   {%- endunless -%}
                 {%- endif -%}
@@ -305,6 +305,13 @@
       "type": "checkbox",
       "id": "enable_sorting",
       "label": "Enable sort by filters"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_first_image_last_tag",
+      "label": "Show on-model images on product cards",
+      "info": "When enabled, tagged products will show their on-model photo (2nd image) instead of the flat product photo (1st image) to keep collection images consistent.",
+      "default": false
     }
   ],
   "blocks": [
