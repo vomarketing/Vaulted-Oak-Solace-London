@@ -509,6 +509,13 @@ product-buy-buttons,
     opacity: 0.6;
     cursor: pointer;
   }
+
+  product-buy-buttons[data-size-chosen="false"] & {
+    @media (min-width: 901px) {
+      opacity: 0.6;
+      pointer-events: none;
+    }
+  }
 }
 
 .pdp-cta-submit__text,
