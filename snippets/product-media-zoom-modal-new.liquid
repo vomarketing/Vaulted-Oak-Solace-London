@@ -10,7 +10,7 @@
   if product.media.size > 1
     for tag in product.tags
       assign downcased_tag = tag | downcase
-      if downcased_tag == 'first-image-last'
+      if downcased_tag == 'first-image-last' or downcased_tag == 'first_image_last'
         assign move_first_to_last = true
         break
       endif
