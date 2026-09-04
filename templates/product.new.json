@@ -1,0 +1,199 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product-new",
+      "blocks": {
+        "title_9BKNBY": {
+          "type": "title",
+          "settings": {}
+        },
+        "description_jt7ddV": {
+          "type": "description",
+          "settings": {
+            "content": "{{ product.description }}",
+            "font_size": "text-reg-14",
+            "uppercase": false
+          }
+        },
+        "buy_buttons_VGTxwz": {
+          "type": "buy_buttons",
+          "settings": {
+            "show_wishlist": true,
+            "show_question_notes": true,
+            "question": "Questions about size, fit or fabric?"
+          }
+        },
+        "duties_taxes_d76MTJ": {
+          "type": "duties_taxes",
+          "settings": {
+            "text": "Prices now include import duties. No additional charges upon delivery",
+            "font_size": "text-reg-14",
+            "uppercase": false,
+            "enable_responsive": true,
+            "responsive_target": "desktop"
+          }
+        },
+        "tab_content_jWBbB7": {
+          "type": "tab_content",
+          "settings": {
+            "description": "{{ product.metafields.custom.tab_description | metafield_tag }}",
+            "fabric_care": "{{ product.metafields.custom.fabric_care | metafield_tag }}",
+            "size_fit": "{{ product.metafields.custom.size_fit | metafield_tag }}",
+            "shipping_returns": "{{ product.metafields.custom.shipping_returns | metafield_tag }}"
+          }
+        },
+        "duties_taxes_KWFFHd": {
+          "type": "duties_taxes",
+          "settings": {
+            "text": "Prices now include import duties and fees. No additional charges upon delivery",
+            "font_size": "text-reg-14",
+            "uppercase": false,
+            "enable_responsive": true,
+            "responsive_target": "mobile"
+          }
+        },
+        "question_notes_K6GTGn": {
+          "type": "question_notes",
+          "settings": {
+            "question": "Questions about size, fit or fabric?",
+            "enable_responsive": true,
+            "responsive_target": "mobile"
+          }
+        },
+        "colorways_UnqVeT": {
+          "type": "colorways",
+          "settings": {
+            "title": "Also available in",
+            "products": "{{ product.metafields.custom.related_products.value }}"
+          }
+        }
+      },
+      "block_order": [
+        "title_9BKNBY",
+        "description_jt7ddV",
+        "buy_buttons_VGTxwz",
+        "duties_taxes_d76MTJ",
+        "tab_content_jWBbB7",
+        "duties_taxes_KWFFHd",
+        "question_notes_K6GTGn",
+        "colorways_UnqVeT"
+      ],
+      "settings": {
+        "header_contrast_mode": "dark",
+        "stock_note": "Only a few left in stock",
+        "wishlist_enable": true,
+        "enable_sticky_atc_mobile": true,
+        "size_guide": "",
+        "size_guide_fit_title": "Fit",
+        "size_converter_title": "Size Guide",
+        "size_converter_body": "<p>Find your closest size by comparing your body measurements with the size guide below. If you're between sizes, choose according to your preferred fit</p>",
+        "how_to_measure_title": "How To Measure",
+        "how_to_measure_body": "<p>Find your closest size by comparing your body measurements with the size guide below. If you're between sizes, choose according to your preferred fit</p>",
+        "measure_diagram_image": "shopify://shop_images/Illustration_1.png",
+        "measure_bust_title": "Bust",
+        "measure_bust_body": "Measure around the fullest part of the bust, keeping the tape level",
+        "measure_waist_title": "Waist",
+        "measure_waist_body": "Measure around the narrowest part of the waist",
+        "measure_hip_title": "Low Hip",
+        "measure_hip_body": "With your feet together, measure around the fullest part of the hips",
+        "size_guide_contact_text": "<p>Questions about size, fit & fabric? <a href=\"/pages/contact\">Contact us</a><br/>Available UK business hours Monday - Friday, 9am - 5pm</p>",
+        "contact_page": "shopify://pages/contact"
+      }
+    },
+    "rich_text_NHU7La": {
+      "type": "rich-text",
+      "name": "Rich text",
+      "settings": {
+        "header_contrast_mode": "dark",
+        "text": "{{ product.metafields.custom.richtext_content_1 | metafield_tag }}",
+        "text_font_size": "text-reg-14",
+        "text_uppercase": false,
+        "link_text": "",
+        "link": "",
+        "link_font_size": "text-reg-14",
+        "link_uppercase": false,
+        "max_width_desktop": 807,
+        "max_width_tablet": 589,
+        "max_width_mobile": 305
+      }
+    },
+    "three_up_slider_Bwqyrf": {
+      "type": "three-up-slider",
+      "blocks": {
+        "image_8Apb6h": {
+          "type": "image",
+          "repeater": "{{ product.metafields.custom.three_up_slider.value }}",
+          "settings": {
+            "image_desktop": "{{ block.repeater.desktop_image.value }}",
+            "image_mobile": "{{ block.repeater.mobile_image.value }}",
+            "desktop_video": "{{ block.repeater.desktop_video_shopify.value }}",
+            "mobile_video": "{{ block.repeater.mobile_video_shopify.value }}",
+            "desktop_video_url": "{{ block.repeater.desktop_video_external.value }}",
+            "mobile_video_url": "{{ block.repeater.mobile_video_external.value }}",
+            "title": "{{ block.repeater.description.value }}",
+            "font_size": "text-reg-14",
+            "uppercase": false
+          }
+        }
+      },
+      "block_order": [
+        "image_8Apb6h"
+      ],
+      "name": "Three Up Slider",
+      "settings": {
+        "header_contrast_mode": "dark"
+      }
+    },
+    "three_up_media_Bwqyrf": {
+      "type": "three-up-media",
+      "name": "Three Up Media",
+      "settings": {
+        "media_type": "image",
+        "image_desktop": "{{ product.metafields.custom.three_up_media.value.desktop_image.value }}",
+        "image_mobile": "{{ product.metafields.custom.three_up_media.value.mobile_image.value }}",
+        "video_desktop": "{{ product.metafields.custom.three_up_media.value.desktop_video_shopify.value }}",
+        "video_mobile": "{{ product.metafields.custom.three_up_media.value.mobile_video_shopify.value }}",
+        "video_desktop_url": "{{ product.metafields.custom.three_up_media.value.desktop_video_external.value }}",
+        "video_mobile_url": "{{ product.metafields.custom.three_up_media.value.mobile_video_external.value }}",
+        "media_description": "{{ product.metafields.custom.three_up_media.value.description.value }}",
+        "description_font_size": "text-reg-14",
+        "description_uppercase": false,
+        "header_contrast_mode": "dark"
+      }
+    },
+    "related_products_3tzxLK": {
+      "type": "related-products",
+      "name": "Related Products",
+      "settings": {
+        "title": "Shop The Collection",
+        "products": "{{ product.metafields.custom.recommended_products.value }}",
+        "header_contrast_mode": "dark"
+      }
+    },
+    "rich_text_qGAkrF": {
+      "type": "rich-text",
+      "name": "Rich text",
+      "settings": {
+        "header_contrast_mode": "dark",
+        "text": "<p>{{ product.metafields.custom.richtext_content_2 | metafield_tag }}</p>",
+        "text_font_size": "text-reg-14",
+        "text_uppercase": false,
+        "link_text": "",
+        "link": "",
+        "link_font_size": "text-reg-14",
+        "link_uppercase": false,
+        "max_width_desktop": 910,
+        "max_width_tablet": 589,
+        "max_width_mobile": 305
+      }
+    }
+  },
+  "order": [
+    "main",
+    "rich_text_NHU7La",
+    "three_up_slider_Bwqyrf",
+    "three_up_media_Bwqyrf",
+    "related_products_3tzxLK",
+    "rich_text_qGAkrF"
+  ]
+}
