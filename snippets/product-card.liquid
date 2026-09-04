@@ -15,20 +15,22 @@
   assign option_key = nil
 
   assign card_image = product.featured_image
+  assign should_use_secondary_image = false
 
   if check_first_image_tag
-    assign has_first_image_last_tag = false
+    assign should_use_secondary_image = true
+  else
     for tag in product.tags
       assign downcased_tag = tag | downcase
       if downcased_tag == 'first-image-last' or downcased_tag == 'first_image_last'
-        assign has_first_image_last_tag = true
+        assign should_use_secondary_image = true
         break
       endif
     endfor
+  endif
 
-    if has_first_image_last_tag and product.images.size > 1
-      assign card_image = product.images[1] | default: product.featured_image
-    endif
+  if should_use_secondary_image and product.images.size > 1
+    assign card_image = product.images[1] | default: product.featured_image
   endif
 
 -%}
