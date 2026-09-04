@@ -14,6 +14,25 @@
   assign size_option = nil
   assign option_key = nil
 
+  assign card_image = product.featured_image
+
+  unless check_first_image_tag
+    for tag in product.tags
+      assign downcased_tag = tag | downcase
+      if downcased_tag == 'first-image-last' or downcased_tag == 'first_image_last'
+        if product.images.size > 1
+          for image in product.images offset: 1
+            unless image.alt contains '-plp-hover'
+              assign card_image = image
+              break
+            endunless
+          endfor
+        endif
+        break
+      endif
+    endfor
+  endunless
+
 -%}
 
 {%- if product.options.size == 1 -%}
@@ -43,10 +62,10 @@
       {%- endif -%}
     {%- endfor -%}
 
-    {%- if product.featured_image != blank -%}
+    {%- if card_image != blank -%}
       <div class="prd-Card_Image">
         {%- render 'responsive-image',
-          image: product.featured_image,
+          image: card_image,
           width: 1600,
           height: 2382
         -%}
