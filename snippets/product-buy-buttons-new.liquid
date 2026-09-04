@@ -85,9 +85,12 @@
                       endif
 
                       assign is_selected = false
+
+                      comment
                       if current_variant.options[option_idx] == value
                         assign is_selected = true
                       endif
+                      endcomment
                     -%}
 
                     <div
@@ -132,10 +135,12 @@
                 data-index="option{{ option.position }}"
                 name="options[{{ option.name | escape }}]"
               >
+                {%- if has_size_option -%}
+                  <option value="">{{- 'products.product.please_choose' | t -}}</option>
+                {%- endif -%}
                 {%- for value in option.values -%}
                   <option
                     value="{{ value | escape }}"
-                    {%- if option.selected_value == value -%}selected="selected"{%- endif -%}
                   >
                     {{ value }}
                   </option>
@@ -194,9 +199,11 @@
         name="id"
         class="util-ScreenReaderOnly js-pdp-master-select"
       >
+        {%- if has_size_option -%}
+          <option value="">{{- 'products.product.please_choose' | t -}}</option>
+        {%- endif -%}
         {%- for variant in product.variants -%}
           <option
-            {% if variant == current_variant %}selected="selected"{% endif %}
             {% unless variant.available %}data-soldout="true" disabled="disabled"{% endunless %}
             value="{{ variant.id }}"
             data-price="{{ variant.price | money }}"
@@ -227,7 +234,9 @@
           data-translation-waitlist="{{ 'products.product.join_waitlist' | t }}"
           data-translation-size-guide="{{ 'products.product.size_fit_guide' | t }}"
         >
-          {%- if current_variant.available -%}
+          {%- if has_size_option -%}
+            {{- 'products.product.please_choose' | t -}}
+          {%- elsif current_variant.available -%}
             {{ 'products.product.add_to_bag' | t }}
           {%- else -%}
             {{ 'products.product.join_waitlist' | t }}

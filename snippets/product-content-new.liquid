@@ -119,7 +119,7 @@
                 {%- if delivery_msg != blank -%}
                   {%- liquid
                     assign msg_size = block.settings.font_size | default: 'text-med-14'
-                    assign msg_classes = 'pdp-duties-taxes__text italic ' | append: msg_size
+                    assign msg_classes = 'pdp-duties-taxes__text ' | append: msg_size
                     if block.settings.uppercase
                       assign msg_classes = msg_classes | append: ' uppercase'
                     endif

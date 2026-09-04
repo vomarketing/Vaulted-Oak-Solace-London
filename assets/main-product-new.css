@@ -574,6 +574,16 @@ body.is-size-guide-active {
 
 .pdp-duties-taxes__text {
   color: var(--color-black);
+
+  b,
+  strong {
+    font-weight: bold;
+  }
+
+  em,
+  i {
+    font-style: italic;
+  }
 }
 
 .prd-Status_Stock {
