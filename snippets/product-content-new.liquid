@@ -98,10 +98,13 @@
                 assign enable_responsive = block.settings.enable_responsive | default: false
                 assign responsive_target = block.settings.responsive_target | default: 'mobile'
 
-                assign block_class = 'pdp-block pdp-block--duties-taxes text-reg-10 italic'
+                assign block_class = 'pdp-block pdp-block--duties-taxes text-reg-10'
                 if enable_responsive
                   assign block_responsive_class = 'pdp-block--' | append: responsive_target | prepend: ' '
                   assign block_class = block_class | append: block_responsive_class
+                endif
+                if block.type == 'status_notes'
+                  assign block_class = block_class | append: ' italic'
                 endif
               -%}
               <div class="{{- block_class -}}" {{ block.shopify_attributes }}>
