@@ -26,7 +26,7 @@
         "heading": "Resort 2027",
         "heading_font_size": "text-reg-14",
         "heading_uppercase": false,
-        "cta_text": "Shop The Collection",
+        "cta_text": "Shop Collection",
         "cta_link": "shopify://collections/resort-27",
         "cta_font_size": "text-reg-14",
         "cta_uppercase": false
@@ -45,7 +45,7 @@
             "text": "The Newman",
             "text_font_size": "text-reg-14",
             "text_uppercase": false,
-            "link": "#"
+            "link": "shopify://products/the-newman-maxi-dress-in-acai"
           }
         },
         "item_cjJJ49": {
@@ -58,7 +58,7 @@
             "text": "Shop Now",
             "text_font_size": "text-reg-14",
             "text_uppercase": false,
-            "link": "#"
+            "link": "shopify://products/the-newman-maxi-dress-in-acai"
           }
         }
       },
@@ -78,8 +78,8 @@
       "settings": {
         "media_type": "video",
         "video_desktop": "shopify://files/videos/290726 SOLACE RESORT 27 SEPTEMBER 02 WEB.mp4",
-        "video_url_desktop": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
-        "video_url_mobile": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
+        "video_url_desktop": "",
+        "video_url_mobile": "",
         "show_overlay": false,
         "overlay_opacity": 40,
         "overlay_color": "#000000",
@@ -88,7 +88,7 @@
         "heading": "Resort 2027",
         "heading_font_size": "text-reg-14",
         "heading_uppercase": false,
-        "cta_text": "Shop The Collection",
+        "cta_text": "Shop Collection",
         "cta_link": "shopify://collections/resort-27",
         "cta_font_size": "text-reg-14",
         "cta_uppercase": false
@@ -135,23 +135,6 @@
         "text_right_uppercase": false
       }
     },
-    "rich_text_PG7mfm": {
-      "type": "rich-text",
-      "name": "Rich text",
-      "settings": {
-        "header_contrast_mode": "dark",
-        "text": "<p>Solace London is a British womenswear brand founded by Laura Taylor and Ryan Holliday-Stevens in 2013. Longtime friends and collaborators, the duo share a dynamic background spanning design, production, retail, marketing and creative direction. Their combined sensibilities are visible in pieces that continuously blur the line between statement making and wearability.</p>",
-        "text_font_size": "text-reg-14",
-        "text_uppercase": false,
-        "link_text": "",
-        "link": "",
-        "link_font_size": "text-reg-14",
-        "link_uppercase": false,
-        "max_width_desktop": 910,
-        "max_width_tablet": 589,
-        "max_width_mobile": 305
-      }
-    },
     "hero_fullscreen_fnD3ha": {
       "type": "hero-fullscreen",
       "name": "Hero Fullscreen",
@@ -173,6 +156,23 @@
         "cta_link": "#",
         "cta_font_size": "text-reg-14",
         "cta_uppercase": false
+      }
+    },
+    "rich_text_PG7mfm": {
+      "type": "rich-text",
+      "name": "Rich text",
+      "settings": {
+        "header_contrast_mode": "dark",
+        "text": "<p>Solace London is a British womenswear brand founded by Laura Taylor and Ryan Holliday-Stevens in 2013. Longtime friends and collaborators, the duo share a dynamic background spanning design, production, retail, marketing and creative direction. Their combined sensibilities are visible in pieces that continuously blur the line between statement making and wearability.</p>",
+        "text_font_size": "text-reg-14",
+        "text_uppercase": false,
+        "link_text": "",
+        "link": "",
+        "link_font_size": "text-reg-14",
+        "link_uppercase": false,
+        "max_width_desktop": 910,
+        "max_width_tablet": 589,
+        "max_width_mobile": 305
       }
     },
     "two_ups_media_CT3jaP": {
