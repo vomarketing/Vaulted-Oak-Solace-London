@@ -12,5 +12,24 @@
     "market": "usa-swap"
   },
   "parent": "product.json",
-  "sections": {}
+  "sections": {
+    "main_product_new_qVcUWX": {
+      "settings": {},
+      "blocks": {
+        "tab_content_jWBbB7": {
+          "settings": {
+            "shipping_returns": "<p><strong>Delivery</strong></p><p>3–5 working days — $35</p><p>Orders are shipped from the UK via FedEx on a fully tracked service. Order by 2:30pm UK time, Monday–Friday, for same-day dispatch</p><p><strong>Returns</strong></p><p>Full-price items may be returned within 14 days of receipt. A $35 return shipping fee will be deducted from your refund</p><p>For full details, see <a href=\"/pages/shipping-returns\" title=\"Shipping & Returns\">Shipping & Returns</a>.</p>"
+          }
+        },
+        "duties_taxes_d76MTJ": {
+          "disabled": false,
+          "settings": {}
+        },
+        "duties_taxes_KWFFHd": {
+          "disabled": false,
+          "settings": {}
+        }
+      }
+    }
+  }
 }

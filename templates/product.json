@@ -46,6 +46,7 @@
         },
         "duties_taxes_d76MTJ": {
           "type": "duties_taxes",
+          "disabled": true,
           "settings": {
             "text": "<em><strong>Prices now include import duties. No additional charges upon delivery</strong></em>",
             "font_size": "text-reg-14",
@@ -66,6 +67,7 @@
         },
         "duties_taxes_KWFFHd": {
           "type": "duties_taxes",
+          "disabled": true,
           "settings": {
             "text": "<em><strong>Prices now include import duties and fees. No additional charges upon delivery</strong></em>",
             "font_size": "text-reg-14",
@@ -198,7 +200,7 @@
       "name": "Rich text",
       "settings": {
         "header_contrast_mode": "dark",
-        "text": "<p>{{ product.metafields.custom.richtext_content_2 | metafield_tag }}</p>",
+        "text": "<p>Solace London is a British womenswear brand founded by Laura Taylor and Ryan Holliday-Stevens in 2013. Longtime friends and collaborators, the duo share a dynamic background spanning design, production, retail, marketing and creative direction. Their combined sensibilities are visible in pieces that continuously blur the line between statement making and wearability</p>",
         "text_font_size": "text-reg-14",
         "text_uppercase": false,
         "link_text": "",
