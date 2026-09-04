@@ -21,7 +21,12 @@
       assign downcased_tag = tag | downcase
       if downcased_tag == 'first-image-last' or downcased_tag == 'first_image_last'
         if product.images.size > 1
-          assign card_image = product.images[1] | default: product.featured_image
+          for image in product.images offset: 1
+            unless image.alt contains '-plp-hover'
+              assign card_image = image
+              break
+            endunless
+          endfor
         endif
         break
       endif
