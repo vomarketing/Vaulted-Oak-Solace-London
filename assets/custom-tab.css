@@ -3,6 +3,7 @@
 
   display: block;
   width: 100%;
+  overflow: hidden;
 
   @media (min-width: 768px) {
     --custom-tab-gutter: 40px;
@@ -24,7 +25,6 @@
 
   @media (min-width: 901px) {
     justify-content: space-between;
-    gap: 0;
   }
 
   @media (max-width: 900px) {
