@@ -3,6 +3,7 @@
 
   display: block;
   width: 100%;
+  overflow: hidden;
 
   @media (min-width: 768px) {
     --custom-tab-gutter: 40px;
