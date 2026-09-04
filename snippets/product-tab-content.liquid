@@ -6,6 +6,7 @@
   @param {string} description
   @param {string} fabric_care
   @param {string} size_fit
+  @param {string} [size_fit_info] - Text preceding the Size & Fit Guide link (e.g. 'For more information, see our')
   @param {string} shipping_returns
   @param {string} [uid] - Unique suffix for the tab/panel ids. Defaults to 'product-tab'.
   @param {string} [clearance_target] - Selector of a later sibling block the open panel must keep on screen on desktop.
@@ -16,6 +17,7 @@
     description: description,
     fabric_care: fabric_care,
     size_fit: size_fit,
+    size_fit_info: size_fit_info,
     shipping_returns: shipping_returns,
     uid: block.id
   -%}
@@ -99,6 +101,14 @@
           hidden
         >
           {{ tab_content }}
+          {%- if key == 'size_fit' and size_fit_info != blank -%}
+            <div class="custom-tab__size-guide-info">
+              {{ size_fit_info }}
+              <button type="button" class="pdp-tab-help__link js-pdp-size-guide-trigger">
+                {{- 'products.product.size_fit_guide' | t -}}
+              </button>.
+            </div>
+          {%- endif -%}
         </div>
       {%- endfor -%}
     </div>
