@@ -423,7 +423,7 @@
     grid-column: span 2;
 
     @media (min-width: 1440px) {
-      width: 30%;
+      width: calc(80% / 3);
     }
 
     @media (min-width: 1920px) {
@@ -465,6 +465,7 @@
   @media (min-width: 1440px) {
     flex-direction: row;
     align-items: center;
+    flex-wrap: wrap;
   }
 }
 
