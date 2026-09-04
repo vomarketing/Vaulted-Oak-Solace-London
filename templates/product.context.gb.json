@@ -12,5 +12,24 @@
     "market": "gb"
   },
   "parent": "product.json",
-  "sections": {}
+  "sections": {
+    "main_product_new_qVcUWX": {
+      "settings": {},
+      "blocks": {
+        "duties_taxes_d76MTJ": {
+          "disabled": true,
+          "settings": {}
+        },
+        "duties_taxes_tKmUTf": {
+          "disabled": true,
+          "settings": {}
+        },
+        "tab_content_jWBbB7": {
+          "settings": {
+            "shipping_returns": "<p><strong>Delivery</strong></p><p>UK: Next working day — £10</p><p>Europe: 1–3 working days — £15</p><p>Rest of world: 3–5 working days — £25</p><p>Orders are shipped from the UK via DHL Express. Order by 2:30pm UK time, Monday–Friday, for same-day dispatch. International orders may be subject to customs duties and import taxes</p><p><strong>Returns</strong></p><p>Full-price items may be returned within 14 days of receipt. Returns are subject to a return shipping fee, deducted from your refund</p><p>For full details, see <a href=\"/pages/shipping-returns\" title=\"Shipping & Returns\">Shipping & Returns</a>.</p>"
+          }
+        }
+      }
+    }
+  }
 }

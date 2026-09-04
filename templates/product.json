@@ -39,7 +39,9 @@
         "buy_buttons_VGTxwz": {
           "type": "buy_buttons",
           "settings": {
-            "show_wishlist": true
+            "show_wishlist": true,
+            "show_question_notes": true,
+            "question": "Questions about size, fit or fabric?"
           }
         },
         "duties_taxes_d76MTJ": {
@@ -58,7 +60,8 @@
             "description": "{{ product.metafields.custom.tab_description | metafield_tag }}",
             "fabric_care": "{{ product.metafields.custom.fabric_care | metafield_tag }}",
             "size_fit": "{{ product.metafields.custom.size_fit | metafield_tag }}",
-            "shipping_returns": "{{ product.metafields.custom.shipping_returns | metafield_tag }}"
+            "size_fit_info": "For more information, see our",
+            "shipping_returns": "<p><strong>Delivery</strong></p><p>3–5 working days — $35</p><p>Orders are shipped from the UK via FedEx on a fully tracked service. Order by 2:30pm UK time, Monday–Friday, for same-day dispatch</p><p><strong>Returns</strong></p><p>Full-price items may be returned within 14 days of receipt. A $35 return shipping fee will be deducted from your refund</p><p>For full details, see <a href=\"/pages/shipping-returns\" title=\"Shipping & Returns\">Shipping & Returns</a>.</p>"
           }
         },
         "duties_taxes_tKmUTf": {
@@ -75,7 +78,9 @@
           "type": "question_notes",
           "disabled": true,
           "settings": {
-            "question": "Questions about size, fit or fabric?"
+            "question": "Questions about size, fit or fabric?",
+            "enable_responsive": false,
+            "responsive_target": "mobile"
           }
         },
         "colorways_UnqVeT": {
@@ -101,6 +106,7 @@
         "header_contrast_mode": "light",
         "stock_note": "Only a few left in stock",
         "wishlist_enable": true,
+        "enable_sticky_atc_mobile": true,
         "size_guide": "solace-standard-dress-guide",
         "size_guide_fit_title": "Fit Details",
         "size_converter_title": "Size Guide",
@@ -193,7 +199,7 @@
       "name": "Rich text",
       "settings": {
         "header_contrast_mode": "dark",
-        "text": "{{ product.metafields.custom.richtext_content_2 | metafield_tag }}",
+        "text": "<p>Solace London is a British womenswear brand founded by Laura Taylor and Ryan Holliday-Stevens in 2013. Longtime friends and collaborators, the duo share a dynamic background spanning design, production, retail, marketing and creative direction. Their combined sensibilities are visible in pieces that continuously blur the line between statement making and wearability</p>",
         "text_font_size": "text-reg-14",
         "text_uppercase": false,
         "link_text": "",
