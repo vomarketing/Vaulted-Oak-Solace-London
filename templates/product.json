@@ -47,7 +47,7 @@
         "duties_taxes_d76MTJ": {
           "type": "duties_taxes",
           "settings": {
-            "text": "Prices now include import duties. No additional charges upon delivery",
+            "text": "<em><strong>Prices now include import duties. No additional charges upon delivery</strong></em>",
             "font_size": "text-reg-14",
             "uppercase": false,
             "enable_responsive": true,
@@ -60,6 +60,7 @@
             "description": "{{ product.metafields.custom.tab_description | metafield_tag }}",
             "fabric_care": "{{ product.metafields.custom.fabric_care | metafield_tag }}",
             "size_fit": "{{ product.metafields.custom.size_fit | metafield_tag }}",
+            "size_fit_info": "For more information, see our",
             "shipping_returns": "{{ product.metafields.custom.shipping_returns | metafield_tag }}"
           }
         },
@@ -102,7 +103,7 @@
       "name": "Main Product (New)",
       "settings": {
         "header_contrast_mode": "dark",
-        "stock_note": "Only a few left in stock",
+        "stock_note": "<p>Only a few left in stock</p>",
         "wishlist_enable": true,
         "enable_sticky_atc_mobile": true,
         "size_guide": "",
