@@ -218,11 +218,6 @@
     padding-inline: 40px 35px;
   }
 
-  .hd-Header_Logo {
-    --Logo_Width: 241px;
-    --Logo_Height: 25px;
-  }
-
   .hd-Nav_Cart {
     width: 19px;
     height: 19px;
@@ -238,5 +233,12 @@
 
   .hd-Nav_Items {
     align-items: center;
+  }
+}
+
+@media (min-width: 1920px) {
+  .hd-Header_Logo {
+    --Logo_Width: 241px;
+    --Logo_Height: 25px;
   }
 }
