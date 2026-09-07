@@ -43,6 +43,10 @@
     endif
   endunless
 
+  if prefer_packshot
+    assign card_image = product.metafields.custom.packshot_image.value | default: product.images.first
+  endif
+
   assign hover_image = nil
   if first_image_as_hover and has_first_image_tag and check_first_image_tag != true and product.images.size > 1
     assign hover_image = product.images.first
