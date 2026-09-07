@@ -701,10 +701,6 @@
     left: 40px;
     z-index: 1;
   }
-
-  .pdp-size-guide-modal--no-packshot & {
-    color: var(--color-white);
-  }
 }
 
 .pdp-size-guide__meas-label {
