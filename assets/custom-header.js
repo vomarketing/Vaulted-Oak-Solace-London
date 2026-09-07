@@ -274,6 +274,13 @@ if (!window.SolaceHeaderContrast) {
       initHeaderController();
     }
 
+    const isPDP = document.body.classList.contains('template-product');
+    const isEditorialActive = document.body.classList.contains('is-editorial-active');
+
+    if (isPDP && !isEditorialActive) {
+      return;
+    }
+
     const swiper = event.detail?.swiper;
     const activeSlide = swiper?.slides?.[swiper.activeIndex];
     if (activeSlide && window.headerContrastController) {

@@ -242,7 +242,7 @@
         {%- endfor -%}
       {%- endif -%}
     {%- else -%}
-      <div class="pdp-media-item pdp-media-item--placeholder js-pdp-media-item swiper-slide js-pdp-slide js-section-header-contrast" data-header-mode="dark">
+      <div class="pdp-media-item pdp-media-item--placeholder js-pdp-media-item swiper-slide js-pdp-slide js-section-header-contrast" data-header-mode="{{ default_header_mode }}">
         {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
       </div>
     {%- endif -%}
