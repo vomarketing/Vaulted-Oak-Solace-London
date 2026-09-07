@@ -131,7 +131,7 @@ body.is-size-guide-active {
 
   body[data-pdp-scroll="normal"] & {
     @media (max-width: 900px) {
-      position: sticky;
+      position: relative;
       top: 0;
       left: auto;
       width: 100%;
