@@ -115,14 +115,24 @@ if (!window.FullpageScrollController) {
       });
     }
 
-    setup() {
+    setup(preserveState = true) {
+      let savedState = null;
+      if (preserveState && this.swiper) {
+        savedState = {
+          activeIndex: this.swiper.activeIndex || 0,
+          isEditorialActive: document.body.classList.contains(this.classes.editorialActive),
+          isPinned: document.body.classList.contains(this.classes.pdpPinned),
+          state: this.state
+        };
+      }
+
       this.destroy();
       this.isProductPage = document.body.classList.contains('template-product') || !!document.querySelector(this.selectors.pdpMain);
 
       if (this.isProductPage) {
-        this.setupProductHybrid();
+        this.setupProductHybrid(savedState);
       } else {
-        this.setupIndexFullpage();
+        this.setupIndexFullpage(savedState);
       }
 
       this.bindNavigationEvents();
@@ -139,7 +149,7 @@ if (!window.FullpageScrollController) {
 
       const mediaQuery = window.matchMedia(`(min-width: ${this.footerBreakpoint}px)`);
       const handleBreakpoint = () => {
-        this.setup();
+        this.setup(true);
       };
       mediaQuery.addEventListener('change', handleBreakpoint, { signal });
     }
@@ -157,7 +167,7 @@ if (!window.FullpageScrollController) {
       return !section.matches(':empty');
     }
 
-    setupIndexFullpage() {
+    setupIndexFullpage(savedState = null) {
       if (!this.container) return;
 
       let swiperContainer = this.container.querySelector(`:scope > .${this.classes.fullpageSwiper}`);
@@ -194,13 +204,17 @@ if (!window.FullpageScrollController) {
         return;
       }
 
-      this.initSwiperInstance(swiperContainer);
+      const initialSlide = (savedState && typeof savedState.activeIndex === 'number')
+        ? Math.min(Math.max(0, savedState.activeIndex), this.slides.length - 1)
+        : 0;
+
+      this.initSwiperInstance(swiperContainer, initialSlide);
     }
 
-    setupProductHybrid() {
+    setupProductHybrid(savedState = null) {
       const pdpMain = document.querySelector(this.selectors.pdpMain) || document.querySelector(this.selectors.pdpNew);
       if (!pdpMain) {
-        this.setupIndexFullpage();
+        this.setupIndexFullpage(savedState);
         return;
       }
 
@@ -245,11 +259,28 @@ if (!window.FullpageScrollController) {
       this.slides = targetSlides;
       this.updateLastSlide();
 
-      this.initSwiperInstance(this.editorialContainer);
+      const initialSlide = (savedState && typeof savedState.activeIndex === 'number')
+        ? Math.min(Math.max(0, savedState.activeIndex), this.slides.length - 1)
+        : 0;
+
+      this.initSwiperInstance(this.editorialContainer, initialSlide);
       this.bindHybridScrollEvents();
+
+      if (savedState?.isEditorialActive) {
+        document.body.classList.add(this.classes.pdpPinned, this.classes.editorialActive);
+        if (this.pdpSection) {
+          this.pdpSection.setAttribute('aria-hidden', 'true');
+        }
+        this.state = FullpageScrollController.states.EDITORIAL_IDLE;
+        const activeSlide = this.swiper?.slides?.[initialSlide];
+        if (activeSlide) {
+          this.updateHeaderContrast(activeSlide);
+          this.manageVideos(activeSlide);
+        }
+      }
     }
 
-    initSwiperInstance(targetElement) {
+    initSwiperInstance(targetElement, initialSlide = 0) {
       if (!window.Swiper || !targetElement) return;
 
       if ('scrollRestoration' in history) {
@@ -257,6 +288,7 @@ if (!window.FullpageScrollController) {
       }
 
       this.swiper = new window.Swiper(targetElement, {
+        initialSlide: initialSlide || 0,
         direction: 'vertical',
         slidesPerView: 1,
         // Hero images below the first slide use loading="lazy" (LCP fix). This
@@ -309,7 +341,7 @@ if (!window.FullpageScrollController) {
             this.updateLastSlide(sw);
             this.handleSlideChange(sw);
             const activeSlide = sw.slides[sw.activeIndex];
-            if (activeSlide && !this.isProductPage) {
+            if (activeSlide && (!this.isProductPage || document.body.classList.contains(this.classes.editorialActive))) {
               this.updateHeaderContrast(activeSlide);
             }
             this.notifySlideChange(sw);
