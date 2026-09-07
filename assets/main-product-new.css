@@ -18,6 +18,13 @@
     height: 100%;
     overflow: hidden;
   }
+
+  body[data-pdp-scroll="normal"] & {
+    @media (max-width: 900px) {
+      height: auto;
+      overflow: visible;
+    }
+  }
 }
 
 body.is-zoom-modal-active,
@@ -60,6 +67,14 @@ body.is-size-guide-active {
     overflow: hidden;
   }
 
+  body[data-pdp-scroll="normal"] & {
+    @media (max-width: 900px) {
+      height: auto;
+      max-height: none;
+      overflow: visible;
+    }
+  }
+
   @media (min-width: 901px) {
     overflow-x: visible;
     height: auto;
@@ -76,6 +91,13 @@ body.is-size-guide-active {
     height: 100%;
     position: relative;
     overflow: hidden;
+  }
+
+  body[data-pdp-scroll="normal"] & {
+    @media (max-width: 900px) {
+      height: auto;
+      overflow: visible;
+    }
   }
 
   @media (min-width: 901px) {
@@ -107,6 +129,18 @@ body.is-size-guide-active {
     pointer-events: none !important;
   }
 
+  body[data-pdp-scroll="normal"] & {
+    @media (max-width: 900px) {
+      position: sticky;
+      top: 0;
+      left: auto;
+      width: 100%;
+      height: 100dvh;
+      max-height: 100dvh;
+      overflow: hidden;
+    }
+  }
+
   @media (min-width: 901px) {
     position: relative;
     top: auto;
@@ -135,7 +169,6 @@ body.is-size-guide-active {
   box-sizing: border-box;
   background-color: var(--color-white, #ffffff);
   padding: 14px 0 90px;
-  box-shadow: 0 -4px 30px rgba(0, 0, 0, 0.08);
   touch-action: pan-y;
   isolation: isolate;
   z-index: 3;
@@ -152,7 +185,27 @@ body.is-size-guide-active {
       top: 52px;
       overflow-y: auto;
       -webkit-overflow-scrolling: touch;
+    }
+  }
+
+  body[data-pdp-scroll="slider"] &.is-locked-top {
+    @media (max-width: 900px) {
       overscroll-behavior: contain;
+    }
+  }
+
+  body[data-pdp-scroll="normal"] & {
+    @media (max-width: 900px) {
+      position: relative;
+      top: auto;
+      left: auto;
+      margin-top: calc(-1 * var(--pdp-mobile-peek-height));
+      height: auto;
+      max-height: none;
+      overflow-y: visible;
+      transition: none;
+      will-change: auto;
+      z-index: 3;
     }
   }
 
@@ -209,12 +262,15 @@ body.is-size-guide-active {
   display: block;
   width: 47px;
   height: 2px;
+  padding: 8px 0;
+  box-sizing: content-box;
   background-color: var(--color-black, #000000);
   opacity: 0.5;
   margin: 0 auto 10px;
   background-clip: content-box;
   touch-action: manipulation;
   border: none;
+  cursor: pointer;
 
   @media (min-width: 768px) {
     margin-bottom: 35px;

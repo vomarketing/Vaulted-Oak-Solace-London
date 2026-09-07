@@ -117,7 +117,7 @@ if (!customElements.get('product-buy-buttons')) {
         }
       }, { signal });
 
-      const pdpSection = this.closest('.pdp-new') || this.closest('.shopify-section');
+      const pdpSection = this.closest('.js-pdp-new');
       const sizeDrawer = this.querySelector(this.selectors.sizeDrawer);
 
       if (pdpSection && sizeDrawer && 'IntersectionObserver' in window) {
@@ -132,7 +132,7 @@ if (!customElements.get('product-buy-buttons')) {
             }
           });
         }, {
-          threshold: 0.05
+          threshold: 0
         });
         this.sectionObserver.observe(pdpSection);
       }

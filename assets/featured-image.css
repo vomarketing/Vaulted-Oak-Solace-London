@@ -166,3 +166,18 @@
     display: none;
   }
 }
+
+@media (max-width: 900px) {
+  /* PDP Natural Scroll Overrides */
+  .template-product[data-pdp-scroll="normal"] .featured-image {
+    min-height: 0;
+  }
+
+  .template-product[data-pdp-scroll="normal"] .featured-image__inner {
+    min-height: 0;
+  }
+
+  .template-product[data-pdp-scroll="normal"] .featured-image__image {
+    max-height: none;
+  }
+}
