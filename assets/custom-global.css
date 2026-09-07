@@ -74,6 +74,21 @@ body.template-product[data-fullpage-scroll] {
     }
   }
 
+  &[data-pdp-scroll="normal"] {
+    @media (max-width: 900px) {
+      overflow-y: auto;
+      overflow-x: hidden;
+      height: auto;
+      min-height: 100dvh;
+
+      #MainContent {
+        width: 100%;
+        height: auto;
+        overflow: visible;
+      }
+    }
+  }
+
   @media (min-width: 901px) {
     overflow-y: auto;
     overflow-x: hidden;

@@ -46,6 +46,18 @@
     display: none !important;
     pointer-events: none !important;
   }
+
+  body.template-product:not(.is-editorial-active)[data-fullpage-scroll][data-pdp-scroll="normal"] & {
+    @media (max-width: 900px) {
+      position: relative !important;
+      height: auto !important;
+      display: block !important;
+      pointer-events: auto !important;
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: all !important;
+    }
+  }
 }
 
 .shopify-section--footer {

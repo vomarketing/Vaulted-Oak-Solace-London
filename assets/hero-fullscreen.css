@@ -133,3 +133,11 @@
     object-position: top;
   }
 }
+
+@media (max-width: 900px) {
+  /* PDP Natural Scroll Overrides */
+  .template-product[data-pdp-scroll="normal"] .hero-fullscreen {
+    height: auto;
+    min-height: 0;
+  }
+}

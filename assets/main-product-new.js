@@ -241,6 +241,83 @@ if (!customElements.get('product-fullscreen')) {
     }
 
     initMobileScrollController() {
+      const isNormalScroll = document.body.getAttribute('data-pdp-scroll') === 'normal';
+
+      if (isNormalScroll) {
+        const contentColumn = this.querySelector(this.selectors.contentColumn);
+        const galleryColumn = this.querySelector(this.selectors.galleryColumn);
+        const sheetHandle = this.querySelector(this.selectors.sheetHandle);
+        const { signal } = this.abortController;
+
+        // Tap on Sheet Handle to toggle Peek vs Expanded in normal scroll mode
+        if (sheetHandle) {
+          sheetHandle.addEventListener('click', (e) => {
+            if (!this.isMobile()) return;
+            e.preventDefault();
+
+            const headerHeight = 52;
+            const targetScrollTop = contentColumn
+              ? contentColumn.getBoundingClientRect().top + window.scrollY - headerHeight
+              : window.innerHeight - 130 - headerHeight;
+
+            if (window.scrollY < targetScrollTop - 30) {
+              window.scrollTo({
+                top: Math.max(0, targetScrollTop),
+                behavior: 'smooth'
+              });
+            } else {
+              window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+              });
+            }
+          }, { signal });
+        }
+
+        const fromEditorialEvent = window.FullpageScrollController?.events?.fromEditorial || 'pdp:transition:from-editorial';
+        document.addEventListener(fromEditorialEvent, () => {
+          if (!this.isMobile() || !contentColumn) return;
+          window.scrollTo({ top: 0, behavior: 'auto' });
+        }, { signal });
+
+        // Header contrast: when gallery column scrolls out of view on mobile,
+        // allow headerContrastController to read sections below PDP correctly.
+        // We do this by temporarily nullifying getMobilePdpActiveMedia during scroll.
+        if (galleryColumn && window.headerContrastController && 'IntersectionObserver' in window) {
+          let galleryInView = true;
+
+          const galleryObserver = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                galleryInView = entry.isIntersecting;
+                // Immediately re-detect header mode when gallery enters/leaves viewport
+                if (window.headerContrastController && typeof window.headerContrastController.detectSectionMode === 'function') {
+                  window.headerContrastController.detectSectionMode();
+                }
+              });
+            },
+            { threshold: 0.1 }
+          );
+          galleryObserver.observe(galleryColumn);
+
+          // Patch getMobilePdpActiveMedia: return null when gallery is out of view
+          // so detectSectionMode falls through to read the section below PDP
+          const originalGetMedia = window.headerContrastController.getMobilePdpActiveMedia.bind(window.headerContrastController);
+          window.headerContrastController.getMobilePdpActiveMedia = function () {
+            if (!galleryInView) return null;
+            return originalGetMedia();
+          };
+
+          // Restore original on disconnect
+          document.addEventListener('shopify:section:unload', () => {
+            galleryObserver.disconnect();
+            window.headerContrastController.getMobilePdpActiveMedia = originalGetMedia;
+          }, { signal, once: true });
+        }
+
+        return;
+      }
+
       const galleryColumn = this.querySelector(this.selectors.galleryColumn);
       const contentColumn = this.querySelector(this.selectors.contentColumn);
       const sheetHandle = this.querySelector(this.selectors.sheetHandle);

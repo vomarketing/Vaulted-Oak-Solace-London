@@ -96,8 +96,8 @@ if (!window.FooterRevealController) {
     checkVisibility() {
       if (!this.footer) return;
 
-      // On fullpage swiper pages, visibility is driven by fullpage:slideChange events
-      if (document.body.hasAttribute('data-fullpage-scroll')) return;
+      // On fullpage swiper pages where swiper is active, visibility is driven by fullpage:slideChange events
+      if (document.body.hasAttribute('data-fullpage-scroll') && window.fullpageScrollInstance?.swiper) return;
 
       if (this.mainContent) {
         const rect = this.mainContent.getBoundingClientRect();
