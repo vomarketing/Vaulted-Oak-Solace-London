@@ -221,6 +221,38 @@ body.is-pdp-transitioning {
     font-size: 12px;
     line-height: 16px;
   }
+
+  font-family: var(--font-family-primary);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--type-12-size);
+
+  .pg-Page_Title,
+  .pg-Split_Title,
+  .pg-Newsletter_Title,
+  .pg-Newsletter,
+  .pg-Newsletter_Text {
+    font-family: var(--font-family-primary);
+    font-weight: var(--font-weight-regular);
+  }
+
+  .rte-RichText {
+    .ancillary-nav a,
+    h1,
+    h2,
+    h3,
+    h4,
+    h5 {
+      font-family: var(--font-family-primary);
+      font-weight: var(--font-weight-regular);
+    }
+  }
+
+  .pg-Page_Nav {
+    .pg-Nav_Link {
+      font-family: var(--font-family-primary);
+      font-weight: var(--font-weight-regular);
+    }
+  }
 }
 
 .drw-Nav_Link {
@@ -231,5 +263,25 @@ body.is-pdp-transitioning {
 
 .mod-Newsletter .klaviyo-form button,
 .pg-Newsletter_Form .klaviyo-form button {
+  font-family: var(--font-family-primary) !important;
+  font-weight: var(--font-weight-regular) !important;
   width: 140px !important;
+}
+
+.clc-Hero {
+  .clc-Hero_Title,
+  .clc-Hero_Text {
+    font-family: var(--font-family-primary);
+    font-weight: var(--font-weight-regular);
+  }
+}
+
+.prd-Card {
+  .prd-Card_Title,
+  .prd-Card_Text,
+  .prd-Card_ButtonText,
+  .prd-Price_Price {
+    font-family: var(--font-family-primary);
+    font-weight: var(--font-weight-regular);
+  }
 }
