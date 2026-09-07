@@ -39,9 +39,14 @@
         "disabled": true,
         "settings": {}
       },
+      "6251270934270006384": {
+        "type": "shopify://apps/stape-conversion-tracking/blocks/gtm/7e13c847-7971-409d-8fe0-29ec14d5f048",
+        "disabled": false,
+        "settings": {}
+      },
       "9864028433945474133": {
         "type": "shopify://apps/revoq-eu-withdrawal-button/blocks/widerrufsbutton-floating-button/019c3356-2775-7d52-b915-4b0f965005ae",
-        "disabled": false,
+        "disabled": true,
         "settings": {
           "trigger_label": "-",
           "hide_trigger": true,
@@ -68,11 +73,6 @@
           "button_color": "#111827",
           "button_text_color": "#ffffff"
         }
-      },
-      "6251270934270006384": {
-        "type": "shopify://apps/stape-conversion-tracking/blocks/gtm/7e13c847-7971-409d-8fe0-29ec14d5f048",
-        "disabled": false,
-        "settings": {}
       }
     }
   }
