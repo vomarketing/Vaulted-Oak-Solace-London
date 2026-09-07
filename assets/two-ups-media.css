@@ -197,3 +197,25 @@
     }
   }
 }
+
+@media (max-width: 900px) {
+  /* PDP Natural Scroll Overrides */
+  .template-product[data-pdp-scroll="normal"] .two-ups-media {
+    min-height: 0;
+  }
+
+  .template-product[data-pdp-scroll="normal"] .two-ups-media__inner {
+    min-height: 0;
+  }
+
+  .template-product[data-pdp-scroll="normal"] .two-ups-media__image,
+  .template-product[data-pdp-scroll="normal"] .two-ups-media__video {
+    @media (max-width: 900px) {
+      max-height: none;
+    }
+
+    @media (min-width: 901px) {
+      max-height: none;
+    }
+  }
+}

@@ -110,3 +110,11 @@
     visibility: visible;
   }
 }
+
+@media (max-width: 900px) {
+  /* PDP Natural Scroll Overrides */
+  .template-product[data-pdp-scroll="normal"] .related-products {
+    min-height: 0;
+    padding: 30px 20px;
+  }
+}

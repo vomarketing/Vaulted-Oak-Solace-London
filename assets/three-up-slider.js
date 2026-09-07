@@ -32,11 +32,13 @@ if (!customElements.get('three-up-slider')) {
       if (slideCount === 0) return;
 
       const isSingle = slideCount === 1;
+      const centerSlides = this.dataset.centerSlides === 'true' || this.getAttribute('data-center-slides') === 'true';
       this.swiperEl.classList.toggle(this.classes.isSingle, isSingle);
 
       this.swiper = new window.Swiper(this.swiperEl, {
         slidesPerView: isSingle ? 1 : 1.33,
         spaceBetween: 20,
+        centeredSlides: centerSlides && !isSingle,
         touchEventsTarget: 'container',
         watchOverflow: true,
         allowTouchMove: !isSingle,
@@ -56,15 +58,18 @@ if (!customElements.get('three-up-slider')) {
         breakpoints: {
           768: {
             slidesPerView: isSingle ? 1 : 1.55,
-            spaceBetween: 60
+            spaceBetween: 60,
+            centeredSlides: centerSlides && !isSingle
           },
           901: {
             slidesPerView: isSingle ? 1 : 2,
-            spaceBetween: 100
+            spaceBetween: 100,
+            centeredSlides: false
           },
           1441: {
             slidesPerView: isSingle ? 1 : 2,
-            spaceBetween: 118
+            spaceBetween: 118,
+            centeredSlides: false
           }
         }
       });

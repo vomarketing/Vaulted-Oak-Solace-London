@@ -130,6 +130,12 @@ if (!window.FullpageScrollController) {
       this.isProductPage = document.body.classList.contains('template-product') || !!document.querySelector(this.selectors.pdpMain);
 
       if (this.isProductPage) {
+        const isMobile = window.innerWidth <= this.config.mobileBreakpoint;
+        const pdpScroll = document.body.getAttribute('data-pdp-scroll');
+        if (isMobile && pdpScroll === 'normal') {
+          this.dispatchReadyEvent(null);
+          return;
+        }
         this.setupProductHybrid(savedState);
       } else {
         this.setupIndexFullpage(savedState);
@@ -147,11 +153,13 @@ if (!window.FullpageScrollController) {
         }
       }, { signal });
 
-      const mediaQuery = window.matchMedia(`(min-width: ${this.footerBreakpoint}px)`);
+      const footerMediaQuery = window.matchMedia(`(min-width: ${this.footerBreakpoint}px)`);
+      const mobileMediaQuery = window.matchMedia(`(min-width: ${this.config.mobileBreakpoint + 1}px)`);
       const handleBreakpoint = () => {
         this.setup(true);
       };
-      mediaQuery.addEventListener('change', handleBreakpoint, { signal });
+      footerMediaQuery.addEventListener('change', handleBreakpoint, { signal });
+      mobileMediaQuery.addEventListener('change', handleBreakpoint, { signal });
     }
 
     /**

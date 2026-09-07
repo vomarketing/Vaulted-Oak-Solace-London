@@ -67,6 +67,10 @@ if (!customElements.get('sticky-atc-mobile')) {
         this.abortController.abort();
         this.abortController = null;
       }
+      if (this.normalScrollObserver) {
+        this.normalScrollObserver.disconnect();
+        this.normalScrollObserver = null;
+      }
     }
 
     isMobile() {
@@ -83,7 +87,9 @@ if (!customElements.get('sticky-atc-mobile')) {
     }
 
     show() {
-      if (!this.isMobile() || !this.isEditorialActive()) return;
+      if (!this.isMobile()) return;
+      // In slider mode, only show when editorial is active
+      if (document.body.getAttribute('data-pdp-scroll') !== 'normal' && !this.isEditorialActive()) return;
       this.classList.add(StickyAtcMobile.classes.visible);
       this.setAttribute('aria-hidden', 'false');
     }
@@ -183,6 +189,68 @@ if (!customElements.get('sticky-atc-mobile')) {
       const { signal } = this.abortController;
 
       this.syncFromPdp();
+
+      if (document.body.getAttribute('data-pdp-scroll') === 'normal') {
+        const buyButtonsEl = document.querySelector('product-buy-buttons');
+        let lastScrollY = window.scrollY;
+        let isPastBuyButtons = false;
+
+        if (buyButtonsEl && 'IntersectionObserver' in window) {
+          this.normalScrollObserver = new IntersectionObserver(
+            (entries) => {
+              entries.forEach((entry) => {
+                if (!this.isMobile()) return;
+                if (entry.isIntersecting) {
+                  isPastBuyButtons = false;
+                  this.hide();
+                } else {
+                  const rect = entry.boundingClientRect;
+                  isPastBuyButtons = rect.bottom < 0;
+                  if (!isPastBuyButtons) {
+                    this.hide();
+                  }
+                }
+              });
+            },
+            { threshold: 0 }
+          );
+          this.normalScrollObserver.observe(buyButtonsEl);
+        }
+
+        let ticking = false;
+        window.addEventListener(
+          'scroll',
+          () => {
+            if (!this.isMobile()) return;
+            if (ticking) return;
+
+            ticking = true;
+            requestAnimationFrame(() => {
+              const currentScrollY = window.scrollY;
+              const diff = currentScrollY - lastScrollY;
+
+              if (!this.isDrawerOpen()) {
+                if (diff > 5) {
+                  // Scrolling down -> hide
+                  this.hide();
+                } else if (diff < -5) {
+                  // Scrolling up -> show only if scrolled past main buy buttons
+                  const past = buyButtonsEl ? buyButtonsEl.getBoundingClientRect().bottom < 0 : isPastBuyButtons;
+                  if (past) {
+                    this.show();
+                  } else {
+                    this.hide();
+                  }
+                }
+              }
+
+              lastScrollY = currentScrollY;
+              ticking = false;
+            });
+          },
+          { passive: true, signal }
+        );
+      }
 
       document.addEventListener(
         'variant:change',

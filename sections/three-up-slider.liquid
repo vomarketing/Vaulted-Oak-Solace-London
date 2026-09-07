@@ -27,9 +27,10 @@
   <script src="{{ 'three-up-slider.js' | asset_url }}" defer="defer"></script>
 
   <three-up-slider
-    class="three-up-slider"
+    class="three-up-slider{% if section.settings.center_slides %} three-up-slider--centered{% endif %}"
     id="ThreeUpSlider-{{ section.id }}"
     data-header-mode="{{ header_mode }}"
+    data-center-slides="{{ section.settings.center_slides | default: false }}"
   >
     <div>
       <div class="js-swiper three-up-slider__swiper swiper">
@@ -147,6 +148,13 @@
         }
       ],
       "default": "light"
+    },
+    {
+      "type": "checkbox",
+      "id": "center_slides",
+      "label": "Center slides",
+      "info": "Centers the active slide on mobile so the first image is centered with peek on the sides.",
+      "default": false
     }
   ],
   "blocks": [

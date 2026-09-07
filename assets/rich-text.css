@@ -48,3 +48,11 @@
     max-width: var(--max-width-desktop, 910px);
   }
 }
+
+@media (max-width: 900px) {
+  /* PDP Natural Scroll Overrides */
+  .template-product[data-pdp-scroll="normal"] .rich-text,
+  .template-product[data-pdp-scroll="normal"] .rich-text__inner {
+    min-height: 0;
+  }
+}
