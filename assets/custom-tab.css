@@ -88,6 +88,10 @@
     transform var(--transition-base),
     visibility 0s linear 0.25s;
 
+  &.disable-animation {
+    transition: none;
+  }
+
   @media (min-width: 901px) {
     padding-bottom: 4px;
   }
@@ -135,6 +139,10 @@
     opacity var(--transition-base),
     transform var(--transition-base),
     visibility 0s;
+
+  &.disable-animation {
+    transition: none;
+  }
 
   @media (min-width: 901px) {
     max-height: var(--custom-tab-max-height, none);
