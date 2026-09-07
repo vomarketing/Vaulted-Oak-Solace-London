@@ -140,18 +140,18 @@
                   {%- if product.tags contains nlos_tag -%}
                     <!-- {# Do not render products with 'NLOS' tag for customers with 'ADMIN' tag #} -->
                     <div class="prd-List_Item NLOS js-Animate" data-animation="Fade" show_product="{{ show_product }}" fiter_array="{{fiter_array}}">
-                      {%- render 'product-card', product: product, check_first_image_tag: section.settings.enable_first_image_last_tag -%}
+                      {%- render 'product-card', product: product, check_first_image_tag: section.settings.enable_first_image_last_tag, first_image_as_hover: section.settings.set_first_image_as_hover -%}
                     </div>
                   {%- else -%}
                     <div class="prd-List_Item js-Animate" data-animation="Fade" show_product="{{ show_product }}" fiter_array="{{fiter_array}}">
-                      {%- render 'product-card', product: product, check_first_image_tag: section.settings.enable_first_image_last_tag -%}
+                      {%- render 'product-card', product: product, check_first_image_tag: section.settings.enable_first_image_last_tag, first_image_as_hover: section.settings.set_first_image_as_hover -%}
                     </div>
                   {%- endif -%}
                 {%- else -%}
                   <!-- {# Render products only if they don't have 'NLOS' tag for customers without 'ADMIN' tag #} -->
                   {%- unless product.tags contains nlos_tag -%}
                     <div class="prd-List_Item js-Animate" data-animation="Fade" show_product="{{ show_product }}" fiter_array="{{fiter_array}}">
-                      {%- render 'product-card', product: product, check_first_image_tag: section.settings.enable_first_image_last_tag -%}
+                      {%- render 'product-card', product: product, check_first_image_tag: section.settings.enable_first_image_last_tag, first_image_as_hover: section.settings.set_first_image_as_hover -%}
                     </div>
                   {%- endunless -%}
                 {%- endif -%}
@@ -311,6 +311,13 @@
       "id": "enable_first_image_last_tag",
       "label": "Always show 1st image (Ignore tags)",
       "info": "When enabled, all products in this collection will display their 1st image (featured image / flatlay), ignoring any 'first_image_last' product tags.",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "set_first_image_as_hover",
+      "label": "Set 1st image as hover",
+      "info": "When enabled, products with 'first_image_last' tags will display their 1st image on hover.",
       "default": false
     }
   ],
