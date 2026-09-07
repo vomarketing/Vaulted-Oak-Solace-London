@@ -223,9 +223,6 @@
         class="pdp-cta-submit text-med-14 js-pdp-submit"
         type="submit"
         name="add"
-        {% if has_size_option and current_variant == blank %}
-          disabled
-        {% endif %}
       >
         <span
           class="pdp-cta-submit__text js-pdp-submit-text text-med-14"
@@ -233,10 +230,9 @@
           data-translation-sold-out="{{ 'products.product.sold_out' | t }}"
           data-translation-waitlist="{{ 'products.product.join_waitlist' | t }}"
           data-translation-size-guide="{{ 'products.product.size_fit_guide' | t }}"
+          data-translation-select-size="{{ 'products.product.please_choose' | t }}"
         >
-          {%- if has_size_option -%}
-            {{- 'products.product.please_choose' | t -}}
-          {%- elsif current_variant.available -%}
+          {%- if product.available -%}
             {{ 'products.product.add_to_bag' | t }}
           {%- else -%}
             {{ 'products.product.join_waitlist' | t }}
