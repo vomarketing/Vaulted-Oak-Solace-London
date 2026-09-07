@@ -11,11 +11,11 @@
 {%- capture cards -%}
   {%- if manual_products.count > 0 -%}
     {%- for manual_product in manual_products limit: recommendations_limit -%}
-      {%- render 'product-card', product: manual_product -%}
+      {%- render 'product-card', product: manual_product, prefer_packshot: true -%}
     {%- endfor -%}
   {%- elsif recommendations.performed -%}
     {%- for recommended_product in recommendations.products -%}
-      {%- render 'product-card', product: recommended_product -%}
+      {%- render 'product-card', product: recommended_product, prefer_packshot: true -%}
     {%- endfor -%}
   {%- endif -%}
 {%- endcapture -%}
