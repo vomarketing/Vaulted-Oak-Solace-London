@@ -44,7 +44,7 @@
       ],
       "settings": {
         "enable_sorting": false,
-        "enable_first_image_last_tag": true,
+        "enable_first_image_last_tag": false,
         "set_first_image_as_hover": false
       }
     }
