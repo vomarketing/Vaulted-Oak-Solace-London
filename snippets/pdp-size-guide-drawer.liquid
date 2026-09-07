@@ -105,16 +105,7 @@
             {%- assign packshot_alt = packshot_image.alt | default: product.title -%}
             <div class="pdp-size-guide__packshot-wrapper">
               <div class="pdp-size-guide__packshot-media">
-                {{
-                  packshot_image
-                  | image_url: width: 1000
-                  | image_tag:
-                    widths: '300, 500, 600, 700, 800, 900, 1000',
-                    sizes: '(min-width: 901px) 380px, 100vw',
-                    alt: packshot_alt,
-                    class: 'pdp-size-guide__packshot-img',
-                    loading: 'lazy'
-                }}
+                {{ packshot_image | image_url: width: packshot_image.width | image_tag: widths: '300, 500, 600, 700, 800, 900, 1000', sizes: '(min-width: 901px) 380px, 100vw', alt: packshot_alt, class: 'pdp-size-guide__packshot-img', loading: 'lazy' }}
               </div>
             </div>
           {%- endif -%}

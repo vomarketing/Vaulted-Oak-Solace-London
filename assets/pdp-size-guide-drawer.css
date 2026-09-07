@@ -422,6 +422,10 @@
     min-width: 200px;
     grid-column: span 2;
 
+    @media (min-width: 768px) {
+      width: 25%;
+    }
+
     @media (min-width: 1440px) {
       width: calc(80% / 3);
     }
