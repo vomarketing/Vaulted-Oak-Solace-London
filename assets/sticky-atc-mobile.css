@@ -279,18 +279,6 @@ body.is-size-guide-active .pdp-sticky-atc-mobile {
     padding: 0;
   }
 
-  .pdp-cta-wishlist__icons {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .pdp-cta-wishlist__icon {
-    width: 20px;
-    height: 20px;
-    display: block;
-  }
-
   .pdp-bis-box {
     display: none;
     width: 100%;

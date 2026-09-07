@@ -21,11 +21,14 @@
 -%}
 
 {%- if valid_block_count > 0 -%}
-  {{- 'three-up-slider.css' | asset_url | stylesheet_tag -}}
+  <style>
+    {{ 'three-up-slider.css' | inline_asset_content }}
+  </style>
   <script src="{{ 'three-up-slider.js' | asset_url }}" defer="defer"></script>
 
   <three-up-slider
     class="three-up-slider"
+    id="ThreeUpSlider-{{ section.id }}"
     data-header-mode="{{ header_mode }}"
   >
     <div>
@@ -127,6 +130,7 @@
 {
   "name": "Three Up Slider",
   "tag": "section",
+  "class": "section-three-up-slider js-section-header-contrast",
   "settings": [
     {
       "type": "select",
