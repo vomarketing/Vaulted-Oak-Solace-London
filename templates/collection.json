@@ -62,7 +62,7 @@
       ],
       "settings": {
         "enable_sorting": false,
-        "enable_first_image_last_tag": false
+        "enable_first_image_last_tag": true
       }
     }
   },
