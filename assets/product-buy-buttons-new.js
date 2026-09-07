@@ -337,6 +337,17 @@ if (!customElements.get('product-buy-buttons')) {
             }
           }
 
+          if (!isMobile && hasSizeOption && !sizeChosen) {
+            e.preventDefault();
+            const submitText = this.querySelector(this.selectors.submitText);
+            if (submitText) {
+              const selectSizeText = submitText.getAttribute('data-translation-select-size') || 'Select A Size';
+              submitText.textContent = selectSizeText;
+              submitBtn.setAttribute('aria-label', selectSizeText);
+            }
+            return;
+          }
+
           if (masterSelect) {
             const selectedOption = masterSelect.options[masterSelect.selectedIndex];
             if (selectedOption && selectedOption.getAttribute('data-available') === 'false') {
