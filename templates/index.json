@@ -134,23 +134,6 @@
         "text_right_uppercase": false
       }
     },
-    "rich_text_PG7mfm": {
-      "type": "rich-text",
-      "name": "Rich text",
-      "settings": {
-        "header_contrast_mode": "dark",
-        "text": "<p>Solace London is a British womenswear brand founded by Laura Taylor and Ryan Holliday-Stevens in 2013. Longtime friends and collaborators, the duo share a dynamic background spanning design, production, retail, marketing and creative direction. Their combined sensibilities are visible in pieces that continuously blur the line between statement making and wearability</p>",
-        "text_font_size": "text-reg-14",
-        "text_uppercase": false,
-        "link_text": "",
-        "link": "",
-        "link_font_size": "text-reg-14",
-        "link_uppercase": false,
-        "max_width_desktop": 910,
-        "max_width_tablet": 589,
-        "max_width_mobile": 305
-      }
-    },
     "hero_fullscreen_fnD3ha": {
       "type": "hero-fullscreen",
       "name": "Hero Fullscreen",
@@ -173,6 +156,23 @@
         "cta_link": "#",
         "cta_font_size": "text-reg-14",
         "cta_uppercase": false
+      }
+    },
+    "rich_text_PG7mfm": {
+      "type": "rich-text",
+      "name": "Rich text",
+      "settings": {
+        "header_contrast_mode": "dark",
+        "text": "<p>Solace London is a British womenswear brand founded by Laura Taylor and Ryan Holliday-Stevens in 2013. Longtime friends and collaborators, the duo share a dynamic background spanning design, production, retail, marketing and creative direction. Their combined sensibilities are visible in pieces that continuously blur the line between statement making and wearability</p>",
+        "text_font_size": "text-reg-14",
+        "text_uppercase": false,
+        "link_text": "",
+        "link": "",
+        "link_font_size": "text-reg-14",
+        "link_uppercase": false,
+        "max_width_desktop": 910,
+        "max_width_tablet": 589,
+        "max_width_mobile": 305
       }
     },
     "two_ups_media_CT3jaP": {
@@ -223,8 +223,8 @@
     "hero_fullscreen_hGpWfC",
     "hero_fullscreen_PPmfBH",
     "featured_image_bdxxic",
-    "rich_text_PG7mfm",
     "hero_fullscreen_fnD3ha",
+    "rich_text_PG7mfm",
     "two_ups_media_CT3jaP"
   ]
 }
