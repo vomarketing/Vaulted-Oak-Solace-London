@@ -74,10 +74,29 @@
 
   @media (min-width: 768px) {
     padding: 33px 0 37px;
+    transition: color 0.3s ease;
+
+    &[data-footer-mode="light"],
+    &[data-header-mode="light"],
+    .shopify-section-group-footer-group[data-footer-mode="light"] &,
+    .shopify-section-group-footer-group[data-header-mode="light"] &,
+    .shopify-section--footer[data-footer-mode="light"] &,
+    .shopify-section--footer[data-header-mode="light"] & {
+      color: var(--Color_Primary, #ffffff);
+    }
+
+    &[data-footer-mode="dark"],
+    &[data-header-mode="dark"],
+    .shopify-section-group-footer-group[data-footer-mode="dark"] &,
+    .shopify-section-group-footer-group[data-header-mode="dark"] &,
+    .shopify-section--footer[data-footer-mode="dark"] &,
+    .shopify-section--footer[data-header-mode="dark"] & {
+      color: var(--Color_Secondary, #000000);
+    }
   }
 
   @media (min-width: 1201px) {
-    padding: 60px 0 40px;
+    padding: 40px 0 40px;
   }
 
   .ft-Footer_Inner {

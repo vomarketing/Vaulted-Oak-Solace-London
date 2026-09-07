@@ -8,6 +8,12 @@
   justify-content: center;
   background-color: var(--color-black, #000000);
 
+  @media (min-width: 768px) {
+    .is-last-slide & {
+      height: calc(100dvh - var(--footer-height, 0px));
+    }
+  }
+
   .hero-fullscreen__media {
     z-index: 1;
   }
