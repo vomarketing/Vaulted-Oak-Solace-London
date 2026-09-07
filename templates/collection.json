@@ -12,6 +12,14 @@
     "main": {
       "type": "main-collection",
       "blocks": {
+        "filter_cjJ6AV": {
+          "type": "filter",
+          "settings": {
+            "title": "",
+            "filter_all_text": "",
+            "filter_key": ""
+          }
+        },
         "filter_FPMteC": {
           "type": "filter",
           "settings": {
@@ -46,6 +54,7 @@
         }
       },
       "block_order": [
+        "filter_cjJ6AV",
         "filter_FPMteC",
         "dd79c211-c9f5-4aa9-9e3d-e7b8c5559d75",
         "6882eabe-3290-426c-aab9-c0a075faad80",
