@@ -1,23 +1,33 @@
 .three-up-slider {
-  --three-up-slider-pad-top: clamp(32px, 7dvh, 72px);
-  --three-up-slider-pad-bottom: clamp(32px, 7dvh, 72px);
   --three-up-slider-caption: 40px;
+
+  /* The header sits over this section, so the top padding must clear it before
+     it honours the design value. Heights come from .hd-Header in custom-header.css. */
+  --three-up-slider-header-offset: 52px;
+  --three-up-slider-header-gap: clamp(12px, 3dvh, 24px);
+  --three-up-slider-pad-top-design: 0px;
+  --three-up-slider-pad-top: max(
+    calc(var(--three-up-slider-header-offset) + var(--three-up-slider-header-gap)),
+    var(--three-up-slider-pad-top-design)
+  );
+  --three-up-slider-pad-bottom: clamp(16px, 4dvh, 36px);
 
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  width: 100vw;
+  width: 100%;
   min-height: 100dvh;
   overflow: hidden;
   padding-top: var(--three-up-slider-pad-top);
   padding-bottom: var(--three-up-slider-pad-bottom);
+  box-sizing: border-box;
   background-color: var(--color-white, #ffffff);
   color: var(--color-black, #000000);
 
   @media (min-width: 768px) {
-    --three-up-slider-pad-top: clamp(40px, 8dvh, 96px);
-    --three-up-slider-pad-bottom: clamp(40px, 8dvh, 96px);
+    --three-up-slider-header-offset: 56px;
+    --three-up-slider-pad-bottom: clamp(16px, 4dvh, 40px);
 
     .three-up-slider__swiper {
       padding-inline: 60px;
@@ -25,25 +35,34 @@
   }
 
   @media (min-width: 901px) {
-    --three-up-slider-pad-top: clamp(48px, 9dvh, 120px);
-    --three-up-slider-pad-bottom: clamp(48px, 9dvh, 120px);
+    --three-up-slider-pad-top-design: 40px;
+    --three-up-slider-pad-bottom: clamp(24px, 5dvh, 40px);
   }
 
   @media (min-width: 1201px) {
+    --three-up-slider-header-offset: 109px;
+
     .three-up-slider__swiper {
       max-width: 1202px;
       padding-inline: 112px;
     }
   }
 
-  @media (min-width: 1441px) {
-    --three-up-slider-pad-top: clamp(56px, 10dvh, 160px);
-    --three-up-slider-pad-bottom: clamp(56px, 10dvh, 160px);
+  @media (min-width: 1440px) {
+    --three-up-slider-pad-top-design: clamp(40px, 14dvh, 200px);
+    --three-up-slider-pad-bottom: clamp(28px, 10dvh, 140px);
+  }
 
+  @media (min-width: 1441px) {
     .three-up-slider__swiper {
       max-width: 1538px;
       padding-inline: 180px;
     }
+  }
+
+  @media (min-width: 1920px) {
+    --three-up-slider-pad-top-design: clamp(40px, 12dvh, 164px);
+    --three-up-slider-pad-bottom: clamp(28px, 7dvh, 100px);
   }
 }
 
