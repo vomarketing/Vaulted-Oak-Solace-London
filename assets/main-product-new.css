@@ -481,8 +481,10 @@ body.is-size-guide-active {
 
 .pdp-block--tab-content {
   margin-bottom: 35px;
+  margin-top: 35px;
 
   @media (min-width: 901px) {
+    margin-top: 45px;
     margin-bottom: 45px;
   }
 
@@ -557,10 +559,15 @@ body.is-size-guide-active {
 }
 
 .pdp-block--duties-taxes {
+  margin-top: 20px;
   margin-bottom: 35px;
 
   @media (min-width: 901px) {
     margin-bottom: 45px;
+  }
+
+  + .pdp-block--tab-content {
+    margin-top: 0;
   }
 }
 
