@@ -15,24 +15,45 @@
   assign option_key = nil
 
   assign card_image = product.featured_image
+  assign has_first_image_tag = false
+
+  for tag in product.tags
+    assign downcased_tag = tag | downcase
+    if downcased_tag == 'first-image-last' or downcased_tag == 'first_image_last'
+      assign has_first_image_tag = true
+      break
+    endif
+  endfor
 
   unless check_first_image_tag
-    for tag in product.tags
-      assign downcased_tag = tag | downcase
-      if downcased_tag == 'first-image-last' or downcased_tag == 'first_image_last'
-        if product.images.size > 1
-          for image in product.images offset: 1
+    if has_first_image_tag
+      if product.images.size > 1
+        for image in product.images offset: 1
+          if first_image_as_hover
+            assign card_image = image
+            break
+          else
             unless image.alt contains '-plp-hover'
               assign card_image = image
               break
             endunless
-          endfor
-        endif
+          endif
+        endfor
+      endif
+    endif
+  endunless
+
+  assign hover_image = nil
+  if first_image_as_hover and has_first_image_tag and check_first_image_tag != true and product.images.size > 1
+    assign hover_image = product.images.first
+  else
+    for image in product.images
+      if image.alt contains "-plp-hover"
+        assign hover_image = image
         break
       endif
     endfor
-  endunless
-
+  endif
 -%}
 
 {%- if product.options.size == 1 -%}
@@ -50,17 +71,15 @@
 <div class="prd-Card util-FauxLink {% unless current_variant.available %}prd-Card-unavaliable{% endunless %}"{% if has_size_option %} data-module="product-card" data-product-card-handle="{{ product.handle }}"{% endif %}>
 
   <div class="prd-Card_ImageContainer">
-    {%- for image in product.images -%}
-      {%- if image.alt contains "-plp-hover" -%}
-        <div class="prd-Card_Image prd-Card_Image-hoverImage">
-          {%- render 'responsive-image',
-            image: image,
-            width: 1600,
-            height: 2382
-          -%}
-        </div>
-      {%- endif -%}
-    {%- endfor -%}
+    {%- if hover_image != blank -%}
+      <div class="prd-Card_Image prd-Card_Image-hoverImage">
+        {%- render 'responsive-image',
+          image: hover_image,
+          width: 1600,
+          height: 2382
+        -%}
+      </div>
+    {%- endif -%}
 
     {%- if card_image != blank -%}
       <div class="prd-Card_Image">
