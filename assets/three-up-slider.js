@@ -66,9 +66,9 @@ if (!customElements.get('three-up-slider')) {
             spaceBetween: 100,
             centeredSlides: false
           },
-          1441: {
+          1920: {
             slidesPerView: isSingle ? 1 : 2,
-            spaceBetween: 118,
+            spaceBetween: 120,
             centeredSlides: false
           }
         }
