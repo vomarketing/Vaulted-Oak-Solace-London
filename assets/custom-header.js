@@ -73,6 +73,11 @@ if (!window.SolaceHeaderContrast) {
       const product = document.querySelector('.js-pdp-new');
       if (!product || product.classList.contains('is-content-expanded')) return null;
 
+      const gallery = product.querySelector('.js-pdp-gallery-column');
+      const rect = gallery?.getBoundingClientRect();
+      const triggerY = this.headerHeight / 2;
+      if (!rect || rect.top > triggerY || rect.bottom <= triggerY) return null;
+
       return product.querySelector('.js-pdp-media-item.swiper-slide-active')
         || product.querySelector('.js-pdp-media-item');
     }
@@ -114,6 +119,11 @@ if (!window.SolaceHeaderContrast) {
       this.observer = new IntersectionObserver(
         (entries) => {
           if (window._swiperIsTransitioning) return;
+
+          if (document.body.classList.contains('template-product')) {
+            this.detectSectionMode();
+            return;
+          }
 
           entries.forEach((entry) => {
             if (entry.isIntersecting) {
@@ -294,7 +304,13 @@ if (!window.SolaceHeaderContrast) {
   if (document.body.hasAttribute('data-fullpage-scroll')) {
     document.addEventListener('fullpage:ready', handleFullpageReady);
 
-    if (window.fullpageScrollInstance && window.fullpageScrollInstance.swiper) {
+    if (document.body.classList.contains('template-product')) {
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', initHeaderController);
+      } else {
+        initHeaderController();
+      }
+    } else if (window.fullpageScrollInstance && window.fullpageScrollInstance.swiper) {
       initHeaderController();
     } else {
       setTimeout(initHeaderController, 5500);

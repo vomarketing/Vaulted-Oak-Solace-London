@@ -288,7 +288,6 @@
 
   @media (min-width: 768px) {
     padding-top: 40px 24px 85px;
-    gap: 60px;
   }
 
   @media (min-width: 1201px) {
@@ -362,10 +361,6 @@
   overflow-x: auto;
   -webkit-overflow-scrolling: touch;
   margin-top: 40px;
-
-  @media (min-width: 768px) {
-    margin-top: 60px;
-  }
 }
 
 .pdp-size-guide__table-wrapper--mobile {

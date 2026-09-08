@@ -27,6 +27,10 @@
   endif
 -%}
 
+{%- capture initial_header_mode -%}
+  {%- render 'pdp-initial-header-mode', product: product, default_mode: section.settings.header_contrast_mode -%}
+{%- endcapture -%}
+
 <product-fullscreen
   class="pdp-new js-pdp-new js-section-header-contrast"
   id="Product-{{ section.id }}"
@@ -34,7 +38,7 @@
   data-product-handle="{{ product.handle }}"
   data-has-size-option="{{ has_size_option }}"
   data-scroll-type="{{- settings.pdp_scroll_type | default: 'slider' -}}"
-  data-header-mode="{{ section.settings.header_contrast_mode | default: 'light' }}"
+  data-header-mode="{{ initial_header_mode | default: 'light' }}"
 >
   <div class="pdp-new__main">
     <div class="pdp-new__gallery-column js-pdp-gallery-column">

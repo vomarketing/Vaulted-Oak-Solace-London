@@ -1,0 +1,21 @@
+{%- liquid
+  assign first_media = product.media.first
+  if product.media.size > 1
+    for tag in product.tags
+      assign downcased_tag = tag | downcase
+      if downcased_tag == 'first-image-last' or downcased_tag == 'first_image_last'
+        assign first_media = product.media[1]
+        break
+      endif
+    endfor
+  endif
+
+  assign alt_lower = first_media.alt | downcase
+  if alt_lower contains 'header:dark'
+    echo 'dark'
+  elsif alt_lower contains 'header:light'
+    echo 'light'
+  else
+    echo default_mode
+  endif
+-%}
