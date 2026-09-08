@@ -27,6 +27,7 @@
     "newsletter_intro": "<p>Sign up and enjoy 15% off your first order</p><p>Always be first to hear about Solace London launches, events and sales</p>",
     "password_image": "shopify://shop_images/landing-page-background.png",
     "theme": "Light",
+    "checkout_terms_message": "<p>By placing an order you agree to Solace London’s Terms and Conditions, Privacy Policy and Cookie Policy.</p>",
     "checkout_logo_image": "shopify://shop_images/whitelogo.png",
     "cookies_enable": true,
     "cookies_title": "COOKIE POLICY",
