@@ -24,6 +24,23 @@
     "settings": [
       {
         "type": "select",
+        "id": "pdp_header_contrast_mode",
+        "label": "Header Contrast Default",
+        "info": "Default header contrast mode over product media gallery",
+        "options": [
+          {
+            "value": "light",
+            "label": "Light"
+          },
+          {
+            "value": "dark",
+            "label": "Dark"
+          }
+        ],
+        "default": "light"
+      },
+      {
+        "type": "select",
         "id": "pdp_scroll_type",
         "label": "Scroll Type",
         "options": [
