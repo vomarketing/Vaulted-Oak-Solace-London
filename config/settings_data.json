@@ -10,6 +10,7 @@
 {
   "current": {
     "bar_enabled": false,
+    "pdp_header_contrast_mode": "light",
     "store_name": "Solace London",
     "store_url": "www.solacelondon.com",
     "apple_touch_icon": "shopify://shop_images/black-favicon.png",

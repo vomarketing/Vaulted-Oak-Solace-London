@@ -32,7 +32,7 @@
           "type": "description",
           "settings": {
             "content": "{{ product.description }}",
-            "font_size": "text-reg-14",
+            "font_size": "text-reg-12",
             "uppercase": false
           }
         },
@@ -103,8 +103,7 @@
       ],
       "name": "Main Product (New)",
       "settings": {
-        "header_contrast_mode": "light",
-        "stock_note": "Only a few left in stock",
+        "stock_note": "<p>Only a few left in stock</p>",
         "wishlist_enable": true,
         "enable_sticky_atc_mobile": true,
         "size_guide": "solace-standard-dress-guide",
@@ -165,7 +164,8 @@
       ],
       "name": "Three Up Slider",
       "settings": {
-        "header_contrast_mode": "dark"
+        "header_contrast_mode": "dark",
+        "center_slides": false
       }
     },
     "three_up_media_Bwqyrf": {
