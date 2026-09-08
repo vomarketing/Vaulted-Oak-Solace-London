@@ -104,7 +104,7 @@
       ],
       "name": "Main Product (New)",
       "settings": {
-        "header_contrast_mode": "dark",
+        "header_contrast_mode": "light",
         "stock_note": "<p>Only a few left in stock</p>",
         "wishlist_enable": true,
         "enable_sticky_atc_mobile": true,
@@ -166,7 +166,8 @@
       ],
       "name": "Three Up Slider",
       "settings": {
-        "header_contrast_mode": "dark"
+        "header_contrast_mode": "dark",
+        "center_slides": false
       }
     },
     "three_up_media_Bwqyrf": {
