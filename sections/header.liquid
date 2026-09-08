@@ -91,6 +91,7 @@
     {%- render 'pdp-initial-header-mode', product: product -%}
   {%- endif -%}
 {%- endcapture -%}
+{%- assign initial_pdp_header_mode = initial_pdp_header_mode | strip -%}
 
 <header
   class="hd-Header js-header{% if use_transparent_header %} hd-Header-transparent{% else %} hd-Header-solid{% endif %}"

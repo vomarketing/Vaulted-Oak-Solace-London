@@ -28,8 +28,9 @@
 -%}
 
 {%- capture initial_header_mode -%}
-  {%- render 'pdp-initial-header-mode', product: product, default_mode: section.settings.header_contrast_mode -%}
+  {%- render 'pdp-initial-header-mode', product: product -%}
 {%- endcapture -%}
+{%- assign initial_header_mode = initial_header_mode | strip -%}
 
 <product-fullscreen
   class="pdp-new js-pdp-new js-section-header-contrast"
@@ -105,27 +106,6 @@
   "tag": "section",
   "class": "shopify-section-main-product-new",
   "settings": [
-    {
-      "type": "header",
-      "content": "Header Contrast Default"
-    },
-    {
-      "type": "select",
-      "id": "header_contrast_mode",
-      "label": "Header Scheme",
-      "info": "Default header contrast mode over media gallery",
-      "options": [
-        {
-          "value": "light",
-          "label": "Light"
-        },
-        {
-          "value": "dark",
-          "label": "Dark"
-        }
-      ],
-      "default": "light"
-    },
     {
       "type": "header",
       "content": "Product Notes & Policies"
