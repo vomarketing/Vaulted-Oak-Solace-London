@@ -3,7 +3,7 @@
 {%- enddoc -%}
 
 {%- liquid
-  assign default_header_mode = section.settings.header_contrast_mode | default: 'light'
+  assign default_header_mode = settings.pdp_header_contrast_mode | default: 'light'
 
   assign move_first_to_last = false
   if product.media.size > 1

@@ -1,5 +1,6 @@
 {%- liquid
   assign first_media = product.media.first
+  assign default_mode = default_mode | default: settings.pdp_header_contrast_mode | default: 'light'
   if product.media.size > 1
     for tag in product.tags
       assign downcased_tag = tag | downcase
