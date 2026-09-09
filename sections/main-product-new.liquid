@@ -114,8 +114,18 @@
       "type": "richtext",
       "id": "stock_note",
       "label": "Stock Note",
-      "info": "Only shown if inventory is below 10",
+      "info": "Displayed when variant inventory is at or below the low stock threshold.",
       "default": "<p>Only a few left in stock</p>"
+    },
+    {
+      "type": "range",
+      "id": "stock_threshold",
+      "label": "Low Stock Threshold",
+      "min": 1,
+      "max": 20,
+      "step": 1,
+      "default": 5,
+      "info": "Display stock note when variant inventory is at or below this amount."
     },
     {
       "type": "checkbox",

@@ -105,7 +105,8 @@ if (!customElements.get('product-fullscreen')) {
       }
 
       if (stockStatus) {
-        if (inventoryQty > 0 && inventoryQty < 10) {
+        const threshold = parseInt(stockStatus.dataset.stockThreshold || '5', 10);
+        if (inventoryQty > 0 && inventoryQty <= threshold) {
           stockStatus.setAttribute('aria-hidden', 'false');
         } else {
           stockStatus.setAttribute('aria-hidden', 'true');

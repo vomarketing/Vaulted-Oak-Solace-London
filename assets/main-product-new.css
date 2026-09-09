@@ -642,6 +642,7 @@ body.is-size-guide-active {
 
 .prd-Status_Stock {
   color: var(--Color_Brand, #000000);
+  margin-top: 16px;
   margin-bottom: 6px;
   transition: opacity 0.3s ease, visibility 0.3s ease;
 
