@@ -5,120 +5,132 @@
 {% liquid
   assign color_scheme = section.settings.color_scheme | default: 'light'
   assign header_mode = section.settings.header_contrast_mode | default: 'dark'
+  assign mobile_layout = section.settings.mobile_layout | default: 'stacked'
 %}
 
-<div
-  class="two-ups-media two-ups-media--{{ color_scheme }}"
+{% if mobile_layout == 'slider' %}
+  <script src="{{ 'two-ups-media.js' | asset_url }}" defer="defer"></script>
+{% endif %}
+
+<two-ups-media
+  class="two-ups-media two-ups-media--{{ color_scheme }}{% if mobile_layout == 'slider' %} two-ups-media--slider{% endif %}"
   id="TwoUpsMedia-{{ section.id }}"
   data-header-mode="{{ header_mode }}"
+  data-mobile-layout="{{ mobile_layout }}"
 >
-  <div class="two-ups-media__inner">
-    {% for block in section.blocks %}
-      {% liquid
-        assign media_type = block.settings.media_type | default: 'image'
-        assign desktop_image = block.settings.desktop_image
-        assign mobile_image = block.settings.mobile_image
-        assign desktop_video_url = blank
-        assign mobile_video_url = blank
-        assign has_media = false
-
-        if mobile_image == blank
-          assign mobile_image = desktop_image
-        endif
-
-        if block.settings.desktop_video != blank
-          assign desktop_video_url = block.settings.desktop_video.sources[1].url | default: block.settings.desktop_video.sources[0].url
-        elsif block.settings.desktop_video_url != blank
-          assign desktop_video_url = block.settings.desktop_video_url
-        endif
-
-        if block.settings.mobile_video != blank
-          assign mobile_video_url = block.settings.mobile_video.sources[1].url | default: block.settings.mobile_video.sources[0].url
-        elsif block.settings.mobile_video_url != blank
-          assign mobile_video_url = block.settings.mobile_video_url
-        else
-          assign mobile_video_url = desktop_video_url
-        endif
-
-        if media_type == 'video' and desktop_video_url != blank
-          assign has_media = true
-        elsif media_type == 'image' and desktop_image != blank
-          assign has_media = true
-        endif
-      %}
-
-      <div class="two-ups-media__item" {{ block.shopify_attributes }}>
+  <div class="two-ups-media__swiper{% if mobile_layout == 'slider' %} swiper js-two-ups-swiper{% endif %}">
+    <div class="two-ups-media__inner{% if mobile_layout == 'slider' %} swiper-wrapper{% endif %}">
+      {% for block in section.blocks %}
         {% liquid
-          assign text_size = block.settings.text_font_size | default: 'text-reg-14'
-          assign text_classes = text_size
-          if block.settings.text_uppercase
-            assign text_classes = text_classes | append: ' uppercase'
+          assign media_type = block.settings.media_type | default: 'image'
+          assign desktop_image = block.settings.desktop_image
+          assign mobile_image = block.settings.mobile_image
+          assign desktop_video_url = blank
+          assign mobile_video_url = blank
+          assign has_media = false
+
+          if mobile_image == blank
+            assign mobile_image = desktop_image
           endif
+
+          if block.settings.desktop_video != blank
+            assign desktop_mp4 = block.settings.desktop_video.sources | where: 'format', 'mp4' | first
+            assign desktop_video_url = desktop_mp4.url | default: block.settings.desktop_video.sources.first.url
+          elsif block.settings.desktop_video_url != blank
+            assign desktop_video_url = block.settings.desktop_video_url
+          endif
+
+          if block.settings.mobile_video != blank
+            assign mobile_mp4 = block.settings.mobile_video.sources | where: 'format', 'mp4' | first
+            assign mobile_video_url = mobile_mp4.url | default: block.settings.mobile_video.sources.first.url
+          elsif block.settings.mobile_video_url != blank
+            assign mobile_video_url = block.settings.mobile_video_url
+          else
+            assign mobile_video_url = desktop_video_url
+          endif
+
+          if media_type == 'video' and desktop_video_url != blank
+            assign has_media = true
+          elsif media_type == 'image' and desktop_image != blank
+            assign has_media = true
+          endif
+
+          assign poster_image = desktop_image | default: block.settings.desktop_video.preview_image
         %}
 
-        {% if block.settings.text != blank %}
-          <div class="two-ups-media__text two-ups-media__text--mobile-top {{ text_classes }}">
-            {% if block.settings.link != blank %}
-              <a href="{{ block.settings.link }}">{{ block.settings.text }}</a>
-            {% else %}
-              {{ block.settings.text }}
-            {% endif %}
-          </div>
-        {% endif %}
+        <div class="two-ups-media__item{% if mobile_layout == 'slider' %} swiper-slide js-two-ups-slide{% endif %}" {{ block.shopify_attributes }}>
+          {% liquid
+            assign text_size = block.settings.text_font_size | default: 'text-reg-14'
+            assign text_classes = text_size
+            if block.settings.text_uppercase
+              assign text_classes = text_classes | append: ' uppercase'
+            endif
+          %}
 
-        {% if has_media %}
-          {% if block.settings.link != blank %}
-            <a class="two-ups-media__media" href="{{ block.settings.link }}">
-          {% else %}
-            <div class="two-ups-media__media">
-          {% endif %}
-
-            {% if media_type == 'video' %}
-              <video
-                class="two-ups-media__video"
-                autoplay
-                loop
-                muted
-                playsinline
-                preload="metadata"
-                {% if desktop_image != blank %}
-                  poster="{{ desktop_image | image_url: width: 1200 }}"
-                {% endif %}
-              >
-                <source src="{{ mobile_video_url }}" media="(max-width: 900px)" type="video/mp4">
-                <source src="{{ desktop_video_url }}" type="video/mp4">
-              </video>
-            {% else %}
-              {%- render 'picture',
-                image_desktop: desktop_image,
-                image_mobile: mobile_image,
-                class: 'two-ups-media__image',
-                breakpoint: '900px',
-                widths: '400, 600, 800, 1000, 1200, 1600, 1920',
-                widths_mobile: '400, 600, 800, 1000, 1200, 1600, 1920'
-              -%}
-            {% endif %}
-
-          {% if block.settings.link != blank %}
-            </a>
-          {% else %}
+          {% if block.settings.text != blank %}
+            <div class="two-ups-media__text two-ups-media__text--mobile-top {{ text_classes }}">
+              {% if block.settings.link != blank %}
+                <a href="{{ block.settings.link }}">{{ block.settings.text }}</a>
+              {% else %}
+                {{ block.settings.text }}
+              {% endif %}
             </div>
           {% endif %}
-        {% endif %}
 
-        {% if block.settings.text != blank %}
-          <div class="two-ups-media__text two-ups-media__text--default {{ text_classes }}">
+          {% if has_media %}
             {% if block.settings.link != blank %}
-              <a href="{{ block.settings.link }}">{{ block.settings.text }}</a>
+              <a class="two-ups-media__media" href="{{ block.settings.link }}">
             {% else %}
-              {{ block.settings.text }}
+              <div class="two-ups-media__media">
             {% endif %}
-          </div>
-        {% endif %}
-      </div>
-    {% endfor %}
+
+              {% if media_type == 'video' %}
+                <video
+                  class="two-ups-media__video"
+                  autoplay
+                  loop
+                  muted
+                  playsinline
+                  preload="metadata"
+                  {% if poster_image != blank %}
+                    poster="{{ poster_image | image_url: width: 1200 }}"
+                  {% endif %}
+                >
+                  <source src="{{ mobile_video_url }}" media="(max-width: 900px)" type="video/mp4">
+                  <source src="{{ desktop_video_url }}" type="video/mp4">
+                </video>
+              {% else %}
+                {%- render 'picture',
+                  image_desktop: desktop_image,
+                  image_mobile: mobile_image,
+                  class: 'two-ups-media__image',
+                  breakpoint: '900px',
+                  widths: '400, 600, 800, 1000, 1200, 1600, 1920',
+                  widths_mobile: '400, 600, 800, 1000, 1200, 1600, 1920'
+                -%}
+              {% endif %}
+
+            {% if block.settings.link != blank %}
+              </a>
+            {% else %}
+              </div>
+            {% endif %}
+          {% endif %}
+
+          {% if block.settings.text != blank %}
+            <div class="two-ups-media__text two-ups-media__text--default {{ text_classes }}">
+              {% if block.settings.link != blank %}
+                <a href="{{ block.settings.link }}">{{ block.settings.text }}</a>
+              {% else %}
+                {{ block.settings.text }}
+              {% endif %}
+            </div>
+          {% endif %}
+        </div>
+      {% endfor %}
+    </div>
   </div>
-</div>
+</two-ups-media>
 
 {% schema %}
 {
@@ -162,6 +174,26 @@
         }
       ],
       "default": "dark"
+    },
+    {
+      "type": "header",
+      "content": "Mobile layout"
+    },
+    {
+      "type": "select",
+      "id": "mobile_layout",
+      "label": "Mobile layout",
+      "options": [
+        {
+          "value": "stacked",
+          "label": "Stacked (2 images in 1 view)"
+        },
+        {
+          "value": "slider",
+          "label": "Vertical slider (Separate slides)"
+        }
+      ],
+      "default": "stacked"
     }
   ],
   "blocks": [
