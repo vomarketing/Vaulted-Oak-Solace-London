@@ -46,7 +46,11 @@ if (!window.FullpageScrollController) {
       fromEditorial: 'pdp:transition:from-editorial',
       sheetBottomOverscroll: 'pdp:sheet:bottom-overscroll',
       slideChange: 'fullpage:slideChange',
-      ready: 'fullpage:ready'
+      ready: 'fullpage:ready',
+      prevSlide: 'fullpage:prevSlide',
+      nextSlide: 'fullpage:nextSlide',
+      lock: 'fullpage:lock',
+      unlock: 'fullpage:unlock'
     };
 
     static states = {
@@ -145,9 +149,34 @@ if (!window.FullpageScrollController) {
 
     bindNavigationEvents() {
       const { signal } = this.abortController;
-      document.addEventListener('fullpage:prevSlide', () => {
+
+      document.addEventListener(this.events.prevSlide, () => {
         if (this.swiper) {
           this.swiper.slidePrev();
+        }
+      }, { signal });
+
+      document.addEventListener(this.events.nextSlide, () => {
+        if (this.swiper) {
+          this.swiper.slideNext();
+        }
+      }, { signal });
+
+      document.addEventListener(this.events.lock, () => {
+        if (this.swiper) {
+          this.swiper.allowTouchMove = false;
+          if (this.swiper.mousewheel && typeof this.swiper.mousewheel.disable === 'function') {
+            this.swiper.mousewheel.disable();
+          }
+        }
+      }, { signal });
+
+      document.addEventListener(this.events.unlock, () => {
+        if (this.swiper) {
+          this.swiper.allowTouchMove = true;
+          if (this.swiper.mousewheel && typeof this.swiper.mousewheel.enable === 'function') {
+            this.swiper.mousewheel.enable();
+          }
         }
       }, { signal });
 
