@@ -12,5 +12,13 @@
     "market": "usa-swap"
   },
   "parent": "index.json",
-  "sections": {}
+  "sections": {
+    "hero_fullscreen_aigzqq": {
+      "settings": {
+        "heading": "Now shipping to US",
+        "cta_text": "Import duties, tariffs and taxes included"
+      },
+      "blocks": {}
+    }
+  }
 }
