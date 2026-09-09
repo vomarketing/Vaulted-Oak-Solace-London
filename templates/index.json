@@ -26,8 +26,12 @@
         "header_contrast_mode": "light",
         "text_color": "white",
         "heading": "Resort 2027",
+        "heading_font_size": "text-reg-14",
+        "heading_uppercase": false,
         "cta_text": "Shop Collection",
-        "cta_link": "shopify://collections"
+        "cta_link": "shopify://collections",
+        "cta_font_size": "text-reg-14",
+        "cta_uppercase": false
       }
     },
     "two_ups_media_HyFTNx": {
@@ -42,6 +46,8 @@
             "desktop_video_url": "",
             "mobile_video_url": "",
             "text": "The Delano",
+            "text_font_size": "text-reg-14",
+            "text_uppercase": false,
             "link": "#"
           }
         },
@@ -52,6 +58,8 @@
             "desktop_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
             "mobile_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
             "text": "Shop Now",
+            "text_font_size": "text-reg-14",
+            "text_uppercase": false,
             "link": "#"
           }
         }
@@ -63,7 +71,8 @@
       "name": "Two Ups Media",
       "settings": {
         "color_scheme": "light",
-        "header_contrast_mode": "dark"
+        "header_contrast_mode": "dark",
+        "mobile_layout": "slider"
       }
     },
     "hero_fullscreen_hGpWfC": {
@@ -79,8 +88,12 @@
         "header_contrast_mode": "light",
         "text_color": "white",
         "heading": "Resort 2027",
+        "heading_font_size": "text-reg-14",
+        "heading_uppercase": false,
         "cta_text": "Shop Collection",
-        "cta_link": "#"
+        "cta_link": "#",
+        "cta_font_size": "text-reg-14",
+        "cta_uppercase": false
       }
     },
     "featured_image_bdxxic": {
@@ -93,8 +106,12 @@
         "image_link": "",
         "text_left": "The Annie",
         "text_left_link": "#",
+        "text_left_font_size": "text-reg-14",
+        "text_left_uppercase": false,
         "text_right": "Shop Now",
-        "text_right_link": "#"
+        "text_right_link": "#",
+        "text_right_font_size": "text-reg-14",
+        "text_right_uppercase": false
       }
     },
     "hero_fullscreen_PPmfBH": {
@@ -112,8 +129,12 @@
         "header_contrast_mode": "light",
         "text_color": "white",
         "heading": "Resort 2027",
+        "heading_font_size": "text-reg-14",
+        "heading_uppercase": false,
         "cta_text": "Shop Collection",
-        "cta_link": "#"
+        "cta_link": "#",
+        "cta_font_size": "text-reg-14",
+        "cta_uppercase": false
       }
     },
     "rich_text_QkDcqw": {
@@ -122,8 +143,12 @@
       "settings": {
         "header_contrast_mode": "dark",
         "text": "<p>The resort 2027 collection lets fabrication and technique driving the design process, the pair describe their aesthetic as “Bold, confident, refined. Modern futurism balanced with timeless minimalism”. The result is a distinctly graphic collection defined by precision cuts, craftsmanship and a signature look of sophistication.</p>",
+        "text_font_size": "text-reg-14",
+        "text_uppercase": false,
         "link_text": "Shop Collection",
         "link": "#",
+        "link_font_size": "text-reg-14",
+        "link_uppercase": false,
         "max_width_desktop": 910,
         "max_width_tablet": 589,
         "max_width_mobile": 305
@@ -144,8 +169,12 @@
         "header_contrast_mode": "light",
         "text_color": "white",
         "heading": "Resort 2027",
+        "heading_font_size": "text-reg-14",
+        "heading_uppercase": false,
         "cta_text": "Shop Collection",
-        "cta_link": "#"
+        "cta_link": "#",
+        "cta_font_size": "text-reg-14",
+        "cta_uppercase": false
       }
     },
     "rich_text_PG7mfm": {
@@ -154,8 +183,12 @@
       "settings": {
         "header_contrast_mode": "dark",
         "text": "<p>Solace London is a British womenswear brand founded by Laura Taylor and Ryan Holliday-Stevens in 2013. Longtime friends and collaborators, the duo share a dynamic background spanning design, production, retail, marketing and creative direction. Their combined sensibilities are visible in pieces that continuously blur the line between statement making and wearability.</p>",
+        "text_font_size": "text-reg-14",
+        "text_uppercase": false,
         "link_text": "",
         "link": "",
+        "link_font_size": "text-reg-14",
+        "link_uppercase": false,
         "max_width_desktop": 910,
         "max_width_tablet": 589,
         "max_width_mobile": 305
