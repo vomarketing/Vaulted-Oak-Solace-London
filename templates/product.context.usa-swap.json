@@ -18,7 +18,9 @@
       "blocks": {
         "duties_taxes_d76MTJ": {
           "disabled": false,
-          "settings": {}
+          "settings": {
+            "text": "<em><strong>Prices include all import duties, tariffs and taxes. No additional charges upon delivery</strong></em>"
+          }
         },
         "tab_content_jWBbB7": {
           "settings": {
