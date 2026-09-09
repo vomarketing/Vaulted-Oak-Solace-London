@@ -19,7 +19,7 @@
         "duties_taxes_d76MTJ": {
           "disabled": false,
           "settings": {
-            "text": "<em><strong>Prices now include all import duties, tariffs and taxes. No additional charges will apply upon delivery</strong></em>"
+            "text": "<em><strong>Prices now include import duties, tariffs and taxes. No additional charges will apply upon delivery</strong></em>"
           }
         },
         "tab_content_jWBbB7": {
@@ -29,7 +29,9 @@
         },
         "duties_taxes_KWFFHd": {
           "disabled": false,
-          "settings": {}
+          "settings": {
+            "text": "<em><strong>Prices now include import duties, tariffs and taxes. No additional charges will apply upon delivery</strong></em>"
+          }
         }
       }
     }
