@@ -130,6 +130,7 @@
           "settings": {
             "media_type": "image",
             "desktop_image": "shopify://shop_images/Artboard_3.jpg",
+            "mobile_image": "shopify://shop_images/Artboard_3-1_20115b59-7e4e-4599-8ea1-835395b89bc5.jpg",
             "desktop_video_url": "",
             "mobile_video_url": "",
             "text": "The Newman",
@@ -143,6 +144,7 @@
           "settings": {
             "media_type": "image",
             "desktop_image": "shopify://shop_images/Artboard_3-1.jpg",
+            "mobile_image": "shopify://shop_images/Artboard_3_d8c3671d-d92f-48f5-95d3-41919aae3439.jpg",
             "desktop_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
             "mobile_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
             "text": "Shop Now",
