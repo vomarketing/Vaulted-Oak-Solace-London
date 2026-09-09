@@ -1,22 +1,35 @@
 {%- liquid
   assign header_mode = section.settings.header_contrast_mode | default: 'light'
 
-  assign media_type = section.settings.media_type
   assign image_desktop = section.settings.image_desktop
-  assign image_mobile = section.settings.image_mobile
+  assign image_mobile = section.settings.image_mobile | default: image_desktop
   assign video_desktop = section.settings.video_desktop
   assign video_mobile = section.settings.video_mobile | default: video_desktop
   assign media_description = section.settings.media_description
 
-  assign has_section_media = false
-  if media_type == 'image' and image_desktop != blank
-    assign has_section_media = true
-  elsif media_type == 'video' and video_desktop != blank
-    assign has_section_media = true
+  assign desktop_video_url = blank
+  assign mobile_video_url = blank
+
+  if video_desktop != blank
+    assign desktop_mp4 = video_desktop.sources | where: 'format', 'mp4' | first
+    assign desktop_video_url = desktop_mp4.url | default: video_desktop.sources.first.url
+  elsif section.settings.video_desktop_url != blank
+    assign desktop_video_url = section.settings.video_desktop_url
   endif
+
+  if video_mobile != blank
+    assign mobile_mp4 = video_mobile.sources | where: 'format', 'mp4' | first
+    assign mobile_video_url = mobile_mp4.url | default: video_mobile.sources.first.url
+  elsif section.settings.video_mobile_url != blank
+    assign mobile_video_url = section.settings.video_mobile_url
+  else
+    assign mobile_video_url = desktop_video_url
+  endif
+
+  assign poster_image = image_desktop | default: video_desktop.preview_image
 -%}
 
-{%- if has_section_media -%}
+{%- if desktop_video_url != blank or image_desktop != blank -%}
   {{- 'three-up-media.css' | asset_url | stylesheet_tag -}}
 
   <div
@@ -24,30 +37,7 @@
     data-header-mode="{{ header_mode }}"
   >
     <div class="three-up-media__inner">
-      {%- if media_type == 'image' -%}
-        {%- render 'picture',
-          image_desktop: image_desktop,
-          image_mobile: image_mobile,
-          class: 'three-up-media__image'
-        -%}
-      {%- else -%}
-        {%- liquid
-          assign video_desktop_url = blank
-          assign video_mobile_url = blank
-          if video_desktop != blank
-            assign video_desktop_url = video_desktop.sources[1].url | default: video_desktop.sources[0].url
-          elsif section.settings.video_desktop_url != blank
-            assign video_desktop_url = section.settings.video_desktop_url
-          endif
-
-          if video_mobile != blank
-            assign video_mobile_url = video_mobile.sources[1].url | default: video_mobile.sources[0].url
-          elsif section.settings.video_mobile_url != blank
-            assign video_mobile_url = section.settings.video_mobile_url
-          else
-            assign video_mobile_url = video_desktop_url
-          endif
-        -%}
+      {%- if desktop_video_url != blank -%}
         <div class="three-up-media__video-wrapper">
           <video
             class="three-up-media__video js-section-video"
@@ -56,14 +46,20 @@
             muted
             playsinline
             preload="metadata"
-            {% if image_desktop != blank %}
-              poster="{{ image_desktop | image_url: width: 1200 }}"
+            {% if poster_image != blank %}
+              poster="{{ poster_image | image_url: width: 1200 }}"
             {% endif %}
           >
-            <source src="{{ video_mobile_url }}" media="(max-width: 767px)" type="video/mp4">
-            <source src="{{ video_desktop_url }}" type="video/mp4">
+            <source src="{{ mobile_video_url }}" media="(max-width: 900px)" type="video/mp4">
+            <source src="{{ desktop_video_url }}" type="video/mp4">
           </video>
         </div>
+      {%- elsif image_desktop != blank -%}
+        {%- render 'picture',
+          image_desktop: image_desktop,
+          image_mobile: image_mobile,
+          class: 'three-up-media__image'
+        -%}
       {%- endif -%}
       {%- if media_description != blank -%}
         {%- liquid
@@ -85,22 +81,6 @@
   "tag": "section",
   "settings": [
     {
-      "type": "select",
-      "id": "media_type",
-      "label": "Media type",
-      "options": [
-        {
-          "value": "image",
-          "label": "Image"
-        },
-        {
-          "value": "video",
-          "label": "Video"
-        }
-      ],
-      "default": "image"
-    },
-    {
       "type": "image_picker",
       "id": "image_desktop",
       "label": "Desktop image",
@@ -116,29 +96,25 @@
       "type": "video",
       "id": "video_desktop",
       "label": "Desktop video",
-      "info": "Recommended: 2356 x 1504 px (2x Retina, 714:456 landscape aspect ratio). MP4 format.",
-      "visible_if": "{{ section.settings.media_type == 'video' }}"
+      "info": "Recommended: 2356 x 1504 px (2x Retina, 714:456 landscape aspect ratio). MP4 format."
     },
     {
       "type": "video",
       "id": "video_mobile",
       "label": "Mobile video",
-      "info": "Recommended: 630 x 986 px (2x Retina, 275:431 portrait aspect ratio). Uses desktop video when left empty. MP4 format.",
-      "visible_if": "{{ section.settings.media_type == 'video' }}"
+      "info": "Recommended: 630 x 986 px (2x Retina, 275:431 portrait aspect ratio). Uses desktop video when left empty. MP4 format."
     },
     {
       "type": "text",
       "id": "video_desktop_url",
       "label": "Desktop external MP4 URL",
-      "info": "Recommended: 2356 x 1504 px (714:456 landscape aspect ratio). Used when no desktop Shopify video is selected.",
-      "visible_if": "{{ section.settings.media_type == 'video' }}"
+      "info": "Recommended: 2356 x 1504 px (714:456 landscape aspect ratio). Used when no desktop Shopify video is selected."
     },
     {
       "type": "text",
       "id": "video_mobile_url",
       "label": "Mobile external MP4 URL",
-      "info": "Recommended: 630 x 986 px (275:431 portrait aspect ratio). Used when no mobile Shopify video is selected. Falls back to desktop video when empty.",
-      "visible_if": "{{ section.settings.media_type == 'video' }}"
+      "info": "Recommended: 630 x 986 px (275:431 portrait aspect ratio). Used when no mobile Shopify video is selected. Falls back to desktop video when empty."
     },
     {
       "type": "inline_richtext",
@@ -192,7 +168,6 @@
     {
       "name": "Three Up Media",
       "settings": {
-        "media_type": "video",
         "image_desktop": "shopify://shop_images/Image_2.jpg",
         "image_mobile": "shopify://shop_images/Image_3.jpg",
         "video_desktop": "shopify://files/videos/tripic3_no_bleed3.mp4",
