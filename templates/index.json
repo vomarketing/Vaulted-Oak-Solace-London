@@ -100,6 +100,28 @@
         "cta_uppercase": false
       }
     },
+    "hero_fullscreen_hGpWfC": {
+      "type": "hero-fullscreen",
+      "name": "Hero Fullscreen",
+      "settings": {
+        "media_type": "video",
+        "video_desktop": "shopify://files/videos/290726 SOLACE RESORT 27 SEPTEMBER 02 WEB.mp4",
+        "video_url_desktop": "",
+        "video_url_mobile": "",
+        "show_overlay": false,
+        "overlay_opacity": 40,
+        "overlay_color": "#000000",
+        "header_contrast_mode": "dark",
+        "text_color": "white",
+        "heading": "Resort 27",
+        "heading_font_size": "text-reg-14",
+        "heading_uppercase": false,
+        "cta_text": "Shop Collection",
+        "cta_link": "shopify://collections/resort-27",
+        "cta_font_size": "text-reg-14",
+        "cta_uppercase": false
+      }
+    },
     "two_ups_media_HyFTNx": {
       "type": "two-ups-media",
       "blocks": {
@@ -139,28 +161,6 @@
         "color_scheme": "light",
         "header_contrast_mode": "dark",
         "mobile_layout": "slider"
-      }
-    },
-    "hero_fullscreen_hGpWfC": {
-      "type": "hero-fullscreen",
-      "name": "Hero Fullscreen",
-      "settings": {
-        "media_type": "video",
-        "video_desktop": "shopify://files/videos/290726 SOLACE RESORT 27 SEPTEMBER 02 WEB.mp4",
-        "video_url_desktop": "",
-        "video_url_mobile": "",
-        "show_overlay": false,
-        "overlay_opacity": 40,
-        "overlay_color": "#000000",
-        "header_contrast_mode": "dark",
-        "text_color": "white",
-        "heading": "Resort 27",
-        "heading_font_size": "text-reg-14",
-        "heading_uppercase": false,
-        "cta_text": "Shop Collection",
-        "cta_link": "shopify://collections/resort-27",
-        "cta_font_size": "text-reg-14",
-        "cta_uppercase": false
       }
     },
     "featured_image_bdxxic": {
@@ -393,8 +393,8 @@
     "hero_fullscreen_k4QYGJ",
     "hero_fullscreen_8gXhRJ",
     "hero_fullscreen_PPmfBH",
-    "two_ups_media_HyFTNx",
     "hero_fullscreen_hGpWfC",
+    "two_ups_media_HyFTNx",
     "featured_image_bdxxic",
     "hero_fullscreen_fnD3ha",
     "hero_fullscreen_aNjhGL",
