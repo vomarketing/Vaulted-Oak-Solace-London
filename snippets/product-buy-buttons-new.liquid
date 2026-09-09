@@ -264,6 +264,18 @@
     {%- render 'back-in-stock-form-new', product: product, current_variant: current_variant -%}
   </div>
 
+  {%- if section.settings.stock_note != blank -%}
+    {%- assign stock_threshold = section.settings.stock_threshold | default: 5 -%}
+    <div
+      class="prd-Status_Stock js-pdp-stock-status text-reg-14"
+      data-stock-note="{{ section.settings.stock_note | escape }}"
+      data-stock-threshold="{{ stock_threshold }}"
+      aria-hidden="{% if current_variant.inventory_quantity > 0 and current_variant.inventory_quantity <= stock_threshold %}false{% else %}true{% endif %}"
+    >
+      {{ section.settings.stock_note }}
+    </div>
+  {%- endif -%}
+
   {%- if has_size_guide_content -%}
     {%- render 'pdp-size-guide-drawer',
       product: product,

@@ -108,16 +108,6 @@
                 endif
               -%}
               <div class="{{- block_class -}}" {{ block.shopify_attributes }}>
-                {%- if section.settings.stock_note != blank -%}
-                  <div
-                    class="prd-Status_Stock js-pdp-stock-status text-reg-14"
-                    data-stock-note="{{ section.settings.stock_note }}"
-                    aria-hidden="{% if current_variant.inventory_quantity > 0 and current_variant.inventory_quantity < 10 %}false{% else %}true{% endif %}"
-                  >
-                    {{ section.settings.stock_note }}
-                  </div>
-                {%- endif -%}
-
                 {%- assign delivery_msg = block.settings.text -%}
                 {%- if delivery_msg != blank -%}
                   {%- liquid

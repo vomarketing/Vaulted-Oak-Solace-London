@@ -3,13 +3,14 @@
 
   assign valid_block_count = 0
   for block in section.blocks
-    assign block_desktop_image = block.settings.image_desktop | default: block.settings.desktop_image
-    assign block_desktop_video = block.settings.desktop_video | default: block.settings.video_desktop
-    assign block_desktop_video_url = block.settings.desktop_video_url | default: block.settings.video_desktop_url
+    assign block_desktop_image = block.settings.image_desktop
+    assign block_desktop_video = block.settings.desktop_video
+    assign block_desktop_video_url = block.settings.desktop_video_url
     assign block_video_url = blank
 
     if block_desktop_video != blank
-      assign block_video_url = block_desktop_video.sources[1].url | default: block_desktop_video.sources[0].url
+      assign block_desktop_mp4 = block_desktop_video.sources | where: 'format', 'mp4' | first
+      assign block_video_url = block_desktop_mp4.url | default: block_desktop_video.sources.first.url
     elsif block_desktop_video_url != blank
       assign block_video_url = block_desktop_video_url
     endif
@@ -37,53 +38,39 @@
         <div class="swiper-wrapper">
           {%- for block in section.blocks -%}
             {%- liquid
-              assign desktop_image = block.settings.image_desktop | default: block.settings.desktop_image
-              assign mobile_image = block.settings.image_mobile | default: block.settings.mobile_image
-              assign desktop_video = block.settings.desktop_video | default: block.settings.video_desktop
-              assign mobile_video = block.settings.mobile_video | default: block.settings.video_mobile
+              assign desktop_image = block.settings.image_desktop
+              assign mobile_image = block.settings.image_mobile | default: desktop_image
+              assign desktop_video = block.settings.desktop_video
+              assign mobile_video = block.settings.mobile_video | default: desktop_video
 
               assign desktop_video_url = blank
               assign mobile_video_url = blank
 
               if desktop_video != blank
-                assign desktop_video_url = desktop_video.sources[1].url | default: desktop_video.sources[0].url
+                assign desktop_mp4 = desktop_video.sources | where: 'format', 'mp4' | first
+                assign desktop_video_url = desktop_mp4.url | default: desktop_video.sources.first.url
               elsif block.settings.desktop_video_url != blank
                 assign desktop_video_url = block.settings.desktop_video_url
-              elsif block.settings.video_desktop_url != blank
-                assign desktop_video_url = block.settings.video_desktop_url
               endif
 
               if mobile_video != blank
-                assign mobile_video_url = mobile_video.sources[1].url | default: mobile_video.sources[0].url
+                assign mobile_mp4 = mobile_video.sources | where: 'format', 'mp4' | first
+                assign mobile_video_url = mobile_mp4.url | default: mobile_video.sources.first.url
               elsif block.settings.mobile_video_url != blank
                 assign mobile_video_url = block.settings.mobile_video_url
-              elsif block.settings.video_mobile_url != blank
-                assign mobile_video_url = block.settings.video_mobile_url
               else
                 assign mobile_video_url = desktop_video_url
               endif
 
-              if mobile_image == blank
-                assign mobile_image = desktop_image
-              endif
-
-              assign has_video = false
-              assign has_image = false
-
-              if desktop_video_url != blank
-                assign has_video = true
-              elsif desktop_image != blank
-                assign has_image = true
-              endif
-
-              if has_video == false and has_image == false
+              if desktop_video_url == blank and desktop_image == blank
                 continue
               endif
 
+              assign poster_image = desktop_image | default: desktop_video.preview_image
               assign block_title = block.settings.title
             -%}
             <div class="js-slide swiper-slide" {{ block.shopify_attributes }}>
-              {%- if has_video -%}
+              {%- if desktop_video_url != blank -%}
                 <video
                   class="three-up-slider__slide-video"
                   autoplay
@@ -91,14 +78,14 @@
                   muted
                   playsinline
                   preload="metadata"
-                  {% if desktop_image != blank %}
-                    poster="{{ desktop_image | image_url: width: 1200 }}"
+                  {% if poster_image != blank %}
+                    poster="{{ poster_image | image_url: width: 1200 }}"
                   {% endif %}
                 >
                   <source src="{{ mobile_video_url }}" media="(max-width: 900px)" type="video/mp4">
                   <source src="{{ desktop_video_url }}" type="video/mp4">
                 </video>
-              {%- elsif has_image -%}
+              {%- elsif desktop_image != blank -%}
                 {%- render 'picture',
                   image_desktop: desktop_image,
                   image_mobile: mobile_image,
