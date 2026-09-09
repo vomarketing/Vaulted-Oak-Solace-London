@@ -182,6 +182,7 @@
     },
     "hero_fullscreen_fnD3ha": {
       "type": "hero-fullscreen",
+      "disabled": true,
       "name": "Hero Fullscreen",
       "settings": {
         "media_type": "image",
@@ -206,6 +207,7 @@
     },
     "hero_fullscreen_aNjhGL": {
       "type": "hero-fullscreen",
+      "disabled": true,
       "name": "Hero Fullscreen",
       "settings": {
         "media_type": "image",
@@ -230,6 +232,7 @@
     },
     "hero_fullscreen_XETTkn": {
       "type": "hero-fullscreen",
+      "disabled": true,
       "name": "Hero Fullscreen",
       "settings": {
         "media_type": "image",
@@ -254,6 +257,7 @@
     },
     "hero_fullscreen_KU3r7x": {
       "type": "hero-fullscreen",
+      "disabled": true,
       "name": "Hero Fullscreen",
       "settings": {
         "media_type": "image",
@@ -278,6 +282,7 @@
     },
     "hero_fullscreen_DzwpUx": {
       "type": "hero-fullscreen",
+      "disabled": true,
       "name": "Hero Fullscreen",
       "settings": {
         "media_type": "image",
@@ -301,6 +306,7 @@
     },
     "hero_fullscreen_QXhCwf": {
       "type": "hero-fullscreen",
+      "disabled": true,
       "name": "Hero Fullscreen",
       "settings": {
         "media_type": "image",
