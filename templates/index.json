@@ -38,7 +38,7 @@
       "settings": {
         "media_type": "image",
         "image_desktop": "shopify://shop_images/Hero_3.jpg",
-        "image_mobile": "shopify://shop_images/The_Newman_Gold_LB_1.jpg",
+        "image_mobile": "shopify://shop_images/The_Newman_Gold_HP-Mobile.jpg",
         "video_url_desktop": "",
         "video_url_mobile": "",
         "show_overlay": false,
