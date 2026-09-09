@@ -647,6 +647,10 @@ body.is-size-guide-active {
   transition: opacity 0.3s ease, visibility 0.3s ease;
   padding: 0 20px;
 
+  @media (min-width: 901px) {
+    padding: 0;
+  }
+
   &[aria-hidden="true"] {
     display: none;
   }
