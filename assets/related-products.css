@@ -157,6 +157,10 @@
     }
   }
 
+  .prd-Card_Image .rsp-Image_Image {
+    object-fit: contain;
+  }
+
   .prd-Card_Title {
     font-family: var(--font-family-primary) !important;
     font-size: var(--type-14-size);
