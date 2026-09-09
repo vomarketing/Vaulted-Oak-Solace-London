@@ -96,8 +96,6 @@ if (!window.FullpageScrollController) {
       this.wheelDeltaAccumulator = 0;
       this.wheelTimeout = null;
 
-      console.log(this.canActivate());
-
       if (this.canActivate()) {
         this.init();
       }
