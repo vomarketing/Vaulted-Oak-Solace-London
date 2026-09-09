@@ -333,6 +333,8 @@ if (!window.FullpageScrollController) {
         lazyPreloadPrevNext: 1,
         spaceBetween: 0,
         speed: 600,
+        resizeObserver: this.isProductPage,
+        preventInteractionOnTransition: !this.isProductPage,
         effect: 'creative',
         creativeEffect: {
           prev: {
@@ -372,6 +374,12 @@ if (!window.FullpageScrollController) {
         followFinger: true,
         passiveListeners: true,
         on: {
+          beforeResize: (sw) => {
+            if (this.isProductPage) return;
+
+            sw.setTransition(0);
+            if (sw.animating) sw.transitionEnd();
+          },
           init: (sw) => {
             this.updateLastSlide(sw);
             this.handleSlideChange(sw);
