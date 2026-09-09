@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
@@ -42,7 +51,7 @@
         "cd78db52-d0eb-462c-8b13-05d4fd8a501e"
       ],
       "settings": {
-        "image": "shopify://shop_images/contact_image.jpg"
+        "image": "shopify://shop_images/Contact_Us_Banner_4bc2151e-d76e-4d36-99d6-be328f4b1b6d.jpg"
       }
     }
   },
