@@ -1,27 +1,103 @@
 .related-products {
+  /* The header sits over this section, so the top padding must clear it before
+     it honours the design value. Heights come from .hd-Header in custom-header.css. */
+  --related-products-header-offset: 52px;
+  --related-products-header-gap: clamp(20px, 4dvh, 40px);
+  --related-products-pad-top-design: clamp(32px, 7dvh, 72px);
+  --related-products-pad-top: max(
+    calc(var(--related-products-header-offset) + var(--related-products-header-gap)),
+    var(--related-products-pad-top-design)
+  );
+  --related-products-pad-bottom: 30px;
+
+  /* Height-driven dynamic scaling variables */
+  --related-products-title-margin: 30px;
+  --related-products-row-gap: clamp(14px, 2.5dvh, 32px);
+  --related-products-card-caption: 40px;
+
+  --related-products-available-height: calc(
+    100dvh
+    - var(--related-products-pad-top)
+    - (var(--related-products-pad-bottom) + env(safe-area-inset-bottom, 0px))
+    - (var(--related-products-title-margin) + 20px)
+    - var(--related-products-row-gap)
+  );
+
+  /* Max image height per row to ensure both rows fit inside 100dvh */
+  --related-products-max-img-height: max(
+    110px,
+    calc((var(--related-products-available-height) / 2) - var(--related-products-card-caption))
+  );
+
+  /* Corresponding max-width for 2 columns keeping aspect ratio 1600 / 2382 (~0.6717) */
+  --related-products-max-grid-width: calc(
+    (2 * var(--related-products-max-img-height) * 0.6717) + 20px
+  );
+
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   width: 100vw;
+  height: 100%;
   min-height: 100dvh;
+  box-sizing: border-box;
   overflow: hidden;
-  padding-block: clamp(32px, 7dvh, 72px);
+  padding-top: var(--related-products-pad-top);
+  padding-bottom: calc(var(--related-products-pad-bottom) + env(safe-area-inset-bottom, 0px));
   padding-inline: 20px;
   background-color: var(--color-white, #ffffff);
   color: var(--color-black, #000000);
 
   @media (min-width: 768px) {
-    padding-block: clamp(40px, 8dvh, 96px);
+    --related-products-header-offset: 56px;
+    --related-products-pad-top-design: clamp(40px, 8dvh, 96px);
+    --related-products-pad-bottom: clamp(40px, 8dvh, 96px);
+    --related-products-title-margin: 50px;
+    --related-products-card-caption: 55px;
+
+    --related-products-max-grid-width: calc(
+      (2 * var(--related-products-max-img-height) * 0.6717) + 30px
+    );
   }
 
   @media (min-width: 901px) {
-    padding-block: clamp(48px, 9dvh, 120px);
+    --related-products-pad-top-design: clamp(48px, 9dvh, 120px);
+    --related-products-pad-bottom: clamp(48px, 9dvh, 120px);
+    --related-products-title-margin: 50px;
+    --related-products-card-caption: 55px;
+
+    /* On desktop (1 row of 4 cols), all vertical space goes to 1 row */
+    --related-products-available-height: calc(
+      100dvh
+      - var(--related-products-pad-top)
+      - var(--related-products-pad-bottom)
+      - (var(--related-products-title-margin) + 20px)
+    );
+
+    --related-products-max-img-height: max(
+      180px,
+      calc(var(--related-products-available-height) - var(--related-products-card-caption))
+    );
+
+    --related-products-max-grid-width: calc(
+      (4 * var(--related-products-max-img-height) * 0.6717) + 90px
+    );
   }
 
-  @media (min-width: 1441px) {
-    padding-block: clamp(56px, 10dvh, 160px);
+  @media (min-width: 1201px) {
+    --related-products-header-offset: 109px;
+  }
+
+  @media (min-width: 1920px) {
+    --related-products-pad-top-design: clamp(56px, 10dvh, 160px);
+    --related-products-pad-bottom: clamp(56px, 10dvh, 160px);
+    --related-products-title-margin: 80px;
+
+    --related-products-max-grid-width: calc(
+      (4 * var(--related-products-max-img-height) * 0.6717) + 120px
+    );
   }
 }
 
@@ -34,48 +110,42 @@
   flex-direction: column;
   justify-content: center;
   width: 100%;
+  max-width: min(100%, var(--related-products-max-grid-width));
   margin: 0 auto;
 
   @media (min-width: 768px) {
-    max-width: calc(582 / 836 * 100vw);
+    max-width: min(calc(582 / 836 * 100vw), var(--related-products-max-grid-width));
   }
 
   @media (min-width: 901px) {
-    max-width: calc(1202 / 1440 * 100vw);
+    max-width: min(calc(1202 / 1440 * 100vw), var(--related-products-max-grid-width));
   }
 
-  @media (min-width: 1441px) {
-    max-width: calc(1538 / 1920 * 100vw);
+  @media (min-width: 1920px) {
+    max-width: min(calc(1538 / 1920 * 100vw), var(--related-products-max-grid-width));
   }
 }
 
 .related-products__title {
-  margin-bottom: 30px;
+  margin-bottom: var(--related-products-title-margin);
   text-align: center;
-
-  @media (min-width: 768px) {
-    margin-bottom: 50px;
-  }
-
-  @media (min-width: 1441px) {
-    margin-bottom: 80px;
-  }
 }
 
 .related-products__wrapper {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 32px 20px;
+  gap: var(--related-products-row-gap) 20px;
 
   @media (min-width: 768px) {
-    gap: 30px;
+    gap: var(--related-products-row-gap) 30px;
   }
 
   @media (min-width: 901px) {
     grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 30px;
   }
 
-  @media (min-width: 1441px) {
+  @media (min-width: 1920px) {
     gap: 40px;
   }
 
@@ -112,9 +182,20 @@
 }
 
 @media (max-width: 900px) {
-  /* PDP Natural Scroll Overrides */
+  /* PDP Natural Scroll Overrides (Figma Design Spec) */
   .template-product[data-pdp-scroll="normal"] .related-products {
+    height: auto;
     min-height: 0;
-    padding: 30px 20px;
+    padding-top: 30px;
+    padding-bottom: 30px;
+    padding-inline: 20px;
+  }
+
+  .template-product[data-pdp-scroll="normal"] .related-products__inner {
+    max-width: 100%;
+
+    @media (min-width: 768px) {
+      max-width: calc(582 / 836 * 100vw);
+    }
   }
 }
