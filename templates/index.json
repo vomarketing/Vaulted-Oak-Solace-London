@@ -202,7 +202,7 @@
         "heading_font_size": "text-reg-14",
         "heading_uppercase": false,
         "cta_text": "Shop Collection",
-        "cta_link": "#",
+        "cta_link": "shopify://collections/resort-27",
         "cta_font_size": "text-reg-14",
         "cta_uppercase": false
       }
