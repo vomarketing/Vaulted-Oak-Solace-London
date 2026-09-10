@@ -333,7 +333,7 @@ if (!window.FullpageScrollController) {
         lazyPreloadPrevNext: 1,
         spaceBetween: 0,
         speed: 600,
-        resizeObserver: this.isProductPage,
+        resizeObserver: this.isProductPage || document.documentElement.classList.contains('force-vh-fallback'),
         preventInteractionOnTransition: !this.isProductPage,
         effect: 'creative',
         creativeEffect: {
