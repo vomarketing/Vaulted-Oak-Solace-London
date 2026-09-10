@@ -186,6 +186,10 @@ body.is-pdp-transitioning {
   height: 100vh;
   height: 100dvh;
   overflow: hidden;
+
+  .force-vh-fallback & {
+    height: calc(var(--vh, 1vh) * 100);
+  }
 }
 
 .fullpage-swiper > .swiper-wrapper {
@@ -202,6 +206,10 @@ body.is-pdp-transitioning {
   position: relative;
   box-sizing: border-box;
   flex-shrink: 0;
+
+  .force-vh-fallback & {
+    height: calc(var(--vh, 1vh) * 100) !important;
+  }
 
   &:empty {
     display: none;
