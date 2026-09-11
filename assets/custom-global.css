@@ -1,3 +1,14 @@
+.drw-Drawer[data-module-drawers-drawer="mobile-menu"] {
+  --Color_Primary: #000000;
+  --Color_Secondary: #ffffff;
+  background-color: var(--Color_Secondary);
+  color: var(--Color_Primary);
+}
+
+.drw-Drawer[data-module-drawers-drawer="mobile-menu"] .drw-Nav_Close {
+  color: var(--Color_Primary);
+}
+
 .global-media {
   position: absolute;
   top: 0;
