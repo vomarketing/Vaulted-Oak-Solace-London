@@ -1,17 +1,65 @@
-{%- if template == 'list-collections' -%}
-  {%- assign page_url = '/collections' -%}
-{%- elsif template.name == 'collection' -%}
-  {%- assign page_url = collection.url -%}
-{%- elsif template.name == 'product' -%}
-  {%- assign page_url = product.url -%}
-{%- elsif template.name == 'article' -%}
-  {%- assign page_url = article.url -%}
-{%- elsif template.name == 'blog' -%}
-  {%- assign page_url = blog.url -%}
-{%- else -%}
-  {%- assign page_url = page.url -%}
-{%- endif -%}
+{%- comment -%}
+  Dynamic Hreflang Snippet for Solace London (Shopify Markets: UK Root & US /en-us/)
+  - en-GB: https://www.solacelondon.com<clean_path>
+  - en-US: https://www.solacelondon.com/en-us<clean_path>
+  - x-default: https://www.solacelondon.com<clean_path> (points to primary UK store)
+{%- endcomment -%}
 
-<link rel="alternate" href="https://www.solacelondon.com{{ page_url }}" hreflang="en-gb" />
-<link rel="alternate" href="https://us.solacelondon.com{{ page_url }}" hreflang="en-us" />
+{%- liquid
+  # Resolve relative resource path across templates
+  if template == 'list-collections'
+    assign resource_path = '/collections'
+  elsif template.name == 'collection'
+    assign resource_path = collection.url
+  elsif template.name == 'product'
+    assign resource_path = product.url
+  elsif template.name == 'article'
+    assign resource_path = article.url
+  elsif template.name == 'blog'
+    assign resource_path = blog.url
+  elsif template.name == 'page'
+    assign resource_path = page.url
+  else
+    assign resource_path = request.path
+  endif
+
+  # Fallback to request.path if empty (e.g. homepage)
+  if resource_path == blank or resource_path == ''
+    assign resource_path = request.path
+  endif
+
+  # Strip active locale root prefix (e.g. /en-us) to get a clean canonical relative path
+  assign clean_path = resource_path
+  if request.locale.root_url != '/' and request.locale.root_url != blank
+    assign clean_path = clean_path | remove_first: request.locale.root_url
+  endif
+
+  # Extra safety: remove explicit /en-us prefix if still present
+  if clean_path contains '/en-us'
+    assign clean_path = clean_path | remove_first: '/en-us'
+  endif
+
+  # Ensure leading slash and clean double slashes
+  assign first_char = clean_path | slice: 0, 1
+  if first_char != '/'
+    assign clean_path = '/' | append: clean_path
+  endif
+  assign clean_path = clean_path | replace: '//', '/'
+
+  # Construct target URLs
+  assign base_domain = 'https://www.solacelondon.com'
+  assign uk_url = base_domain | append: clean_path
+
+  if clean_path == '/'
+    assign us_url = base_domain | append: '/en-us'
+  else
+    assign us_url = base_domain | append: '/en-us' | append: clean_path
+  endif
+
+  assign default_url = uk_url
+-%}
+
+<link rel="alternate" hreflang="en-GB" href="{{ uk_url }}" />
+<link rel="alternate" hreflang="en-US" href="{{ us_url }}" />
+<link rel="alternate" hreflang="x-default" href="{{ default_url }}" />
 
