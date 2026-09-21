@@ -9,115 +9,27 @@
  */
 {
   "sections": {
-    "hero_fullscreen_aigzqq": {
-      "type": "hero-fullscreen",
-      "name": "Hero Fullscreen",
-      "settings": {
-        "media_type": "image",
-        "image_desktop": "shopify://shop_images/Screenshot_2026-09-07_at_15.53.00.png",
-        "image_mobile": "shopify://shop_images/The_Newman_HP-Mobile_2.jpg",
-        "video_url_desktop": "",
-        "video_url_mobile": "",
-        "show_overlay": false,
-        "overlay_opacity": 40,
-        "overlay_color": "#000000",
-        "header_contrast_mode": "light",
-        "text_color": "white",
-        "heading": "Veronika Kunz photographed by Sarah Blais",
-        "heading_font_size": "text-reg-14",
-        "heading_uppercase": false,
-        "cta_text": "Resort 27 Collection",
-        "cta_link": "shopify://collections/resort-27",
-        "cta_font_size": "text-reg-14",
-        "cta_uppercase": false
-      }
-    },
-    "hero_fullscreen_k4QYGJ": {
-      "type": "hero-fullscreen",
-      "name": "Hero Fullscreen",
-      "settings": {
-        "media_type": "image",
-        "image_desktop": "shopify://shop_images/Hero_3.jpg",
-        "image_mobile": "shopify://shop_images/The_Newman_Gold_HP-Mobile_2.jpg",
-        "video_url_desktop": "",
-        "video_url_mobile": "",
-        "show_overlay": false,
-        "overlay_opacity": 40,
-        "overlay_color": "#000000",
-        "header_contrast_mode": "light",
-        "text_color": "white",
-        "heading": "Resort 27",
-        "heading_font_size": "text-reg-14",
-        "heading_uppercase": false,
-        "cta_text": "Shop Collection",
-        "cta_link": "shopify://collections/resort-27",
-        "cta_font_size": "text-reg-14",
-        "cta_uppercase": false
-      }
-    },
     "hero_fullscreen_8gXhRJ": {
       "type": "hero-fullscreen",
       "name": "Hero Fullscreen",
       "settings": {
-        "media_type": "video",
-        "video_desktop": "shopify://files/videos/290726 SOLACE RESORT 27 SEPTEMBER 01 WEB.mp4",
+        "media_type": "image",
+        "image_desktop": "shopify://shop_images/03a48d106dae488ca858875dcb4be083d9d6f13d.jpg",
+        "image_mobile": "shopify://shop_images/03a48d106dae488ca858875dcb4be083d9d6f13d.jpg",
+        "video_desktop": "shopify://files/videos/homepage3.mp4",
+        "video_mobile": "shopify://files/videos/story.mp4",
         "video_url_desktop": "",
         "video_url_mobile": "",
-        "show_overlay": false,
+        "show_overlay": true,
         "overlay_opacity": 40,
         "overlay_color": "#000000",
         "header_contrast_mode": "light",
         "text_color": "white",
-        "heading": "",
-        "heading_font_size": "text-reg-14",
-        "heading_uppercase": false,
-        "cta_text": "A film by Easton West & Sarah Blais",
-        "cta_link": "shopify://collections/resort-27",
-        "cta_font_size": "text-reg-14",
-        "cta_uppercase": false
-      }
-    },
-    "hero_fullscreen_PPmfBH": {
-      "type": "hero-fullscreen",
-      "name": "Hero Fullscreen",
-      "settings": {
-        "media_type": "image",
-        "image_desktop": "shopify://shop_images/Hero_2_3ad46946-9660-49da-8f31-1c8c08c2e702.jpg",
-        "image_mobile": "shopify://shop_images/The_Newman_Pewter_HP-Mobile_v2.jpg",
-        "video_url_desktop": "",
-        "video_url_mobile": "",
-        "show_overlay": false,
-        "overlay_opacity": 40,
-        "overlay_color": "rgba(0,0,0,0)",
-        "header_contrast_mode": "light",
-        "text_color": "white",
-        "heading": "Resort 27",
+        "heading": "Resort 2027",
         "heading_font_size": "text-reg-14",
         "heading_uppercase": false,
         "cta_text": "Shop Collection",
-        "cta_link": "#",
-        "cta_font_size": "text-reg-14",
-        "cta_uppercase": false
-      }
-    },
-    "hero_fullscreen_hGpWfC": {
-      "type": "hero-fullscreen",
-      "name": "Hero Fullscreen",
-      "settings": {
-        "media_type": "video",
-        "video_desktop": "shopify://files/videos/290726 SOLACE RESORT 27 SEPTEMBER 02 WEB.mp4",
-        "video_url_desktop": "",
-        "video_url_mobile": "",
-        "show_overlay": false,
-        "overlay_opacity": 40,
-        "overlay_color": "#000000",
-        "header_contrast_mode": "dark",
-        "text_color": "white",
-        "heading": "",
-        "heading_font_size": "text-reg-14",
-        "heading_uppercase": false,
-        "cta_text": "A film by Easton West & Sarah Blais",
-        "cta_link": "shopify://collections/resort-27",
+        "cta_link": "shopify://collections",
         "cta_font_size": "text-reg-14",
         "cta_uppercase": false
       }
@@ -129,28 +41,26 @@
           "type": "item",
           "settings": {
             "media_type": "image",
-            "desktop_image": "shopify://shop_images/Artboard_3.jpg",
-            "mobile_image": "shopify://shop_images/Artboard_3-1_20115b59-7e4e-4599-8ea1-835395b89bc5.jpg",
+            "desktop_image": "shopify://shop_images/Image_18.png",
+            "mobile_image": "shopify://shop_images/Image_18.png",
             "desktop_video_url": "",
             "mobile_video_url": "",
-            "text": "The Newman",
+            "text": "The Delano",
             "text_font_size": "text-reg-14",
             "text_uppercase": false,
-            "link": "shopify://products/the-newman-maxi-dress-in-acai"
+            "link": "#"
           }
         },
         "item_cjJJ49": {
           "type": "item",
           "settings": {
-            "media_type": "image",
-            "desktop_image": "shopify://shop_images/Artboard_3-1.jpg",
-            "mobile_image": "shopify://shop_images/Artboard_3_d8c3671d-d92f-48f5-95d3-41919aae3439.jpg",
+            "media_type": "video",
             "desktop_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
             "mobile_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
             "text": "Shop Now",
             "text_font_size": "text-reg-14",
             "text_uppercase": false,
-            "link": "shopify://products/the-newman-maxi-dress-in-acai"
+            "link": "#"
           }
         }
       },
@@ -165,15 +75,36 @@
         "mobile_layout": "slider"
       }
     },
+    "hero_fullscreen_hGpWfC": {
+      "type": "hero-fullscreen",
+      "name": "Hero Fullscreen",
+      "settings": {
+        "media_type": "video",
+        "video_url_desktop": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
+        "video_url_mobile": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
+        "show_overlay": false,
+        "overlay_opacity": 40,
+        "overlay_color": "#000000",
+        "header_contrast_mode": "light",
+        "text_color": "white",
+        "heading": "Resort 2027",
+        "heading_font_size": "text-reg-14",
+        "heading_uppercase": false,
+        "cta_text": "Shop Collection",
+        "cta_link": "#",
+        "cta_font_size": "text-reg-14",
+        "cta_uppercase": false
+      }
+    },
     "featured_image_bdxxic": {
       "type": "featured-image",
-      "disabled": true,
       "name": "Featured Image",
       "settings": {
         "header_contrast_mode": "dark",
-        "desktop_image": "shopify://shop_images/Hero_2.jpg",
+        "desktop_image": "shopify://shop_images/Image_25.png",
+        "mobile_image": "shopify://shop_images/Image_26.png",
         "image_link": "",
-        "text_left": "The Collection",
+        "text_left": "The Annie",
         "text_left_link": "#",
         "text_left_font_size": "text-reg-14",
         "text_left_uppercase": false,
@@ -183,47 +114,21 @@
         "text_right_uppercase": false
       }
     },
-    "hero_fullscreen_fnD3ha": {
+    "hero_fullscreen_PPmfBH": {
       "type": "hero-fullscreen",
       "name": "Hero Fullscreen",
       "settings": {
         "media_type": "image",
-        "image_desktop": "shopify://shop_images/The_Wymore_FinalV.jpg",
-        "image_mobile": "shopify://shop_images/The_Wymore_FinalV_mob.jpg",
-        "video_desktop": "shopify://files/videos/290726 SOLACE RESORT 27 SEPTEMBER 02 WEB.mp4",
-        "video_url_desktop": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
-        "video_url_mobile": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
-        "show_overlay": false,
+        "image_desktop": "shopify://shop_images/Module_5_d9f299ea-0297-409d-aa4d-c7e2c1ce2483.png",
+        "image_mobile": "shopify://shop_images/Module_5__1.png",
+        "video_url_desktop": "",
+        "video_url_mobile": "",
+        "show_overlay": true,
         "overlay_opacity": 40,
-        "overlay_color": "#000000",
+        "overlay_color": "rgba(0,0,0,0)",
         "header_contrast_mode": "light",
         "text_color": "white",
-        "heading": "Resort 27",
-        "heading_font_size": "text-reg-14",
-        "heading_uppercase": false,
-        "cta_text": "Shop Collection",
-        "cta_link": "shopify://collections/resort-27",
-        "cta_font_size": "text-reg-14",
-        "cta_uppercase": false
-      }
-    },
-    "hero_fullscreen_aNjhGL": {
-      "type": "hero-fullscreen",
-      "disabled": true,
-      "name": "Hero Fullscreen",
-      "settings": {
-        "media_type": "image",
-        "image_desktop": "shopify://shop_images/Screenshot_2026-09-07_at_15.54.26_5a381276-d152-4df6-a776-699f22f80fdd.png",
-        "image_mobile": "shopify://shop_images/Screenshot_2026-09-07_at_15.54.26.png",
-        "video_desktop": "shopify://files/videos/290726 SOLACE RESORT 27 SEPTEMBER 02 WEB.mp4",
-        "video_url_desktop": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
-        "video_url_mobile": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
-        "show_overlay": false,
-        "overlay_opacity": 40,
-        "overlay_color": "#000000",
-        "header_contrast_mode": "light",
-        "text_color": "white",
-        "heading": "Resort 27",
+        "heading": "Resort 2027",
         "heading_font_size": "text-reg-14",
         "heading_uppercase": false,
         "cta_text": "Shop Collection",
@@ -232,96 +137,38 @@
         "cta_uppercase": false
       }
     },
-    "hero_fullscreen_XETTkn": {
-      "type": "hero-fullscreen",
-      "disabled": true,
-      "name": "Hero Fullscreen",
+    "rich_text_QkDcqw": {
+      "type": "rich-text",
+      "name": "Rich text",
       "settings": {
-        "media_type": "image",
-        "image_desktop": "shopify://shop_images/Screenshot_2026-09-07_at_16.57.15_75051925-a0d9-4b97-8620-82673250aa36.png",
-        "image_mobile": "shopify://shop_images/Screenshot_2026-09-07_at_16.57.15.png",
-        "video_desktop": "shopify://files/videos/290726 SOLACE RESORT 27 SEPTEMBER 02 WEB.mp4",
-        "video_url_desktop": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
-        "video_url_mobile": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
-        "show_overlay": false,
-        "overlay_opacity": 40,
-        "overlay_color": "#000000",
-        "header_contrast_mode": "light",
-        "text_color": "white",
-        "heading": "Resort 27",
-        "heading_font_size": "text-reg-14",
-        "heading_uppercase": false,
-        "cta_text": "Shop Collection",
-        "cta_link": "#",
-        "cta_font_size": "text-reg-14",
-        "cta_uppercase": false
+        "header_contrast_mode": "dark",
+        "text": "<p>The resort 2027 collection lets fabrication and technique driving the design process, the pair describe their aesthetic as “Bold, confident, refined. Modern futurism balanced with timeless minimalism”. The result is a distinctly graphic collection defined by precision cuts, craftsmanship and a signature look of sophistication.</p>",
+        "text_font_size": "text-reg-14",
+        "text_uppercase": false,
+        "link_text": "Shop Collection",
+        "link": "#",
+        "link_font_size": "text-reg-14",
+        "link_uppercase": false,
+        "max_width_desktop": 910,
+        "max_width_tablet": 589,
+        "max_width_mobile": 305
       }
     },
-    "hero_fullscreen_KU3r7x": {
+    "hero_fullscreen_rzid96": {
       "type": "hero-fullscreen",
-      "disabled": true,
       "name": "Hero Fullscreen",
       "settings": {
         "media_type": "image",
-        "image_desktop": "shopify://shop_images/Screenshot_2026-09-07_at_16.57.23.png",
-        "image_mobile": "shopify://shop_images/Screenshot_2026-09-07_at_16.57.23.png",
-        "video_desktop": "shopify://files/videos/290726 SOLACE RESORT 27 SEPTEMBER 02 WEB.mp4",
-        "video_url_desktop": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
-        "video_url_mobile": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
-        "show_overlay": false,
-        "overlay_opacity": 40,
+        "image_desktop": "shopify://shop_images/Module_7.png",
+        "image_mobile": "shopify://shop_images/Module_7__1.png",
+        "video_url_desktop": "",
+        "video_url_mobile": "",
+        "show_overlay": true,
+        "overlay_opacity": 20,
         "overlay_color": "#000000",
         "header_contrast_mode": "light",
         "text_color": "white",
-        "heading": "Resort 27",
-        "heading_font_size": "text-reg-14",
-        "heading_uppercase": false,
-        "cta_text": "Shop Collection",
-        "cta_link": "#",
-        "cta_font_size": "text-reg-14",
-        "cta_uppercase": false
-      }
-    },
-    "hero_fullscreen_DzwpUx": {
-      "type": "hero-fullscreen",
-      "disabled": true,
-      "name": "Hero Fullscreen",
-      "settings": {
-        "media_type": "image",
-        "image_desktop": "shopify://shop_images/Screenshot_2026-09-07_at_16.57.29_c7a99ebe-ae4b-43fc-9fe6-0cbb78aa9db0.png",
-        "video_desktop": "shopify://files/videos/290726 SOLACE RESORT 27 SEPTEMBER 02 WEB.mp4",
-        "video_url_desktop": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
-        "video_url_mobile": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
-        "show_overlay": false,
-        "overlay_opacity": 40,
-        "overlay_color": "#000000",
-        "header_contrast_mode": "light",
-        "text_color": "white",
-        "heading": "Resort 27",
-        "heading_font_size": "text-reg-14",
-        "heading_uppercase": false,
-        "cta_text": "Shop Collection",
-        "cta_link": "#",
-        "cta_font_size": "text-reg-14",
-        "cta_uppercase": false
-      }
-    },
-    "hero_fullscreen_QXhCwf": {
-      "type": "hero-fullscreen",
-      "disabled": true,
-      "name": "Hero Fullscreen",
-      "settings": {
-        "media_type": "image",
-        "image_desktop": "shopify://shop_images/Screenshot_2026-09-07_at_16.57.35_86b01bac-6d49-46c0-be69-d56aaea9e06f.png",
-        "video_desktop": "shopify://files/videos/290726 SOLACE RESORT 27 SEPTEMBER 02 WEB.mp4",
-        "video_url_desktop": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
-        "video_url_mobile": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
-        "show_overlay": false,
-        "overlay_opacity": 40,
-        "overlay_color": "#000000",
-        "header_contrast_mode": "light",
-        "text_color": "white",
-        "heading": "Resort 27",
+        "heading": "Resort 2027",
         "heading_font_size": "text-reg-14",
         "heading_uppercase": false,
         "cta_text": "Shop Collection",
@@ -335,7 +182,7 @@
       "name": "Rich text",
       "settings": {
         "header_contrast_mode": "dark",
-        "text": "<p>Solace London is a British womenswear brand founded by Laura Taylor and Ryan Holliday-Stevens in 2013. Longtime friends and collaborators, the duo share a dynamic background spanning design, production, retail, marketing and creative direction. Their combined sensibilities are visible in pieces that continuously blur the line between statement making and wearability</p>",
+        "text": "<p>Solace London is a British womenswear brand founded by Laura Taylor and Ryan Holliday-Stevens in 2013. Longtime friends and collaborators, the duo share a dynamic background spanning design, production, retail, marketing and creative direction. Their combined sensibilities are visible in pieces that continuously blur the line between statement making and wearability.</p>",
         "text_font_size": "text-reg-14",
         "text_uppercase": false,
         "link_text": "",
@@ -346,65 +193,16 @@
         "max_width_tablet": 589,
         "max_width_mobile": 305
       }
-    },
-    "two_ups_media_CT3jaP": {
-      "type": "two-ups-media",
-      "blocks": {
-        "item_XzHKeE": {
-          "type": "item",
-          "settings": {
-            "media_type": "image",
-            "desktop_image": "shopify://shop_images/2_Block_C.jpg",
-            "desktop_video_url": "",
-            "mobile_video_url": "",
-            "text": "The Sedgwick",
-            "text_font_size": "text-reg-14",
-            "text_uppercase": false,
-            "link": "#"
-          }
-        },
-        "item_wrJAd7": {
-          "type": "item",
-          "settings": {
-            "media_type": "image",
-            "desktop_image": "shopify://shop_images/2_Block_D.jpg",
-            "desktop_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
-            "mobile_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
-            "text": "Shop Now",
-            "text_font_size": "text-reg-14",
-            "text_uppercase": false,
-            "link": "#"
-          }
-        }
-      },
-      "block_order": [
-        "item_XzHKeE",
-        "item_wrJAd7"
-      ],
-      "disabled": true,
-      "name": "Two Ups Media",
-      "settings": {
-        "color_scheme": "light",
-        "header_contrast_mode": "dark",
-        "mobile_layout": "stacked"
-      }
     }
   },
   "order": [
-    "hero_fullscreen_aigzqq",
-    "hero_fullscreen_k4QYGJ",
     "hero_fullscreen_8gXhRJ",
-    "hero_fullscreen_PPmfBH",
-    "hero_fullscreen_hGpWfC",
     "two_ups_media_HyFTNx",
+    "hero_fullscreen_hGpWfC",
     "featured_image_bdxxic",
-    "hero_fullscreen_fnD3ha",
-    "hero_fullscreen_aNjhGL",
-    "hero_fullscreen_XETTkn",
-    "hero_fullscreen_KU3r7x",
-    "hero_fullscreen_DzwpUx",
-    "hero_fullscreen_QXhCwf",
-    "rich_text_PG7mfm",
-    "two_ups_media_CT3jaP"
+    "hero_fullscreen_PPmfBH",
+    "rich_text_QkDcqw",
+    "hero_fullscreen_rzid96",
+    "rich_text_PG7mfm"
   ]
 }
