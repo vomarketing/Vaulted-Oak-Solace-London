@@ -1,0 +1,98 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "campaign_hero": {
+      "type": "hero-fullscreen",
+      "settings": {}
+    },
+    "campaign_two_up_intro": {
+      "type": "two-ups-media",
+      "blocks": {
+        "campaign_intro_left": {
+          "type": "item",
+          "settings": {}
+        },
+        "campaign_intro_right": {
+          "type": "item",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "campaign_intro_left",
+        "campaign_intro_right"
+      ],
+      "settings": {}
+    },
+    "campaign_story_01": {
+      "type": "hero-fullscreen",
+      "settings": {}
+    },
+    "campaign_editorial_copy": {
+      "type": "rich-text",
+      "settings": {}
+    },
+    "campaign_story_02": {
+      "type": "hero-fullscreen",
+      "settings": {}
+    },
+    "campaign_feature_01": {
+      "type": "featured-image",
+      "settings": {}
+    },
+    "campaign_story_03": {
+      "type": "hero-fullscreen",
+      "settings": {}
+    },
+    "campaign_story_04": {
+      "type": "hero-fullscreen",
+      "settings": {}
+    },
+    "campaign_feature_02": {
+      "type": "featured-image",
+      "settings": {}
+    },
+    "campaign_two_up_closing": {
+      "type": "two-ups-media",
+      "blocks": {
+        "campaign_closing_left": {
+          "type": "item",
+          "settings": {}
+        },
+        "campaign_closing_right": {
+          "type": "item",
+          "settings": {}
+        }
+      },
+      "block_order": [
+        "campaign_closing_left",
+        "campaign_closing_right"
+      ],
+      "settings": {}
+    },
+    "campaign_feature_closing": {
+      "type": "featured-image",
+      "settings": {}
+    }
+  },
+  "order": [
+    "campaign_hero",
+    "campaign_two_up_intro",
+    "campaign_story_01",
+    "campaign_editorial_copy",
+    "campaign_story_02",
+    "campaign_feature_01",
+    "campaign_story_03",
+    "campaign_story_04",
+    "campaign_feature_02",
+    "campaign_two_up_closing",
+    "campaign_feature_closing"
+  ]
+}
