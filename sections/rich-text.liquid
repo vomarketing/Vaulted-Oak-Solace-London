@@ -3,6 +3,7 @@
   assign max_width_desktop = section.settings.max_width_desktop | at_least: 200
   assign max_width_tablet = section.settings.max_width_tablet | at_least: 200
   assign max_width_mobile = section.settings.max_width_mobile | at_least: 200
+  assign disable_full_height = section.settings.disable_full_height | default: false
 
   assign text_size = section.settings.text_font_size | default: 'text-reg-14'
   assign text_classes = 'rich-text__content rte ' | append: text_size
@@ -22,7 +23,7 @@
     {{ 'rich-text.css' | inline_asset_content }}
   </style>
   <rich-text
-    class="rich-text"
+    class="rich-text{% if disable_full_height %} rich-text--non-full-height{% endif %}"
     id="RichText-{{ section.id }}"
     data-header-mode="{{ header_mode }}"
     style="
@@ -81,6 +82,13 @@
         }
       ],
       "default": "dark"
+    },
+    {
+      "type": "checkbox",
+      "id": "disable_full_height",
+      "label": "Disable full-screen height",
+      "info": "Uses 160px top and bottom padding instead of filling the viewport.",
+      "default": false
     },
     {
       "type": "header",
