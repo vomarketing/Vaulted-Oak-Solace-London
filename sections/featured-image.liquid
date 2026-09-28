@@ -6,6 +6,14 @@
   assign desktop_image = section.settings.desktop_image
   assign mobile_image = section.settings.mobile_image
   assign header_mode = section.settings.header_contrast_mode | default: 'dark'
+  assign image_orientation = section.settings.image_orientation | default: 'landscape'
+  assign is_portrait = false
+  assign image_sizes = '(min-width: 1600px) 1180px, (min-width: 910px) 977px, (min-width: 768px) 596px, calc(100vw - 50px)'
+
+  if image_orientation == 'portrait'
+    assign is_portrait = true
+    assign image_sizes = '(min-width: 768px) 529px, calc(100vw - 50px)'
+  endif
 
   assign text_left_size = section.settings.text_left_font_size | default: 'text-reg-14'
   assign text_left_classes = text_left_size
@@ -21,22 +29,24 @@
 -%}
 
 <featured-image
-  class="featured-image"
+  class="featured-image featured-image--{{ image_orientation }}"
   id="FeaturedImage-{{ section.id }}"
   data-header-mode="{{ header_mode }}"
 >
   <div class="featured-image__inner">
-    {%- if section.settings.text_left != blank -%}
-      <div class="featured-image__text featured-image__text--mobile-top {{ text_left_classes }}">
-        {%- if section.settings.text_left_link != blank -%}
-          <a href="{{ section.settings.text_left_link }}">
+    {%- unless is_portrait -%}
+      {%- if section.settings.text_left != blank -%}
+        <div class="featured-image__text featured-image__text--mobile-top {{ text_left_classes }}">
+          {%- if section.settings.text_left_link != blank -%}
+            <a href="{{ section.settings.text_left_link }}">
+              {{ section.settings.text_left }}
+            </a>
+          {%- else -%}
             {{ section.settings.text_left }}
-          </a>
-        {%- else -%}
-          {{ section.settings.text_left }}
-        {%- endif -%}
-      </div>
-    {%- endif -%}
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    {%- endunless -%}
 
     {%- if desktop_image != blank -%}
       {%- if section.settings.image_link != blank -%}
@@ -54,7 +64,8 @@
           class: 'featured-image__image',
           picture_class: 'featured-image__picture',
           breakpoint: '1199px',
-          sizes: '(min-width: 1600px) 1180px, (min-width: 910px) 977px, (min-width: 768px) 596px, calc(100vw - 50px)'
+          sizes: image_sizes,
+          sizes_mobile: image_sizes
         -%}
 
       {%- if section.settings.image_link != blank -%}
@@ -64,32 +75,38 @@
       {%- endif -%}
     {%- endif -%}
 
-    {%- if section.settings.text_left != blank or section.settings.text_right != blank -%}
-      <div class="featured-image__content">
-        {%- if section.settings.text_left != blank -%}
-          <div class="featured-image__text featured-image__text--desktop {{ text_left_classes }}">
-            {%- if section.settings.text_left_link != blank -%}
-              <a href="{{ section.settings.text_left_link }}">
+    {%- if is_portrait -%}
+      {%- if section.settings.text_content != blank -%}
+        <div class="featured-image__portrait-content rte text-reg-14">
+          {{ section.settings.text_content }}
+        </div>
+      {%- endif -%}
+    {%- elsif section.settings.text_left != blank or section.settings.text_right != blank -%}
+        <div class="featured-image__content">
+          {%- if section.settings.text_left != blank -%}
+            <div class="featured-image__text featured-image__text--desktop {{ text_left_classes }}">
+              {%- if section.settings.text_left_link != blank -%}
+                <a href="{{ section.settings.text_left_link }}">
+                  {{ section.settings.text_left }}
+                </a>
+              {%- else -%}
                 {{ section.settings.text_left }}
-              </a>
-            {%- else -%}
-              {{ section.settings.text_left }}
-            {%- endif -%}
-          </div>
-        {%- endif -%}
+              {%- endif -%}
+            </div>
+          {%- endif -%}
 
-        {%- if section.settings.text_right != blank -%}
-          <div class="featured-image__text {{ text_right_classes }}">
-            {%- if section.settings.text_right_link != blank -%}
-              <a href="{{ section.settings.text_right_link }}">
+          {%- if section.settings.text_right != blank -%}
+            <div class="featured-image__text {{ text_right_classes }}">
+              {%- if section.settings.text_right_link != blank -%}
+                <a href="{{ section.settings.text_right_link }}">
+                  {{ section.settings.text_right }}
+                </a>
+              {%- else -%}
                 {{ section.settings.text_right }}
-              </a>
-            {%- else -%}
-              {{ section.settings.text_right }}
-            {%- endif -%}
-          </div>
-        {%- endif -%}
-      </div>
+              {%- endif -%}
+            </div>
+          {%- endif -%}
+        </div>
     {%- endif -%}
   </div>
 </featured-image>
@@ -125,6 +142,22 @@
       "content": "Image"
     },
     {
+      "type": "select",
+      "id": "image_orientation",
+      "label": "Image orientation",
+      "options": [
+        {
+          "value": "landscape",
+          "label": "Landscape"
+        },
+        {
+          "value": "portrait",
+          "label": "Portrait"
+        }
+      ],
+      "default": "landscape"
+    },
+    {
       "type": "image_picker",
       "id": "desktop_image",
       "label": "Desktop image",
@@ -149,12 +182,14 @@
       "type": "inline_richtext",
       "id": "text_left",
       "label": "First text",
-      "default": "The Annie"
+      "default": "The Annie",
+      "visible_if": "{{ section.settings.image_orientation == 'landscape' }}"
     },
     {
       "type": "url",
       "id": "text_left_link",
-      "label": "First text link"
+      "label": "First text link",
+      "visible_if": "{{ section.settings.image_orientation == 'landscape' }}"
     },
     {
       "type": "select",
@@ -174,24 +209,28 @@
           "label": "10px"
         }
       ],
-      "default": "text-reg-14"
+      "default": "text-reg-14",
+      "visible_if": "{{ section.settings.image_orientation == 'landscape' }}"
     },
     {
       "type": "checkbox",
       "id": "text_left_uppercase",
       "label": "First text uppercase",
-      "default": false
+      "default": false,
+      "visible_if": "{{ section.settings.image_orientation == 'landscape' }}"
     },
     {
       "type": "inline_richtext",
       "id": "text_right",
       "label": "Second text",
-      "default": "Shop Now"
+      "default": "Shop Now",
+      "visible_if": "{{ section.settings.image_orientation == 'landscape' }}"
     },
     {
       "type": "url",
       "id": "text_right_link",
-      "label": "Second text link"
+      "label": "Second text link",
+      "visible_if": "{{ section.settings.image_orientation == 'landscape' }}"
     },
     {
       "type": "select",
@@ -211,13 +250,21 @@
           "label": "10px"
         }
       ],
-      "default": "text-reg-14"
+      "default": "text-reg-14",
+      "visible_if": "{{ section.settings.image_orientation == 'landscape' }}"
     },
     {
       "type": "checkbox",
       "id": "text_right_uppercase",
       "label": "Second text uppercase",
-      "default": false
+      "default": false,
+      "visible_if": "{{ section.settings.image_orientation == 'landscape' }}"
+    },
+    {
+      "type": "richtext",
+      "id": "text_content",
+      "label": "Text content",
+      "visible_if": "{{ section.settings.image_orientation == 'portrait' }}"
     }
   ],
   "presets": [
