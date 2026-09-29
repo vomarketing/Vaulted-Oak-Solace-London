@@ -9,6 +9,12 @@
     assign is_video = true
   endif
 
+  assign enable_custom_mobile_height = false
+  assign custom_mobile_height = section.settings.custom_mobile_height | default: 667 | at_least: 1
+  if is_video == false and section.settings.enable_custom_mobile_height
+    assign enable_custom_mobile_height = true
+  endif
+
   # Only the first section in the template is the LCP candidate. Later heroes
   # must not compete with it for bandwidth, so their image lazy-loads.
   # section.index is 1-based and only set inside JSON templates and section
@@ -22,12 +28,13 @@
 -%}
 
 <hero-fullscreen
-  class="hero-fullscreen js-hero-fullscreen"
+  class="hero-fullscreen js-hero-fullscreen{% if enable_custom_mobile_height %} hero-fullscreen--custom-mobile-height{% endif %}"
   id="hero-{{ section.id }}"
   data-header-mode="{{ header_mode }}"
   data-text-color="{{ text_color }}"
   data-autoplay="{{ section.settings.video_autoplay }}"
   data-show-controls="{{ section.settings.show_video_controls }}"
+  {% if enable_custom_mobile_height %}style="--hero-custom-mobile-height: {{ custom_mobile_height }}px;"{% endif %}
 >
   <div class="hero-fullscreen__media global-media">
     {%- if is_video -%}
@@ -229,6 +236,22 @@
       "label": "Mobile image",
       "info": "Recommended: 1500 x 2000 px (2x–3x Retina, 3:4 / 9:16 aspect ratio).",
       "visible_if": "{{ section.settings.media_type == 'image' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_mobile_height",
+      "label": "Use custom mobile height",
+      "info": "Applies at 768px and below for image media only.",
+      "default": false,
+      "visible_if": "{{ section.settings.media_type == 'image' }}"
+    },
+    {
+      "type": "number",
+      "id": "custom_mobile_height",
+      "label": "Custom mobile height (px)",
+      "info": "Minimum 1px.",
+      "default": 667,
+      "visible_if": "{{ section.settings.media_type == 'image' and section.settings.enable_custom_mobile_height == true }}"
     },
     {
       "type": "video",
