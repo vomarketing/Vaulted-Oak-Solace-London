@@ -105,7 +105,7 @@
   -%}
   <body
     id="{{ page_title | handle }}"
-    class="lyt-Site template-{{ template.name | handle }} thm-{{ settings.theme }} {% if settings.bar_enabled %}thm-AnnouncementBar{% endif %}"
+    class="lyt-Site template-{{ template.name | handle }}{% if template.suffix != blank %} template-{{ template.name | handle }}--{{ template.suffix | handle }}{% endif %} thm-{{ settings.theme }}{% if settings.bar_enabled %} thm-AnnouncementBar{% endif %}"
     {% if enable_fullpage_scroll %}data-fullpage-scroll{% endif %}
     {% if template.name == 'product' %}data-pdp-scroll="{{ settings.pdp_scroll_type }}"{% endif %}
   >
@@ -127,7 +127,11 @@
       {%- sections 'header-group' -%}
     </div>
 
-    <main role="main" id="MainContent">
+    <main
+      role="main"
+      id="MainContent"
+      class="main-content{% if template.suffix != blank %} main-content--{{ template.name | handle }}-{{ template.suffix | handle }}{% endif %}"
+    >
       {%- comment -%}
         The homepage sections carry only H2s, so give the page a hidden H1
         with the shop name to anchor the heading outline.

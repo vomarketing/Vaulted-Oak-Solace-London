@@ -180,6 +180,10 @@ body:not([data-fullpage-scroll]) {
     padding-top: var(--header-height);
     transition: all 0.3s ease-in-out;
   }
+
+  #MainContent.main-content--page-campaign {
+    padding-top: 0;
+  }
 }
 
 /* Lock body scroll during PDP -> Editorial transition. */
