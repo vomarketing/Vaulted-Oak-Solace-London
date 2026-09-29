@@ -26,6 +26,8 @@
   id="hero-{{ section.id }}"
   data-header-mode="{{ header_mode }}"
   data-text-color="{{ text_color }}"
+  data-autoplay="{{ section.settings.video_autoplay }}"
+  data-show-controls="{{ section.settings.show_video_controls }}"
 >
   <div class="hero-fullscreen__media global-media">
     {%- if is_video -%}
@@ -51,7 +53,7 @@
       {%- if video_desktop_url != blank -%}
         <video
           class="hero-fullscreen__video js-hero-video"
-          autoplay
+          {% if section.settings.video_autoplay %}autoplay{% endif %}
           loop
           muted
           playsinline
@@ -92,6 +94,10 @@
     ></div>
   {%- endif -%}
 
+  {%- if video_desktop_url != blank and section.settings.show_video_controls -%}
+    <div class="hero-fullscreen__control-scrim" aria-hidden="true"></div>
+  {%- endif -%}
+
   <div class="hero-fullscreen__content">
     {%- if section.settings.heading != blank -%}
       {%- liquid
@@ -126,11 +132,57 @@
     {%- endif -%}
   </div>
 
-  {%- if video_desktop_url != blank -%}
+  {%- if video_desktop_url != blank and section.settings.show_video_controls -%}
+    <button
+      type="button"
+      class="hero-fullscreen__center-play js-center-play"
+      aria-label="Play video"
+    >
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+        <path d="M8 5v14l11-7z"/>
+      </svg>
+    </button>
+
+    <div class="hero-fullscreen__controls js-video-controls">
+      <div class="hero-fullscreen__timeline">
+        <span class="hero-fullscreen__time js-current-time">00:00</span>
+
+        <div class="hero-fullscreen__timeline-wrap js-timeline-wrap">
+          <div class="hero-fullscreen__timeline-track"></div>
+          <div class="hero-fullscreen__timeline-buffered js-timeline-buffered"></div>
+          <div class="hero-fullscreen__timeline-played js-timeline-played"></div>
+          <input
+            class="hero-fullscreen__timeline-range js-timeline-range"
+            type="range"
+            min="0"
+            max="1000"
+            value="0"
+            step="1"
+            aria-label="Seek video"
+          >
+        </div>
+
+        <span class="hero-fullscreen__time hero-fullscreen__time-end js-duration">00:00</span>
+      </div>
+
+      <div class="hero-fullscreen__actions">
+        <button
+          type="button"
+          class="hero-fullscreen__control-button js-playback-toggle"
+          aria-label="Play video"
+        ></button>
+        <button
+          type="button"
+          class="hero-fullscreen__control-button js-mute-toggle"
+          aria-label="Unmute video"
+        ></button>
+      </div>
+    </div>
+  {%- elsif video_desktop_url != blank -%}
     <button
       type="button"
       class="hero-fullscreen__playback-toggle js-playback-toggle"
-      aria-label="Pause video"
+      aria-label="{% if section.settings.video_autoplay %}Pause{% else %}Play{% endif %} video"
     >
       {%- render 'icons', icon: 'pause', class: 'icon-pause js-icon-pause' -%}
       {%- render 'icons', icon: 'play', class: 'icon-play js-icon-play' -%}
@@ -204,6 +256,22 @@
       "id": "video_url_mobile",
       "label": "Mobile external video URL (MP4 direct link)",
       "info": "Recommended: 1080 x 1920 px (9:16) or 1080 x 1440 px (3:4). Used when no mobile Shopify video is selected. Falls back to desktop video when empty.",
+      "visible_if": "{{ section.settings.media_type == 'video' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_autoplay",
+      "label": "Autoplay video",
+      "info": "Automatically plays the muted video in a loop.",
+      "default": true,
+      "visible_if": "{{ section.settings.media_type == 'video' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_video_controls",
+      "label": "Show video controls",
+      "info": "Shows the timeline, time, play/pause and mute controls. When disabled, the compact play/pause button is used.",
+      "default": false,
       "visible_if": "{{ section.settings.media_type == 'video' }}"
     },
     {
