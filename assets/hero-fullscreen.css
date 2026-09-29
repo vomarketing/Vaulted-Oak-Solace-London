@@ -343,3 +343,9 @@
     min-height: 0;
   }
 }
+
+@media (max-width: 768px) {
+  .hero-fullscreen.hero-fullscreen--custom-mobile-height {
+    height: var(--hero-custom-mobile-height);
+  }
+}
