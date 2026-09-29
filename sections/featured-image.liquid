@@ -6,13 +6,16 @@
   assign desktop_image = section.settings.desktop_image
   assign mobile_image = section.settings.mobile_image
   assign header_mode = section.settings.header_contrast_mode | default: 'dark'
-  assign image_orientation = section.settings.image_orientation | default: 'landscape'
-  assign is_portrait = false
+  assign enable_custom_size = section.settings.enable_custom_size | default: false
+  assign custom_width = section.settings.custom_width | default: 529 | at_least: 1
+  assign custom_height = section.settings.custom_height | default: 750 | at_least: 1
+  assign enable_custom_spacing = section.settings.enable_custom_spacing | default: false
+  assign custom_padding_top = section.settings.custom_padding_top | default: 0 | at_least: 0
+  assign custom_padding_bottom = section.settings.custom_padding_bottom | default: 0 | at_least: 0
   assign image_sizes = '(min-width: 1600px) 1180px, (min-width: 910px) 977px, (min-width: 768px) 596px, calc(100vw - 50px)'
 
-  if image_orientation == 'portrait'
-    assign is_portrait = true
-    assign image_sizes = '(min-width: 768px) 529px, calc(100vw - 50px)'
+  if enable_custom_size
+    assign image_sizes = '(min-width: 980px) ' | append: custom_width | append: 'px, (min-width: 768px) 596px, calc(100vw - 50px)'
   endif
 
   assign text_left_size = section.settings.text_left_font_size | default: 'text-reg-14'
@@ -29,24 +32,25 @@
 -%}
 
 <featured-image
-  class="featured-image featured-image--{{ image_orientation }}"
+  class="featured-image{% if enable_custom_size %} featured-image--custom-size{% endif %}{% if enable_custom_spacing %} featured-image--custom-spacing{% endif %}"
   id="FeaturedImage-{{ section.id }}"
   data-header-mode="{{ header_mode }}"
+  {%- if enable_custom_size or enable_custom_spacing %}
+    style="{% if enable_custom_size %}--featured-image-custom-width: {{ custom_width }}px; --featured-image-custom-height: {{ custom_height }}px;{% endif %}{% if enable_custom_spacing %} --featured-image-custom-padding-top: {{ custom_padding_top }}px; --featured-image-custom-padding-bottom: {{ custom_padding_bottom }}px;{% endif %}"
+  {%- endif %}
 >
   <div class="featured-image__inner">
-    {%- unless is_portrait -%}
-      {%- if section.settings.text_left != blank -%}
-        <div class="featured-image__text featured-image__text--mobile-top {{ text_left_classes }}">
-          {%- if section.settings.text_left_link != blank -%}
-            <a href="{{ section.settings.text_left_link }}">
-              {{ section.settings.text_left }}
-            </a>
-          {%- else -%}
+    {%- if section.settings.text_left != blank -%}
+      <div class="featured-image__text featured-image__text--mobile-top {{ text_left_classes }}">
+        {%- if section.settings.text_left_link != blank -%}
+          <a href="{{ section.settings.text_left_link }}">
             {{ section.settings.text_left }}
-          {%- endif -%}
-        </div>
-      {%- endif -%}
-    {%- endunless -%}
+          </a>
+        {%- else -%}
+          {{ section.settings.text_left }}
+        {%- endif -%}
+      </div>
+    {%- endif -%}
 
     {%- if desktop_image != blank -%}
       {%- if section.settings.image_link != blank -%}
@@ -75,38 +79,38 @@
       {%- endif -%}
     {%- endif -%}
 
-    {%- if is_portrait -%}
-      {%- if section.settings.text_content != blank -%}
-        <div class="featured-image__portrait-content rte text-reg-14">
-          {{ section.settings.text_content }}
-        </div>
-      {%- endif -%}
-    {%- elsif section.settings.text_left != blank or section.settings.text_right != blank -%}
-        <div class="featured-image__content">
-          {%- if section.settings.text_left != blank -%}
-            <div class="featured-image__text featured-image__text--desktop {{ text_left_classes }}">
-              {%- if section.settings.text_left_link != blank -%}
-                <a href="{{ section.settings.text_left_link }}">
-                  {{ section.settings.text_left }}
-                </a>
-              {%- else -%}
-                {{ section.settings.text_left }}
-              {%- endif -%}
-            </div>
-          {%- endif -%}
+    {%- if section.settings.text_content != blank -%}
+      <div class="featured-image__text-content rte text-reg-12">
+        {{ section.settings.text_content }}
+      </div>
+    {%- endif -%}
 
-          {%- if section.settings.text_right != blank -%}
-            <div class="featured-image__text {{ text_right_classes }}">
-              {%- if section.settings.text_right_link != blank -%}
-                <a href="{{ section.settings.text_right_link }}">
-                  {{ section.settings.text_right }}
-                </a>
-              {%- else -%}
+    {%- if section.settings.text_left != blank or section.settings.text_right != blank -%}
+      <div class="featured-image__content">
+        {%- if section.settings.text_left != blank -%}
+          <div class="featured-image__text featured-image__text--desktop {{ text_left_classes }}">
+            {%- if section.settings.text_left_link != blank -%}
+              <a href="{{ section.settings.text_left_link }}">
+                {{ section.settings.text_left }}
+              </a>
+            {%- else -%}
+              {{ section.settings.text_left }}
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+
+        {%- if section.settings.text_right != blank -%}
+          <div class="featured-image__text {{ text_right_classes }}">
+            {%- if section.settings.text_right_link != blank -%}
+              <a href="{{ section.settings.text_right_link }}">
                 {{ section.settings.text_right }}
-              {%- endif -%}
-            </div>
-          {%- endif -%}
-        </div>
+              </a>
+            {%- else -%}
+              {{ section.settings.text_right }}
+            {%- endif -%}
+          </div>
+        {%- endif -%}
+      </div>
     {%- endif -%}
   </div>
 </featured-image>
@@ -142,20 +146,58 @@
       "content": "Image"
     },
     {
-      "type": "select",
-      "id": "image_orientation",
-      "label": "Image orientation",
-      "options": [
-        {
-          "value": "landscape",
-          "label": "Landscape"
-        },
-        {
-          "value": "portrait",
-          "label": "Portrait"
-        }
-      ],
-      "default": "landscape"
+      "type": "checkbox",
+      "id": "enable_custom_size",
+      "label": "Use custom desktop size",
+      "info": "Applies at 980px and above. Mobile sizing stays unchanged.",
+      "default": false
+    },
+    {
+      "type": "number",
+      "id": "custom_width",
+      "label": "Custom width (px)",
+      "default": 529,
+      "visible_if": "{{ section.settings.enable_custom_size == true }}"
+    },
+    {
+      "type": "number",
+      "id": "custom_height",
+      "label": "Custom height (px)",
+      "default": 750,
+      "visible_if": "{{ section.settings.enable_custom_size == true }}"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_spacing",
+      "label": "Use custom desktop spacing",
+      "info": "Applies at 980px and above. Each Featured Image section can use different values.",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "custom_padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 320,
+      "step": 4,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.enable_custom_spacing == true }}"
+    },
+    {
+      "type": "range",
+      "id": "custom_padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 320,
+      "step": 4,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.enable_custom_spacing == true }}"
     },
     {
       "type": "image_picker",
@@ -179,17 +221,20 @@
       "content": "Content"
     },
     {
+      "type": "richtext",
+      "id": "text_content",
+      "label": "Text content"
+    },
+    {
       "type": "inline_richtext",
       "id": "text_left",
       "label": "First text",
-      "default": "The Annie",
-      "visible_if": "{{ section.settings.image_orientation == 'landscape' }}"
+      "default": "The Annie"
     },
     {
       "type": "url",
       "id": "text_left_link",
-      "label": "First text link",
-      "visible_if": "{{ section.settings.image_orientation == 'landscape' }}"
+      "label": "First text link"
     },
     {
       "type": "select",
@@ -209,28 +254,24 @@
           "label": "10px"
         }
       ],
-      "default": "text-reg-14",
-      "visible_if": "{{ section.settings.image_orientation == 'landscape' }}"
+      "default": "text-reg-14"
     },
     {
       "type": "checkbox",
       "id": "text_left_uppercase",
       "label": "First text uppercase",
-      "default": false,
-      "visible_if": "{{ section.settings.image_orientation == 'landscape' }}"
+      "default": false
     },
     {
       "type": "inline_richtext",
       "id": "text_right",
       "label": "Second text",
-      "default": "Shop Now",
-      "visible_if": "{{ section.settings.image_orientation == 'landscape' }}"
+      "default": "Shop Now"
     },
     {
       "type": "url",
       "id": "text_right_link",
-      "label": "Second text link",
-      "visible_if": "{{ section.settings.image_orientation == 'landscape' }}"
+      "label": "Second text link"
     },
     {
       "type": "select",
@@ -250,21 +291,13 @@
           "label": "10px"
         }
       ],
-      "default": "text-reg-14",
-      "visible_if": "{{ section.settings.image_orientation == 'landscape' }}"
+      "default": "text-reg-14"
     },
     {
       "type": "checkbox",
       "id": "text_right_uppercase",
       "label": "Second text uppercase",
-      "default": false,
-      "visible_if": "{{ section.settings.image_orientation == 'landscape' }}"
-    },
-    {
-      "type": "richtext",
-      "id": "text_content",
-      "label": "Text content",
-      "visible_if": "{{ section.settings.image_orientation == 'portrait' }}"
+      "default": false
     }
   ],
   "presets": [
