@@ -9,9 +9,16 @@
   assign enable_custom_size = section.settings.enable_custom_size | default: false
   assign custom_width = section.settings.custom_width | default: 529 | at_least: 1
   assign custom_height = section.settings.custom_height | default: 750 | at_least: 1
+  assign disable_full_height = section.settings.disable_full_height | default: false
   assign enable_custom_spacing = section.settings.enable_custom_spacing | default: false
   assign custom_padding_top = section.settings.custom_padding_top | default: 0 | at_least: 0
   assign custom_padding_bottom = section.settings.custom_padding_bottom | default: 0 | at_least: 0
+  assign enable_custom_mobile_spacing = section.settings.enable_custom_mobile_spacing | default: false
+  assign custom_mobile_padding_top = section.settings.custom_mobile_padding_top | default: 0 | at_least: 0
+  assign custom_mobile_padding_bottom = section.settings.custom_mobile_padding_bottom | default: 0 | at_least: 0
+  assign enable_custom_mobile_image_spacing = section.settings.enable_custom_mobile_image_spacing | default: false
+  assign custom_mobile_image_padding_top = section.settings.custom_mobile_image_padding_top | default: 0 | at_least: 0
+  assign custom_mobile_image_padding_bottom = section.settings.custom_mobile_image_padding_bottom | default: 0 | at_least: 0
   assign image_sizes = '(min-width: 1600px) 1180px, (min-width: 910px) 977px, (min-width: 768px) 596px, calc(100vw - 50px)'
 
   if enable_custom_size
@@ -32,11 +39,11 @@
 -%}
 
 <featured-image
-  class="featured-image{% if enable_custom_size %} featured-image--custom-size{% endif %}{% if enable_custom_spacing %} featured-image--custom-spacing{% endif %}"
+  class="featured-image{% if enable_custom_size %} featured-image--custom-size{% endif %}{% if disable_full_height %} featured-image--non-full-height{% endif %}{% if disable_full_height and enable_custom_spacing %} featured-image--custom-spacing{% endif %}{% if disable_full_height and enable_custom_mobile_spacing %} featured-image--custom-mobile-spacing{% endif %}{% if enable_custom_mobile_image_spacing %} featured-image--custom-mobile-image-spacing{% endif %}"
   id="FeaturedImage-{{ section.id }}"
   data-header-mode="{{ header_mode }}"
-  {%- if enable_custom_size or enable_custom_spacing %}
-    style="{% if enable_custom_size %}--featured-image-custom-width: {{ custom_width }}px; --featured-image-custom-height: {{ custom_height }}px;{% endif %}{% if enable_custom_spacing %} --featured-image-custom-padding-top: {{ custom_padding_top }}px; --featured-image-custom-padding-bottom: {{ custom_padding_bottom }}px;{% endif %}"
+  {%- if enable_custom_size or disable_full_height or enable_custom_mobile_image_spacing %}
+    style="{% if enable_custom_size %}--featured-image-custom-width: {{ custom_width }}px; --featured-image-custom-height: {{ custom_height }}px;{% endif %}{% if disable_full_height and enable_custom_spacing %} --featured-image-custom-padding-top: {{ custom_padding_top }}px; --featured-image-custom-padding-bottom: {{ custom_padding_bottom }}px;{% endif %}{% if disable_full_height and enable_custom_mobile_spacing %} --featured-image-custom-mobile-padding-top: {{ custom_mobile_padding_top }}px; --featured-image-custom-mobile-padding-bottom: {{ custom_mobile_padding_bottom }}px;{% endif %}{% if enable_custom_mobile_image_spacing %} --featured-image-custom-mobile-image-padding-top: {{ custom_mobile_image_padding_top }}px; --featured-image-custom-mobile-image-padding-bottom: {{ custom_mobile_image_padding_bottom }}px;{% endif %}"
   {%- endif %}
 >
   <div class="featured-image__inner">
@@ -167,15 +174,52 @@
       "visible_if": "{{ section.settings.enable_custom_size == true }}"
     },
     {
+      "type": "checkbox",
+      "id": "enable_custom_mobile_image_spacing",
+      "label": "Use custom mobile image spacing",
+      "info": "Adds spacing above and below the image at 768px and below.",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "custom_mobile_image_padding_top",
+      "label": "Mobile image spacing top",
+      "min": 0,
+      "max": 320,
+      "step": 4,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.enable_custom_mobile_image_spacing == true }}"
+    },
+    {
+      "type": "range",
+      "id": "custom_mobile_image_padding_bottom",
+      "label": "Mobile image spacing bottom",
+      "min": 0,
+      "max": 320,
+      "step": 4,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.enable_custom_mobile_image_spacing == true }}"
+    },
+    {
       "type": "header",
       "content": "Spacing"
     },
     {
       "type": "checkbox",
+      "id": "disable_full_height",
+      "label": "Disable full-screen height",
+      "info": "Uses the content's natural height and enables custom desktop and mobile spacing controls.",
+      "default": false
+    },
+    {
+      "type": "checkbox",
       "id": "enable_custom_spacing",
       "label": "Use custom desktop spacing",
-      "info": "Applies at 980px and above. Each Featured Image section can use different values.",
-      "default": false
+      "info": "Applies at 980px and above after full-screen height is disabled.",
+      "default": false,
+      "visible_if": "{{ section.settings.disable_full_height == true }}"
     },
     {
       "type": "range",
@@ -186,7 +230,7 @@
       "step": 4,
       "unit": "px",
       "default": 0,
-      "visible_if": "{{ section.settings.enable_custom_spacing == true }}"
+      "visible_if": "{{ section.settings.disable_full_height == true and section.settings.enable_custom_spacing == true }}"
     },
     {
       "type": "range",
@@ -197,7 +241,37 @@
       "step": 4,
       "unit": "px",
       "default": 0,
-      "visible_if": "{{ section.settings.enable_custom_spacing == true }}"
+      "visible_if": "{{ section.settings.disable_full_height == true and section.settings.enable_custom_spacing == true }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_mobile_spacing",
+      "label": "Use custom mobile spacing",
+      "info": "Applies below 980px after full-screen height is disabled.",
+      "default": false,
+      "visible_if": "{{ section.settings.disable_full_height == true }}"
+    },
+    {
+      "type": "range",
+      "id": "custom_mobile_padding_top",
+      "label": "Mobile padding top",
+      "min": 0,
+      "max": 320,
+      "step": 4,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.disable_full_height == true and section.settings.enable_custom_mobile_spacing == true }}"
+    },
+    {
+      "type": "range",
+      "id": "custom_mobile_padding_bottom",
+      "label": "Mobile padding bottom",
+      "min": 0,
+      "max": 320,
+      "step": 4,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.disable_full_height == true and section.settings.enable_custom_mobile_spacing == true }}"
     },
     {
       "type": "image_picker",
