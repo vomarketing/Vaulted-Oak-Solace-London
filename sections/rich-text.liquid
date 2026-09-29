@@ -4,6 +4,12 @@
   assign max_width_tablet = section.settings.max_width_tablet | at_least: 200
   assign max_width_mobile = section.settings.max_width_mobile | at_least: 200
   assign disable_full_height = section.settings.disable_full_height | default: false
+  assign enable_custom_spacing = section.settings.enable_custom_spacing | default: false
+  assign custom_padding_top = section.settings.custom_padding_top | default: 160 | at_least: 0
+  assign custom_padding_bottom = section.settings.custom_padding_bottom | default: 160 | at_least: 0
+  assign enable_custom_mobile_spacing = section.settings.enable_custom_mobile_spacing | default: false
+  assign custom_mobile_padding_top = section.settings.custom_mobile_padding_top | default: 160 | at_least: 0
+  assign custom_mobile_padding_bottom = section.settings.custom_mobile_padding_bottom | default: 160 | at_least: 0
 
   assign text_size = section.settings.text_font_size | default: 'text-reg-14'
   assign text_classes = 'rich-text__content rte ' | append: text_size
@@ -30,6 +36,14 @@
       --max-width-desktop: {{ max_width_desktop }}px;
       --max-width-tablet: {{ max_width_tablet }}px;
       --max-width-mobile: {{ max_width_mobile }}px;
+      {% if disable_full_height and enable_custom_spacing %}
+        --rich-text-custom-padding-top: {{ custom_padding_top }}px;
+        --rich-text-custom-padding-bottom: {{ custom_padding_bottom }}px;
+      {% endif %}
+      {% if disable_full_height and enable_custom_mobile_spacing %}
+        --rich-text-custom-mobile-padding-top: {{ custom_mobile_padding_top }}px;
+        --rich-text-custom-mobile-padding-bottom: {{ custom_mobile_padding_bottom }}px;
+      {% endif %}
     "
   >
     <div class="rich-text__inner">
@@ -84,11 +98,75 @@
       "default": "dark"
     },
     {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
       "type": "checkbox",
       "id": "disable_full_height",
       "label": "Disable full-screen height",
-      "info": "Uses 160px top and bottom padding instead of filling the viewport.",
+      "info": "Uses the content's natural height and enables custom desktop and mobile spacing controls.",
       "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_spacing",
+      "label": "Use custom desktop spacing",
+      "info": "Applies at 980px and above. When disabled, the existing 160px spacing is preserved.",
+      "default": false,
+      "visible_if": "{{ section.settings.disable_full_height == true }}"
+    },
+    {
+      "type": "range",
+      "id": "custom_padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 320,
+      "step": 4,
+      "unit": "px",
+      "default": 160,
+      "visible_if": "{{ section.settings.disable_full_height == true and section.settings.enable_custom_spacing == true }}"
+    },
+    {
+      "type": "range",
+      "id": "custom_padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 320,
+      "step": 4,
+      "unit": "px",
+      "default": 160,
+      "visible_if": "{{ section.settings.disable_full_height == true and section.settings.enable_custom_spacing == true }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_mobile_spacing",
+      "label": "Use custom mobile spacing",
+      "info": "Applies below 980px. When disabled, the existing 160px spacing is preserved.",
+      "default": false,
+      "visible_if": "{{ section.settings.disable_full_height == true }}"
+    },
+    {
+      "type": "range",
+      "id": "custom_mobile_padding_top",
+      "label": "Mobile padding top",
+      "min": 0,
+      "max": 320,
+      "step": 4,
+      "unit": "px",
+      "default": 160,
+      "visible_if": "{{ section.settings.disable_full_height == true and section.settings.enable_custom_mobile_spacing == true }}"
+    },
+    {
+      "type": "range",
+      "id": "custom_mobile_padding_bottom",
+      "label": "Mobile padding bottom",
+      "min": 0,
+      "max": 320,
+      "step": 4,
+      "unit": "px",
+      "default": 160,
+      "visible_if": "{{ section.settings.disable_full_height == true and section.settings.enable_custom_mobile_spacing == true }}"
     },
     {
       "type": "header",
