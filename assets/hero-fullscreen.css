@@ -182,19 +182,6 @@
     left: 22px;
     z-index: 6;
     color: var(--color-white, #ffffff);
-    transition: opacity 0.22s ease, transform 0.22s ease;
-  }
-
-  &.is-playing.is-idle .hero-fullscreen__controls {
-    opacity: 0;
-    pointer-events: none;
-    transform: translateY(8px);
-  }
-
-  &.is-playing.is-idle .hero-fullscreen__controls:focus-within {
-    opacity: 1;
-    pointer-events: auto;
-    transform: none;
   }
 
   .hero-fullscreen__timeline {
