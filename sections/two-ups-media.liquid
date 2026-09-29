@@ -7,15 +7,24 @@
   assign header_mode = section.settings.header_contrast_mode | default: 'dark'
   assign mobile_layout = section.settings.mobile_layout | default: 'stacked'
   assign layout_width = section.settings.layout_width | default: 'contained'
+  assign disable_full_page = section.settings.disable_full_page | default: false
+  assign enable_custom_spacing = false
+  assign custom_padding_top = section.settings.custom_padding_top | default: 0 | at_least: 0
+  assign custom_padding_bottom = section.settings.custom_padding_bottom | default: 0 | at_least: 0
   assign is_full_width = false
   assign use_mobile_slider = false
   assign image_sizes = '(min-width: 1920px) 531px, (min-width: 901px) 440px, (min-width: 768px) 260px, (min-width: 403px) 220px, 190px'
 
   if layout_width == 'full-width'
     assign is_full_width = true
+    assign disable_full_page = false
     assign image_sizes = '(min-width: 901px) 50vw, 100vw'
   elsif mobile_layout == 'slider'
     assign use_mobile_slider = true
+  endif
+
+  if disable_full_page and section.settings.enable_custom_spacing
+    assign enable_custom_spacing = true
   endif
 %}
 
@@ -24,10 +33,13 @@
 {% endif %}
 
 <two-ups-media
-  class="two-ups-media two-ups-media--{{ color_scheme }} two-ups-media--{{ layout_width }}{% if use_mobile_slider %} two-ups-media--slider{% endif %}"
+  class="two-ups-media two-ups-media--{{ color_scheme }} two-ups-media--{{ layout_width }}{% if use_mobile_slider %} two-ups-media--slider{% endif %}{% if disable_full_page %} two-ups-media--full-page-disabled{% endif %}{% if enable_custom_spacing %} two-ups-media--custom-spacing{% endif %}"
   id="TwoUpsMedia-{{ section.id }}"
   data-header-mode="{{ header_mode }}"
   data-mobile-layout="{% if is_full_width %}full-width{% else %}{{ mobile_layout }}{% endif %}"
+  {%- if enable_custom_spacing %}
+    style="--two-ups-media-custom-padding-top: {{ custom_padding_top }}px; --two-ups-media-custom-padding-bottom: {{ custom_padding_bottom }}px;"
+  {%- endif %}
 >
   <div class="two-ups-media__swiper{% if use_mobile_slider %} swiper js-two-ups-swiper{% endif %}">
     <div class="two-ups-media__inner{% if use_mobile_slider %} swiper-wrapper{% endif %}">
@@ -269,6 +281,48 @@
       ],
       "default": "stacked",
       "visible_if": "{{ section.settings.layout_width == 'contained' }}"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "checkbox",
+      "id": "disable_full_page",
+      "label": "Disable full page",
+      "info": "Uses the content's natural height on desktop and enables custom spacing controls. Mobile and full-width layouts stay unchanged.",
+      "default": false,
+      "visible_if": "{{ section.settings.layout_width == 'contained' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_spacing",
+      "label": "Use custom desktop spacing",
+      "info": "Applies to the contained layout at 980px and above. Each Two Ups Media section can use different values.",
+      "default": false,
+      "visible_if": "{{ section.settings.layout_width == 'contained' and section.settings.disable_full_page == true }}"
+    },
+    {
+      "type": "range",
+      "id": "custom_padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 320,
+      "step": 4,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.layout_width == 'contained' and section.settings.disable_full_page == true and section.settings.enable_custom_spacing == true }}"
+    },
+    {
+      "type": "range",
+      "id": "custom_padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 320,
+      "step": 4,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.layout_width == 'contained' and section.settings.disable_full_page == true and section.settings.enable_custom_spacing == true }}"
     }
   ],
   "blocks": [
