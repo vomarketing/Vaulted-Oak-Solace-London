@@ -7,7 +7,6 @@ if (!customElements.get('hero-fullscreen')) {
         video: '.js-hero-video',
         playbackBtn: '.js-playback-toggle',
         centerPlay: '.js-center-play',
-        controls: '.js-video-controls',
         muteBtn: '.js-mute-toggle',
         progress: '.js-timeline-range',
         played: '.js-timeline-played',
@@ -19,14 +18,12 @@ if (!customElements.get('hero-fullscreen')) {
 
       this.classes = {
         isPaused: 'is-paused',
-        isPlaying: 'is-playing',
-        isIdle: 'is-idle'
+        isPlaying: 'is-playing'
       };
 
       this.video = null;
       this.playbackBtn = null;
       this.centerPlay = null;
-      this.controls = null;
       this.muteBtn = null;
       this.progress = null;
       this.played = null;
@@ -36,7 +33,6 @@ if (!customElements.get('hero-fullscreen')) {
       this.timelineWrap = null;
       this.observer = null;
       this.listeners = [];
-      this.idleTimer = null;
       this.seeking = false;
       this.autoplay = false;
       this.showControls = false;
@@ -56,7 +52,6 @@ if (!customElements.get('hero-fullscreen')) {
 
       this.playbackBtn = this.querySelector(this.selectors.playbackBtn);
       this.centerPlay = this.querySelector(this.selectors.centerPlay);
-      this.controls = this.querySelector(this.selectors.controls);
       this.muteBtn = this.querySelector(this.selectors.muteBtn);
       this.progress = this.querySelector(this.selectors.progress);
       this.played = this.querySelector(this.selectors.played);
@@ -114,8 +109,6 @@ if (!customElements.get('hero-fullscreen')) {
           event.preventDefault();
           event.stopPropagation();
           this.video.muted = !this.video.muted;
-          this.showPlayerControls();
-          this.scheduleIdle();
         });
       }
 
@@ -131,7 +124,6 @@ if (!customElements.get('hero-fullscreen')) {
       if (this.progress) {
         this.listen(this.progress, 'pointerdown', () => {
           this.seeking = true;
-          this.showPlayerControls();
         });
 
         this.listen(this.progress, 'input', () => this.previewSeek());
@@ -139,13 +131,6 @@ if (!customElements.get('hero-fullscreen')) {
         this.listen(this.progress, 'pointerup', () => this.commitSeek());
         this.listen(this.progress, 'pointercancel', () => this.commitSeek());
       }
-
-      this.listen(this, 'pointermove', () => this.scheduleIdle());
-      this.listen(this, 'pointerenter', () => this.showPlayerControls());
-      this.listen(this, 'pointerleave', () => {
-        if (!this.video.paused) this.scheduleIdle();
-      });
-      this.listen(this.controls, 'focusin', () => this.showPlayerControls());
 
       this.setAttribute('tabindex', '0');
       this.listen(this, 'keydown', (event) => this.handleKeyboard(event));
@@ -186,12 +171,6 @@ if (!customElements.get('hero-fullscreen')) {
 
       if (this.centerPlay) {
         this.centerPlay.setAttribute('aria-label', isPlaying ? 'Pause video' : 'Play video');
-      }
-
-      if (isPlaying) {
-        this.scheduleIdle();
-      } else {
-        this.showPlayerControls();
       }
     }
 
@@ -258,26 +237,6 @@ if (!customElements.get('hero-fullscreen')) {
 
       this.video.currentTime = (Number(this.progress.value) / 1000) * this.video.duration;
       this.seeking = false;
-      this.scheduleIdle();
-    }
-
-    showPlayerControls() {
-      this.classList.remove(this.classes.isIdle);
-      window.clearTimeout(this.idleTimer);
-      this.idleTimer = null;
-    }
-
-    scheduleIdle() {
-      if (!this.showControls) return;
-
-      this.showPlayerControls();
-      if (this.video.paused) return;
-
-      this.idleTimer = window.setTimeout(() => {
-        if (!this.video.paused && !this.seeking) {
-          this.classList.add(this.classes.isIdle);
-        }
-      }, 2200);
     }
 
     handleKeyboard(event) {
@@ -298,8 +257,6 @@ if (!customElements.get('hero-fullscreen')) {
         event.preventDefault();
         this.video.muted = !this.video.muted;
       }
-
-      this.scheduleIdle();
     }
 
     initIntersection() {
@@ -330,9 +287,6 @@ if (!customElements.get('hero-fullscreen')) {
     }
 
     disconnectedCallback() {
-      window.clearTimeout(this.idleTimer);
-      this.idleTimer = null;
-
       if (this.observer) {
         this.observer.disconnect();
         this.observer = null;
@@ -346,7 +300,6 @@ if (!customElements.get('hero-fullscreen')) {
       this.video = null;
       this.playbackBtn = null;
       this.centerPlay = null;
-      this.controls = null;
       this.muteBtn = null;
       this.progress = null;
       this.played = null;
