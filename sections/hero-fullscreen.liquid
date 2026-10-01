@@ -4,6 +4,7 @@
 {%- liquid
   assign header_mode = section.settings.header_contrast_mode | default: 'light'
   assign text_color = section.settings.text_color | default: 'white'
+  assign background_color = section.settings.background_color | default: '#000000'
   assign content_vertical_alignment = section.settings.content_vertical_alignment | default: 'bottom'
   assign is_video = false
   if section.settings.media_type == 'video'
@@ -34,6 +35,7 @@
   data-header-mode="{{ header_mode }}"
   data-text-color="{{ text_color }}"
   data-content-vertical-alignment="{{ content_vertical_alignment }}"
+  style="--hero-background-color: {{ background_color }}; --hero-content-text-color: {{ text_color }};{% if enable_custom_mobile_height %} --hero-custom-mobile-height: {{ custom_mobile_height }}px;{% endif %}"
   data-autoplay="{{ section.settings.video_autoplay }}"
   data-show-controls="{{ section.settings.show_video_controls }}"
   {% if enable_custom_mobile_height %}style="--hero-custom-mobile-height: {{ custom_mobile_height }}px;"{% endif %}
@@ -354,20 +356,16 @@
       "default": "light"
     },
     {
-      "type": "select",
+      "type": "color",
+      "id": "background_color",
+      "label": "Hero background color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
       "id": "text_color",
-      "label": "Text color",
-      "options": [
-        {
-          "value": "white",
-          "label": "White"
-        },
-        {
-          "value": "black",
-          "label": "Black"
-        }
-      ],
-      "default": "white"
+      "label": "Content text color",
+      "default": "#ffffff"
     },
     {
       "type": "header",

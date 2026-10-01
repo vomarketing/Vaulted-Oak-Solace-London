@@ -6,7 +6,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: var(--color-black, #000000);
+  background-color: var(--hero-background-color, var(--color-black, #000000));
 
   @media (min-width: 768px) {
     .is-last-slide & {
@@ -41,14 +41,7 @@
     margin: 0 auto;
     padding: 40px 20px;
     text-align: center;
-  }
-
-  &[data-text-color="white"] .hero-fullscreen__content {
-    color: var(--color-white, #ffffff);
-  }
-
-  &[data-text-color="black"] .hero-fullscreen__content {
-    color: var(--color-black, #000000);
+    color: var(--hero-content-text-color, var(--color-white, #ffffff));
   }
 
   .hero-fullscreen__heading {
