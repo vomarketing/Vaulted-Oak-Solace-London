@@ -101,6 +101,8 @@
 
     if template.name == 'index' or template.name == 'product'
       assign enable_fullpage_scroll = true
+    elsif template.name == 'page' and page.metafields.custom.enable_fullpage_scroll.value
+      assign enable_fullpage_scroll = true
     endif
   -%}
   <body
