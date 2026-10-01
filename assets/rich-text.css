@@ -3,6 +3,8 @@
   min-height: 100dvh;
   display: flex;
   justify-content: center;
+  background-color: var(--rich-text-background-color, #ffffff);
+  color: var(--rich-text-text-color, #000000);
 }
 
 .rich-text__inner {

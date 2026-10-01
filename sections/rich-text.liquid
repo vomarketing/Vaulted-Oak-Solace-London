@@ -1,5 +1,7 @@
 {%- liquid
   assign header_mode = section.settings.header_contrast_mode | default: 'dark'
+  assign background_color = section.settings.background_color | default: '#ffffff'
+  assign text_color = section.settings.text_color | default: '#000000'
   assign max_width_desktop = section.settings.max_width_desktop | at_least: 200
   assign max_width_tablet = section.settings.max_width_tablet | at_least: 200
   assign max_width_mobile = section.settings.max_width_mobile | at_least: 200
@@ -33,6 +35,8 @@
     id="RichText-{{ section.id }}"
     data-header-mode="{{ header_mode }}"
     style="
+      --rich-text-background-color: {{ background_color }};
+      --rich-text-text-color: {{ text_color }};
       --max-width-desktop: {{ max_width_desktop }}px;
       --max-width-tablet: {{ max_width_tablet }}px;
       --max-width-mobile: {{ max_width_mobile }}px;
@@ -80,6 +84,18 @@
     {
       "type": "header",
       "content": "Color & Contrast"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
     },
     {
       "type": "select",
