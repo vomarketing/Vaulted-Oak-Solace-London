@@ -4,7 +4,7 @@
   height: 100dvh;
   overflow: hidden;
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   justify-content: center;
   background-color: var(--color-black, #000000);
 
@@ -39,7 +39,7 @@
     width: 100%;
     max-width: 800px;
     margin: 0 auto;
-    padding: 0 20px 40px;
+    padding: 40px 20px;
     text-align: center;
   }
 
@@ -334,6 +334,18 @@
       height: 50px;
     }
   }
+}
+
+.hero-fullscreen[data-content-vertical-alignment="top"] {
+  align-items: flex-start;
+}
+
+.hero-fullscreen[data-content-vertical-alignment="center"] {
+  align-items: center;
+}
+
+.hero-fullscreen[data-content-vertical-alignment="bottom"] {
+  align-items: flex-end;
 }
 
 @media (max-width: 900px) {

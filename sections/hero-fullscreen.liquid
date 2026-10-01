@@ -4,6 +4,7 @@
 {%- liquid
   assign header_mode = section.settings.header_contrast_mode | default: 'light'
   assign text_color = section.settings.text_color | default: 'white'
+  assign content_vertical_alignment = section.settings.content_vertical_alignment | default: 'bottom'
   assign is_video = false
   if section.settings.media_type == 'video'
     assign is_video = true
@@ -32,6 +33,7 @@
   id="hero-{{ section.id }}"
   data-header-mode="{{ header_mode }}"
   data-text-color="{{ text_color }}"
+  data-content-vertical-alignment="{{ content_vertical_alignment }}"
   data-autoplay="{{ section.settings.video_autoplay }}"
   data-show-controls="{{ section.settings.show_video_controls }}"
   {% if enable_custom_mobile_height %}style="--hero-custom-mobile-height: {{ custom_mobile_height }}px;"{% endif %}
@@ -117,6 +119,12 @@
       <h2 class="{{ heading_classes }}">
         {{ section.settings.heading }}
       </h2>
+    {%- endif -%}
+
+    {%- if section.settings.description != blank -%}
+      <div class="hero-fullscreen__description rte">
+        {{ section.settings.description }}
+      </div>
     {%- endif -%}
 
     {%- if section.settings.cta_text != blank -%}
@@ -363,6 +371,31 @@
     },
     {
       "type": "header",
+      "content": "Content Position"
+    },
+    {
+      "type": "select",
+      "id": "content_vertical_alignment",
+      "label": "Vertical alignment",
+      "options": [
+        {
+          "value": "top",
+          "label": "Top"
+        },
+        {
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
+        }
+      ],
+      "default": "bottom",
+      "info": "Choose where the full content group appears vertically in the hero."
+    },
+    {
+      "type": "header",
       "content": "Heading"
     },
     {
@@ -396,6 +429,11 @@
       "id": "heading_uppercase",
       "label": "Uppercase",
       "default": false
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
     },
     {
       "type": "header",
