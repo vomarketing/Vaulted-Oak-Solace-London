@@ -175,11 +175,17 @@
 
   .hero-fullscreen__controls {
     position: absolute;
-    right: 22px;
-    bottom: 14px;
-    left: 22px;
+    right: 20px;
+    bottom: 20px;
+    left: 20px;
     z-index: 6;
     color: var(--color-white, #ffffff);
+
+    @media (min-width: 1440px) {
+      right: 40px;
+      bottom: 30px;
+      left: 40px;
+    }
   }
 
   .hero-fullscreen__timeline {
@@ -190,10 +196,8 @@
   }
 
   .hero-fullscreen__time {
-    font-size: 10px;
-    line-height: 1;
-    letter-spacing: 0.02em;
-    opacity: 0.95;
+    font-size: 12px;
+    line-height: 1.5;
     font-variant-numeric: tabular-nums;
   }
 
@@ -313,18 +317,14 @@
 @media (max-width: 640px) {
   .hero-fullscreen {
     .hero-fullscreen__controls {
-      right: 12px;
-      bottom: 8px;
-      left: 12px;
+      right: 20px;
+      bottom: 14px;
+      left: 20px;
     }
 
     .hero-fullscreen__timeline {
       grid-template-columns: 38px minmax(0, 1fr) 38px;
       gap: 7px;
-    }
-
-    .hero-fullscreen__time {
-      font-size: 9px;
     }
 
     .hero-fullscreen__center-play {
