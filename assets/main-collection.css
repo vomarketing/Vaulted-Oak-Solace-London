@@ -29,7 +29,7 @@
 .collection-header__navigation {
   align-items: center;
   display: flex;
-  gap: 24px;
+  gap: 20px;
   min-width: 0;
 }
 
@@ -48,20 +48,10 @@
   max-width: 570px;
 }
 
-.collection-subcategories {
-  min-width: 0;
-  overflow-x: auto;
-  scrollbar-width: none;
-}
-
-.collection-subcategories::-webkit-scrollbar {
-  display: none;
-}
-
 .collection-subcategories__list {
   align-items: center;
   display: flex;
-  gap: 24px;
+  gap: 20px;
   white-space: nowrap;
 }
 
