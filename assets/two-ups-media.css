@@ -1,6 +1,6 @@
 .two-ups-media {
-  --two-ups-media-gap: 16px;
-  --two-ups-media-max-width: 190px;
+  --two-ups-media-gap: 20px;
+  --two-ups-media-max-width: 215px;
   --two-ups-media-caption: 40px;
 
   /* The header overlays this section; pad-top must clear it.
@@ -26,7 +26,7 @@
 
   @media (min-width: 768px) {
     --two-ups-media-gap: 20px;
-    --two-ups-media-max-width: 260px;
+    --two-ups-media-max-width: 335px;
     --two-ups-media-header-offset: 56px;
     --two-ups-media-pad-bottom: clamp(16px, 4dvh, 40px);
   }
@@ -43,6 +43,7 @@
   }
 
   @media (min-width: 1440px) {
+    --two-ups-media-gap: 120px;
     --two-ups-media-pad-top-design: clamp(40px, 14dvh, 200px);
     --two-ups-media-pad-bottom: clamp(28px, 10dvh, 140px);
   }
@@ -98,16 +99,15 @@
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  max-width: 286px;
   width: 100%;
   min-height: 100dvh;
   margin: 0 auto;
-  padding: var(--two-ups-media-pad-top) 25px var(--two-ups-media-pad-bottom);
+  padding: var(--two-ups-media-pad-top) 80px var(--two-ups-media-pad-bottom);
   gap: var(--two-ups-media-gap);
   box-sizing: border-box;
 
   @media (min-width: 768px) {
-    max-width: 385px;
+    max-width: 495px;
   }
 
   @media (min-width: 901px) {
@@ -119,11 +119,13 @@
   }
 
   @media (min-width: 1440px) {
-    max-width: 1029px;
+    max-width: 1000px;
+    padding-right: 0;
+    padding-left: 0;
   }
 
   @media (min-width: 1920px) {
-    max-width: 1232px;
+    max-width: 1183px;
   }
 }
 
@@ -164,10 +166,10 @@
 .two-ups-media__image,
 .two-ups-media__video {
   display: block;
-  width: auto;
+  width: 100%;
   height: auto;
   max-width: 100%;
-  aspect-ratio: 236 / 334;
+  aspect-ratio: 242 / 343;
   object-fit: cover;
 
   /* Stacked: two items share the viewport, so each gets half of the remainder. */
@@ -182,7 +184,7 @@
   }
 
   @media (min-width: 768px) {
-    aspect-ratio: 335 / 474;
+    aspect-ratio: 335 / 475;
   }
 
   @media (min-width: 901px) {
