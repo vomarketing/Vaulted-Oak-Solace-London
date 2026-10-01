@@ -6,6 +6,8 @@
   assign desktop_image = section.settings.desktop_image
   assign mobile_image = section.settings.mobile_image
   assign header_mode = section.settings.header_contrast_mode | default: 'dark'
+  assign background_color = section.settings.background_color | default: '#ffffff'
+  assign text_color = section.settings.text_color | default: '#000000'
   assign enable_custom_size = section.settings.enable_custom_size | default: false
   assign custom_width = section.settings.custom_width | default: 529 | at_least: 1
   assign custom_height = section.settings.custom_height | default: 750 | at_least: 1
@@ -42,9 +44,7 @@
   class="featured-image{% if enable_custom_size %} featured-image--custom-size{% endif %}{% if disable_full_height %} featured-image--non-full-height{% endif %}{% if disable_full_height and enable_custom_spacing %} featured-image--custom-spacing{% endif %}{% if disable_full_height and enable_custom_mobile_spacing %} featured-image--custom-mobile-spacing{% endif %}{% if enable_custom_mobile_image_spacing %} featured-image--custom-mobile-image-spacing{% endif %}"
   id="FeaturedImage-{{ section.id }}"
   data-header-mode="{{ header_mode }}"
-  {%- if enable_custom_size or disable_full_height or enable_custom_mobile_image_spacing %}
-    style="{% if enable_custom_size %}--featured-image-custom-width: {{ custom_width }}px; --featured-image-custom-height: {{ custom_height }}px;{% endif %}{% if disable_full_height and enable_custom_spacing %} --featured-image-custom-padding-top: {{ custom_padding_top }}px; --featured-image-custom-padding-bottom: {{ custom_padding_bottom }}px;{% endif %}{% if disable_full_height and enable_custom_mobile_spacing %} --featured-image-custom-mobile-padding-top: {{ custom_mobile_padding_top }}px; --featured-image-custom-mobile-padding-bottom: {{ custom_mobile_padding_bottom }}px;{% endif %}{% if enable_custom_mobile_image_spacing %} --featured-image-custom-mobile-image-padding-top: {{ custom_mobile_image_padding_top }}px; --featured-image-custom-mobile-image-padding-bottom: {{ custom_mobile_image_padding_bottom }}px;{% endif %}"
-  {%- endif %}
+  style="--featured-image-background-color: {{ background_color }}; --featured-image-text-color: {{ text_color }};{% if enable_custom_size %} --featured-image-custom-width: {{ custom_width }}px; --featured-image-custom-height: {{ custom_height }}px;{% endif %}{% if disable_full_height and enable_custom_spacing %} --featured-image-custom-padding-top: {{ custom_padding_top }}px; --featured-image-custom-padding-bottom: {{ custom_padding_bottom }}px;{% endif %}{% if disable_full_height and enable_custom_mobile_spacing %} --featured-image-custom-mobile-padding-top: {{ custom_mobile_padding_top }}px; --featured-image-custom-mobile-padding-bottom: {{ custom_mobile_padding_bottom }}px;{% endif %}{% if enable_custom_mobile_image_spacing %} --featured-image-custom-mobile-image-padding-top: {{ custom_mobile_image_padding_top }}px; --featured-image-custom-mobile-image-padding-bottom: {{ custom_mobile_image_padding_bottom }}px;{% endif %}"
 >
   <div class="featured-image__inner">
     {%- if section.settings.text_left != blank -%}
@@ -131,6 +131,18 @@
     {
       "type": "header",
       "content": "Color & Contrast"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
     },
     {
       "type": "select",

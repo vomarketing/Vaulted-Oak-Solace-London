@@ -2,6 +2,8 @@
   display: block;
   width: 100%;
   min-height: 100dvh;
+  background-color: var(--featured-image-background-color, #ffffff);
+  color: var(--featured-image-text-color, #000000);
 
   @media (min-width: 768px) {
     .is-last-slide & {
