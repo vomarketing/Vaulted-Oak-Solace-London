@@ -4,6 +4,8 @@
 
 {% liquid
   assign color_scheme = section.settings.color_scheme | default: 'light'
+  assign background_color = section.settings.background_color | default: '#ffffff'
+  assign text_color = section.settings.text_color | default: '#000000'
   assign header_mode = section.settings.header_contrast_mode | default: 'dark'
   assign mobile_layout = section.settings.mobile_layout | default: 'stacked'
   assign layout_width = section.settings.layout_width | default: 'contained'
@@ -44,9 +46,7 @@
   id="TwoUpsMedia-{{ section.id }}"
   data-header-mode="{{ header_mode }}"
   data-mobile-layout="{% if is_full_width %}full-width{% elsif use_mobile_slider %}slider{% else %}stacked{% endif %}"
-  {%- if enable_custom_spacing or enable_custom_mobile_spacing %}
-    style="{% if enable_custom_spacing %}--two-ups-media-custom-padding-top: {{ custom_padding_top }}px; --two-ups-media-custom-padding-bottom: {{ custom_padding_bottom }}px;{% endif %}{% if enable_custom_mobile_spacing %} --two-ups-media-custom-mobile-padding-top: {{ custom_mobile_padding_top }}px; --two-ups-media-custom-mobile-padding-bottom: {{ custom_mobile_padding_bottom }}px;{% endif %}"
-  {%- endif %}
+  style="--two-ups-media-background-color: {{ background_color }}; --two-ups-media-text-color: {{ text_color }};{% if enable_custom_spacing %} --two-ups-media-custom-padding-top: {{ custom_padding_top }}px; --two-ups-media-custom-padding-bottom: {{ custom_padding_bottom }}px;{% endif %}{% if enable_custom_mobile_spacing %} --two-ups-media-custom-mobile-padding-top: {{ custom_mobile_padding_top }}px; --two-ups-media-custom-mobile-padding-bottom: {{ custom_mobile_padding_bottom }}px;{% endif %}"
 >
   <div class="two-ups-media__swiper{% if use_mobile_slider %} swiper js-two-ups-swiper{% endif %}">
     <div class="two-ups-media__inner{% if use_mobile_slider %} swiper-wrapper{% endif %}">
@@ -237,20 +237,16 @@
       "content": "Color & Contrast"
     },
     {
-      "type": "select",
-      "id": "color_scheme",
-      "label": "Background",
-      "options": [
-        {
-          "value": "light",
-          "label": "Light"
-        },
-        {
-          "value": "dark",
-          "label": "Dark"
-        }
-      ],
-      "default": "light"
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
     },
     {
       "type": "select",
