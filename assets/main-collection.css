@@ -26,15 +26,7 @@
   }
 }
 
-.collection-header__navigation {
-  align-items: center;
-  display: flex;
-  gap: 20px;
-  min-width: 0;
-}
-
 .collection-header__title {
-  flex: none;
   margin: 0;
 }
 
@@ -46,25 +38,6 @@
 .collection-header__description {
   margin-top: 10px;
   max-width: 570px;
-}
-
-.collection-subcategories__list {
-  align-items: center;
-  display: flex;
-  gap: 20px;
-  white-space: nowrap;
-}
-
-.collection-header__title-link,
-.collection-subcategories__link {
-  display: block;
-  text-decoration: none;
-  text-underline-offset: 3px;
-}
-
-.collection-header__title-link[aria-current='page'],
-.collection-subcategories__link[aria-current='page'] {
-  text-decoration: underline;
 }
 
 .collection-header__filter-sort {

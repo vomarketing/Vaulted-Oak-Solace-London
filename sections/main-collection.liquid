@@ -33,7 +33,7 @@
   {%- assign is_theme_preview = true -%}
 {%- endif -%}
 
-{%- render 'collection-header', collection: collection, section: section -%}
+{%- render 'collection-header', collection: collection -%}
 
 {%- paginate collection.products by pagination_amount -%}
   <section class="clc-List">
