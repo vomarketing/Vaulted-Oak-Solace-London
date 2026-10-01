@@ -7,12 +7,14 @@
   assign promoted_item_index = null
   assign is_theme_preview = false
   assign selected_size = blank
+  assign promoted_item_index_value = collection.metafields.custom.promoted_index.value
+  assign promoted_image = collection.metafields.custom.promoted_image.value
 
-  if collection.metafields.Promoted.Index != blank and collection.metafields.Promoted.Image != blank
-    assign has_promoted_item = true
-    assign promoted_item_index = collection.metafields.Promoted.Index | plus: 0
+  if promoted_item_index_value != blank and promoted_image != blank
+    assign promoted_item_index = promoted_item_index_value | plus: 0
 
     if promoted_item_index > 0 and promoted_item_index <= 15
+      assign has_promoted_item = true
       assign pagination_amount = 14
     endif
   endif
@@ -36,52 +38,15 @@
 {%- paginate collection.products by pagination_amount -%}
   <section class="clc-List">
     <div class="clc-List_Inner lyt-Container">
-      <div class="clc-List_Body">
-        <div class="prd-List">
-          <div class="prd-List_Items">
-            {%- for product in collection.products -%}
-              {%- liquid
-                assign show_product = true
-                assign is_nlos_product = false
-
-                if product.tags contains 'NLOS'
-                  assign is_nlos_product = true
-                  unless is_theme_preview
-                    assign show_product = false
-                  endunless
-                endif
-
-                if selected_size != blank
-                  for variant in product.variants
-                    if variant.title == selected_size
-                      unless variant.available
-                        assign show_product = false
-                      endunless
-                      break
-                    endif
-                  endfor
-                endif
-              -%}
-
-              {%- if show_product -%}
-                {%- if has_promoted_item and forloop.index == promoted_item_index -%}
-                  <div class="prd-List_Item prd-List_Item-span prd-List_Item-promoted">
-                    {%- render 'collection-promoted-card', metafields: collection.metafields.Promoted -%}
-                  </div>
-                {%- endif -%}
-
-                <div class="prd-List_Item{% if is_nlos_product %} NLOS{% endif %} js-Animate" data-animation="Fade">
-                  {%- render 'product-card',
-                    product: product,
-                    check_first_image_tag: section.settings.enable_first_image_last_tag,
-                    first_image_as_hover: section.settings.set_first_image_as_hover
-                  -%}
-                </div>
-              {%- endif -%}
-            {%- endfor -%}
-          </div>
-        </div>
-      </div>
+      {%- render 'collection-product-list',
+        products: collection.products,
+        collection: collection,
+        section: section,
+        selected_size: selected_size,
+        is_theme_preview: is_theme_preview,
+        has_promoted_item: has_promoted_item,
+        promoted_item_index: promoted_item_index
+      -%}
       {%- render 'collection-pagination', paginate: paginate -%}
     </div>
 
