@@ -1,0 +1,24 @@
+{%- liquid
+  assign orientation = item.image_orientation.value | default: 'portrait'
+  assign size = item.image_size.value | default: 'medium'
+  assign placement = item.copy_placement.value | default: 'below'
+  assign alignment = item.copy_alignment.value | default: 'left'
+  assign spacing = item.copy_spacing.value | default: 'normal'
+  assign preview_image = item.preview_image.value
+-%}
+<figure class="mm-Preview" data-mega-preview="{{ item_id }}"
+  data-orientation="{{ orientation | escape }}" data-size="{{ size | escape }}"
+  data-placement="{{ placement | escape }}" data-alignment="{{ alignment | escape }}"
+  data-spacing="{{ spacing | escape }}" aria-hidden="true" inert>
+  {%- if preview_image != blank -%}
+    <div class="mm-ImageWrap">
+      {{ preview_image | image_url: width: 1600 | image_tag:
+        class: 'mm-Image', loading: 'lazy', widths: '320, 480, 640, 800, 1200, 1600',
+        sizes: '(min-width: 1201px) 35vw, 100vw'
+      }}
+    </div>
+  {%- endif -%}
+  {%- if item.preview_copy.value != blank -%}
+    <figcaption class="mm-Copy">{{ item.preview_copy.value | escape | newline_to_br }}</figcaption>
+  {%- endif -%}
+</figure>
