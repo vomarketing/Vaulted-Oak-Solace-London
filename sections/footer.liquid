@@ -3,24 +3,100 @@
 </style>
 <script src="{{ 'custom-footer.js' | asset_url }}" defer="defer"></script>
 
+{%- liquid
+  assign current_year = 'now' | date: '%Y'
+  assign current_country = localization.country
+  assign newsletter_placeholder = 'layout.footer.newsletter_email' | t
+
+  assign klaviyo_company_id = section.settings.klaviyo_public_key | strip
+  if klaviyo_company_id == blank
+    if shop.permanent_domain == 'solace-london.myshopify.com'
+      assign klaviyo_company_id = 'XuEqtQ'
+    else
+      assign klaviyo_company_id = 'MKZsDF'
+    endif
+  endif
+
+  assign klaviyo_list_id = section.settings.klaviyo_list_id | strip
+  for block in section.blocks
+    if block.type == 'klaviyo_list' and block.settings.list_id != blank
+      assign block_countries = block.settings.country_codes | upcase | remove: ' ' | split: ','
+      if block_countries contains current_country.iso_code
+        assign klaviyo_list_id = block.settings.list_id | strip
+        break
+      endif
+    endif
+  endfor
+-%}
+
+{%- capture instagram_link -%}
+  {%- if section.settings.instagram_url != blank -%}
+    <a class="ft-Footer_Link" href="{{ section.settings.instagram_url }}" target="_blank" rel="noopener">
+      {{- section.settings.instagram_label | default: 'Instagram' -}}
+    </a>
+  {%- endif -%}
+{%- endcapture -%}
+
 <footer class="ft-Footer" aria-label="Footer" data-header-mode="dark">
   <div class="ft-Footer_Inner lyt-Container">
     <div class="ft-Footer_Body">
-      {%- if section.settings.navigation != blank -%}
-        <div class="ft-Footer_Navigation">
-          <div class="ft-Footer_Items">
-            {%- for link in linklists[section.settings.navigation].links -%}
-              <div class="ft-Footer_Item">
-                <a class="ft-Footer_Link" href="{{ link.url }}">{{ link.title }}</a>
-              </div>
-            {%- endfor -%}
-          </div>
+      {%- if section.settings.description != blank -%}
+        <div class="ft-Footer_About">
+          <p class="ft-Footer_Description">{{ section.settings.description }}</p>
         </div>
       {%- endif -%}
 
-      <div class="ft-Footer_Text">
-        {%- assign current_year = 'now' | date: "%Y" -%}
+      <nav class="ft-Footer_Column ft-Footer_Column-primary" aria-label="{{ 'layout.footer.navigation_primary' | t }}">
+        <ul class="ft-Footer_Items">
+          {%- for link in linklists[section.settings.navigation].links -%}
+            <li class="ft-Footer_Item">
+              <a class="ft-Footer_Link" href="{{ link.url }}">{{ link.title }}</a>
+            </li>
+          {%- endfor -%}
 
+          {%- if instagram_link != blank -%}
+            <li class="ft-Footer_Item ft-Footer_Item-instagram">{{ instagram_link }}</li>
+          {%- endif -%}
+        </ul>
+      </nav>
+
+      {%- if section.settings.navigation_secondary != blank -%}
+        <nav class="ft-Footer_Column ft-Footer_Column-secondary" aria-label="{{ 'layout.footer.navigation_secondary' | t }}">
+          <ul class="ft-Footer_Items">
+            {%- for link in linklists[section.settings.navigation_secondary].links -%}
+              <li class="ft-Footer_Item">
+                <a class="ft-Footer_Link" href="{{ link.url }}">{{ link.title }}</a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </nav>
+      {%- endif -%}
+
+      <div class="ft-Footer_Newsletter">
+        <div class="ft-Newsletter">
+          {%- if section.settings.newsletter_heading_mobile != blank -%}
+            <p class="ft-Newsletter_Heading ft-Newsletter_Heading-mobile">{{ section.settings.newsletter_heading_mobile }}</p>
+            <p class="ft-Newsletter_Heading ft-Newsletter_Heading-desktop">{{ section.settings.newsletter_heading }}</p>
+          {%- elsif section.settings.newsletter_heading != blank -%}
+            <p class="ft-Newsletter_Heading">{{ section.settings.newsletter_heading }}</p>
+          {%- endif -%}
+
+          {%- render 'footer-newsletter-form',
+            form_id: 'FooterNewsletter',
+            placeholder: newsletter_placeholder,
+            klaviyo_company_id: klaviyo_company_id,
+            klaviyo_list_id: klaviyo_list_id,
+            source: 'Footer newsletter',
+            disclaimer: section.settings.newsletter_disclaimer
+          -%}
+        </div>
+      </div>
+
+      <div class="ft-Footer_Meta">
+        {{ instagram_link }}
+      </div>
+
+      <div class="ft-Footer_Copyright">
         {{ 'layout.footer.copyright' | t: year: current_year }}
       </div>
     </div>
@@ -33,9 +109,89 @@
   "class": "js-section-footer js-section-header-contrast",
   "settings": [
     {
+      "type": "textarea",
+      "id": "description",
+      "label": "Description",
+      "default": "Solace London is a British womenswear brand founded by Laura Taylor and Ryan Holliday-Stevens in 2013."
+    },
+    {
       "type": "link_list",
       "id": "navigation",
-      "label": "Navigation"
+      "label": "Navigation (column 1)"
+    },
+    {
+      "type": "link_list",
+      "id": "navigation_secondary",
+      "label": "Navigation (column 2)"
+    },
+    {
+      "type": "text",
+      "id": "instagram_label",
+      "label": "Instagram label",
+      "default": "Instagram"
+    },
+    {
+      "type": "url",
+      "id": "instagram_url",
+      "label": "Instagram URL"
+    },
+    {
+      "type": "header",
+      "content": "Newsletter"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading",
+      "label": "Heading",
+      "default": "Subscribe to our newsletter for exclusive access"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_heading_mobile",
+      "label": "Heading on mobile",
+      "info": "Leave blank to use the heading above.",
+      "default": "Subscribe for Exclusive Access"
+    },
+    {
+      "type": "richtext",
+      "id": "newsletter_disclaimer",
+      "label": "Disclaimer",
+      "default": "<p>By subscribing, you agree to receive emails from Solace London. You can unsubscribe at any time. See our <a href=\"/policies/privacy-policy\" title=\"Privacy Policy\">Privacy Policy</a>.</p>"
+    },
+    {
+      "type": "header",
+      "content": "Klaviyo"
+    },
+    {
+      "type": "text",
+      "id": "klaviyo_public_key",
+      "label": "Public API key (site ID)",
+      "info": "Leave blank to use the store's Klaviyo account (same key as the onsite script)."
+    },
+    {
+      "type": "text",
+      "id": "klaviyo_list_id",
+      "label": "Default list ID",
+      "info": "Used for countries without a matching \"Klaviyo list\" block. Find it in Klaviyo > Lists & segments > list > Settings."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "klaviyo_list",
+      "name": "Klaviyo list",
+      "settings": [
+        {
+          "type": "text",
+          "id": "country_codes",
+          "label": "Country codes",
+          "info": "Comma separated ISO codes of the visitor's current market country, e.g. US, CA"
+        },
+        {
+          "type": "text",
+          "id": "list_id",
+          "label": "List ID"
+        }
+      ]
     }
   ]
 }
