@@ -31,7 +31,7 @@
       "title": "Search for products on our site",
       "results_for": "Search results for \"{{ terms }}\"",
       "placeholder": "Search our store",
-      "submit": "Search",
+      "submit": "Submit",
       "heading": {
         "one": "Search result",
         "other": "Search results"

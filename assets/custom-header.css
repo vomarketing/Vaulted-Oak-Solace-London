@@ -254,3 +254,51 @@
     --Logo_Height: 25px;
   }
 }
+
+.drw-Drawer.drw-Drawer-search {
+  max-width: 774px;
+  background-color: #fff;
+  color: #000;
+
+  .drw-Drawer_Inner {
+    max-width: unset;
+    margin: 0 auto;
+    padding: 40px;
+  }
+
+  .psh-Search_Input {
+    border-bottom: 1px solid #000;
+    color: #000;
+  }
+
+  .psh-Search_Input::placeholder {
+    color: rgba(0, 0, 0, 0.5);
+  }
+
+  .drw-Drawer_Close {
+    color: #000;
+  }
+
+  .klv-PopularSearches_Heading {
+    padding-top: 50px;
+    padding-bottom: 0;
+    font-weight: 500;
+    color: #000;
+    opacity: 1;
+  }
+
+  .klv-PopularSearches_Item {
+    margin-top: 20px;
+    margin-bottom: 0;
+  }
+
+  .klv-PopularSearches_Link {
+    font-family: var(--font-family-primary) !important;
+    font-size: var(--type-14-size);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--type-14-line-height);
+    text-transform: capitalize;
+    color: #000;
+    opacity: 1;
+  }
+}

@@ -4,8 +4,8 @@
     {%- render 'bao-close' -%}
   </button>
 
-  <button type="button" class="drw-Drawer_Close drw-Drawer_Close-desktop" data-module-drawers-close="search">
-    {%- render 'bao-close' -%}
+  <button type="button" class="drw-Drawer_Close drw-Drawer_Close-desktop text-reg-14" data-module-drawers-close="search">
+    Close
   </button>
 
   <div class="drw-Drawer_Inner">
@@ -14,7 +14,7 @@
       data-module="search"
     >
       <div class="psh-Search_TopBar">
-        <h4 class="psh-Search_Title fz-25_33">
+        <h4 class="psh-Search_Title text-reg-14">
           {{ 'layout.header.search' | t }}
         </h4>
       </div>
@@ -31,11 +31,12 @@
             class="frm-Form_Input psh-Search_Input"
             value="{{ search.terms | escape }}"
             data-el="search.input"
+            placeholder="Search"
           />
-          <button class="psh-Search_Button psh-Search_Button-search" data-el="search.submit" aria-hidden="true">
-            {{ 'general.search.search' | t }}
+          <button class="psh-Search_Button psh-Search_Button-search text-reg-14" data-el="search.submit" aria-hidden="true">
+            {{ 'general.search.submit' | t }}
           </button>
-          <button class="psh-Search_Button psh-Search_Button-reset fz-10_10" data-el="search.reset" aria-hidden="true">
+          <button class="psh-Search_Button psh-Search_Button-reset text-reg-14" data-el="search.reset" aria-hidden="true">
             {{ 'general.search.reset' | t }}
           </button>
         </form>
@@ -44,7 +45,7 @@
 
       <div class="psh-Search_Klevu">
         <div id="klv-PopularSearches" class="klv-PopularSearches" data-el="search.popular">
-          <div class="klv-PopularSearches_Heading fz-10_10">
+          <div class="klv-PopularSearches_Heading text-reg-14">
             {{ 'general.search.popular_searches' | t }}
           </div>
 
