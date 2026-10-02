@@ -11,79 +11,410 @@
   "sections": {
     "campaign_hero": {
       "type": "hero-fullscreen",
-      "settings": {}
+      "settings": {
+        "media_type": "image",
+        "image_desktop": "shopify://shop_images/RS27_Campaign_Look_07_0513_R3_2.png",
+        "image_mobile": "shopify://shop_images/RS27_Campaign_Look_010_0752_R3_2.png",
+        "enable_custom_mobile_height": false,
+        "custom_mobile_height": 667,
+        "video_url_desktop": "",
+        "video_url_mobile": "",
+        "video_autoplay": true,
+        "show_video_controls": false,
+        "show_overlay": false,
+        "overlay_opacity": 0,
+        "overlay_color": "#000000",
+        "header_contrast_mode": "dark",
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "content_vertical_alignment": "bottom",
+        "heading": "Resort 2027",
+        "heading_font_size": "text-reg-14",
+        "heading_uppercase": false,
+        "description": "",
+        "cta_text": "Scroll To Explore",
+        "cta_link": "",
+        "cta_font_size": "text-reg-14",
+        "cta_uppercase": false
+      }
+    },
+    "hero_fullscreen_fQtECw": {
+      "type": "hero-fullscreen",
+      "name": "Hero Fullscreen",
+      "settings": {
+        "media_type": "image",
+        "enable_custom_mobile_height": false,
+        "custom_mobile_height": 667,
+        "video_url_desktop": "",
+        "video_url_mobile": "",
+        "video_autoplay": true,
+        "show_video_controls": false,
+        "show_overlay": true,
+        "overlay_opacity": 40,
+        "overlay_color": "#000000",
+        "header_contrast_mode": "dark",
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "content_vertical_alignment": "center",
+        "heading": "",
+        "heading_font_size": "text-reg-14",
+        "heading_uppercase": false,
+        "description": "<p>The Resort 2027 Collection lets fabrication and technique driving the design process, the pair describe their aesthetic as “Bold, confident, refined. Modern futurism balanced with timeless minimalism”. The result is a distinctly graphic collection defined by precision cuts, craftsmanship and a signature look of sophistication.</p>",
+        "cta_text": "Shop Collection",
+        "cta_link": "#",
+        "cta_font_size": "text-reg-12",
+        "cta_uppercase": false
+      }
     },
     "campaign_two_up_intro": {
       "type": "two-ups-media",
       "blocks": {
-        "campaign_intro_left": {
-          "type": "item",
-          "settings": {}
-        },
         "campaign_intro_right": {
           "type": "item",
-          "settings": {}
+          "settings": {
+            "media_type": "image",
+            "desktop_image": "shopify://shop_images/RS27_Campaign_Look_010_0714_R3_2.png",
+            "desktop_video_url": "",
+            "mobile_video_url": "",
+            "text": "",
+            "sub_text": "",
+            "text_font_size": "text-reg-14",
+            "text_uppercase": false,
+            "link": ""
+          }
+        },
+        "campaign_intro_left": {
+          "type": "item",
+          "settings": {
+            "media_type": "image",
+            "desktop_image": "shopify://shop_images/RS27_Campaign_Look_010_0735_R3_2.png",
+            "desktop_video_url": "",
+            "mobile_video_url": "",
+            "text": "",
+            "sub_text": "",
+            "text_font_size": "text-reg-14",
+            "text_uppercase": false,
+            "link": ""
+          }
         }
       },
       "block_order": [
-        "campaign_intro_left",
-        "campaign_intro_right"
+        "campaign_intro_right",
+        "campaign_intro_left"
       ],
-      "settings": {}
+      "settings": {
+        "layout_width": "contained",
+        "background_color": "#ffffff",
+        "text_color": "#000000",
+        "header_contrast_mode": "dark",
+        "mobile_layout": "stacked",
+        "disable_full_page": true,
+        "enable_custom_spacing": true,
+        "custom_padding_top": 164,
+        "custom_padding_bottom": 164,
+        "enable_custom_mobile_spacing": true,
+        "custom_mobile_padding_top": 84,
+        "custom_mobile_padding_bottom": 84
+      }
     },
     "campaign_story_01": {
       "type": "hero-fullscreen",
-      "settings": {}
+      "settings": {
+        "media_type": "image",
+        "image_desktop": "shopify://shop_images/RS27_Campaign_Look_01_0060_R3_2.png",
+        "image_mobile": "shopify://shop_images/RS27_Campaign_Look_010_0714_R3_1.png",
+        "enable_custom_mobile_height": true,
+        "custom_mobile_height": 568,
+        "video_url_desktop": "",
+        "video_url_mobile": "",
+        "video_autoplay": true,
+        "show_video_controls": false,
+        "show_overlay": false,
+        "overlay_opacity": 40,
+        "overlay_color": "#000000",
+        "header_contrast_mode": "dark",
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "content_vertical_alignment": "bottom",
+        "heading": "",
+        "heading_font_size": "text-reg-14",
+        "heading_uppercase": false,
+        "description": "",
+        "cta_text": "",
+        "cta_link": "",
+        "cta_font_size": "text-reg-14",
+        "cta_uppercase": false
+      }
     },
     "campaign_editorial_copy": {
       "type": "rich-text",
-      "settings": {}
+      "settings": {
+        "background_color": "#ffffff",
+        "text_color": "#000000",
+        "header_contrast_mode": "dark",
+        "disable_full_height": true,
+        "enable_custom_spacing": false,
+        "custom_padding_top": 160,
+        "custom_padding_bottom": 160,
+        "enable_custom_mobile_spacing": false,
+        "custom_mobile_padding_top": 160,
+        "custom_mobile_padding_bottom": 160,
+        "text": "<p>The Resort 2027 Collection lets fabrication and technique driving the design process, the pair describe their aesthetic as “Bold, confident, refined. Modern futurism balanced with timeless minimalism”. The result is a distinctly graphic collection defined by precision cuts, craftsmanship and a signature look of sophistication.</p>",
+        "text_font_size": "text-reg-12",
+        "text_uppercase": false,
+        "link_text": "",
+        "link": "",
+        "link_font_size": "text-reg-14",
+        "link_uppercase": false,
+        "max_width_desktop": 710,
+        "max_width_tablet": 589,
+        "max_width_mobile": 305
+      }
     },
     "campaign_story_02": {
       "type": "hero-fullscreen",
-      "settings": {}
+      "settings": {
+        "media_type": "image",
+        "image_desktop": "shopify://shop_images/Frame_2117133768_no_text.png",
+        "image_mobile": "shopify://shop_images/RS27_Campaign_Look_010_0714_R3_1_1.png",
+        "enable_custom_mobile_height": true,
+        "custom_mobile_height": 568,
+        "video_url_desktop": "",
+        "video_url_mobile": "",
+        "video_autoplay": true,
+        "show_video_controls": false,
+        "show_overlay": false,
+        "overlay_opacity": 40,
+        "overlay_color": "#000000",
+        "header_contrast_mode": "dark",
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "content_vertical_alignment": "bottom",
+        "heading": "Resort 2027",
+        "heading_font_size": "text-reg-14",
+        "heading_uppercase": false,
+        "description": "",
+        "cta_text": "Shop Collection",
+        "cta_link": "shopify://collections/fall-winter-24",
+        "cta_font_size": "text-reg-12",
+        "cta_uppercase": false
+      }
     },
     "campaign_feature_01": {
       "type": "featured-image",
-      "settings": {}
+      "settings": {
+        "background_color": "#ffffff",
+        "text_color": "#000000",
+        "header_contrast_mode": "dark",
+        "desktop_image": "shopify://shop_images/Rectangle_27.png",
+        "mobile_image": "shopify://shop_images/Rectangle_27.png",
+        "image_link": "",
+        "text_content": "",
+        "text_left": "",
+        "text_left_link": "",
+        "text_left_font_size": "text-reg-14",
+        "text_left_uppercase": false,
+        "text_right": "",
+        "text_right_link": "",
+        "text_right_font_size": "text-reg-14",
+        "text_right_uppercase": false,
+        "enable_custom_size": true,
+        "custom_width": 673,
+        "custom_height": 954,
+        "enable_custom_mobile_image_spacing": false,
+        "custom_mobile_image_padding_top": 40,
+        "custom_mobile_image_padding_bottom": 76,
+        "disable_full_height": true,
+        "enable_custom_spacing": true,
+        "custom_padding_top": 156,
+        "custom_padding_bottom": 160,
+        "enable_custom_mobile_spacing": true,
+        "custom_mobile_padding_top": 160,
+        "custom_mobile_padding_bottom": 160
+      }
     },
     "campaign_story_03": {
       "type": "hero-fullscreen",
-      "settings": {}
+      "settings": {
+        "media_type": "image",
+        "image_desktop": "shopify://shop_images/RS27_Campaign_Look_010_0752_R3_1_2.png",
+        "image_mobile": "shopify://shop_images/RS27_Campaign_Look_010_0752_R3_1_3.png",
+        "enable_custom_mobile_height": true,
+        "custom_mobile_height": 718,
+        "video_url_desktop": "",
+        "video_url_mobile": "",
+        "video_autoplay": true,
+        "show_video_controls": false,
+        "show_overlay": false,
+        "overlay_opacity": 40,
+        "overlay_color": "#000000",
+        "header_contrast_mode": "dark",
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "content_vertical_alignment": "bottom",
+        "heading": "",
+        "heading_font_size": "text-reg-14",
+        "heading_uppercase": false,
+        "description": "",
+        "cta_text": "",
+        "cta_link": "",
+        "cta_font_size": "text-reg-14",
+        "cta_uppercase": false
+      }
     },
     "campaign_story_04": {
       "type": "hero-fullscreen",
-      "settings": {}
+      "settings": {
+        "media_type": "video",
+        "enable_custom_mobile_height": false,
+        "custom_mobile_height": 667,
+        "video_desktop": "shopify://files/videos/290726 SOLACE RESORT 27 SEPTEMBER 02 WEB.mp4",
+        "video_mobile": "shopify://files/videos/290726 SOLACE RESORT 27 SEPTEMBER 02 SOME.mp4",
+        "video_url_desktop": "",
+        "video_url_mobile": "",
+        "video_autoplay": true,
+        "show_video_controls": true,
+        "show_overlay": false,
+        "overlay_opacity": 40,
+        "overlay_color": "#000000",
+        "header_contrast_mode": "dark",
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "content_vertical_alignment": "bottom",
+        "heading": "",
+        "heading_font_size": "text-reg-14",
+        "heading_uppercase": false,
+        "description": "",
+        "cta_text": "",
+        "cta_link": "",
+        "cta_font_size": "text-reg-14",
+        "cta_uppercase": false
+      }
     },
     "campaign_feature_02": {
       "type": "featured-image",
-      "settings": {}
+      "settings": {
+        "background_color": "#ffffff",
+        "text_color": "#000000",
+        "header_contrast_mode": "dark",
+        "desktop_image": "shopify://shop_images/Image_18.png",
+        "mobile_image": "shopify://shop_images/Image_18.png",
+        "image_link": "",
+        "text_content": "<p>( RS27 )<br/>LOS ANGELES<br/>Creative Directors: Lorem Ipsum<br/>Film Director: Lorem Ipsum<br/>[October, 2026]</p>",
+        "text_left": "",
+        "text_left_link": "",
+        "text_left_font_size": "text-reg-14",
+        "text_left_uppercase": false,
+        "text_right": "",
+        "text_right_link": "",
+        "text_right_font_size": "text-reg-14",
+        "text_right_uppercase": false,
+        "enable_custom_size": true,
+        "custom_width": 529,
+        "custom_height": 750,
+        "enable_custom_mobile_image_spacing": false,
+        "custom_mobile_image_padding_top": 284,
+        "custom_mobile_image_padding_bottom": 120,
+        "disable_full_height": true,
+        "enable_custom_spacing": true,
+        "custom_padding_top": 140,
+        "custom_padding_bottom": 80,
+        "enable_custom_mobile_spacing": true,
+        "custom_mobile_padding_top": 120,
+        "custom_mobile_padding_bottom": 120
+      }
     },
     "campaign_two_up_closing": {
       "type": "two-ups-media",
       "blocks": {
-        "campaign_closing_left": {
-          "type": "item",
-          "settings": {}
-        },
         "campaign_closing_right": {
           "type": "item",
-          "settings": {}
+          "settings": {
+            "media_type": "image",
+            "desktop_image": "shopify://shop_images/803def4be49135f8eb989e42a05574b396075fe7.jpg",
+            "mobile_image": "shopify://shop_images/Rectangle_25_1.png",
+            "desktop_video_url": "",
+            "mobile_video_url": "",
+            "text": "Resort 2027",
+            "sub_text": "Shop Dresses",
+            "text_font_size": "text-reg-12",
+            "text_uppercase": false,
+            "link": "shopify://collections/dresses"
+          }
+        },
+        "campaign_closing_left": {
+          "type": "item",
+          "settings": {
+            "media_type": "image",
+            "desktop_image": "shopify://shop_images/21602624d42ed38e30fbf8fb739c2eb68b98d7f2.jpg",
+            "mobile_image": "shopify://shop_images/Rectangle_25.png",
+            "desktop_video_url": "",
+            "mobile_video_url": "",
+            "text": "Resort 2027",
+            "sub_text": "Shop Bridal",
+            "text_font_size": "text-reg-12",
+            "text_uppercase": false,
+            "link": "shopify://collections/bridal"
+          }
         }
       },
       "block_order": [
-        "campaign_closing_left",
-        "campaign_closing_right"
+        "campaign_closing_right",
+        "campaign_closing_left"
       ],
-      "settings": {}
+      "settings": {
+        "layout_width": "full-width",
+        "background_color": "#ffffff",
+        "text_color": "#000000",
+        "header_contrast_mode": "dark",
+        "mobile_layout": "stacked",
+        "disable_full_page": false,
+        "enable_custom_spacing": false,
+        "custom_padding_top": 0,
+        "custom_padding_bottom": 0,
+        "enable_custom_mobile_spacing": false,
+        "custom_mobile_padding_top": 0,
+        "custom_mobile_padding_bottom": 0
+      }
     },
     "campaign_feature_closing": {
       "type": "featured-image",
-      "settings": {}
+      "disabled": true,
+      "settings": {
+        "background_color": "#ffffff",
+        "text_color": "#000000",
+        "header_contrast_mode": "dark",
+        "desktop_image": "shopify://shop_images/RS27_Campaign_Look_010_0752_R3_1.png",
+        "mobile_image": "shopify://shop_images/RS27_Campaign_Look_010_0752_R3_1_1.png",
+        "image_link": "",
+        "text_content": "",
+        "text_left": "Other Collections",
+        "text_left_link": "shopify://collections",
+        "text_left_font_size": "text-reg-14",
+        "text_left_uppercase": false,
+        "text_right": "Discover Spring Summer 27",
+        "text_right_link": "shopify://collections/spring-summer-26",
+        "text_right_font_size": "text-reg-12",
+        "text_right_uppercase": false,
+        "enable_custom_size": false,
+        "custom_width": 529,
+        "custom_height": 750,
+        "enable_custom_mobile_image_spacing": true,
+        "custom_mobile_image_padding_top": 240,
+        "custom_mobile_image_padding_bottom": 240,
+        "disable_full_height": false,
+        "enable_custom_spacing": true,
+        "custom_padding_top": 80,
+        "custom_padding_bottom": 80,
+        "enable_custom_mobile_spacing": false,
+        "custom_mobile_padding_top": 0,
+        "custom_mobile_padding_bottom": 0
+      }
     }
   },
   "order": [
     "campaign_hero",
+    "hero_fullscreen_fQtECw",
     "campaign_two_up_intro",
     "campaign_story_01",
     "campaign_editorial_copy",
