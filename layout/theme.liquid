@@ -69,6 +69,10 @@
     <link rel="stylesheet" href="https://use.typekit.net/ojr8oqr.css" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="https://use.typekit.net/ojr8oqr.css"></noscript>
 
+    {% comment %} CookieYes {% endcomment %}
+    <link rel="stylesheet" href="{{ 'custom-cookieyes.css' | asset_url }}" media="print" onload="this.media='all'">
+    <noscript>{{ 'custom-cookieyes.css' | stylesheet_tag }}</noscript>
+
     {%- render 'head-script' -%}
 
     {%- render 'typekit' -%}
