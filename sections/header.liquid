@@ -260,12 +260,13 @@
               <a
                 class="hd-Nav_Cart"
                 href="{{ routes.cart_url }}"
+                data-cart-empty="{% if cart.item_count == 0 %}true{% else %}false{% endif %}"
                 {% unless page.request_type == 'cart' %} data-module-drawers-trigger="cart"{% endunless %}
               >
                 <span class="util-ScreenReaderOnly">
                   {{ 'layout.header.cart' | t }}
                 </span>
-
+                {%- render 'bao-icon-cart-new' -%}
                 <span class="hd-Nav_CartCount" data-push-cart-count>{{ cart.item_count }}</span>
               </a>
             </li>
@@ -292,12 +293,13 @@
               <a
                 class="hd-MobileNav_Cart"
                 href="{{ routes.cart_url }}"
+                data-cart-empty="{% if cart.item_count == 0 %}true{% else %}false{% endif %}"
                 {% unless page.request_type == 'cart' %} data-module-drawers-trigger="cart"{% endunless %}
               >
                 <span class="util-ScreenReaderOnly">
                   {{ 'layout.header.cart' | t }}
                 </span>
-
+                {%- render 'bao-icon-cart-new' -%}
                 <span
                   class="hd-MobileNav_CartCount"
                   data-push-cart-count

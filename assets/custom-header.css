@@ -77,7 +77,6 @@
     }
   }
 
-  .hd-Nav_Cart,
   .hd-MobileNav_Cart {
     background-color: var(--Color_Primary);
     transition: background-color 0.4s ease, color 0.4s ease;
@@ -87,6 +86,28 @@
     }
   }
 
+  .hd-Nav_Cart {
+    background: none;
+    border-radius: 0;
+
+    &[data-cart-empty="false"] {
+      background: #fff;
+      border-radius: 50%;
+
+      svg {
+        display: none;
+      }
+
+      .hd-Nav_CartCount {
+        display: block;
+      }
+    }
+  }
+
+  .hd-Nav_CartCount {
+    display: none;
+  }
+
   .hd-MobileNav_Icon {
     @media (min-width: 1201px) {
       color: var(--Header_CountTextColor);
@@ -94,9 +115,26 @@
     }
   }
 
-  .hd-MobileNav_Cart,
   .hd-MobileNav_CartCount {
     color: var(--Header_CountTextColor);
+  }
+
+  .hd-MobileNav_Cart {
+    background: none;
+    border-radius: 0;
+
+    &[data-cart-empty="false"] {
+      background: #fff;
+      border-radius: 50%;
+
+      svg {
+        display: none;
+      }
+
+      .hd-MobileNav_CartCount {
+        display: block;
+      }
+    }
   }
 
   .hd-Nav_CartCount {
@@ -104,6 +142,8 @@
   }
 
   .hd-MobileNav_CartCount {
+    display: none;
+
     @media (min-width: 1201px) {
       color: var(--Color_Primary);
     }
@@ -171,16 +211,32 @@
         }
 
         .hd-Nav_Cart {
-          background-color: var(--color-black);
+          color: var(--color-black);
+
+          &[data-cart-empty="false"] {
+            background-color: var(--color-black);
+
+            .hd-Nav_CartCount {
+              color: var(--color-white);
+            }
+          }
         }
 
-        .hd-Nav_CartCount {
-          color: var(--color-white);
+        .hd-MobileNav_Cart {
+          color: var(--color-black);
+
+          &[data-cart-empty="false"] {
+            background-color: var(--color-black);
+
+            .hd-MobileNav_CartCount {
+              color: var(--color-white);
+            }
+          }
         }
       }
 
-      .hd-Nav_Cart,
-      .hd-MobileNav_Cart {
+      .hd-Nav_Cart[data-cart-empty="false"],
+      .hd-MobileNav_Cart[data-cart-empty="false"] {
         background-color: var(--Header_CountTextColor);
       }
 
