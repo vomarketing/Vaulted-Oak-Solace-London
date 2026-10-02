@@ -1,5 +1,72 @@
 .collection-header {
-  padding: 50px 0 68px;
+  --collection-header-offset: 0px;
+  --collection-header-compact-height: 38px;
+
+  position: sticky;
+  top: var(--collection-header-offset);
+  z-index: calc(var(--z-header, 90) - 1);
+  padding: 40px 0;
+  background-color: transparent;
+  transition: top 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.collection-header::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  background-color: var(--color-white, #fff);
+  content: "";
+  pointer-events: none;
+  transition: clip-path 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+body.template-collection.has-collection-scroll-animation .collection-header {
+  --collection-header-offset: var(--header-height, 0px);
+}
+
+body.template-collection.has-collection-scroll-animation .hd-Header[data-sticky="true"] {
+  transition:
+    transform 0.3s cubic-bezier(0.22, 1, 0.36, 1),
+    background-color 0.2s ease,
+    color 0.2s ease,
+    border-color 0.2s ease;
+  will-change: transform;
+}
+
+body.template-collection.has-collection-scroll-animation.is-collection-nav-hidden .hd-Header[data-sticky="true"] {
+  transform: translate3d(0, -100%, 0);
+}
+
+body.template-collection.has-collection-scroll-animation.is-collection-nav-hidden .collection-header {
+  --collection-header-offset: 0px;
+  pointer-events: none;
+}
+
+body.template-collection.has-collection-scroll-animation.is-collection-nav-hidden .collection-header::before {
+  clip-path: inset(0 0 calc(100% - var(--collection-header-compact-height)) 0);
+}
+
+.collection-header__inner {
+  position: relative;
+  z-index: 1;
+  padding-top: 15px;
+  padding-bottom: 15px;
+  background-color: var(--color-white, #fff);
+  transition: transform 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+body.template-collection.has-collection-scroll-animation.is-collection-nav-hidden .collection-header__inner {
+  pointer-events: auto;
+  transform: translateY(-40px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .collection-header,
+  .collection-header::before,
+  .collection-header__inner,
+  body.template-collection.has-collection-scroll-animation .hd-Header[data-sticky="true"] {
+    transition: none;
+  }
 }
 
 .collection-header__inner {
