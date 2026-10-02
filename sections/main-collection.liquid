@@ -1,5 +1,6 @@
 {{ 'main-collection.css' | asset_url | stylesheet_tag }}
 {{ 'collection-pagination.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'main-collection.js' | asset_url }}" defer="defer"></script>
 
 {%- liquid
   assign pagination_amount = 15
@@ -33,7 +34,7 @@
   {%- assign is_theme_preview = true -%}
 {%- endif -%}
 
-{%- render 'collection-header', collection: collection -%}
+{%- render 'collection-header', collection: collection, section: section, current_tags: current_tags -%}
 
 {%- paginate collection.products by pagination_amount -%}
   <section class="clc-List">
@@ -55,25 +56,13 @@
       data-module-drawers-drawer="clc-filters"
       data-module-drawers-move-me="root"
     >
-      <button
-        class="clc-Filters_Link clc-Filters_Link-drawer fz-10_10"
-        type="button"
-        data-module-drawers-close="clc-filters"
-      >
-        {{ 'collections.general.filter_close' | t }}
-
-        <div class="clc-Filters_Icon">
-          {%- render 'bao-chevron-right' -%}
-        </div>
-      </button>
-
       <div class="drw-Drawer_Inner">
-        <header class="drw-Drawer_Header">
-          <h2 class="drw-Drawer_Title fz-25_33">{{ 'collections.general.filter_title' | t }}</h2>
-        </header>
-
         <div class="drw-Drawer_Body">
-          {%- render 'collection-filters' -%}
+          {%- if section.settings.use_search_and_discovery_filters -%}
+            {%- render 'collection-filter-app', collection: collection, section: section, current_tags: current_tags -%}
+          {%- else -%}
+            {%- render 'collection-filters-v2', collection: collection, section: section, current_tags: current_tags -%}
+          {%- endif -%}
         </div>
       </div>
     </div>
@@ -84,6 +73,13 @@
 {
   "name": "Main collection",
   "settings": [
+    {
+      "type": "checkbox",
+      "id": "use_search_and_discovery_filters",
+      "label": "Use Search & Discovery filters",
+      "info": "Show filters configured in Shopify Search & Discovery instead of the legacy tag filters.",
+      "default": false
+    },
     {
       "type": "checkbox",
       "id": "enable_sorting",

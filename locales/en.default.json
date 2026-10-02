@@ -205,7 +205,8 @@
       "shop_now": "Shop now",
       "filter": "Filter",
       "filter_title": "Filter By",
-      "filter_close": "Close"
+      "filter_close": "Close",
+      "filter_and_sort": "Filter & Sort"
     },
     "per_page": {
       "title": "Per page"
@@ -219,7 +220,10 @@
       "price_ascending": "Price, low to high",
       "price_descending": "Price, high to low",
       "date_descending": "Date, new to old",
-      "date_ascending": "Date, old to new"
+      "date_ascending": "Date, old to new",
+      "new_in": "New In",
+      "ascending_price": "Ascending Price",
+      "descending_price": "Descending Price"
     }
   },
   "customer": {
