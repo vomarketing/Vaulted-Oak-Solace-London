@@ -164,6 +164,7 @@ if (!window.FooterRevealController) {
 
       this.footer.addEventListener('wheel', (e) => {
         if (!this.footer.classList.contains(this.classes.isVisible)) return;
+        if (this.footer.scrollTop > 0) return;
         if (e.deltaY < -15) {
           if (e.cancelable) e.preventDefault();
           document.dispatchEvent(new CustomEvent('fullpage:prevSlide'));
@@ -180,6 +181,7 @@ if (!window.FooterRevealController) {
       this.footer.addEventListener('touchmove', (e) => {
         if (!isTouchDown || !e.touches || !e.touches.length) return;
         if (!this.footer.classList.contains(this.classes.isVisible)) return;
+        if (this.footer.scrollTop > 0) return;
 
         const currentY = e.touches[0].clientY;
         const diffY = touchStartY - currentY;
@@ -219,5 +221,109 @@ if (!window.FooterRevealController) {
     document.addEventListener('DOMContentLoaded', initFooterReveal);
   } else {
     initFooterReveal();
+  }
+}
+
+/**
+ * FooterNewsletterController
+ * Submits the footer newsletter form to a Klaviyo list via the Client Subscriptions API.
+ */
+if (!window.FooterNewsletterController) {
+  class FooterNewsletterController {
+    static selectors = {
+      newsletterForm: '[data-footer-newsletter-form]',
+      newsletterStatus: '[data-footer-newsletter-status]'
+    };
+
+    constructor() {
+      this.selectors = FooterNewsletterController.selectors;
+      this.abortController = new AbortController();
+
+      this.bindEvents();
+    }
+
+    bindEvents() {
+      const { signal } = this.abortController;
+
+      document.addEventListener('submit', (e) => {
+        const form = e.target.closest(this.selectors.newsletterForm);
+        if (!form) return;
+
+        e.preventDefault();
+        this.submitNewsletter(form);
+      }, { signal });
+    }
+
+    async submitNewsletter(form) {
+      const status = form.querySelector(this.selectors.newsletterStatus);
+      const submitButton = form.querySelector('[type="submit"]');
+      const { klaviyoCompanyId, klaviyoListId, klaviyoSource, country } = form.dataset;
+
+      const setStatus = (message) => {
+        if (status) status.textContent = message;
+      };
+
+      if (!klaviyoCompanyId || !klaviyoListId) {
+        console.warn('[Footer newsletter] Missing Klaviyo public key or list ID for this country.');
+        setStatus(status?.dataset.errorMessage);
+        return;
+      }
+
+      const properties = { newsletter_country: country };
+
+      const payload = {
+        data: {
+          type: 'subscription',
+          attributes: {
+            custom_source: klaviyoSource,
+            profile: {
+              data: {
+                type: 'profile',
+                attributes: {
+                  email: form.elements.email.value.trim(),
+                  properties
+                }
+              }
+            }
+          },
+          relationships: {
+            list: { data: { type: 'list', id: klaviyoListId } }
+          }
+        }
+      };
+
+      if (submitButton) submitButton.disabled = true;
+
+      try {
+        const response = await fetch(
+          `https://a.klaviyo.com/client/subscriptions?company_id=${encodeURIComponent(klaviyoCompanyId)}`,
+          {
+            method: 'POST',
+            headers: {
+              accept: 'application/vnd.api+json',
+              'content-type': 'application/vnd.api+json',
+              revision: '2026-07-15'
+            },
+            body: JSON.stringify(payload)
+          }
+        );
+
+        if (!response.ok) throw new Error(`Klaviyo responded with ${response.status}`);
+
+        form.reset();
+        setStatus(status?.dataset.successMessage);
+      } catch (error) {
+        console.error('[Footer newsletter]', error);
+        setStatus(status?.dataset.errorMessage);
+      } finally {
+        if (submitButton) submitButton.disabled = false;
+      }
+    }
+  }
+
+  window.FooterNewsletterController = FooterNewsletterController;
+
+  if (!window.footerNewsletterInstance) {
+    window.footerNewsletterInstance = new FooterNewsletterController();
   }
 }
