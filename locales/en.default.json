@@ -68,7 +68,13 @@
     "footer": {
       "social_platform": "{{ name }} on {{ platform }}",
       "copyright": "© {{ year }}",
-      "payment_methods": "Payment methods accepted"
+      "payment_methods": "Payment methods accepted",
+      "navigation_primary": "Customer service",
+      "navigation_secondary": "Legal",
+      "newsletter_email": "Email Address",
+      "newsletter_submit": "Submit",
+      "newsletter_success": "Thank you for subscribing.",
+      "newsletter_error": "Something went wrong. Please try again."
     },
     "header": {
       "menu": "Menu",
