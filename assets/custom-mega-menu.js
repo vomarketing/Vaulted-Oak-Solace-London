@@ -179,8 +179,72 @@
       swiper.mousewheel?.disable();
       swiper.keyboard?.disable();
     }
+
     close(restoreFocus = true) {
       if (!this.panel) return;
+
+      if (!restoreFocus) {
+        this.finishClose(false);
+        return;
+      }
+
+      if (this.state === 'closing') return;
+
+      const reduceMotion = window.matchMedia(
+        '(prefers-reduced-motion: reduce)'
+      ).matches;
+
+      if (reduceMotion) {
+        this.finishClose(restoreFocus);
+        return;
+      }
+
+      const panel = this.panel;
+      const surface = panel.querySelector('[data-mega-surface]');
+
+      if (!surface) {
+        this.finishClose(restoreFocus);
+        return;
+      }
+
+      this.state = 'closing';
+      panel.dataset.state = 'closing';
+
+      let timer;
+
+      const complete = () => {
+        if (this.panel === panel) {
+          this.finishClose(restoreFocus);
+        }
+      };
+
+      const onAnimationEnd = (event) => {
+        if (
+          event.target === surface &&
+          event.animationName === 'mm-close'
+        ) {
+          complete();
+        }
+      };
+
+      this.cancelCloseAnimation = () => {
+        clearTimeout(timer);
+        surface.removeEventListener('animationend', onAnimationEnd);
+      };
+
+      surface.addEventListener('animationend', onAnimationEnd);
+      panel.classList.add('is-closing');
+
+      timer = setTimeout(complete, 550);
+    }
+
+    finishClose(restoreFocus = true) {
+      if (!this.panel) return;
+
+      this.cancelCloseAnimation?.();
+      this.cancelCloseAnimation = null;
+      this.panel.classList.remove('is-closing');
+
       const oldTrigger = this.trigger;
       this.panel.hidden = true;
       this.panel.dataset.state = 'closed';
