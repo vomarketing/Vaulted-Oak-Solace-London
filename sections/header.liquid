@@ -85,6 +85,8 @@
   {{ 'custom-header.css' | inline_asset_content }}
 </style>
 <script src="{{ 'custom-header.js' | asset_url }}" defer="defer"></script>
+{{ 'custom-mega-menu.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'custom-mega-menu.js' | asset_url }}" defer="defer"></script>
 
 {%- capture initial_pdp_header_mode -%}
   {%- if template.name == 'product' -%}
@@ -112,20 +114,44 @@
         <nav class="hd-Nav">
           <ul class="hd-Nav_Items" data-el="header.items">
             {%- for link in linklists[section.settings.left_navigation].links -%}
+              {%- liquid
+                assign mega_block = nil
+                assign menu_title = link.title | strip | downcase
+                for block in section.blocks
+                  assign block_title = block.settings.menu_item_title | strip | downcase
+                  if block.type == 'mega_menu' and block_title == menu_title and block.settings.menu_content != blank
+                    assign mega_block = block
+                    break
+                  endif
+                endfor
+              -%}
               <li
                 class="hd-Nav_Item"
-                data-el="header.item"
-                data-has-children="{%- if link.links.size > 0 -%}true{%- else -%}false{%- endif -%}"
+                {% if mega_block %}
+                  data-mega-item
+                {% else %}
+                  data-el="header.item"
+                {% endif %}
+                data-has-children="{%- if mega_block == nil and link.links.size > 0 -%}true{%- else -%}false{%- endif -%}"
               >
-                <a
-                  class="hd-Nav_Link"
-                  href="{{ link.url }}"
-                  {% if link.active %} aria-current="page"{% endif %}
-                >
-                  {{ link.title }}
-                </a>
+                {%- if mega_block -%}
+                  <button type="button" class="hd-Nav_Link mm-Trigger"
+                          data-mega-trigger="MegaMenu-{{ section.id }}-{{ mega_block.id }}"
+                          aria-controls="MegaMenu-{{ section.id }}-{{ mega_block.id }}"
+                          aria-expanded="false" aria-haspopup="dialog">
+                    {{ link.title | escape }}
+                  </button>
+                {%- else -%}
+                  <a
+                    class="hd-Nav_Link"
+                    href="{{ link.url }}"
+                    {% if link.active %} aria-current="page"{% endif %}
+                  >
+                    {{ link.title }}
+                  </a>
+                {%- endif -%}
 
-                {%- if link.links.size > 0 -%}
+                {%- if mega_block == nil and link.links.size > 0 -%}
                   <div class="hd-Nav_Dropdown">
                     <ul class="hd-Nav_Children">
                       {%- for child_link in link.links -%}
@@ -189,7 +215,6 @@
 
       <a class="hd-Header_Logo" href="{{ routes.root_url }}">
         {%- render 'bao-logo' -%}
-      
       </a>
 
       <div class="hd-Header_Nav hd-Header_Nav-right">
@@ -294,6 +319,11 @@
       <div class="hd-Header_Backdrop" data-el="header.backdrop"></div>
     </div>
   </div>
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'mega_menu' and block.settings.menu_content != blank -%}
+      {% render 'mega-menu-panel', block: block, section_id: section.id %}
+    {%- endif -%}
+  {%- endfor -%}
 </header>
 
  {% comment %} <div class="hd-AnimatedHeader" style="display: none;">
@@ -317,6 +347,7 @@
     }
 
     function closeMenu() {
+      if (header.hasAttribute('data-mega-open')) return;
       clearTimeout(hideTimer);
 
       items.forEach(function (i) {
@@ -347,6 +378,7 @@
       var dropdown = item.querySelector('.hd-Nav_Dropdown');
 
       function openMenu() {
+        if (header.hasAttribute('data-mega-open')) return;
         clearTimeout(hideTimer);
 
         items.forEach(function (i) {
@@ -477,6 +509,26 @@
       "id": "enable_sticky_header",
       "label": "Enable sticky header",
       "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "mega_menu",
+      "name": "Mega menu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "menu_item_title",
+          "label": "Main menu item title",
+          "info": "Enter the exact title from Left navigation, for example Shop or New In."
+        },
+        {
+          "type": "metaobject",
+          "id": "menu_content",
+          "label": "Mega menu content",
+          "metaobject_type": "mega_menu"
+        }
+      ]
     }
   ]
 }

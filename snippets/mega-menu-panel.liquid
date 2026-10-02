@@ -1,0 +1,52 @@
+{%- liquid
+  assign menu = block.settings.menu_content
+  assign panel_id = 'MegaMenu-' | append: section_id | append: '-' | append: block.id
+  assign background = menu.background_color.value | default: '#ffffff'
+  assign foreground = menu.text_color.value | default: '#000000'
+  assign active_color = menu.active_link_color.value | default: foreground
+-%}
+<div id="{{ panel_id }}" class="mm-Layer" data-mega-panel hidden
+  data-background="{{ background | escape }}"
+  data-foreground="{{ foreground | escape }}"
+  data-active-color="{{ active_color | escape }}"
+  {{ block.shopify_attributes }}>
+  <div class="mm-Backdrop" data-mega-dismiss aria-hidden="true"></div>
+  <div class="mm-Panel" data-mega-surface>
+    <button type="button" class="mm-Close" data-mega-close aria-label="Close navigation">Close</button>
+    <div class="mm-Overview" data-mega-view="overview">
+      <nav class="mm-Groups" aria-label="{{ block.settings.menu_item_title | escape }} categories">
+        {%- for group in menu.groups.value -%}
+          {%- assign group_index = forloop.index -%}
+          {%- if group.items.value != blank -%}
+            <ul class="mm-Group">
+              {%- for item in group.items.value -%}
+                {%- assign item_id = panel_id | append: '-g' | append: group_index | append: '-i' | append: forloop.index -%}
+                {%- if item.label.value != blank and item.destination_url.value != blank -%}
+                  <li>
+                    <a class="mm-Link" href="{{ item.destination_url.value | escape }}"
+                      data-mega-link="{{ item_id }}"
+                      data-background="{{ item.background_color.value | escape }}"
+                      data-foreground="{{ item.text_color.value | escape }}"
+                      data-active-color="{{ item.active_link_color.value | escape }}">
+                      {{ item.label.value | escape }}
+                    </a>
+                  </li>
+                {%- endif -%}
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        {%- endfor -%}
+      </nav>
+      <div class="mm-Previews">
+        {%- for group in menu.groups.value -%}
+          {%- assign group_index = forloop.index -%}
+          {%- for item in group.items.value -%}
+            {%- assign item_id = panel_id | append: '-g' | append: group_index | append: '-i' | append: forloop.index -%}
+            {% render 'mega-menu-preview', item: item, item_id: item_id %}
+          {%- endfor -%}
+        {%- endfor -%}
+      </div>
+    </div>
+    {% comment %}Future detail view belongs here. Keep overview link navigation until implemented.{% endcomment %}
+  </div>
+</div>
