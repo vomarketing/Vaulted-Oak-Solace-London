@@ -15,7 +15,7 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
-  max-width: 240px;
+  max-width: 244px;
   font-family: var(--font-family-primary);
   font-size: var(--type-12-size);
   font-weight: var(--font-weight-regular);
@@ -35,18 +35,18 @@
 }
 
 .page-404__text {
-  margin-top: 21px;
+  margin-top: 30px;
 }
 
 .page-404__link {
   width: 100%;
-  margin-top: 25px;
+  margin-top: 30px;
   color: inherit;
   text-decoration: underline;
   text-decoration-thickness: from-font;
   text-underline-position: from-font;
 
   &:hover {
-    opacity: 0.8;
+    opacity: 0.5;
   }
 }
