@@ -195,7 +195,7 @@
     },
     "summary": {
       "continue_to_checkout": "Order summary",
-      "shipping_at_checkout": "Shipping and taxes are calculated at checkout. Discount codes can be applied at the checkout.",
+      "shipping_at_checkout": "Prices now include customs duties, import fees and taxes. No additional charges will be incurred upon delivery.",
       "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Condimentum id venenatis a condimentum. Elementum curabitur vitae nunc sed velit dignissim.",
       "subtotal": "Subtotal",
       "discount": "Discount",
