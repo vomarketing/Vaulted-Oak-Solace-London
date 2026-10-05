@@ -58,6 +58,27 @@
     ]
   },
   {
+    "name": "MiniBag",
+    "settings": [
+      {
+        "type": "richtext",
+        "id": "mbg_delivery",
+        "label": "Delivery information"
+      },
+      {
+        "type": "text",
+        "id": "mbg_email",
+        "label": "Customer service email"
+      },
+      {
+        "type": "text",
+        "id": "mbg_final_sale_message",
+        "label": "Final sale message",
+        "default": "All online archive sale items are final sale. No returns or exchanges."
+      }
+    ]
+  },
+  {
     "name": "App Icons",
     "settings": [
       {
