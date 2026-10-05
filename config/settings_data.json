@@ -12,6 +12,7 @@
     "bar_enabled": false,
     "pdp_header_contrast_mode": "light",
     "pdp_scroll_type": "slider",
+    "mbg_delivery": "<p>Estimated delivery: 7-10 working days, shipped with DHL Express.</p><p>Full-price items may be returned within 14 days of receipt.</p><p><a href=\"/pages/privacy\" title=\"Privacy Policy\">More Information</a></p>",
     "store_name": "Solace London",
     "store_url": "www.solacelondon.com",
     "apple_touch_icon": "shopify://shop_images/black-favicon.png",
