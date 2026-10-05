@@ -159,6 +159,15 @@
       "link_url": "/collections",
       "continue_shopping": "Continue Shopping"
     },
+    "bag": {
+      "title": "Bag ({{ count }})",
+      "edit": "Edit",
+      "change_option": "Change {{ option }}",
+      "remove": "Remove",
+      "decrease_quantity": "Decrease quantity of {{ title }}",
+      "increase_quantity": "Increase quantity of {{ title }}",
+      "error": "Something went wrong. Please try again."
+    },
     "drawer": {
       "title": "Cart",
       "checkout_securely": "Checkout securely",
