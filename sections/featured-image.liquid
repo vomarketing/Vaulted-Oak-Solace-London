@@ -6,6 +6,26 @@
   assign desktop_image = section.settings.desktop_image
   assign mobile_image = section.settings.mobile_image
   assign header_mode = section.settings.header_contrast_mode | default: 'dark'
+  assign background_color = section.settings.background_color | default: '#ffffff'
+  assign text_color = section.settings.text_color | default: '#000000'
+  assign enable_custom_size = section.settings.enable_custom_size | default: false
+  assign custom_width = section.settings.custom_width | default: 529 | at_least: 1
+  assign custom_height = section.settings.custom_height | default: 750 | at_least: 1
+  assign disable_full_height = section.settings.disable_full_height | default: false
+  assign enable_custom_spacing = section.settings.enable_custom_spacing | default: false
+  assign custom_padding_top = section.settings.custom_padding_top | default: 0 | at_least: 0
+  assign custom_padding_bottom = section.settings.custom_padding_bottom | default: 0 | at_least: 0
+  assign enable_custom_mobile_spacing = section.settings.enable_custom_mobile_spacing | default: false
+  assign custom_mobile_padding_top = section.settings.custom_mobile_padding_top | default: 0 | at_least: 0
+  assign custom_mobile_padding_bottom = section.settings.custom_mobile_padding_bottom | default: 0 | at_least: 0
+  assign enable_custom_mobile_image_spacing = section.settings.enable_custom_mobile_image_spacing | default: false
+  assign custom_mobile_image_padding_top = section.settings.custom_mobile_image_padding_top | default: 0 | at_least: 0
+  assign custom_mobile_image_padding_bottom = section.settings.custom_mobile_image_padding_bottom | default: 0 | at_least: 0
+  assign image_sizes = '(min-width: 1600px) 1180px, (min-width: 910px) 977px, (min-width: 768px) 596px, calc(100vw - 50px)'
+
+  if enable_custom_size
+    assign image_sizes = '(min-width: 980px) ' | append: custom_width | append: 'px, (min-width: 768px) 596px, calc(100vw - 50px)'
+  endif
 
   assign text_left_size = section.settings.text_left_font_size | default: 'text-reg-14'
   assign text_left_classes = text_left_size
@@ -21,9 +41,10 @@
 -%}
 
 <featured-image
-  class="featured-image"
+  class="featured-image{% if enable_custom_size %} featured-image--custom-size{% endif %}{% if disable_full_height %} featured-image--non-full-height{% endif %}{% if disable_full_height and enable_custom_spacing %} featured-image--custom-spacing{% endif %}{% if disable_full_height and enable_custom_mobile_spacing %} featured-image--custom-mobile-spacing{% endif %}{% if enable_custom_mobile_image_spacing %} featured-image--custom-mobile-image-spacing{% endif %}"
   id="FeaturedImage-{{ section.id }}"
   data-header-mode="{{ header_mode }}"
+  style="--featured-image-background-color: {{ background_color }}; --featured-image-text-color: {{ text_color }};{% if enable_custom_size %} --featured-image-custom-width: {{ custom_width }}px; --featured-image-custom-height: {{ custom_height }}px;{% endif %}{% if disable_full_height and enable_custom_spacing %} --featured-image-custom-padding-top: {{ custom_padding_top }}px; --featured-image-custom-padding-bottom: {{ custom_padding_bottom }}px;{% endif %}{% if disable_full_height and enable_custom_mobile_spacing %} --featured-image-custom-mobile-padding-top: {{ custom_mobile_padding_top }}px; --featured-image-custom-mobile-padding-bottom: {{ custom_mobile_padding_bottom }}px;{% endif %}{% if enable_custom_mobile_image_spacing %} --featured-image-custom-mobile-image-padding-top: {{ custom_mobile_image_padding_top }}px; --featured-image-custom-mobile-image-padding-bottom: {{ custom_mobile_image_padding_bottom }}px;{% endif %}"
 >
   <div class="featured-image__inner">
     {%- if section.settings.text_left != blank -%}
@@ -54,7 +75,8 @@
           class: 'featured-image__image',
           picture_class: 'featured-image__picture',
           breakpoint: '1199px',
-          sizes: '(min-width: 1600px) 1180px, (min-width: 910px) 977px, (min-width: 768px) 596px, calc(100vw - 50px)'
+          sizes: image_sizes,
+          sizes_mobile: image_sizes
         -%}
 
       {%- if section.settings.image_link != blank -%}
@@ -62,6 +84,12 @@
       {%- else -%}
         </div>
       {%- endif -%}
+    {%- endif -%}
+
+    {%- if section.settings.text_content != blank -%}
+      <div class="featured-image__text-content rte text-reg-12">
+        {{ section.settings.text_content }}
+      </div>
     {%- endif -%}
 
     {%- if section.settings.text_left != blank or section.settings.text_right != blank -%}
@@ -105,6 +133,18 @@
       "content": "Color & Contrast"
     },
     {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
+    },
+    {
       "type": "select",
       "id": "header_contrast_mode",
       "label": "Header colour scheme over this section",
@@ -122,7 +162,7 @@
     },
     {
       "type": "header",
-      "content": "Image"
+      "content": "Images"
     },
     {
       "type": "image_picker",
@@ -144,6 +184,15 @@
     {
       "type": "header",
       "content": "Content"
+    },
+    {
+      "type": "richtext",
+      "id": "text_content",
+      "label": "Text content"
+    },
+    {
+      "type": "header",
+      "content": "First text"
     },
     {
       "type": "inline_richtext",
@@ -183,6 +232,10 @@
       "default": false
     },
     {
+      "type": "header",
+      "content": "Second text"
+    },
+    {
       "type": "inline_richtext",
       "id": "text_right",
       "label": "Second text",
@@ -218,6 +271,135 @@
       "id": "text_right_uppercase",
       "label": "Second text uppercase",
       "default": false
+    },
+    {
+      "type": "header",
+      "content": "Desktop image size"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_size",
+      "label": "Use custom desktop size",
+      "info": "Applies at 980px and above. Mobile sizing stays unchanged.",
+      "default": false
+    },
+    {
+      "type": "number",
+      "id": "custom_width",
+      "label": "Custom width (px)",
+      "default": 529,
+      "visible_if": "{{ section.settings.enable_custom_size == true }}"
+    },
+    {
+      "type": "number",
+      "id": "custom_height",
+      "label": "Custom height (px)",
+      "default": 750,
+      "visible_if": "{{ section.settings.enable_custom_size == true }}"
+    },
+    {
+      "type": "header",
+      "content": "Mobile image & text spacing"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_mobile_image_spacing",
+      "label": "Use custom image/text spacing",
+      "info": "Adds space between the image and surrounding text at 768px and below.",
+      "default": false
+    },
+    {
+      "type": "range",
+      "id": "custom_mobile_image_padding_top",
+      "label": "Space above image",
+      "min": 0,
+      "max": 320,
+      "step": 4,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.enable_custom_mobile_image_spacing == true }}"
+    },
+    {
+      "type": "range",
+      "id": "custom_mobile_image_padding_bottom",
+      "label": "Space below image",
+      "min": 0,
+      "max": 320,
+      "step": 4,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.enable_custom_mobile_image_spacing == true }}"
+    },
+    {
+      "type": "header",
+      "content": "Section height & padding"
+    },
+    {
+      "type": "checkbox",
+      "id": "disable_full_height",
+      "label": "Disable full-screen height",
+      "info": "Uses the content's natural height and enables custom desktop and mobile spacing controls.",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_spacing",
+      "label": "Use custom desktop section padding",
+      "info": "Applies to the whole section at 980px and above after full-screen height is disabled.",
+      "default": false,
+      "visible_if": "{{ section.settings.disable_full_height == true }}"
+    },
+    {
+      "type": "range",
+      "id": "custom_padding_top",
+      "label": "Desktop section padding top",
+      "min": 0,
+      "max": 320,
+      "step": 4,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.disable_full_height == true and section.settings.enable_custom_spacing == true }}"
+    },
+    {
+      "type": "range",
+      "id": "custom_padding_bottom",
+      "label": "Desktop section padding bottom",
+      "min": 0,
+      "max": 320,
+      "step": 4,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.disable_full_height == true and section.settings.enable_custom_spacing == true }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_mobile_spacing",
+      "label": "Use custom mobile section padding",
+      "info": "Applies to the whole section below 980px after full-screen height is disabled.",
+      "default": false,
+      "visible_if": "{{ section.settings.disable_full_height == true }}"
+    },
+    {
+      "type": "range",
+      "id": "custom_mobile_padding_top",
+      "label": "Mobile section padding top",
+      "min": 0,
+      "max": 320,
+      "step": 4,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.disable_full_height == true and section.settings.enable_custom_mobile_spacing == true }}"
+    },
+    {
+      "type": "range",
+      "id": "custom_mobile_padding_bottom",
+      "label": "Mobile section padding bottom",
+      "min": 0,
+      "max": 320,
+      "step": 4,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.disable_full_height == true and section.settings.enable_custom_mobile_spacing == true }}"
     }
   ],
   "presets": [
