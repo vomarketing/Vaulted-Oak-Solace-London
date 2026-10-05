@@ -212,6 +212,11 @@
 
 .hd-Header_NavBackdrop {
   background-color: var(--color-white);
+  height: 100dvh;
+}
+
+.hd-Header_Backdrop {
+  height: 100dvh;
 }
 
 .hd-Header_NavBackdropLogo {
