@@ -6,9 +6,9 @@
   assign active_color = menu.active_link_color.value | default: foreground
 -%}
 <div id="{{ panel_id }}" class="mm-Layer" data-mega-panel hidden
-  data-background="{{ background | escape }}"
-  data-foreground="{{ foreground | escape }}"
-  data-active-color="{{ active_color | escape }}"
+     data-background="{{ background | escape }}"
+     data-foreground="{{ foreground | escape }}"
+     data-active-color="{{ active_color | escape }}"
   {{ block.shopify_attributes }}>
   <div class="mm-Backdrop" data-mega-dismiss aria-hidden="true"></div>
   <div class="mm-Panel" data-mega-surface>
@@ -23,13 +23,24 @@
                 {%- assign item_id = panel_id | append: '-g' | append: group_index | append: '-i' | append: forloop.index -%}
                 {%- if item.label.value != blank and item.destination_url.value != blank -%}
                   <li>
-                    <a class="mm-Link" href="{{ item.destination_url.value | escape }}"
-                      data-mega-link="{{ item_id }}"
-                      data-background="{{ item.background_color.value | escape }}"
-                      data-foreground="{{ item.text_color.value | escape }}"
-                      data-active-color="{{ item.active_link_color.value | escape }}">
-                      {{ item.label.value | escape }}
-                    </a>
+                    {%- if item.enable_detail.value == true -%}
+                      <button type="button" class="mm-Link" data-mega-detail
+                              data-mega-link="{{ item_id }}"
+                              aria-expanded="false" aria-controls="{{ item_id }}-copy"
+                              data-background="{{ item.background_color.value | escape }}"
+                              data-foreground="{{ item.text_color.value | escape }}"
+                              data-active-color="{{ item.active_link_color.value | escape }}">
+                        {{ item.label.value | escape }}
+                      </button>
+                    {%- else -%}
+                      <a class="mm-Link" href="{{ item.destination_url.value | escape }}"
+                         data-mega-link="{{ item_id }}"
+                         data-background="{{ item.background_color.value | escape }}"
+                         data-foreground="{{ item.text_color.value | escape }}"
+                         data-active-color="{{ item.active_link_color.value | escape }}">
+                        {{ item.label.value | escape }}
+                      </a>
+                    {%- endif -%}
                   </li>
                 {%- endif -%}
               {%- endfor -%}
@@ -47,6 +58,5 @@
         {%- endfor -%}
       </div>
     </div>
-    {% comment %}Future detail view belongs here. Keep overview link navigation until implemented.{% endcomment %}
   </div>
 </div>
