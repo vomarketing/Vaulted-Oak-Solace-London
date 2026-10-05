@@ -178,6 +178,20 @@
   }
 }
 
+.template-collection .hd-Header {
+  .hd-Nav_Cart {
+    color: var(--color-black);
+
+    &[data-cart-empty="false"] {
+      background-color: var(--color-black);
+
+      .hd-Nav_CartCount {
+        color: var(--color-white);
+      }
+    }
+  }
+}
+
 .template-product .hd-Header:not(.hd-Header-dropdownActive):not(.hd-Header-searchActive) {
   @media (min-width: 901px) {
     &[data-header-split="true"] {
