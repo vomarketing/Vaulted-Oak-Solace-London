@@ -1,115 +1,220 @@
-<section class="crt-Cart lyt-Container" data-module="cart">
-    <div class="crt-Cart_Inner">
+<style>
+  {{ 'custom-cart.css' | inline_asset_content }}
+</style>
+<script src="{{ 'custom-cart.js' | asset_url }}" defer="defer"></script>
 
-        {%- if cart.item_count == 0 -%}
+{%- liquid
+  assign has_final_sale = false
+  for item in cart.items
+    if item.product.metafields.custom.final_sale.value == true
+      assign has_final_sale = true
+      break
+    endif
+  endfor
 
-            <div class="crt-Cart_Empty">
-                <h1 class="crt-Cart_Title fz-25_33">{{ 'cart.general.title' | t }}</h1>
+  assign shipping_price = nil
+  assign estimated_total = cart.total_price
+  if section.settings.shipping_amount != blank
+    assign shipping_price = section.settings.shipping_amount | times: 100 | round
+    assign estimated_total = estimated_total | plus: shipping_price
+  endif
+-%}
 
-                <p class="crt-Cart_Text">{{ 'cart.general.text' | t }}</p>
-            </div>
+<section
+  class="bag-Page{% if cart.item_count == 0 %} bag-Page-empty{% endif %}"
+  data-bag
+  data-section-id="{{ section.id }}"
+  data-cart-count="{{ cart.item_count }}"
+  data-error-message="{{ 'cart.bag.error' | t | escape }}"
+>
+  {%- if cart.item_count == 0 -%}
+    <div class="bag-Page_Empty">
+      <h1 class="bag-Page_Title">{{ 'cart.bag.title' | t: count: cart.item_count }}</h1>
 
-        {%- else -%}
-
-            <div class="crt-Cart_Body">
-                <div class="crt-Cart_Main">
-                    <div class="crt-Cart_Products">
-
-                        <header class="crt-Cart_Header">
-                            <h2 class="crt-Cart_Title fz-25_33">
-                                {{ 'cart.products.title' | t }} (<span data-el="cart.count">{{ cart.item_count }}</span>)
-                            </h2>
-                        </header>
-
-                        <div class="crt-Products">
-                            <div class="crt-Products_Items" data-el="cart.itemsContainer">
-                                {%- for item in cart.items -%}
-                                    {%- render 'cart-line-item', line_item: item -%}
-                                {%- endfor -%}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="crt-Cart_Summary" data-el="cart.summaryContainer">
-                    <div class="crt-Summary">
-                        <header class="crt-Summary_Header">
-                            <h2 class="crt-Summary_Title fz-25_33">{{ 'cart.summary.continue_to_checkout' | t }}</h2>
-                        </header>
-
-                        <div class="crt-Summary_Body">
-                            {% comment %} <p class="crt-Summary_Text crt-Summary_Text-opacity">{{ 'cart.summary.text' | t }}</p> {% endcomment %}
-
-                            <div class="crt-Summary_Row">
-                                <p class="crt-Summary_Label">{{ 'cart.summary.subtotal' | t }}:</p>
-                                <p class="crt-Summary_Value">{{ cart.total_price | money }}</p>
-                            </div>
-
-                            {%- if cart.total_discounts > 0 -%}
-                                <div class="crt-Summary_Row">
-                                    <p class="crt-Summary_Label">{{ 'cart.summary.discount' | t }}:</p>
-                                    <p class="crt-Summary_Value">{{ cart.total_discounts | money }}</p>
-                                </div>
-                            {%- endif -%}
-
-                            <div class="crt-Summary_Row">
-                                <p class="crt-Summary_Label">{{ 'cart.summary.delivery' | t }}:</p>
-                                <p class="crt-Summary_Value crt-Summary_Value-opacity">
-                                    {{ 'cart.summary.calculated_at_checkout' | t }}
-                                </p>
-                            </div>
-
-                            <form class="crt-Summary_Form" action="/cart" method="post" novalidate>
-                                <button class="crt-Summary_Button" type="submit" name="checkout">
-                                    {{ 'cart.summary.checkout_securely' | t }}
-                                </button>
-                            </form>
-
-                            <div class="crt-Summary_Secure">
-                                <p class="crt-Summary_Text">
-                                    {{ 'cart.summary.secure_payment_methods' | t }}
-                                </p>
-
-                                <div class="crt-Summary_Items">
-                                    <div class="crt-Summary_Item">
-                                        {%- render 'bao-icon-visa-clr' -%}
-                                    </div>
-
-                                    <div class="crt-Summary_Item">
-                                        {%- render 'bao-icon-master-clr' -%}
-                                    </div>
-
-                                    <div class="crt-Summary_Item">
-                                        {%- render 'bao-icon-american_express-clr' -%}
-                                    </div>
-
-                                    <div class="crt-Summary_Item">
-                                        {%- render 'bao-icon-paypal-clr' -%}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <footer class="crt-Cart_Footer fz-12_12">
-                <a
-                        class="crt-Cart_Link crt-Cart_Link-continue"
-                        href="{{ routes.collections_url }}"
-                >
-                    {%- render 'bao-chevron-left' -%}
-                    {{ 'cart.general.continue_shopping' | t }}
-                </a>
-            </footer>
-        {%- endif -%}
+      {%- render 'cart-empty-content' -%}
     </div>
+  {%- else -%}
+    <div class="bag-Page_Inner">
+      <div class="bag-Page_Main">
+        <h1 class="bag-Page_Title">{{ 'cart.bag.title' | t: count: cart.item_count }}</h1>
+
+        {%- if has_final_sale and section.settings.final_sale_message != blank -%}
+          <p class="bag-Page_Notice">{{ section.settings.final_sale_message }}</p>
+        {%- endif -%}
+
+        <div class="bag-Page_Items">
+          {%- for item in cart.items -%}
+            {%- render 'bag-line-item', line_item: item -%}
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <aside class="bag-Page_Aside">
+        <div class="bag-Summary">
+          <dl class="bag-Summary_Rows">
+            {%- if section.settings.shipping_label != blank -%}
+              <div class="bag-Summary_Row">
+                <dt>{{ section.settings.shipping_label }}</dt>
+                <dd>
+                  {%- if shipping_price != nil -%}
+                    {{ shipping_price | money }}
+                  {%- else -%}
+                    {{ section.settings.shipping_fallback }}
+                  {%- endif -%}
+                </dd>
+              </div>
+            {%- endif -%}
+
+            {%- if section.settings.duties_label != blank -%}
+              <div class="bag-Summary_Row">
+                <dt>{{ section.settings.duties_label }}</dt>
+                <dd>{{ section.settings.duties_value }}</dd>
+              </div>
+            {%- endif -%}
+
+            {%- for discount in cart.cart_level_discount_applications -%}
+              <div class="bag-Summary_Row">
+                <dt>{{ discount.title }}</dt>
+                <dd>-{{ discount.total_allocated_amount | money }}</dd>
+              </div>
+            {%- endfor -%}
+
+            <div class="bag-Summary_Row">
+              <dt>{{ section.settings.total_label }}</dt>
+              <dd>{{ estimated_total | money }}</dd>
+            </div>
+          </dl>
+
+          <form class="bag-Summary_Form" action="{{ routes.cart_url }}" method="post" novalidate>
+            <button class="bag-Summary_Checkout" type="submit" name="checkout">
+              {{- section.settings.checkout_label -}}
+            </button>
+          </form>
+
+          {%- render 'cart-duties-note' -%}
+        </div>
+
+        {%- if section.blocks.size > 0 -%}
+          <div class="bag-Page_Accordions">
+            {%- for block in section.blocks -%}
+              <details class="bag-Accordion" {{ block.shopify_attributes }}>
+                <summary class="bag-Accordion_Summary">
+                  <span class="bag-Accordion_Title">{{ block.settings.title }}</span>
+                  {%- render 'icons', icon: 'arrow-down', class: 'bag-Accordion_Icon' -%}
+                </summary>
+
+                <div class="bag-Accordion_Content">
+                  {%- if block.settings.content != blank -%}
+                    <div class="bag-Accordion_Text">{{ block.settings.content }}</div>
+                  {%- endif -%}
+
+                  {%- if block.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
+                    <ul class="bag-Accordion_Payments">
+                      {%- for type in shop.enabled_payment_types -%}
+                        <li class="bag-Accordion_Payment">{{ type | payment_type_svg_tag }}</li>
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
+                </div>
+              </details>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </aside>
+    </div>
+  {%- endif -%}
 </section>
 
 {% schema %}
 {
   "name": "Main cart",
-  "settings": []
+  "settings": [
+    {
+      "type": "header",
+      "content": "Items"
+    },
+    {
+      "type": "text",
+      "id": "final_sale_message",
+      "label": "Final sale message",
+      "info": "Shown when the bag contains a product with the custom.final_sale metafield set to true.",
+      "default": "All online archive sale items are final sale. No returns or exchanges."
+    },
+    {
+      "type": "header",
+      "content": "Summary"
+    },
+    {
+      "type": "text",
+      "id": "shipping_label",
+      "label": "Shipping label",
+      "default": "Shipping"
+    },
+    {
+      "type": "number",
+      "id": "shipping_amount",
+      "label": "Shipping amount",
+      "info": "In the market currency, e.g. 35. Added to the estimated total. Use a market-specific template for other markets."
+    },
+    {
+      "type": "text",
+      "id": "shipping_fallback",
+      "label": "Shipping text when no amount is set",
+      "default": "Calculated at checkout"
+    },
+    {
+      "type": "text",
+      "id": "duties_label",
+      "label": "Duties label",
+      "default": "Duties and Taxes"
+    },
+    {
+      "type": "text",
+      "id": "duties_value",
+      "label": "Duties value",
+      "default": "Included"
+    },
+    {
+      "type": "text",
+      "id": "total_label",
+      "label": "Total label",
+      "default": "Estimated Total"
+    },
+    {
+      "type": "text",
+      "id": "checkout_label",
+      "label": "Checkout button label",
+      "default": "Checkout"
+    },
+    {
+      "type": "paragraph",
+      "content": "The duties note below the checkout button is managed in Theme settings > Cart."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "accordion",
+      "name": "Accordion",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Need Help?"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_payment_icons",
+          "label": "Show payment icons",
+          "default": false
+        }
+      ]
+    }
+  ]
 }
 {% endschema %}
-

@@ -1,0 +1,178 @@
+{%- doc -%}
+  Bag page line item.
+
+  @param {object} line_item - Cart line item
+{%- enddoc -%}
+
+{%- liquid
+  assign product = line_item.product
+  assign variant = line_item.variant
+
+  assign size_index = nil
+  assign size_option = nil
+  unless product.has_only_default_variant
+    for option in product.options_with_values
+      assign option_name = option.name | downcase
+      if option_name contains 'size'
+        assign size_index = forloop.index0
+        assign size_option = option
+        break
+      endif
+    endfor
+  endunless
+
+  assign compare_line_price = variant.compare_at_price | times: line_item.quantity
+  if line_item.original_line_price > compare_line_price
+    assign compare_line_price = line_item.original_line_price
+  endif
+
+  assign is_discounted = false
+  if compare_line_price > line_item.final_line_price
+    assign is_discounted = true
+  endif
+-%}
+
+<div
+  class="bag-Item"
+  data-bag-item
+  data-key="{{ line_item.key }}"
+  data-quantity="{{ line_item.quantity }}"
+  data-properties="{{ line_item.properties | json | escape }}"
+>
+  <a class="bag-Item_Image" href="{{ line_item.url }}" tabindex="-1" aria-hidden="true">
+    {%- if line_item.image -%}
+      {{-
+        line_item.image
+        | image_url: width: 330
+        | image_tag:
+          widths: '110, 220, 330',
+          sizes: '110px',
+          loading: 'lazy',
+          alt: line_item.image.alt
+      -}}
+    {%- endif -%}
+  </a>
+
+  <div class="bag-Item_Info">
+    <div class="bag-Item_Details">
+      <a class="bag-Item_Title" href="{{ line_item.url }}">{{ product.title }}</a>
+
+      {%- unless product.has_only_default_variant -%}
+        {%- for option in line_item.options_with_values -%}
+          <p class="bag-Item_Option">{{ option.name }}: {{ option.value }}</p>
+        {%- endfor -%}
+      {%- endunless -%}
+    </div>
+
+    <div class="bag-Item_Quantity">
+      <button
+        class="bag-Item_QuantityButton"
+        type="button"
+        data-bag-quantity="{{ line_item.quantity | minus: 1 }}"
+        aria-label="{{ 'cart.bag.decrease_quantity' | t: title: product.title | escape }}"
+      >
+        -
+      </button>
+      <span class="bag-Item_QuantityValue" aria-live="polite">{{ line_item.quantity }}</span>
+      <button
+        class="bag-Item_QuantityButton"
+        type="button"
+        data-bag-quantity="{{ line_item.quantity | plus: 1 }}"
+        aria-label="{{ 'cart.bag.increase_quantity' | t: title: product.title | escape }}"
+      >
+        +
+      </button>
+    </div>
+
+    {%- if size_option and size_option.values.size > 1 -%}
+      {%- assign edit_heading = 'cart.bag.change_option' | t: option: size_option.name -%}
+      <div class="bag-Item_Edit" data-bag-edit>
+        <button
+          class="bag-Item_EditButton"
+          type="button"
+          aria-expanded="false"
+          aria-controls="BagSize-{{ line_item.key | handle }}"
+          data-bag-edit-toggle
+        >
+          {{- 'cart.bag.edit' | t -}}
+        </button>
+
+        <div
+          class="bag-Size"
+          id="BagSize-{{ line_item.key | handle }}"
+          role="dialog"
+          aria-label="{{ edit_heading | escape }}"
+          hidden
+          data-bag-size
+        >
+          <p class="bag-Size_Heading">{{ edit_heading }}</p>
+
+          <ul class="bag-Size_Items">
+            {%- for value in size_option.values -%}
+              {%- liquid
+                assign option_variant = nil
+                for candidate in product.variants
+                  assign is_match = true
+                  for candidate_value in candidate.options
+                    if forloop.index0 == size_index
+                      if candidate_value != value
+                        assign is_match = false
+                        break
+                      endif
+                    elsif candidate_value != variant.options[forloop.index0]
+                      assign is_match = false
+                      break
+                    endif
+                  endfor
+                  if is_match
+                    assign option_variant = candidate
+                    break
+                  endif
+                endfor
+
+                assign is_current = false
+                if option_variant.id == variant.id
+                  assign is_current = true
+                endif
+              -%}
+              <li class="bag-Size_Item">
+                <button
+                  class="bag-Size_Button{% if is_current %} bag-Size_Button-current{% endif %}"
+                  type="button"
+                  {% if option_variant %}data-bag-size-variant="{{ option_variant.id }}"{% endif %}
+                  {% if is_current %}aria-current="true"{% endif %}
+                  {% unless option_variant.available or is_current %}disabled{% endunless %}
+                >
+                  {{- value -}}
+                </button>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </div>
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="bag-Item_Aside">
+    <p class="bag-Item_Price">
+      {%- if is_discounted -%}
+        <s class="bag-Item_PriceCompare">{{ compare_line_price | money }}</s>
+        <span class="bag-Item_PriceSale">{{ line_item.final_line_price | money }}</span>
+      {%- else -%}
+        {{ line_item.final_line_price | money }}
+      {%- endif -%}
+    </p>
+
+    <div class="bag-Item_Actions">
+      <button class="bag-Item_Remove" type="button" data-bag-quantity="0">
+        {{- 'cart.bag.remove' | t -}}
+      </button>
+
+      <button class="bag-Item_Wishlist" type="button" aria-label="{{ 'wishlist.add_to_wishlist' | t }}">
+        {%- render 'icons', icon: 'bookmark' -%}
+      </button>
+    </div>
+  </div>
+
+  <p class="bag-Item_Error" role="alert" data-bag-error hidden></p>
+</div>

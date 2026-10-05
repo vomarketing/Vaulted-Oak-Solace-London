@@ -1,0 +1,76 @@
+{%- doc -%}
+  Empty bag content, shared by the bag page and the mini bag.
+  Content is managed in Theme settings > Cart.
+{%- enddoc -%}
+
+{%- liquid
+  assign delivery_link_url = settings.cart_empty_delivery_link_url | default: '/pages/shipping-returns'
+
+  assign has_delivery = false
+  if settings.cart_empty_delivery_text != blank or settings.cart_empty_delivery_link_label != blank
+    assign has_delivery = true
+  endif
+
+  assign has_help = false
+  if settings.cart_empty_help_heading != blank or settings.cart_empty_help_text != blank
+    assign has_help = true
+  elsif settings.cart_empty_live_chat_label != blank or settings.cart_empty_email != blank
+    assign has_help = true
+  endif
+-%}
+
+<div class="cart-Empty">
+  {%- if settings.cart_empty_text != blank -%}
+    <p class="cart-Empty_Message">{{ settings.cart_empty_text }}</p>
+  {%- endif -%}
+
+  {%- if has_delivery -%}
+    <div class="cart-Empty_Block">
+      {%- if settings.cart_empty_delivery_text != blank -%}
+        <div class="cart-Empty_Text">{{ settings.cart_empty_delivery_text }}</div>
+      {%- endif -%}
+
+      {%- if settings.cart_empty_delivery_link_label != blank -%}
+        <div class="cart-Empty_Links">
+          <a class="cart-Empty_Link" href="{{ delivery_link_url }}">
+            {{- settings.cart_empty_delivery_link_label -}}
+          </a>
+        </div>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+
+  {%- if has_help -%}
+    <div class="cart-Empty_Block">
+      {%- if settings.cart_empty_help_heading != blank or settings.cart_empty_help_text != blank -%}
+        <div class="cart-Empty_Text">
+          {%- if settings.cart_empty_help_heading != blank -%}
+            <p>{{ settings.cart_empty_help_heading }}</p>
+          {%- endif -%}
+          {%- if settings.cart_empty_help_text != blank -%}
+            <p>{{ settings.cart_empty_help_text | newline_to_br }}</p>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+
+      {%- if settings.cart_empty_live_chat_label != blank or settings.cart_empty_email != blank -%}
+        <div class="cart-Empty_Links">
+          {%- if settings.cart_empty_live_chat_label != blank -%}
+            <a
+              class="cart-Empty_Link"
+              href="{{ settings.cart_empty_live_chat_url | default: '#' }}"
+            >
+              {{- settings.cart_empty_live_chat_label -}}
+            </a>
+          {%- endif -%}
+
+          {%- if settings.cart_empty_email != blank -%}
+            <a class="cart-Empty_Link" href="mailto:{{ settings.cart_empty_email | strip }}">
+              {{- settings.cart_empty_email_label | default: settings.cart_empty_email -}}
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+</div>
