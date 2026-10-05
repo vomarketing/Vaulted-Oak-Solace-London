@@ -61,8 +61,8 @@
         "03c39387-fb78-4965-abf0-213f5e02f02d"
       ],
       "settings": {
-        "use_search_and_discovery_filters": false,
-        "enable_sorting": true,
+        "use_search_and_discovery_filters": true,
+        "enable_sorting": false,
         "enable_first_image_last_tag": false,
         "set_first_image_as_hover": true
       }
