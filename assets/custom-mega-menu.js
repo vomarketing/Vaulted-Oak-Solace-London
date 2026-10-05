@@ -32,8 +32,13 @@
         if (!next || !this.panel.contains(next)) this.restoreSelection();
       }, options);
       header.addEventListener('focusin', (e) => {
+        if (this.skipInitialPreview) return;
+
         const link = e.target.closest('[data-mega-link]');
-        if (link && this.panel?.contains(link)) this.activate(link);
+
+        if (link && this.panel?.contains(link)) {
+          this.activate(link);
+        }
       }, options);
       document.addEventListener('keydown', (e) => this.onKeydown(e), { ...options, capture: true });
       document.addEventListener('focusin', (e) => {
@@ -102,7 +107,13 @@
       this.applyColors(null);
       this.lockPage();
       this.lockSwiper();
-      this.firstFocus()?.focus({ preventScroll: true });
+      this.skipInitialPreview = true;
+
+      try {
+        this.firstFocus()?.focus({ preventScroll: true });
+      } finally {
+        this.skipInitialPreview = false;
+      }
       this.header.dispatchEvent(new CustomEvent('mega-menu:open', { bubbles: true, detail: { id: panel.id } }));
     }
     firstFocus() { return this.panel?.querySelector('[data-mega-link]') || this.panel?.querySelector('[data-mega-close]'); }

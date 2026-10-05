@@ -261,7 +261,7 @@
                 class="hd-Nav_Cart"
                 href="{{ routes.cart_url }}"
                 data-cart-empty="{% if cart.item_count == 0 %}true{% else %}false{% endif %}"
-                {% unless page.request_type == 'cart' %} data-module-drawers-trigger="cart"{% endunless %}
+                {% unless request.page_type == 'cart' %} data-module-drawers-trigger="cart"{% endunless %}
               >
                 <span class="util-ScreenReaderOnly">
                   {{ 'layout.header.cart' | t }}
@@ -294,7 +294,7 @@
                 class="hd-MobileNav_Cart"
                 href="{{ routes.cart_url }}"
                 data-cart-empty="{% if cart.item_count == 0 %}true{% else %}false{% endif %}"
-                {% unless page.request_type == 'cart' %} data-module-drawers-trigger="cart"{% endunless %}
+                {% unless request.page_type == 'cart' %} data-module-drawers-trigger="cart"{% endunless %}
               >
                 <span class="util-ScreenReaderOnly">
                   {{ 'layout.header.cart' | t }}

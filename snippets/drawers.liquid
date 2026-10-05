@@ -67,7 +67,7 @@
     {%- render 'search-filter-drawer' -%}
   {%- endif -%}
 
-  {%- unless page.request_type == 'cart' -%}
+  {%- unless request.page_type == 'cart' -%}
     {%- render 'push-cart-drawer' -%}
   {%- endunless -%}
 
