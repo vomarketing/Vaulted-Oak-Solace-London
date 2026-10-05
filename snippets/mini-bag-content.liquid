@@ -1,0 +1,42 @@
+{%- liquid
+  assign has_final_sale = false
+  for item in cart.items
+    if item.product.metafields.custom.final_sale.value == true
+      assign has_final_sale = true
+      break
+    endif
+  endfor
+-%}
+<div class="mbg-State" data-mini-state data-count="{{ cart.item_count }}">
+  <div class="mbg-Scroll">
+    {% if cart.item_count == 0 %}
+      <p>Your bag is empty.</p>
+      <div class="mbg-EmptyHelp">
+        {% if settings.mbg_delivery != blank %}<div>{{ settings.mbg_delivery }}</div>{% endif %}
+        <button type="button" class="mbg-Link" data-mini-info>More information</button>
+        {% if settings.mbg_email != blank %}
+          <div class="mbg-Help"><p>Need help?</p><a class="mbg-Link" href="mailto:{{ settings.mbg_email | escape }}">Email</a></div>
+        {% endif %}
+      </div>
+    {% else %}
+      {% if has_final_sale %}<p class="mbg-FinalSale">{{ settings.mbg_final_sale_message | default: 'All online archive sale items are final sale. No returns or exchanges.' | escape }}</p>{% endif %}
+      {% for item in cart.items %}{% render 'mini-bag-item', item: item %}{% endfor %}
+    {% endif %}
+  </div>
+  {% if cart.item_count > 0 %}
+    <footer class="mbg-Footer">
+      {% if cart.requires_shipping %}
+        <div class="mbg-Row"><div class="mbg-Shipping">Shipping
+          <button type="button" class="mbg-InfoButton" data-mini-tooltip-toggle aria-label="Shipping information" aria-expanded="false" aria-controls="MiniBagShippingTip">i</button>
+          <div class="mbg-Tooltip" id="MiniBagShippingTip" data-mini-tooltip hidden>{% if settings.mbg_delivery != blank %}{{ settings.mbg_delivery }}{% else %}Shipping rates are calculated at checkout.{% endif %}</div>
+        </div><span>Calculated at checkout</span></div>
+      {% endif %}
+      {% if cart.taxes_included %}<div class="mbg-Row"><span>Taxes</span><span>Included</span></div>{% endif %}
+      {% for discount in cart.cart_level_discount_applications %}<div class="mbg-Row"><span>{{ discount.title | escape }}</span><span>−{{ discount.total_allocated_amount | money }}</span></div>{% endfor %}
+      <div class="mbg-Row"><span>Subtotal</span><span>{{ cart.total_price | money }}</span></div>
+      <form action="{{ routes.cart_url }}" method="post"><button class="mbg-Checkout" type="submit" name="checkout">Checkout</button></form>
+      <a class="mbg-ViewCart" href="{{ routes.cart_url }}">View your cart</a>
+      <p class="mbg-Note">Shipping and any applicable duties or taxes are confirmed at checkout.</p>
+    </footer>
+  {% endif %}
+</div>
