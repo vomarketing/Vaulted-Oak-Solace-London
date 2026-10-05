@@ -12,6 +12,8 @@
     "bar_enabled": false,
     "pdp_header_contrast_mode": "light",
     "pdp_scroll_type": "slider",
+    "mbg_delivery": "<p>Estimated delivery: 7-10 working days, shipped with DHL Express.</p><p>Full-price items may be returned within 14 days of receipt.</p><p>Shipping & Returns</p><p>Delivery<br/>US Delivery £25<br/>Estimated delivery: 7-10 working days</p><p>Tracking Your Order<br/>Your DHL Express tracking information will be provided in your shipping confirmation email, so you can track your order throughout delivery. A signature may be required on delivery. We are unable to deliver to P.O. boxes.</p><p>Returns<br/>Full-price items may be returned within 14 days of receipt.<br/>Items must be returned in their original condition with all tags attached. Return shipping is the responsibility of the customer.&nbsp;</p><p>Duties & Taxes<br/>International orders may be subject to customs duties, import taxes and other charges imposed by the destination country. These charges are not collected at checkout and may be billed by your local customs authority when your order arrives. You are responsible for paying these charges.</p>",
+    "mbg_email": "test@gmail.com",
     "store_name": "Solace London",
     "store_url": "www.solacelondon.com",
     "apple_touch_icon": "shopify://shop_images/black-favicon.png",
@@ -39,11 +41,6 @@
       "855628211100114053": {
         "type": "shopify://apps/klaviyo-email-marketing-sms/blocks/klaviyo-onsite-embed/2632fe16-c075-4321-a88b-50b567f42507",
         "disabled": true,
-        "settings": {}
-      },
-      "6251270934270006384": {
-        "type": "shopify://apps/stape-conversion-tracking/blocks/gtm/7e13c847-7971-409d-8fe0-29ec14d5f048",
-        "disabled": false,
         "settings": {}
       },
       "9864028433945474133": {
@@ -75,6 +72,16 @@
           "button_color": "#111827",
           "button_text_color": "#ffffff"
         }
+      },
+      "6251270934270006384": {
+        "type": "shopify://apps/stape-conversion-tracking/blocks/gtm/7e13c847-7971-409d-8fe0-29ec14d5f048",
+        "disabled": true,
+        "settings": {}
+      },
+      "17299265041693349214": {
+        "type": "shopify://apps/cookieyes/blocks/app-embed/44e5ef64-bf2c-4188-838c-6f3b0716b8e4",
+        "disabled": true,
+        "settings": {}
       }
     }
   }

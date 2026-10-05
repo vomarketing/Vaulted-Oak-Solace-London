@@ -98,30 +98,34 @@
 
   <div class="prd-Card_Bottom">
     <div class="prd-Card_Content fz-12_12">
-      <p class="prd-Card_Kicker{% if product.compare_at_price > product.price %} prd-Card_Kicker-red{% endif %}">
-        {%- if product.compare_at_price > product.price -%}
-          {{ 'products.product.on_sale' | t }}
+      <div class="prd-Card_Summary">
+        <div class="prd-Card_Details">
+          <p class="prd-Card_Kicker{% if product.compare_at_price > product.price %} prd-Card_Kicker-red{% endif %}">
+            {%- if product.compare_at_price > product.price -%}
+              {{ 'products.product.on_sale' | t }}
+            {%- endif -%}
+          </p>
+
+          <h3 class="prd-Card_Title fz-12_12">
+            {{ product.title }}
+          </h3>
+        </div>
+
+        {%- if show_add_to_bag_button and has_size_option and option_key -%}
+          <div class="prd-Card_Meta">
+            {%- assign option_name = size_option.name -%}
+            {%- assign downcased_option_name = option_name | downcase -%}
+            {%- if downcased_option_name contains 'size' -%}
+              {%- assign option_name = 'products.product.size' | t -%}
+            {%- endif -%}
+            {{ option_name }} {{ current_variant[option_key] }}
+          </div>
+        {%- else -%}
+          <div class="prd-Card_Price">
+            {%- render 'product-price', product: product %}
+          </div>
         {%- endif -%}
-      </p>
-
-      <h3 class="prd-Card_Title fz-12_12">
-        {{ product.title }} 
-      </h3>
-
-      {%- if show_add_to_bag_button and has_size_option and option_key -%}
-        <div class="prd-Card_Meta">
-          {%- assign option_name = size_option.name -%}
-          {%- assign downcased_option_name = option_name | downcase -%}
-          {%- if downcased_option_name contains 'size' -%}
-            {%- assign option_name = 'products.product.size' | t -%}
-          {%- endif -%}
-          {{ option_name }} {{ current_variant[option_key] }}
-        </div>
-      {%- else -%}
-        <div class="prd-Card_Price">
-          {%- render 'product-price', product: product %}
-        </div>
-      {%- endif -%}
+      </div>
 
       {% comment %} Passed in from product-card-loader when on wishlist page {% endcomment %}
       {%- if wishlist_remove_link_html -%}

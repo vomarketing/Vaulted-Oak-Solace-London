@@ -4,9 +4,17 @@
 {%- liquid
   assign header_mode = section.settings.header_contrast_mode | default: 'light'
   assign text_color = section.settings.text_color | default: 'white'
+  assign background_color = section.settings.background_color | default: '#000000'
+  assign content_vertical_alignment = section.settings.content_vertical_alignment | default: 'bottom'
   assign is_video = false
   if section.settings.media_type == 'video'
     assign is_video = true
+  endif
+
+  assign enable_custom_mobile_height = false
+  assign custom_mobile_height = section.settings.custom_mobile_height | default: 667 | at_least: 1
+  if is_video == false and section.settings.enable_custom_mobile_height
+    assign enable_custom_mobile_height = true
   endif
 
   # Only the first section in the template is the LCP candidate. Later heroes
@@ -22,10 +30,15 @@
 -%}
 
 <hero-fullscreen
-  class="hero-fullscreen js-hero-fullscreen"
+  class="hero-fullscreen js-hero-fullscreen{% if enable_custom_mobile_height %} hero-fullscreen--custom-mobile-height{% endif %}"
   id="hero-{{ section.id }}"
   data-header-mode="{{ header_mode }}"
   data-text-color="{{ text_color }}"
+  data-content-vertical-alignment="{{ content_vertical_alignment }}"
+  style="--hero-background-color: {{ background_color }}; --hero-content-text-color: {{ text_color }};{% if enable_custom_mobile_height %} --hero-custom-mobile-height: {{ custom_mobile_height }}px;{% endif %}"
+  data-autoplay="{{ section.settings.video_autoplay }}"
+  data-show-controls="{{ section.settings.show_video_controls }}"
+  {% if enable_custom_mobile_height %}style="--hero-custom-mobile-height: {{ custom_mobile_height }}px;"{% endif %}
 >
   <div class="hero-fullscreen__media global-media">
     {%- if is_video -%}
@@ -51,7 +64,7 @@
       {%- if video_desktop_url != blank -%}
         <video
           class="hero-fullscreen__video js-hero-video"
-          autoplay
+          {% if section.settings.video_autoplay %}autoplay{% endif %}
           loop
           muted
           playsinline
@@ -92,6 +105,10 @@
     ></div>
   {%- endif -%}
 
+  {%- if video_desktop_url != blank and section.settings.show_video_controls -%}
+    <div class="hero-fullscreen__control-scrim" aria-hidden="true"></div>
+  {%- endif -%}
+
   <div class="hero-fullscreen__content">
     {%- if section.settings.heading != blank -%}
       {%- liquid
@@ -104,6 +121,12 @@
       <h2 class="{{ heading_classes }}">
         {{ section.settings.heading }}
       </h2>
+    {%- endif -%}
+
+    {%- if section.settings.description != blank -%}
+      <div class="hero-fullscreen__description rte">
+        {{ section.settings.description }}
+      </div>
     {%- endif -%}
 
     {%- if section.settings.cta_text != blank -%}
@@ -126,11 +149,57 @@
     {%- endif -%}
   </div>
 
-  {%- if video_desktop_url != blank -%}
+  {%- if video_desktop_url != blank and section.settings.show_video_controls -%}
+    <button
+      type="button"
+      class="hero-fullscreen__center-play js-center-play"
+      aria-label="Play video"
+    >
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
+        <path d="M8 5v14l11-7z"/>
+      </svg>
+    </button>
+
+    <div class="hero-fullscreen__controls js-video-controls">
+      <div class="hero-fullscreen__timeline">
+        <span class="hero-fullscreen__time js-current-time">00:00</span>
+
+        <div class="hero-fullscreen__timeline-wrap js-timeline-wrap">
+          <div class="hero-fullscreen__timeline-track"></div>
+          <div class="hero-fullscreen__timeline-buffered js-timeline-buffered"></div>
+          <div class="hero-fullscreen__timeline-played js-timeline-played"></div>
+          <input
+            class="hero-fullscreen__timeline-range js-timeline-range"
+            type="range"
+            min="0"
+            max="1000"
+            value="0"
+            step="1"
+            aria-label="Seek video"
+          >
+        </div>
+
+        <span class="hero-fullscreen__time hero-fullscreen__time-end js-duration">00:00</span>
+      </div>
+
+      <div class="hero-fullscreen__actions">
+        <button
+          type="button"
+          class="hero-fullscreen__control-button js-playback-toggle"
+          aria-label="Play video"
+        ></button>
+        <button
+          type="button"
+          class="hero-fullscreen__control-button js-mute-toggle"
+          aria-label="Unmute video"
+        ></button>
+      </div>
+    </div>
+  {%- elsif video_desktop_url != blank -%}
     <button
       type="button"
       class="hero-fullscreen__playback-toggle js-playback-toggle"
-      aria-label="Pause video"
+      aria-label="{% if section.settings.video_autoplay %}Pause{% else %}Play{% endif %} video"
     >
       {%- render 'icons', icon: 'pause', class: 'icon-pause js-icon-pause' -%}
       {%- render 'icons', icon: 'play', class: 'icon-play js-icon-play' -%}
@@ -179,6 +248,22 @@
       "visible_if": "{{ section.settings.media_type == 'image' }}"
     },
     {
+      "type": "checkbox",
+      "id": "enable_custom_mobile_height",
+      "label": "Use custom mobile height",
+      "info": "Applies at 768px and below for image media only.",
+      "default": false,
+      "visible_if": "{{ section.settings.media_type == 'image' }}"
+    },
+    {
+      "type": "number",
+      "id": "custom_mobile_height",
+      "label": "Custom mobile height (px)",
+      "info": "Minimum 1px.",
+      "default": 667,
+      "visible_if": "{{ section.settings.media_type == 'image' and section.settings.enable_custom_mobile_height == true }}"
+    },
+    {
       "type": "video",
       "id": "video_desktop",
       "label": "Desktop Shopify video",
@@ -204,6 +289,22 @@
       "id": "video_url_mobile",
       "label": "Mobile external video URL (MP4 direct link)",
       "info": "Recommended: 1080 x 1920 px (9:16) or 1080 x 1440 px (3:4). Used when no mobile Shopify video is selected. Falls back to desktop video when empty.",
+      "visible_if": "{{ section.settings.media_type == 'video' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "video_autoplay",
+      "label": "Autoplay video",
+      "info": "Automatically plays the muted video in a loop.",
+      "default": true,
+      "visible_if": "{{ section.settings.media_type == 'video' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_video_controls",
+      "label": "Show video controls",
+      "info": "Shows the timeline, time, play/pause and mute controls. When disabled, the compact play/pause button is used.",
+      "default": false,
       "visible_if": "{{ section.settings.media_type == 'video' }}"
     },
     {
@@ -255,20 +356,41 @@
       "default": "light"
     },
     {
-      "type": "select",
+      "type": "color",
+      "id": "background_color",
+      "label": "Hero background color",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
       "id": "text_color",
-      "label": "Text color",
+      "label": "Content text color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "header",
+      "content": "Content Position"
+    },
+    {
+      "type": "select",
+      "id": "content_vertical_alignment",
+      "label": "Vertical alignment",
       "options": [
         {
-          "value": "white",
-          "label": "White"
+          "value": "top",
+          "label": "Top"
         },
         {
-          "value": "black",
-          "label": "Black"
+          "value": "center",
+          "label": "Center"
+        },
+        {
+          "value": "bottom",
+          "label": "Bottom"
         }
       ],
-      "default": "white"
+      "default": "bottom",
+      "info": "Choose where the full content group appears vertically in the hero."
     },
     {
       "type": "header",
@@ -305,6 +427,11 @@
       "id": "heading_uppercase",
       "label": "Uppercase",
       "default": false
+    },
+    {
+      "type": "richtext",
+      "id": "description",
+      "label": "Description",
     },
     {
       "type": "header",

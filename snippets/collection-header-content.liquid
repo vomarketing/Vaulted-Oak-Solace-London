@@ -1,0 +1,12 @@
+<div class="collection-header__content">
+  <h1 class="collection-header__title">
+    {{ collection.title }}
+    <span class="collection-header__product-count">({{ collection.products_count }})</span>
+  </h1>
+
+  {%- if collection.description != blank -%}
+    <div class="collection-header__description">
+      {{ collection.description }}
+    </div>
+  {%- endif -%}
+</div>

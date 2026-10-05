@@ -1,0 +1,8 @@
+{%- doc -%}
+  Duties note shown below the checkout button, shared by the bag page and the mini bag.
+  Content is managed in Theme settings > Cart.
+{%- enddoc -%}
+
+{%- if settings.cart_duties_note != blank -%}
+  <p class="cart-DutiesNote">{{ settings.cart_duties_note | newline_to_br }}</p>
+{%- endif -%}
