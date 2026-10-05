@@ -9,6 +9,7 @@
       this.state = 'closed';
       this.panel = null;
       this.trigger = null;
+      this.selectedLink = null;
       this.inertNodes = [];
       this.swiperState = null;
       const options = { signal: this.abort.signal };
@@ -23,6 +24,12 @@
         if (e.pointerType === 'touch' || !this.panel) return;
         const link = e.target.closest('[data-mega-link]');
         if (link && this.panel.contains(link)) this.activate(link);
+      }, options);
+      header.addEventListener('pointerout', (e) => {
+        const link = e.target.closest('[data-mega-link]');
+        if (!link || !this.panel?.contains(link) || link.contains(e.relatedTarget)) return;
+        const next = e.relatedTarget?.closest?.('[data-mega-link]');
+        if (!next || !this.panel.contains(next)) this.restoreSelection();
       }, options);
       header.addEventListener('focusin', (e) => {
         const link = e.target.closest('[data-mega-link]');
@@ -67,8 +74,12 @@
       }
       // Restore the page before an existing search/cart drawer takes focus.
       if (e.target.closest('[data-module-drawers-trigger]')) this.close(false);
-      // Item anchors intentionally retain normal navigation. Future detail
-      // handling can be added here without changing hover/focus preview logic.
+      const link = e.target.closest('[data-mega-detail]');
+      if (link && this.panel?.contains(link)) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        if (this.state !== 'closing') this.select(link, e.detail === 0);
+      }
     }
     open(trigger) {
       const panel = document.getElementById(trigger.dataset.megaTrigger);
@@ -95,14 +106,50 @@
       this.header.dispatchEvent(new CustomEvent('mega-menu:open', { bubbles: true, detail: { id: panel.id } }));
     }
     firstFocus() { return this.panel?.querySelector('[data-mega-link]') || this.panel?.querySelector('[data-mega-close]'); }
+    restoreSelection() {
+      if (!this.panel || this.state === 'closing') return;
+      const focused = document.activeElement?.closest('[data-mega-link]');
+      this.render(this.panel.contains(focused) ? focused : this.selectedLink);
+    }
     activate(link) {
-      if (!this.panel) return;
-      this.panel.querySelectorAll('[data-mega-link]').forEach(el => el.classList.toggle('is-active', el === link));
+      if (!this.panel || this.state === 'closing') return;
+      // Do not hide a CTA while keyboard focus is inside its selected content.
+      const focusedCopy = document.activeElement?.closest('[data-mega-copy]');
+      if (focusedCopy && this.panel.contains(focusedCopy)) return;
+      this.render(link);
+    }
+    select(link, moveFocus = false) {
+      this.selectedLink = link;
+      this.render(link);
+      if (moveFocus) {
+        const preview = [...this.panel.querySelectorAll('[data-mega-preview]')]
+          .find(el => el.dataset.megaPreview === link.dataset.megaLink);
+        preview?.querySelector('[data-mega-copy] a[href]')?.focus({ preventScroll: true });
+      }
+      this.header.dispatchEvent(new CustomEvent('mega-menu:select', {
+        bubbles: true, detail: { panelId: this.panel.id, itemId: link.dataset.megaLink }
+      }));
+    }
+    render(link) {
+      if (!this.panel || this.state === 'closing') return;
+      const detail = !!link && link === this.selectedLink;
+      this.state = detail ? 'detail' : 'overview';
+      this.panel.dataset.state = this.state;
+      this.panel.querySelectorAll('[data-mega-link]').forEach(el => {
+        el.classList.toggle('is-active', el === link);
+        el.classList.toggle('is-selected', el === this.selectedLink);
+        if (el.hasAttribute('data-mega-detail')) {
+          el.setAttribute('aria-expanded', String(el === link && detail));
+        }
+      });
       this.panel.querySelectorAll('[data-mega-preview]').forEach(el => {
-        const active = el.dataset.megaPreview === link.dataset.megaLink;
+        const active = !!link && el.dataset.megaPreview === link.dataset.megaLink;
         el.classList.toggle('is-active', active);
+        el.classList.toggle('is-detail', active && detail);
         el.setAttribute('aria-hidden', String(!active));
         el.inert = !active;
+        const copy = el.querySelector('[data-mega-copy]');
+        if (copy) { copy.hidden = !(active && detail); copy.inert = !(active && detail); }
         if (active) el.querySelectorAll('img').forEach(img => { img.loading = 'eager'; });
       });
       this.applyColors(link);
@@ -233,6 +280,7 @@
       };
 
       surface.addEventListener('animationend', onAnimationEnd);
+      surface.style.setProperty('--mm-close-from', getComputedStyle(surface).transform);
       panel.classList.add('is-closing');
 
       timer = setTimeout(complete, 550);
@@ -244,8 +292,13 @@
       this.cancelCloseAnimation?.();
       this.cancelCloseAnimation = null;
       this.panel.classList.remove('is-closing');
+      this.panel.querySelector('[data-mega-surface]')?.style.removeProperty('--mm-close-from');
 
       const oldTrigger = this.trigger;
+      this.selectedLink = null;
+      this.panel.querySelectorAll('[data-mega-detail]').forEach(el => el.setAttribute('aria-expanded', 'false'));
+      this.panel.querySelectorAll('[data-mega-copy]').forEach(el => { el.hidden = true; el.inert = true; });
+      this.panel.querySelectorAll('.is-detail,.is-selected').forEach(el => el.classList.remove('is-detail', 'is-selected'));
       this.panel.hidden = true;
       this.panel.dataset.state = 'closed';
       this.panel.querySelectorAll('.is-active').forEach(el => el.classList.remove('is-active'));

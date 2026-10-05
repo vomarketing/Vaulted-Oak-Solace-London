@@ -7,18 +7,30 @@
   assign preview_image = item.preview_image.value
 -%}
 <figure class="mm-Preview" data-mega-preview="{{ item_id }}"
-  data-orientation="{{ orientation | escape }}" data-size="{{ size | escape }}"
-  data-placement="{{ placement | escape }}" data-alignment="{{ alignment | escape }}"
-  data-spacing="{{ spacing | escape }}" aria-hidden="true" inert>
+        data-orientation="{{ orientation | escape }}" data-size="{{ size | escape }}"
+        data-placement="{{ placement | escape }}" data-alignment="{{ alignment | escape }}"
+        data-spacing="{{ spacing | escape }}" aria-hidden="true" inert>
   {%- if preview_image != blank -%}
     <div class="mm-ImageWrap">
       {{ preview_image | image_url: width: 1600 | image_tag:
-        class: 'mm-Image', loading: 'lazy', widths: '320, 480, 640, 800, 1200, 1600',
-        sizes: '(min-width: 1201px) 35vw, 100vw'
+      class: 'mm-Image', loading: 'lazy', widths: '320, 480, 640, 800, 1200, 1600',
+      sizes: '(min-width: 1201px) 35vw, 100vw'
       }}
     </div>
   {%- endif -%}
-  {%- if item.preview_copy.value != blank -%}
-    <figcaption class="mm-Copy">{{ item.preview_copy.value | escape | newline_to_br }}</figcaption>
+  {%- if item.enable_detail.value == true -%}
+    <figcaption id="{{ item_id }}-copy" class="mm-Copy" data-mega-copy hidden inert>
+      {%- if item.preview_copy.value != blank -%}
+        <div class="mm-Description">{{ item.preview_copy.value | escape | newline_to_br }}</div>
+      {%- endif -%}
+      <div class="mm-Actions">
+        {%- if item.destination_url.value != blank -%}
+          <a class="mm-Action" href="{{ item.destination_url.value | escape }}">Shop All<span class="mm-SrOnly"> — {{ item.label.value | escape }}</span></a>
+        {%- endif -%}
+        {%- if item.campaign_url.value != blank -%}
+          <a class="mm-Action" href="{{ item.campaign_url.value | escape }}">Discover Campaign<span class="mm-SrOnly"> — {{ item.label.value | escape }}</span></a>
+        {%- endif -%}
+      </div>
+    </figcaption>
   {%- endif -%}
 </figure>
