@@ -14,7 +14,16 @@
     "footer": {
       "type": "footer",
       "settings": {
-        "navigation": "footer"
+        "description": "Solace London is a British womenswear brand founded by Laura Taylor and Ryan Holliday-Stevens in 2013.",
+        "navigation": "footer-menu-column-1",
+        "navigation_secondary": "footer-menu-column-2",
+        "instagram_label": "Instagram",
+        "instagram_url": "https://www.instagram.com/solacelondon",
+        "newsletter_heading": "Subscribe to our newsletter for exclusive access",
+        "newsletter_heading_mobile": "Subscribe for Exclusive Access",
+        "newsletter_disclaimer": "<p>By subscribing, you agree to receive emails from Solace London. You can unsubscribe at any time. See our <a href=\"/policies/privacy-policy\" title=\"Privacy Policy\">Privacy Policy</a>.</p>",
+        "klaviyo_public_key": "",
+        "klaviyo_list_id": ""
       }
     },
     "store-switcher": {
