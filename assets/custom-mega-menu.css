@@ -53,6 +53,7 @@
     z-index: 1;
     display: block;
     pointer-events: auto;
+    height: 100dvh;
   }
   .mm-Backdrop {
     position: absolute;
