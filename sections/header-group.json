@@ -1,3 +1,12 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "type": "header",
   "name": "Header group",
@@ -11,14 +20,27 @@
     },
     "header": {
       "type": "header",
+      "blocks": {
+        "mega_menu_UmWQeE": {
+          "type": "mega_menu",
+          "settings": {
+            "menu_item_title": "Shop",
+            "menu_content": "shop-mega-menu"
+          }
+        }
+      },
+      "block_order": [
+        "mega_menu_UmWQeE"
+      ],
       "settings": {
         "left_navigation": "desktop-left",
         "right_navigation": "desktop-right",
         "header_background_style": "transparent",
-        "transparent_homepage_only": true,
+        "transparent_homepage_only": false,
         "transparent_color_scheme": "light",
         "solid_background_color": "#ffffff",
-        "solid_color_scheme": "dark"
+        "solid_color_scheme": "dark",
+        "enable_sticky_header": true
       }
     }
   },

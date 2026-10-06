@@ -191,6 +191,89 @@
     ]
   },
   {
+    "name": "Cart",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Shared by the bag page and the mini bag."
+      },
+      {
+        "type": "header",
+        "content": "Empty bag"
+      },
+      {
+        "type": "text",
+        "id": "cart_empty_text",
+        "label": "Message",
+        "default": "Your bag is empty."
+      },
+      {
+        "type": "richtext",
+        "id": "cart_empty_delivery_text",
+        "label": "Delivery text",
+        "default": "<p>Estimated delivery: 7-10 working days, shipped with DHL Express.</p><p>Full-price items may be returned within 14 days of receipt.</p>"
+      },
+      {
+        "type": "text",
+        "id": "cart_empty_delivery_link_label",
+        "label": "Delivery link label",
+        "default": "More Information"
+      },
+      {
+        "type": "url",
+        "id": "cart_empty_delivery_link_url",
+        "label": "Delivery link",
+        "info": "Defaults to /pages/shipping-returns."
+      },
+      {
+        "type": "text",
+        "id": "cart_empty_help_heading",
+        "label": "Help heading",
+        "default": "Need help?"
+      },
+      {
+        "type": "textarea",
+        "id": "cart_empty_help_text",
+        "label": "Help text",
+        "default": "Our customer care team is available from Monday to Friday, UK business hours to help with any queries."
+      },
+      {
+        "type": "text",
+        "id": "cart_empty_live_chat_label",
+        "label": "Live chat label",
+        "default": "Live Chat"
+      },
+      {
+        "type": "url",
+        "id": "cart_empty_live_chat_url",
+        "label": "Live chat link"
+      },
+      {
+        "type": "text",
+        "id": "cart_empty_email_label",
+        "label": "Email label",
+        "default": "Email"
+      },
+      {
+        "type": "text",
+        "id": "cart_empty_email",
+        "label": "Email address",
+        "default": "help@solacelondon.com"
+      },
+      {
+        "type": "header",
+        "content": "Duties note"
+      },
+      {
+        "type": "textarea",
+        "id": "cart_duties_note",
+        "label": "Note",
+        "info": "Shown below the checkout button. Leave blank to hide.",
+        "default": "Prices now include customs duties, import fees and taxes. No additional charges will be incurred upon delivery."
+      }
+    ]
+  },
+  {
     "name": "Lookbook",
     "settings": [
       {
@@ -334,6 +417,52 @@
         "type": "text",
         "id": "social_vimeo_link",
         "label": "Vimeo link"
+      }
+    ]
+  },
+  {
+    "name": "Search",
+    "settings": [
+      {
+        "type": "select",
+        "id": "search_provider",
+        "label": "Search Provider",
+        "options": [
+          {
+            "value": "shopify",
+            "label": "Shopify Search & Discovery"
+          },
+          {
+            "value": "klevu",
+            "label": "Klevu (Legacy 3rd-party)"
+          }
+        ],
+        "default": "shopify",
+        "info": "Choose between Shopify native Search & Discovery or Klevu 3rd-party search."
+      },
+      {
+        "type": "select",
+        "id": "search_drawer_layout",
+        "label": "Quick Search UI Layout",
+        "options": [
+          {
+            "value": "horizontal",
+            "label": "Horizontal Layout (Full-width Dropdown)"
+          },
+          {
+            "value": "vertical",
+            "label": "Vertical Drawer (Right Slide-out)"
+          }
+        ],
+        "default": "horizontal",
+        "info": "Choose the layout for the quick search popup/drawer."
+      },
+      {
+        "type": "textarea",
+        "id": "search_suggested_terms",
+        "label": "Suggested Search Terms",
+        "default": "Bridal\nRed Dress\nFull Length\nMetallic",
+        "info": "List of popular/suggested search terms (one per line or comma-separated)."
       }
     ]
   },

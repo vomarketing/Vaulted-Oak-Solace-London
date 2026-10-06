@@ -4,22 +4,52 @@
 
 {% liquid
   assign color_scheme = section.settings.color_scheme | default: 'light'
+  assign background_color = section.settings.background_color | default: '#ffffff'
+  assign text_color = section.settings.text_color | default: '#000000'
   assign header_mode = section.settings.header_contrast_mode | default: 'dark'
   assign mobile_layout = section.settings.mobile_layout | default: 'stacked'
+  assign layout_width = section.settings.layout_width | default: 'contained'
+  assign disable_full_page = section.settings.disable_full_page | default: false
+  assign enable_custom_spacing = false
+  assign custom_padding_top = section.settings.custom_padding_top | default: 0 | at_least: 0
+  assign custom_padding_bottom = section.settings.custom_padding_bottom | default: 0 | at_least: 0
+  assign enable_custom_mobile_spacing = false
+  assign custom_mobile_padding_top = section.settings.custom_mobile_padding_top | default: 0 | at_least: 0
+  assign custom_mobile_padding_bottom = section.settings.custom_mobile_padding_bottom | default: 0 | at_least: 0
+  assign is_full_width = false
+  assign use_mobile_slider = false
+  assign image_sizes = '(min-width: 1920px) 531px, (min-width: 901px) 440px, (min-width: 768px) 260px, (min-width: 403px) 220px, 190px'
+
+  if layout_width == 'full-width'
+    assign is_full_width = true
+    assign disable_full_page = false
+    assign image_sizes = '(min-width: 901px) 50vw, 100vw'
+  elsif mobile_layout == 'slider' and disable_full_page == false
+    assign use_mobile_slider = true
+  endif
+
+  if disable_full_page and section.settings.enable_custom_spacing
+    assign enable_custom_spacing = true
+  endif
+
+  if disable_full_page and section.settings.enable_custom_mobile_spacing
+    assign enable_custom_mobile_spacing = true
+  endif
 %}
 
-{% if mobile_layout == 'slider' %}
+{% if use_mobile_slider %}
   <script src="{{ 'two-ups-media.js' | asset_url }}" defer="defer"></script>
 {% endif %}
 
 <two-ups-media
-  class="two-ups-media two-ups-media--{{ color_scheme }}{% if mobile_layout == 'slider' %} two-ups-media--slider{% endif %}"
+  class="two-ups-media two-ups-media--{{ color_scheme }} two-ups-media--{{ layout_width }}{% if use_mobile_slider %} two-ups-media--slider{% endif %}{% if disable_full_page %} two-ups-media--full-page-disabled{% endif %}{% if enable_custom_spacing %} two-ups-media--custom-spacing{% endif %}{% if enable_custom_mobile_spacing %} two-ups-media--custom-mobile-spacing{% endif %}"
   id="TwoUpsMedia-{{ section.id }}"
   data-header-mode="{{ header_mode }}"
-  data-mobile-layout="{{ mobile_layout }}"
+  data-mobile-layout="{% if is_full_width %}full-width{% elsif use_mobile_slider %}slider{% else %}stacked{% endif %}"
+  style="--two-ups-media-background-color: {{ background_color }}; --two-ups-media-text-color: {{ text_color }};{% if enable_custom_spacing %} --two-ups-media-custom-padding-top: {{ custom_padding_top }}px; --two-ups-media-custom-padding-bottom: {{ custom_padding_bottom }}px;{% endif %}{% if enable_custom_mobile_spacing %} --two-ups-media-custom-mobile-padding-top: {{ custom_mobile_padding_top }}px; --two-ups-media-custom-mobile-padding-bottom: {{ custom_mobile_padding_bottom }}px;{% endif %}"
 >
-  <div class="two-ups-media__swiper{% if mobile_layout == 'slider' %} swiper js-two-ups-swiper{% endif %}">
-    <div class="two-ups-media__inner{% if mobile_layout == 'slider' %} swiper-wrapper{% endif %}">
+  <div class="two-ups-media__swiper{% if use_mobile_slider %} swiper js-two-ups-swiper{% endif %}">
+    <div class="two-ups-media__inner{% if use_mobile_slider %} swiper-wrapper{% endif %}">
       {% for block in section.blocks %}
         {% liquid
           assign media_type = block.settings.media_type | default: 'image'
@@ -58,7 +88,7 @@
           assign poster_image = desktop_image | default: block.settings.desktop_video.preview_image
         %}
 
-        <div class="two-ups-media__item{% if mobile_layout == 'slider' %} swiper-slide js-two-ups-slide{% endif %}" {{ block.shopify_attributes }}>
+        <div class="two-ups-media__item{% if use_mobile_slider %} swiper-slide js-two-ups-slide{% endif %}" {{ block.shopify_attributes }}>
           {% liquid
             assign text_size = block.settings.text_font_size | default: 'text-reg-14'
             assign text_classes = text_size
@@ -67,15 +97,29 @@
             endif
           %}
 
-          {% if block.settings.text != blank %}
-            <div class="two-ups-media__text two-ups-media__text--mobile-top {{ text_classes }}">
-              {% if block.settings.link != blank %}
-                <a href="{{ block.settings.link }}">{{ block.settings.text }}</a>
-              {% else %}
-                {{ block.settings.text }}
-              {% endif %}
-            </div>
-          {% endif %}
+          {% unless is_full_width %}
+            {% if block.settings.text != blank or block.settings.sub_text != blank %}
+              <div class="two-ups-media__text two-ups-media__text--mobile-top {{ text_classes }}">
+                {% if block.settings.link != blank %}
+                  <a href="{{ block.settings.link }}">
+                    {% if block.settings.text != blank %}
+                      <span class="two-ups-media__primary-text">{{ block.settings.text }}</span>
+                    {% endif %}
+                    {% if block.settings.sub_text != blank %}
+                      <span class="two-ups-media__sub-text">{{ block.settings.sub_text }}</span>
+                    {% endif %}
+                  </a>
+                {% else %}
+                  {% if block.settings.text != blank %}
+                    <span class="two-ups-media__primary-text">{{ block.settings.text }}</span>
+                  {% endif %}
+                  {% if block.settings.sub_text != blank %}
+                    <span class="two-ups-media__sub-text">{{ block.settings.sub_text }}</span>
+                  {% endif %}
+                {% endif %}
+              </div>
+            {% endif %}
+          {% endunless %}
 
           {% if has_media %}
             {% if block.settings.link != blank %}
@@ -105,9 +149,24 @@
                   image_mobile: mobile_image,
                   class: 'two-ups-media__image',
                   breakpoint: '900px',
+                  sizes: image_sizes,
+                  sizes_mobile: image_sizes,
                   widths: '400, 600, 800, 1000, 1200, 1600, 1920',
                   widths_mobile: '400, 600, 800, 1000, 1200, 1600, 1920'
                 -%}
+              {% endif %}
+
+              {% if is_full_width %}
+                {% if block.settings.text != blank or block.settings.sub_text != blank %}
+                  <div class="two-ups-media__text two-ups-media__text--overlay {{ text_classes }}">
+                    {% if block.settings.text != blank %}
+                      <span class="two-ups-media__primary-text">{{ block.settings.text }}</span>
+                    {% endif %}
+                    {% if block.settings.sub_text != blank %}
+                      <span class="two-ups-media__sub-text">{{ block.settings.sub_text }}</span>
+                    {% endif %}
+                  </div>
+                {% endif %}
               {% endif %}
 
             {% if block.settings.link != blank %}
@@ -117,15 +176,29 @@
             {% endif %}
           {% endif %}
 
-          {% if block.settings.text != blank %}
-            <div class="two-ups-media__text two-ups-media__text--default {{ text_classes }}">
-              {% if block.settings.link != blank %}
-                <a href="{{ block.settings.link }}">{{ block.settings.text }}</a>
-              {% else %}
-                {{ block.settings.text }}
-              {% endif %}
-            </div>
-          {% endif %}
+          {% unless is_full_width %}
+            {% if block.settings.text != blank or block.settings.sub_text != blank %}
+              <div class="two-ups-media__text two-ups-media__text--default {{ text_classes }}">
+                {% if block.settings.link != blank %}
+                  <a href="{{ block.settings.link }}">
+                    {% if block.settings.text != blank %}
+                      <span class="two-ups-media__primary-text">{{ block.settings.text }}</span>
+                    {% endif %}
+                    {% if block.settings.sub_text != blank %}
+                      <span class="two-ups-media__sub-text">{{ block.settings.sub_text }}</span>
+                    {% endif %}
+                  </a>
+                {% else %}
+                  {% if block.settings.text != blank %}
+                    <span class="two-ups-media__primary-text">{{ block.settings.text }}</span>
+                  {% endif %}
+                  {% if block.settings.sub_text != blank %}
+                    <span class="two-ups-media__sub-text">{{ block.settings.sub_text }}</span>
+                  {% endif %}
+                {% endif %}
+              </div>
+            {% endif %}
+          {% endunless %}
         </div>
       {% endfor %}
     </div>
@@ -141,23 +214,39 @@
   "settings": [
     {
       "type": "header",
-      "content": "Color & Contrast"
+      "content": "Layout"
     },
     {
       "type": "select",
-      "id": "color_scheme",
-      "label": "Background",
+      "id": "layout_width",
+      "label": "Layout width",
       "options": [
         {
-          "value": "light",
-          "label": "Light"
+          "value": "contained",
+          "label": "Contained"
         },
         {
-          "value": "dark",
-          "label": "Dark"
+          "value": "full-width",
+          "label": "Full width"
         }
       ],
-      "default": "light"
+      "default": "contained"
+    },
+    {
+      "type": "header",
+      "content": "Color & Contrast"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background color",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text color",
+      "default": "#000000"
     },
     {
       "type": "select",
@@ -193,7 +282,80 @@
           "label": "Vertical slider (Separate slides)"
         }
       ],
-      "default": "stacked"
+      "default": "stacked",
+      "visible_if": "{{ section.settings.layout_width == 'contained' }}"
+    },
+    {
+      "type": "header",
+      "content": "Spacing"
+    },
+    {
+      "type": "checkbox",
+      "id": "disable_full_page",
+      "label": "Disable full page",
+      "info": "Uses the content's natural height at every screen size and enables custom spacing controls. Mobile slider falls back to stacked; full-width stays unchanged.",
+      "default": false,
+      "visible_if": "{{ section.settings.layout_width == 'contained' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_spacing",
+      "label": "Use custom desktop spacing",
+      "info": "Applies to the contained layout at 980px and above. Each Two Ups Media section can use different values.",
+      "default": false,
+      "visible_if": "{{ section.settings.layout_width == 'contained' and section.settings.disable_full_page == true }}"
+    },
+    {
+      "type": "range",
+      "id": "custom_padding_top",
+      "label": "Padding top",
+      "min": 0,
+      "max": 320,
+      "step": 4,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.layout_width == 'contained' and section.settings.disable_full_page == true and section.settings.enable_custom_spacing == true }}"
+    },
+    {
+      "type": "range",
+      "id": "custom_padding_bottom",
+      "label": "Padding bottom",
+      "min": 0,
+      "max": 320,
+      "step": 4,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.layout_width == 'contained' and section.settings.disable_full_page == true and section.settings.enable_custom_spacing == true }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_custom_mobile_spacing",
+      "label": "Use custom mobile spacing",
+      "info": "Applies below 980px after full-page height is disabled.",
+      "default": false,
+      "visible_if": "{{ section.settings.layout_width == 'contained' and section.settings.disable_full_page == true }}"
+    },
+    {
+      "type": "range",
+      "id": "custom_mobile_padding_top",
+      "label": "Mobile padding top",
+      "min": 0,
+      "max": 320,
+      "step": 4,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.layout_width == 'contained' and section.settings.disable_full_page == true and section.settings.enable_custom_mobile_spacing == true }}"
+    },
+    {
+      "type": "range",
+      "id": "custom_mobile_padding_bottom",
+      "label": "Mobile padding bottom",
+      "min": 0,
+      "max": 320,
+      "step": 4,
+      "unit": "px",
+      "default": 0,
+      "visible_if": "{{ section.settings.layout_width == 'contained' and section.settings.disable_full_page == true and section.settings.enable_custom_mobile_spacing == true }}"
     }
   ],
   "blocks": [
@@ -263,6 +425,11 @@
           "id": "text",
           "label": "Text",
           "default": "Shop Now"
+        },
+        {
+          "type": "inline_richtext",
+          "id": "sub_text",
+          "label": "Sub text"
         },
         {
           "type": "select",

@@ -41,11 +41,18 @@
         "other": "{{ count }} results for \"{{ terms }}\""
       },
       "no_results_html": "Please try a different search term or go back to the <a href=\"/\">homepage</a>.",
+      "no_results_title": "No Results Found",
+      "continue_shopping": "Explore Collections",
       "results": "Results",
       "view_all": "View All",
       "reset": "Reset",
       "refine": "Refine",
       "no_results": "No results found for",
+      "input_placeholder": "Search",
+      "submit_label": "Submit",
+      "suggested_terms": "Suggested Terms",
+      "searching_for": "Searching For:",
+      "view_all_results": "View all results",
       "popular_searches": "Popular Searches",
       "filter_by": "Filter By",
       "categories": "Categories",
@@ -68,7 +75,13 @@
     "footer": {
       "social_platform": "{{ name }} on {{ platform }}",
       "copyright": "© {{ year }}",
-      "payment_methods": "Payment methods accepted"
+      "payment_methods": "Payment methods accepted",
+      "navigation_primary": "Customer service",
+      "navigation_secondary": "Legal",
+      "newsletter_email": "Email Address",
+      "newsletter_submit": "Submit",
+      "newsletter_success": "Thank you for subscribing.",
+      "newsletter_error": "Something went wrong. Please try again."
     },
     "header": {
       "menu": "Menu",
@@ -153,6 +166,15 @@
       "link_url": "/collections",
       "continue_shopping": "Continue Shopping"
     },
+    "bag": {
+      "title": "Bag ({{ count }})",
+      "edit": "Edit",
+      "change_option": "Change {{ option }}",
+      "remove": "Remove",
+      "decrease_quantity": "Decrease quantity of {{ title }}",
+      "increase_quantity": "Increase quantity of {{ title }}",
+      "error": "Something went wrong. Please try again."
+    },
     "drawer": {
       "title": "Cart",
       "checkout_securely": "Checkout securely",
@@ -180,9 +202,9 @@
     },
     "summary": {
       "continue_to_checkout": "Order summary",
-      "shipping_at_checkout": "Shipping and taxes are calculated at checkout. Discount codes can be applied at the checkout.",
+      "shipping_at_checkout": "Prices now include customs duties, import fees and taxes. No additional charges will be incurred upon delivery.",
       "text": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Condimentum id venenatis a condimentum. Elementum curabitur vitae nunc sed velit dignissim.",
-      "subtotal": "Subtotal",
+      "subtotal": "Estimated Total",
       "discount": "Discount",
       "delivery": "Delivery",
       "calculated_at_checkout": "Calculated at checkout",
@@ -199,7 +221,10 @@
       "shop_now": "Shop now",
       "filter": "Filter",
       "filter_title": "Filter By",
-      "filter_close": "Close"
+      "filter_close": "Close",
+      "filter_and_sort": "Filter & Sort",
+      "read_more" : "Read More",
+      "read_less" : "Read Less"
     },
     "per_page": {
       "title": "Per page"
@@ -207,13 +232,17 @@
     "sorting": {
       "title": "Sort by",
       "featured": "Featured",
+      "relevance": "Relevance",
       "best_selling": "Best Selling",
       "az": "Alphabetically, A-Z",
       "za": "Alphabetically, Z-A",
       "price_ascending": "Price, low to high",
       "price_descending": "Price, high to low",
       "date_descending": "Date, new to old",
-      "date_ascending": "Date, old to new"
+      "date_ascending": "Date, old to new",
+      "new_in": "New In",
+      "ascending_price": "Ascending Price",
+      "descending_price": "Descending Price"
     }
   },
   "customer": {

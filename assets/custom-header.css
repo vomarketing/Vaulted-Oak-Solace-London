@@ -57,7 +57,10 @@
 
   &.hd-Header-dropdownActive,
   &.hd-Header-searchActive {
-    --Header_TextColor: var(--color-black);
+    --Header_TextColor: var(--color-black, #000000) !important;
+    --Color_Primary: var(--color-black, #000000) !important;
+    --Header_CountTextColor: var(--color-white, #ffffff) !important;
+    background-color: var(--color-white, #ffffff) !important;
   }
 
   .hd-Nav_ChildLink {
@@ -208,6 +211,12 @@
   }
 }
 
+.template-page--campaign .hd-Header:not(.is-scrolled):not(.hd-Header-dropdownActive):not(.hd-Header-searchActive) {
+  --Header_TextColor: var(--color-white);
+  --Header_CountTextColor: var(--color-white);
+  --Color_Primary: var(--color-black);
+}
+
 .template-product .hd-Header:not(.hd-Header-dropdownActive):not(.hd-Header-searchActive) {
   @media (min-width: 901px) {
     &[data-header-split="true"] {
@@ -259,6 +268,11 @@
 
 .hd-Header_NavBackdrop {
   background-color: var(--color-white);
+  height: 100dvh;
+}
+
+.hd-Header_Backdrop {
+  height: 100dvh;
 }
 
 .hd-Header_NavBackdropLogo {
@@ -316,7 +330,6 @@
 }
 
 .drw-Drawer.drw-Drawer-search {
-  max-width: 774px;
   background-color: #fff;
   color: #000;
 
@@ -360,5 +373,78 @@
     text-transform: capitalize;
     color: #000;
     opacity: 1;
+  }
+}
+
+/* Search Drawer Active Header State */
+@media (max-width: 1200px) {
+  body.has-search-active .lyt-Header,
+  body.has-search-active .hd-Header,
+  body[data-active-drawer-key="search"] .lyt-Header,
+  body[data-active-drawer-key="search"] .hd-Header,
+  body:has(.drw-Drawer-search.drw-Drawer-active) .lyt-Header,
+  body:has(.drw-Drawer-search.drw-Drawer-active) .hd-Header {
+    background-color: var(--color-white) !important;
+    --Header_TextColor: var(--color-black) !important;
+    --Color_Primary: var(--color-black) !important;
+    --Header_CountTextColor: var(--color-white) !important;
+    z-index: 102 !important;
+  }
+
+  body.has-search-active .hd-Header .hd-Header_Logo,
+  body[data-active-drawer-key="search"] .hd-Header .hd-Header_Logo,
+  body:has(.drw-Drawer-search.drw-Drawer-active) .hd-Header .hd-Header_Logo {
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  body.has-search-active .hd-Header .hd-Header_Logo svg,
+  body[data-active-drawer-key="search"] .hd-Header .hd-Header_Logo svg,
+  body:has(.drw-Drawer-search.drw-Drawer-active) .hd-Header .hd-Header_Logo svg {
+    color: var(--color-black) !important;
+    fill: var(--color-black) !important;
+  }
+
+  body.has-search-active .hd-MobileNav_Icon-search,
+  body[data-active-drawer-key="search"] .hd-MobileNav_Icon-search,
+  body:has(.drw-Drawer-search.drw-Drawer-active) .hd-MobileNav_Icon-search {
+    display: none !important;
+  }
+
+  body.has-search-active .hd-MobileNav_Icon-close,
+  body[data-active-drawer-key="search"] .hd-MobileNav_Icon-close,
+  body:has(.drw-Drawer-search.drw-Drawer-active) .hd-MobileNav_Icon-close {
+    display: block !important;
+    width: 14px;
+    height: 14px;
+  }
+}
+
+@media (min-width: 1201px) {
+  .lyt-Header:has(.hd-Header-searchActive),
+  .lyt-Header.hd-Header-searchActive,
+  body.has-horizontal-search-active .lyt-Header,
+  body.has-horizontal-search-active .hd-Header,
+  body:has(.drw-Drawer-searchHorizontal.drw-Drawer-active) .lyt-Header,
+  body:has(.drw-Drawer-searchHorizontal.drw-Drawer-active) .hd-Header {
+    background-color: var(--color-white) !important;
+    --Header_TextColor: var(--color-black) !important;
+    --Color_Primary: var(--color-black) !important;
+    --Header_CountTextColor: var(--color-white) !important;
+    z-index: 102 !important;
+  }
+
+  body.has-horizontal-search-active .hd-Header .hd-Header_Logo,
+  body:has(.drw-Drawer-searchHorizontal.drw-Drawer-active) .hd-Header .hd-Header_Logo,
+  .hd-Header-searchActive .hd-Header_Logo {
+    opacity: 1 !important;
+    visibility: visible !important;
+  }
+
+  body.has-horizontal-search-active .hd-Header .hd-Header_Logo svg,
+  body:has(.drw-Drawer-searchHorizontal.drw-Drawer-active) .hd-Header .hd-Header_Logo svg,
+  .hd-Header-searchActive .hd-Header_Logo svg {
+    color: var(--color-black) !important;
+    fill: var(--color-black) !important;
   }
 }
