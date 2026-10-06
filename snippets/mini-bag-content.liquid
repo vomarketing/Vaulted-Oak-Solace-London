@@ -1,9 +1,12 @@
 {%- liquid
   assign has_final_sale = false
+
   for item in cart.items
-    if item.product.metafields.custom.final_sale.value == true
-      assign has_final_sale = true
-      break
+    if item.variant.compare_at_price != blank
+      if item.variant.compare_at_price > item.variant.price
+        assign has_final_sale = true
+        break
+      endif
     endif
   endfor
 -%}
