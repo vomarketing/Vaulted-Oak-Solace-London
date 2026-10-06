@@ -6,6 +6,7 @@
     const form = root.querySelector('[data-collection-filter-form]');
     const count = root.querySelector('[data-collection-filter-result-count]');
     const submit = root.querySelector('[data-collection-filter-submit]');
+    const clear = root.querySelector('[data-collection-filter-clear]');
     if (!form || !count || !submit) return;
 
     const selectedUrl = () => {
@@ -24,6 +25,15 @@
       event.preventDefault();
       window.location.assign(selectedUrl().href);
     });
+
+    if (clear) {
+      clear.addEventListener('click', () => {
+        form.querySelectorAll('input[type="checkbox"]:checked').forEach((input) => {
+          input.checked = false;
+        });
+        form.dispatchEvent(new Event('change', { bubbles: true }));
+      });
+    }
 
     let request;
     form.addEventListener('change', async () => {

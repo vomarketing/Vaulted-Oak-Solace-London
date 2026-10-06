@@ -5,9 +5,13 @@
   position: sticky;
   top: var(--collection-header-offset);
   z-index: calc(var(--z-header, 90) - 1);
-  padding: 40px 0;
+  padding: 11px 0;
   background-color: transparent;
   transition: top 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+
+  @media (min-width: 769px) {
+    padding: 40px 0;
+  }
 }
 
 .collection-header::before {
@@ -107,6 +111,23 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
   max-width: 570px;
 }
 
+.collection-header__description-copy {
+  overflow: hidden;
+}
+
+.collection-header__description--truncated:not(.is-expanded) .collection-header__description-copy {
+  max-height: 72px;
+}
+
+.collection-header__description-toggle {
+  display: block;
+  margin-top: 4px;
+  padding: 0;
+  font: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 .collection-header__filter-sort {
   align-items: center;
   display: flex;
@@ -123,8 +144,77 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
   line-height: 1;
 }
 
+.collection-header__filter-sort--mobile {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  body.template-collection {
+    padding-bottom: calc(56px + env(safe-area-inset-bottom));
+  }
+
+  .collection-header__inner {
+    justify-content: center;
+  }
+
+  .collection-header__content {
+    text-align: center;
+  }
+
+  .collection-header__description {
+    max-width: 360px;
+    margin: 10px auto 0;
+    font-size: 12px;
+    line-height: 18px;
+  }
+
+  .collection-header__description--truncated:not(.is-expanded) .collection-header__description-copy {
+    max-height: 72px;
+  }
+
+  .collection-header__description-toggle {
+    margin: 4px auto 0;
+  }
+
+  body.template-collection.has-collection-scroll-animation.is-collection-nav-hidden .collection-header {
+    pointer-events: auto;
+  }
+
+  body.template-collection.has-collection-scroll-animation.is-collection-nav-hidden .collection-header::before {
+    clip-path: none;
+  }
+
+  body.template-collection.has-collection-scroll-animation.is-collection-nav-hidden .collection-header__inner {
+    transform: none;
+  }
+
+  .collection-header__filter-sort--desktop {
+    display: none;
+  }
+
+  .collection-header__filter-sort--mobile {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 9;
+    display: flex;
+    width: 100%;
+    height: calc(56px + env(safe-area-inset-bottom));
+    justify-content: center;
+    padding: 0 20px env(safe-area-inset-bottom);
+    border-top: 1px solid #999;
+    background: #fff;
+    text-align: center;
+  }
+}
+
 .clc-List .prd-List_Items {
-  gap: 50px;
+  gap: 40px 20px;
+
+  @media (min-width: 768px) {
+    gap: 50px;
+  }
 }
 
 .clc-List .prd-Card_ImageContainer {

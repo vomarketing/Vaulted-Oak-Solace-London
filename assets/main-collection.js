@@ -25,12 +25,14 @@
       this.handleResize = this.handleResize.bind(this);
       this.update = this.update.bind(this);
       this.refresh = this.refresh.bind(this);
+      this.initializeDescriptionToggles();
 
       this.refresh();
       this.bindEvents();
     }
 
     refresh() {
+      this.initializeDescriptionToggles();
       this.header = document.querySelector(CollectionScrollController.selectors.header);
       this.collectionHeader = document.querySelector(CollectionScrollController.selectors.collectionHeader);
 
@@ -55,6 +57,27 @@
       window.addEventListener('pageshow', this.refresh);
       document.addEventListener('shopify:section:load', this.refresh);
       document.addEventListener('shopify:section:unload', this.refresh);
+    }
+
+    initializeDescriptionToggles() {
+      document.querySelectorAll('[data-collection-description]').forEach((description) => {
+        if (description.dataset.descriptionInitialized === 'true') return;
+        description.dataset.descriptionInitialized = 'true';
+
+        const toggle = description.querySelector('[data-collection-description-toggle]');
+        if (!toggle) return;
+
+        toggle.addEventListener('click', () => {
+          const scrollY = window.scrollY;
+          const isExpanded = description.classList.toggle('is-expanded');
+          toggle.setAttribute('aria-expanded', String(isExpanded));
+          toggle.textContent = isExpanded ? toggle.dataset.readLess : toggle.dataset.readMore;
+
+          window.requestAnimationFrame(() => {
+            if (window.scrollY !== scrollY) window.scrollTo(0, scrollY);
+          });
+        });
+      });
     }
 
     observeHeaderSize() {
