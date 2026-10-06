@@ -55,13 +55,28 @@
 
   <div class="bag-Item_Info">
     <div class="bag-Item_Details">
-      <a class="bag-Item_Title" href="{{ line_item.url }}">{{ product.title }}</a>
+      <a class="bag-Item_Title" href="{{ line_item.url }}">{{ product.title | escape }}</a>
 
       {%- unless product.has_only_default_variant -%}
         {%- for option in line_item.options_with_values -%}
-          <p class="bag-Item_Option">{{ option.name }}: {{ option.value }}</p>
+          <p class="bag-Item_Option">{{ option.name | escape }}: {{ option.value | escape }}</p>
         {%- endfor -%}
       {%- endunless -%}
+
+      {%- if line_item.selling_plan_allocation -%}
+        <p class="bag-Item_Option">{{ line_item.selling_plan_allocation.selling_plan.name | escape }}</p>
+      {%- endif -%}
+
+      {%- for property in line_item.properties -%}
+        {%- assign first_character = property.first | slice: 0 -%}
+        {%- if property.last != blank and first_character != '_' -%}
+          <p class="bag-Item_Option">{{ property.first | escape }}: {{ property.last | escape }}</p>
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- for discount in line_item.line_level_discount_allocations -%}
+        <p class="bag-Item_Option">{{ discount.discount_application.title | escape }}</p>
+      {%- endfor -%}
     </div>
 
     <div class="bag-Item_Quantity">
@@ -70,6 +85,7 @@
         type="button"
         data-bag-quantity="{{ line_item.quantity | minus: 1 }}"
         aria-label="{{ 'cart.bag.decrease_quantity' | t: title: product.title | escape }}"
+        {% if line_item.quantity <= 1 %}disabled{% endif %}
       >
         -
       </button>

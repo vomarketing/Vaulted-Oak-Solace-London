@@ -6,9 +6,5 @@
   <p class="mbg-Error" data-mini-error role="alert" hidden></p>
   <div class="mbg-Live" aria-live="polite" data-mini-live></div>
   <div class="mbg-Content" data-mini-content>{% render 'mini-bag-content' %}</div>
-  <div class="mbg-Information" data-mini-information hidden>
-    {% if settings.mbg_delivery != blank %}<div>{{ settings.mbg_delivery }}</div>{% endif %}
-    {% if shop.shipping_policy.body != blank %}<h3>Shipping</h3><div>{{ shop.shipping_policy.body }}</div>{% endif %}
-    {% if shop.refund_policy.body != blank %}<h3>Returns</h3><div>{{ shop.refund_policy.body }}</div>{% endif %}
-  </div>
+  <div class="mbg-Information" data-mini-information hidden>{% render 'shipping-returns-content' %}</div>
 </div>

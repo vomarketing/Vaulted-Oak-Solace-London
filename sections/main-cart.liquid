@@ -6,17 +6,22 @@
 {%- liquid
   assign has_final_sale = false
   for item in cart.items
-    if item.product.metafields.custom.final_sale.value == true
-      assign has_final_sale = true
-      break
+    if item.variant.compare_at_price != blank
+      if item.variant.compare_at_price > item.variant.price
+        assign has_final_sale = true
+        break
+      endif
     endif
   endfor
 
-  assign shipping_price = nil
-  assign estimated_total = cart.total_price
-  if section.settings.shipping_amount != blank
-    assign shipping_price = section.settings.shipping_amount | times: 100 | round
-    assign estimated_total = estimated_total | plus: shipping_price
+  assign show_duties = false
+  if localization.market.metafields.custom.show_duties_and_taxes.value == true
+    assign show_duties = true
+  endif
+
+  assign duties_note = settings.mbg_note_default
+  if show_duties
+    assign duties_note = settings.mbg_note_included
   endif
 -%}
 
@@ -33,13 +38,26 @@
 
       {%- render 'cart-empty-content' -%}
     </div>
+
+    <dialog class="bag-Info" id="BagInfo" aria-labelledby="BagInfoTitle" data-bag-info>
+      <header class="bag-Info_Header">
+        <h2 class="bag-Info_Title" id="BagInfoTitle">{{ 'cart.bag.shipping_returns' | t }}</h2>
+        <button class="bag-Info_Close" type="button" data-bag-info-close>{{ 'cart.bag.close' | t }}</button>
+      </header>
+
+      <div class="bag-Info_Body">
+        {%- render 'shipping-returns-content' -%}
+      </div>
+    </dialog>
   {%- else -%}
     <div class="bag-Page_Inner">
       <div class="bag-Page_Main">
         <h1 class="bag-Page_Title">{{ 'cart.bag.title' | t: count: cart.item_count }}</h1>
 
-        {%- if has_final_sale and section.settings.final_sale_message != blank -%}
-          <p class="bag-Page_Notice">{{ section.settings.final_sale_message }}</p>
+        {%- if has_final_sale -%}
+          <p class="bag-Page_Notice">
+            {{- settings.mbg_final_sale_message | default: 'All online archive sale items are final sale. No returns or exchanges.' | escape -}}
+          </p>
         {%- endif -%}
 
         <div class="bag-Page_Items">
@@ -52,52 +70,48 @@
       <aside class="bag-Page_Aside">
         <div class="bag-Summary">
           <dl class="bag-Summary_Rows">
-            {%- if section.settings.shipping_label != blank -%}
+            {%- if cart.requires_shipping -%}
               <div class="bag-Summary_Row">
-                <dt>{{ section.settings.shipping_label }}</dt>
-                <dd>
-                  {%- if shipping_price != nil -%}
-                    {{ shipping_price | money }}
-                  {%- else -%}
-                    {{ section.settings.shipping_fallback }}
-                  {%- endif -%}
-                </dd>
+                <dt>{{ 'cart.bag.shipping' | t }}</dt>
+                <dd>{{ 'cart.bag.shipping_calculated' | t }}</dd>
               </div>
             {%- endif -%}
 
-            {%- if section.settings.duties_label != blank -%}
+            {%- if show_duties -%}
               <div class="bag-Summary_Row">
-                <dt>{{ section.settings.duties_label }}</dt>
-                <dd>{{ section.settings.duties_value }}</dd>
+                <dt>{{ 'cart.bag.duties' | t }}</dt>
+                <dd>{{ 'cart.bag.duties_included' | t }}</dd>
               </div>
             {%- endif -%}
 
             {%- for discount in cart.cart_level_discount_applications -%}
               <div class="bag-Summary_Row">
-                <dt>{{ discount.title }}</dt>
-                <dd>-{{ discount.total_allocated_amount | money }}</dd>
+                <dt>{{ discount.title | escape }}</dt>
+                <dd>−{{ discount.total_allocated_amount | money }}</dd>
               </div>
             {%- endfor -%}
 
             <div class="bag-Summary_Row">
-              <dt>{{ section.settings.total_label }}</dt>
-              <dd>{{ estimated_total | money }}</dd>
+              <dt>{{ 'cart.bag.subtotal' | t }}</dt>
+              <dd>{{ cart.total_price | money }}</dd>
             </div>
           </dl>
 
           <form class="bag-Summary_Form" action="{{ routes.cart_url }}" method="post" novalidate>
             <button class="bag-Summary_Checkout" type="submit" name="checkout">
-              {{- section.settings.checkout_label -}}
+              {{- 'cart.bag.checkout' | t -}}
             </button>
           </form>
 
-          {%- render 'cart-duties-note' -%}
+          {%- if duties_note != blank -%}
+            <p class="bag-Summary_Note">{{ duties_note | escape | newline_to_br }}</p>
+          {%- endif -%}
         </div>
 
         {%- if section.blocks.size > 0 -%}
           <div class="bag-Page_Accordions">
             {%- for block in section.blocks -%}
-              <details class="bag-Accordion" {{ block.shopify_attributes }}>
+              <details class="bag-Accordion" name="bag-accordion" data-bag-accordion {{ block.shopify_attributes }}>
                 <summary class="bag-Accordion_Summary">
                   <span class="bag-Accordion_Title">{{ block.settings.title }}</span>
                   {%- render 'icons', icon: 'arrow-down', class: 'bag-Accordion_Icon' -%}
@@ -130,65 +144,8 @@
   "name": "Main cart",
   "settings": [
     {
-      "type": "header",
-      "content": "Items"
-    },
-    {
-      "type": "text",
-      "id": "final_sale_message",
-      "label": "Final sale message",
-      "info": "Shown when the bag contains a product with the custom.final_sale metafield set to true.",
-      "default": "All online archive sale items are final sale. No returns or exchanges."
-    },
-    {
-      "type": "header",
-      "content": "Summary"
-    },
-    {
-      "type": "text",
-      "id": "shipping_label",
-      "label": "Shipping label",
-      "default": "Shipping"
-    },
-    {
-      "type": "number",
-      "id": "shipping_amount",
-      "label": "Shipping amount",
-      "info": "In the market currency, e.g. 35. Added to the estimated total. Use a market-specific template for other markets."
-    },
-    {
-      "type": "text",
-      "id": "shipping_fallback",
-      "label": "Shipping text when no amount is set",
-      "default": "Calculated at checkout"
-    },
-    {
-      "type": "text",
-      "id": "duties_label",
-      "label": "Duties label",
-      "default": "Duties and Taxes"
-    },
-    {
-      "type": "text",
-      "id": "duties_value",
-      "label": "Duties value",
-      "default": "Included"
-    },
-    {
-      "type": "text",
-      "id": "total_label",
-      "label": "Total label",
-      "default": "Estimated Total"
-    },
-    {
-      "type": "text",
-      "id": "checkout_label",
-      "label": "Checkout button label",
-      "default": "Checkout"
-    },
-    {
       "type": "paragraph",
-      "content": "The duties note below the checkout button is managed in Theme settings > Cart."
+      "content": "The final sale message and the note below the checkout button are shared with the mini bag, managed in Theme settings > Cart."
     }
   ],
   "blocks": [

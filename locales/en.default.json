@@ -168,12 +168,24 @@
     },
     "bag": {
       "title": "Bag ({{ count }})",
+      "empty": "Your bag is empty.",
       "edit": "Edit",
       "change_option": "Change {{ option }}",
       "remove": "Remove",
       "decrease_quantity": "Decrease quantity of {{ title }}",
       "increase_quantity": "Increase quantity of {{ title }}",
-      "error": "Something went wrong. Please try again."
+      "error": "Something went wrong. Please try again.",
+      "shipping": "Shipping",
+      "shipping_calculated": "Calculated at checkout",
+      "duties": "Duties and Taxes",
+      "duties_included": "Included",
+      "subtotal": "Estimated Total",
+      "checkout": "Checkout",
+      "more_information": "More Information",
+      "need_help": "Need help?",
+      "email": "Email",
+      "shipping_returns": "Shipping & Returns",
+      "close": "Close"
     },
     "drawer": {
       "title": "Cart",
