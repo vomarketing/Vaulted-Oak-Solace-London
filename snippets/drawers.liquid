@@ -63,7 +63,7 @@
   </div>
 
   {%- render 'search-drawer' -%}
-  {%- if request.page_type == 'search' -%}
+  {%- if request.page_type == 'search' and settings.search_provider == 'klevu' -%}
     {%- render 'search-filter-drawer' -%}
   {%- endif -%}
 
