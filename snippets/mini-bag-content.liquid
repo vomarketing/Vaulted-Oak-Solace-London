@@ -19,8 +19,20 @@
           <div>{{ settings.mbg_delivery_summary }}</div>
         {% endif %}
         <button type="button" class="mbg-Link" data-mini-info>More information</button>
-        {% if settings.mbg_email != blank %}
-          <div class="mbg-Help"><p>Need help?</p><a class="mbg-Link" href="mailto:{{ settings.mbg_email | escape }}">Email</a></div>
+        {% if settings.mbg_help_text != blank or settings.mbg_email != blank %}
+          <div class="mbg-Help">
+            <p>Need help?</p>
+
+            {% if settings.mbg_help_text != blank %}
+              <p class="mbg-HelpText">
+                {{ settings.mbg_help_text | escape | newline_to_br }}
+              </p>
+            {% endif %}
+
+            {% if settings.mbg_email != blank %}
+              <a class="mbg-Link" href="mailto:{{ settings.mbg_email | escape }}">Email</a>
+            {% endif %}
+          </div>
         {% endif %}
       </div>
     {% else %}

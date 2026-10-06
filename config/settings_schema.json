@@ -77,6 +77,12 @@
         "label": "Customer service email"
       },
       {
+        "type": "textarea",
+        "id": "mbg_help_text",
+        "label": "Customer care description",
+        "default": "Our customer care team is available from Monday to Friday, UK business hours to help with any queries."
+      },
+      {
         "type": "text",
         "id": "mbg_final_sale_message",
         "label": "Final sale message",

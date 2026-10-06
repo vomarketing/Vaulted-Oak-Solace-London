@@ -307,6 +307,10 @@
   pointer-events:none;
 }
 
+.mbg-Drawer .mbg-HelpText {
+  margin-top: 10px;
+}
+
 @media(min-width:1201px) {
   .mbg-Drawer.drw-Drawer {
     min-width: 774px;
