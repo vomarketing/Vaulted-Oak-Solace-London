@@ -264,7 +264,7 @@
 }
 
 /* Search Drawer Active Header State */
-@media (max-width: 900px) {
+@media (max-width: 1200px) {
   body.has-search-active .lyt-Header,
   body.has-search-active .hd-Header,
   body[data-active-drawer-key="search"] .lyt-Header,
@@ -307,7 +307,7 @@
   }
 }
 
-@media (min-width: 901px) {
+@media (min-width: 1201px) {
   .lyt-Header:has(.hd-Header-searchActive),
   .lyt-Header.hd-Header-searchActive,
   body.has-horizontal-search-active .lyt-Header,

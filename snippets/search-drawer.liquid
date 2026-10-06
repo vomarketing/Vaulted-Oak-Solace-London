@@ -83,7 +83,7 @@
             type="button"
             class="pred-Horizontal_Close js-predictive-search-close"
             data-module-drawers-close="search"
-            aria-label="{{ 'general.drawers.close' | t | default: 'Close' }}"
+            aria-label="{{ 'general.accessibility.close' | t }}"
           >
             {%- render 'bao-close' -%}
           </button>
@@ -96,7 +96,7 @@
                   name="q"
                   id="Predictive-Search-Input-Horizontal"
                   class="pred-Search_Input text-reg-12 js-predictive-search-input"
-                  placeholder="{{ 'general.search.title' | t | default: 'Search' }}"
+                  placeholder="{{ 'general.search.input_placeholder' | t }}"
                   value="{{ search.terms | escape }}"
                   autocomplete="off"
                   autocorrect="off"
@@ -110,20 +110,20 @@
                   aria-autocomplete="list"
                 />
                 <button type="submit" class="pred-Search_Submit text-reg-12 js-predictive-search-submit">
-                  {{ 'general.search.submit' | t }}
+                  {{ 'general.search.submit_label' | t }}
                 </button>
               </div>
             </form>
 
             {%- comment -%} No Results Message {%- endcomment -%}
             <div class="pred-Search_NoResults js-predictive-search-no-results text-reg-12" style="display: none;">
-              <p class="pred-Search_NoResultsText">No results found for '<span class="js-predictive-search-no-results-query"></span>'.</p>
+              <p class="pred-Search_NoResultsText">{{ 'general.search.no_results' | t }} '<span class="js-predictive-search-no-results-query"></span>'.</p>
             </div>
 
             {%- comment -%} Suggested Terms {%- endcomment -%}
             <div class="pred-Search_Suggested js-predictive-search-suggested">
               <div class="pred-Search_Heading text-med-12">
-                Suggested Terms
+                {{ 'general.search.suggested_terms' | t }}
               </div>
               <ul class="pred-Search_SuggestedList js-predictive-search-suggested-list" role="list">
                 {%- for term in suggested_terms -%}
@@ -152,7 +152,7 @@
               {%- comment -%} Left Column: Query suggestions & View All {%- endcomment -%}
               <div class="pred-Search_ColSuggestions">
                 <div class="pred-Search_Heading text-med-12">
-                  {{ 'general.search.searching_for' | t | default: 'Searching For:' }}
+                  {{ 'general.search.searching_for' | t }}
                 </div>
                 <ul class="pred-Search_QueryList js-predictive-search-queries" role="listbox">
                   {%- comment -%} Injected dynamically by predictive-search.js {%- endcomment -%}
@@ -171,10 +171,6 @@
                 </div>
               </div>
             </div>
-          </div>
-
-          <div class="pred-Search_Loading js-predictive-search-loading" aria-hidden="true" style="display: none;">
-            <span class="pred-Search_Spinner"></span>
           </div>
         </div>
       </predictive-search>
@@ -197,16 +193,15 @@
       >
         <div class="drw-Drawer_Inner">
           <div class="pred-Vertical_Header">
-            <span class="pred-Vertical_Title text-reg-14">
-              {{ 'layout.header.search' | t | default: 'Search' }}
+            <span class="pred-Vertical_Title text-reg-12">
+              {{ 'layout.header.search' | t }}
             </span>
             <button
               type="button"
               class="pred-Vertical_Close text-reg-12 js-predictive-search-close"
               data-module-drawers-close="search"
-              aria-label="{{ 'general.drawers.close' | t | default: 'Close' }}"
             >
-              {{ 'general.drawers.close' | t | default: 'Close' }}
+              {{ 'general.accessibility.close' | t }}
             </button>
           </div>
 
@@ -218,7 +213,7 @@
                   name="q"
                   id="Predictive-Search-Input-Vertical"
                   class="pred-Search_Input text-reg-12 js-predictive-search-input"
-                  placeholder="{{ 'general.search.title' | t | default: 'Search' }}"
+                  placeholder="{{ 'general.search.input_placeholder' | t }}"
                   value="{{ search.terms | escape }}"
                   autocomplete="off"
                   autocorrect="off"
@@ -232,7 +227,7 @@
                   aria-autocomplete="list"
                 />
                 <button type="submit" class="pred-Search_Submit text-reg-12 js-predictive-search-submit">
-                  {{ 'general.search.submit' | t }}
+                  {{ 'general.search.submit_label' | t }}
                 </button>
               </div>
             </form>
@@ -292,10 +287,6 @@
                 </div>
               </div>
             </div>
-          </div>
-
-          <div class="pred-Search_Loading js-predictive-search-loading" aria-hidden="true" style="display: none;">
-            <span class="pred-Search_Spinner"></span>
           </div>
         </div>
       </predictive-search>
