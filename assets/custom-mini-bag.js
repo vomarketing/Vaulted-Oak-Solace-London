@@ -4,7 +4,7 @@
     const drawer = document.querySelector('[data-mini-bag]');
     if (!drawer || drawer.dataset.initialized) return;
     drawer.dataset.initialized = 'true';
-    const root = drawer.dataset.rootUrl || '/';
+    const root = (drawer.dataset.rootUrl || '/').replace(/\/?$/, '/');
     const section = 'mini-bag-content';
     const content = drawer.querySelector('[data-mini-content]');
     const info = drawer.querySelector('[data-mini-information]');
