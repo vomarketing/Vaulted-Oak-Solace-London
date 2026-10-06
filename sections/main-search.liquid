@@ -1,64 +1,255 @@
-<div class="klv-Landing">
-
+{%- if settings.search_provider == 'klevu' -%}
+  <div class="klv-Landing">
     <div class="klv-Landing_Inner lyt-Container">
+      {%- liquid
+        if search.terms != blank
+          assign search_terms_escaped = search.terms | escape
+          assign search_heading = 'general.search.results_for' | t: terms: search_terms_escaped
+        else
+          assign search_heading = 'general.search.title' | t
+        endif
+      -%}
+      <h1 class="util-ScreenReaderOnly">{{ search_heading }}</h1>
 
-        {%- comment -%}
-          Hidden H1: Klevu renders the results client-side, so the section had
-          no heading at all. Uses the query when there is one.
-        {%- endcomment -%}
-        {%- liquid
-          if search.terms != blank
-            assign search_terms_escaped = search.terms | escape
-            assign search_heading = 'general.search.results_for' | t: terms: search_terms_escaped
-          else
-            assign search_heading = 'general.search.title' | t
-          endif
-        -%}
-        <h1 class="util-ScreenReaderOnly">{{ search_heading }}</h1>
+      <form class="klv-Form" action="/search" method="GET">
+        <input
+          id="SearchInput"
+          class="klv-Form_Input klv-Form_Input-search frm-Form_Input"
+          type="text"
+          name="q"
+          {% if search.terms != blank %}
+            value="{{ search.terms }}"
+          {% endif %}
+          placeholder="{{ 'general.search.placeholder' | t }}"
+        />
 
-        <form class="klv-Form" action="/search" method="GET">
-            <input
-                    id="SearchInput"
-                    class="klv-Form_Input klv-Form_Input-search frm-Form_Input"
-                    type="text"
-                    name="q"
-                    {% if search.terms != blank %}
-                        value="{{ search.terms }}"
-                    {% endif %}
-                    placeholder="{{ 'general.search.placeholder' | t }}"
-            />
-
-            <button type="submit" class="klv-Form_Button klv-Form_Button-submit btn-Primary">
-                {%- render 'bao-search' -%}
-            </button>
-        </form>
-
-        <div id="klv-Landing_Target" class="klv-Landing_Target klevuTarget">
-            {% comment %} KLEVU - PLACEHOLDER FOR SEARCH RESULTS {% endcomment %}
-        </div>
-
-        <button
-                data-module-drawers-trigger="klevuFilters"
-                onclick="event.preventDefault()"
-                class="klv-Form_Button klv-Form_Button-refine fz-10_10 btn-Primary"
-                aria-hidden="true"
-        >
-            <span class="klv-Form_ButtonText">
-                {{ 'general.search.refine' | t }}
-            </span>
-
-            <span class="klv-Form_ButtonIcon">
-                {%- render 'bao-chevron-left' -%}
-            </span>
+        <button type="submit" class="klv-Form_Button klv-Form_Button-submit btn-Primary">
+          {%- render 'bao-search' -%}
         </button>
+      </form>
+
+      <div id="klv-Landing_Target" class="klv-Landing_Target klevuTarget">
+        {% comment %} KLEVU - PLACEHOLDER FOR SEARCH RESULTS {% endcomment %}
+      </div>
+
+      <button
+        data-module-drawers-trigger="klevuFilters"
+        class="klv-Form_Button klv-Form_Button-refine fz-10_10 btn-Primary"
+        aria-hidden="true"
+      >
+        <span class="klv-Form_ButtonText">
+          {{ 'general.search.refine' | t }}
+        </span>
+
+        <span class="klv-Form_ButtonIcon">
+          {%- render 'bao-chevron-left' -%}
+        </span>
+      </button>
+    </div>
+  </div>
+
+{%- else -%}
+
+  {{ 'main-collection.css' | asset_url | stylesheet_tag }}
+  {{ 'collection-pagination.css' | asset_url | stylesheet_tag }}
+  {{ 'main-search.css' | asset_url | stylesheet_tag }}
+
+  {%- liquid
+    assign pagination_amount = section.settings.products_per_page | default: 16
+    assign products_per_row = section.settings.products_per_row | default: '4'
+
+    assign active_filter_count = 0
+    for filter in search.filters
+      assign active_filter_count = active_filter_count | plus: filter.active_values.size
+    endfor
+    if current_tags.size > 0
+      assign active_filter_count = active_filter_count | plus: current_tags.size
+    endif
+  -%}
+
+  <div class="search-page">
+    <div class="lyt-Container">
+
+      {%- comment -%} Search Header {%- endcomment -%}
+      <div class="search-header">
+        <div class="search-header__inner">
+          <div class="search-header__content">
+            <h1 class="search-header__title text-med-14">
+              {%- if search.performed and search.terms != blank -%}
+                Search for "{{ search.terms }}":
+              {%- else -%}
+                {{ 'general.search.title' | t | default: 'Search' }}
+              {%- endif -%}
+            </h1>
+          </div>
+
+          {%- comment -%} Center: Active Filter Tags (current_tags / search.filters) {%- endcomment -%}
+          <div class="search-header__tags js-search-header-tags">
+            {%- if current_tags.size > 0 -%}
+              {%- for current_tag in current_tags -%}
+                {%- assign tag_label = current_tag | split: ':' | last | strip -%}
+                <span class="search-header__tag text-reg-12 js-search-header-tag">
+                  {{ tag_label }}
+                </span>
+              {%- endfor -%}
+            {%- endif -%}
+
+            {%- for filter in search.filters -%}
+              {%- for filter_value in filter.active_values -%}
+                <a
+                  href="{{ filter_value.url_to_remove }}"
+                  class="search-header__tag text-reg-12 js-search-active-filter"
+                  aria-label="Remove filter {{ filter_value.label }}"
+                >
+                  {{ filter_value.label }}
+                </a>
+              {%- endfor -%}
+            {%- endfor -%}
+          </div>
+
+          {%- if search.performed and search.results_count > 0 -%}
+            <button
+              class="search-header__filter-sort text-med-12 uppercase js-search-filter-trigger"
+              type="button"
+              data-module-drawers-trigger="search-filters"
+            >
+              <span>{{ 'collections.general.filter_and_sort' | t | default: 'Filter & Sort' }}{% if active_filter_count > 0 %} ({{ active_filter_count }}){% endif %}</span>
+              <span class="search-header__filter-icon" aria-hidden="true">+</span>
+            </button>
+          {%- endif -%}
+        </div>
+      </div>
+
+      {%- if search.performed -%}
+        {%- if search.results_count > 0 -%}
+          {%- paginate search.results by pagination_amount -%}
+            <section class="clc-List">
+              <div class="prd-List">
+                <div class="prd-List_Items prd-List_Items--{{ products_per_row }}-col">
+                  {%- for item in search.results -%}
+                    {%- if item.object_type == 'product' -%}
+                      <div class="prd-List_Item js-Animate" data-animation="Fade">
+                        {%- render 'product-card',
+                          product: item,
+                          check_first_image_tag: section.settings.enable_first_image_last_tag,
+                          first_image_as_hover: section.settings.set_first_image_as_hover
+                        -%}
+                      </div>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </div>
+              </div>
+
+              {%- render 'collection-pagination', paginate: paginate -%}
+            </section>
+          {%- endpaginate -%}
+
+        {%- else -%}
+          <div class="search-empty">
+            <h2 class="search-empty__title text-med-14 uppercase">{{ 'general.search.no_results_title' | t | default: 'No Results Found' }}</h2>
+            <p class="search-empty__text text-reg-12">{{ 'general.search.no_results_html' | t: terms: search.terms | default: 'Your search for could not be found. Please check your spelling or try another search term.' }}</p>
+            <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="search-empty__button text-med-12 uppercase">
+              {{ 'general.search.continue_shopping' | t | default: 'Explore Collections' }}
+            </a>
+          </div>
+        {%- endif -%}
+
+      {%- else -%}
+        <div class="search-page__form-wrapper">
+          <form action="{{ routes.search_url }}" method="get" role="search" class="search-page__form js-search-page-form">
+            <input
+              type="search"
+              name="q"
+              class="search-page__input text-reg-14 js-search-page-input"
+              placeholder="{{ 'general.search.placeholder' | t | default: 'Search...' }}"
+              value="{{ search.terms | escape }}"
+            />
+            <button type="submit" class="search-page__submit js-search-page-submit" aria-label="{{ 'general.search.search' | t | default: 'Search' }}">
+              {%- render 'bao-search' -%}
+            </button>
+          </form>
+        </div>
+      {%- endif -%}
 
     </div>
 
-</div>
+    {%- comment -%} Search & Discovery Filter Drawer {%- endcomment -%}
+    <div
+      class="drw-Drawer drw-Drawer-fromRight js-search-filter-drawer"
+      data-module-drawers-drawer="search-filters"
+      data-module-drawers-move-me="root"
+    >
+      <div class="drw-Drawer_Inner">
+        <div class="drw-Drawer_Body">
+          {%- render 'search-filter-app', search: search, section: section -%}
+        </div>
+      </div>
+    </div>
+  </div>
+
+{%- endif -%}
 
 {% schema %}
 {
   "name": "Main search",
-  "settings": []
+  "settings": [
+    {
+      "type": "header",
+      "content": "Layout Settings"
+    },
+    {
+      "type": "select",
+      "id": "products_per_row",
+      "label": "Desktop products per row",
+      "options": [
+        {
+          "value": "3",
+          "label": "3 Cards"
+        },
+        {
+          "value": "4",
+          "label": "4 Cards"
+        }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Products per page",
+      "min": 12,
+      "max": 36,
+      "step": 1,
+      "default": 16
+    },
+    {
+      "type": "header",
+      "content": "Filtering & Sorting"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_sorting",
+      "label": "Enable sort by filter",
+      "default": true
+    },
+    {
+      "type": "header",
+      "content": "Product Card Settings"
+    },
+    {
+      "type": "checkbox",
+      "id": "enable_first_image_last_tag",
+      "label": "Always show 1st image (Ignore tags)",
+      "info": "When enabled, all products will display their 1st image, ignoring 'first_image_last' tags.",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "set_first_image_as_hover",
+      "label": "Set 1st image as hover",
+      "info": "When enabled, products with 'first_image_last' tags will display their 1st image on hover.",
+      "default": false
+    }
+  ]
 }
 {% endschema %}

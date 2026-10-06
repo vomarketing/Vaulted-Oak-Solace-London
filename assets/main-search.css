@@ -1,0 +1,219 @@
+:root {
+  --search-border-subtle: rgba(0, 0, 0, 0.08);
+  --search-border-solid: #000000;
+  --search-text-muted: #666666;
+  --search-card-bg: #f7f7f7;
+  --search-transition: 0.2s ease;
+}
+
+.search-page {
+  padding-top: 20px;
+  padding-bottom: 60px;
+
+  @media (min-width: 901px) {
+    padding-top: 30px;
+    padding-bottom: 100px;
+  }
+
+  .search-page__form-wrapper {
+    max-width: 600px;
+    margin: 0 auto 40px;
+
+    .search-page__form {
+      position: relative;
+      display: flex;
+      align-items: center;
+      border-bottom: 1px solid var(--search-border-solid);
+      padding-bottom: 6px;
+
+      .search-page__input {
+        flex: 1;
+        width: 100%;
+        padding: 8px 40px 8px 0;
+        color: #000000;
+        background: transparent;
+        border: none;
+        outline: none;
+        border-radius: 0;
+      }
+
+      .search-page__submit {
+        position: absolute;
+        right: 0;
+        bottom: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 20px;
+        background: none;
+        border: none;
+        cursor: pointer;
+        padding: 0;
+
+        svg {
+          width: 16px;
+          height: 16px;
+        }
+      }
+    }
+  }
+
+  .prd-List_Items {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+
+    @media (min-width: 768px) {
+      gap: 30px;
+    }
+
+    @media (min-width: 901px) {
+      &.prd-List_Items--3-col {
+        grid-template-columns: repeat(3, 1fr);
+        gap: 40px 30px;
+      }
+
+      &.prd-List_Items--4-col {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 40px 20px;
+      }
+    }
+
+    @media (min-width: 1201px) {
+      &.prd-List_Items--3-col {
+        gap: 50px 40px;
+      }
+
+      &.prd-List_Items--4-col {
+        gap: 50px 30px;
+      }
+    }
+  }
+
+  .prd-Card_ImageContainer {
+    aspect-ratio: 99 / 134;
+  }
+
+  .prd-Card_Image {
+    height: 100%;
+
+    .rsp-Image {
+      height: 100%;
+
+      &::before {
+        padding-top: 0 !important;
+      }
+    }
+  }
+}
+
+.search-header {
+  margin-bottom: 30px;
+
+  @media (min-width: 901px) {
+    margin-bottom: 50px;
+  }
+
+  .search-header__inner {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 16px 24px;
+    border-bottom: 1px solid var(--search-border-subtle);
+    padding-bottom: 20px;
+
+    .search-header__content {
+      display: flex;
+      align-items: baseline;
+
+      .search-header__title {
+        color: #000000;
+        margin: 0;
+        font-weight: 400;
+      }
+
+      .search-header__count {
+        opacity: 0.6;
+        margin-left: 6px;
+      }
+    }
+
+    .search-header__tags {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px 20px;
+
+      .search-header__tag {
+        display: inline-flex;
+        align-items: center;
+        color: #000000;
+        text-decoration: none;
+        cursor: pointer;
+        transition: opacity var(--search-transition);
+
+        &:hover,
+        &:focus-visible {
+          opacity: 0.5;
+        }
+      }
+    }
+
+    .search-header__filter-sort {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      color: #000000;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 0;
+      margin-left: auto;
+      transition: opacity var(--search-transition);
+
+      &:hover,
+      &:focus-visible {
+        opacity: 0.5;
+      }
+
+      .search-header__filter-icon {
+        font-size: 0.875rem;
+        line-height: 1;
+      }
+    }
+  }
+}
+
+.search-empty {
+  text-align: center;
+  padding: 60px 20px;
+  max-width: 500px;
+  margin: 0 auto;
+
+  .search-empty__title {
+    margin-bottom: 15px;
+  }
+
+  .search-empty__text {
+    color: var(--search-text-muted);
+    margin-bottom: 30px;
+  }
+
+  .search-empty__button {
+    display: inline-block;
+    padding: 12px 30px;
+    border: 1px solid var(--search-border-solid);
+    color: #000000;
+    background: transparent;
+    text-decoration: none;
+    transition: all var(--search-transition);
+
+    &:hover,
+    &:focus-visible {
+      background-color: #000000;
+      color: #ffffff;
+    }
+  }
+}
