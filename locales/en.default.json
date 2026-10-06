@@ -200,7 +200,9 @@
       "filter": "Filter",
       "filter_title": "Filter By",
       "filter_close": "Close",
-      "filter_and_sort": "Filter & Sort"
+      "filter_and_sort": "Filter & Sort",
+      "read_more" : "Read More",
+      "read_less" : "Read Less"
     },
     "per_page": {
       "title": "Per page"

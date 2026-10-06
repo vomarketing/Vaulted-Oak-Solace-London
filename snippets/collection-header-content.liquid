@@ -4,9 +4,33 @@
     <span class="collection-header__product-count">({{ collection.products_count }})</span>
   </h1>
 
-  {%- if collection.description != blank -%}
-    <div class="collection-header__description">
-      {{ collection.description }}
+  {%- assign collection_description_text = collection.description | strip_html | strip -%}
+  {%- if collection_description_text != blank -%}
+    {%- assign description_needs_toggle = false -%}
+    {%- if collection_description_text.size > 240 -%}
+      {%- assign description_needs_toggle = true -%}
+    {%- endif -%}
+
+    <div
+      class="collection-header__description{% if description_needs_toggle %} collection-header__description--truncated{% endif %}"
+      data-collection-description
+    >
+      <div class="collection-header__description-copy" id="collection-description-{{ collection.id }}" data-collection-description-copy>
+        {{ collection.description }}
+      </div>
+      {%- if description_needs_toggle -%}
+        <button
+          class="collection-header__description-toggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="collection-description-{{ collection.id }}"
+          data-collection-description-toggle
+          data-read-more="{{ 'collections.general.read_more' | t | escape }}"
+          data-read-less="{{ 'collections.general.read_less' | t | escape }}"
+        >
+          {{ 'collections.general.read_more' | t }}
+        </button>
+      {%- endif -%}
     </div>
   {%- endif -%}
 </div>
