@@ -1,0 +1,93 @@
+{%- comment -%}Render the Search & Discovery filters available on this collection.{%- endcomment -%}
+{{ 'collection-filters-v2.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'collection-filter-app.js' | asset_url }}" defer></script>
+
+{%- assign current_sort = collection.sort_by | default: collection.default_sort_by -%}
+
+<div class="collection-filter-app collection-filter-v2" data-collection-filter-app>
+  <form class="collection-filter-v2__form" action="{{ collection.url }}" method="get" data-collection-filter-app-form data-section-id="{{ section.id }}">
+    <div class="collection-filter-v2__header">
+      <h2 class="collection-filter-v2__title">{{ 'collections.general.filter_and_sort' | t }}</h2>
+      <button class="collection-filter-v2__close" type="button" data-module-drawers-close="clc-filters">
+        {{ 'collections.general.filter_close' | t }}
+      </button>
+    </div>
+
+    <div class="collection-filter-v2__body">
+      <div class="collection-filter-v2__groups">
+        {%- for filter in collection.filters -%}
+          {%- if filter.type == 'list' or filter.type == 'boolean' -%}
+            <details class="collection-filter-v2__group" {% if filter.active_values.size > 0 %}open{% endif %}>
+              <summary class="collection-filter-v2__summary">
+                <span>{{ filter.label | escape }}</span>
+                <span class="collection-filter-v2__toggle" aria-hidden="true"></span>
+              </summary>
+
+              <div class="collection-filter-v2__panel">
+                <ul class="collection-filter-v2__options">
+                  {%- for filter_value in filter.values -%}
+                    {%- assign option_id = 'collection-filter-app-' | append: section.id | append: '-' | append: filter.param_name | handleize | append: '-' | append: forloop.index -%}
+                    <li class="collection-filter-v2__option">
+                      <label class="collection-filter-v2__choice" for="{{ option_id }}">
+                        <input
+                          class="collection-filter-v2__input"
+                          id="{{ option_id }}"
+                          type="checkbox"
+                          name="{{ filter_value.param_name | escape }}"
+                          value="{{ filter_value.value | escape }}"
+                          {% if filter_value.active %}checked{% endif %}
+                        >
+                        <span class="collection-filter-v2__indicator" aria-hidden="true"></span>
+                        <span class="collection-filter-v2__choice-label">{{ filter_value.label | escape }}</span>
+                      </label>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              </div>
+            </details>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      {%- if section.settings.enable_sorting -%}
+        <details class="collection-filter-v2__group collection-filter-v2__group--sort" open>
+          <summary class="collection-filter-v2__summary">
+            <span>Sort By</span>
+            <span class="collection-filter-v2__toggle" aria-hidden="true"></span>
+          </summary>
+          <div class="collection-filter-v2__panel">
+            <ul class="collection-filter-v2__options">
+              {%- assign sort_keys = 'manual,created-descending,price-ascending,price-descending' | split: ',' -%}
+              {%- for sort_key in sort_keys -%}
+                {%- capture sort_label -%}
+                  {%- case sort_key -%}
+                    {%- when 'manual' -%}{{ 'collections.sorting.featured' | t }}
+                    {%- when 'created-descending' -%}{{ 'collections.sorting.new_in' | t }}
+                    {%- when 'price-ascending' -%}{{ 'collections.sorting.ascending_price' | t }}
+                    {%- when 'price-descending' -%}{{ 'collections.sorting.descending_price' | t }}
+                  {%- endcase -%}
+                {%- endcapture -%}
+                <li class="collection-filter-v2__option">
+                  <label class="collection-filter-v2__choice" for="collection-filter-app-sort-{{ sort_key }}-{{ section.id }}">
+                    <input class="collection-filter-v2__input" id="collection-filter-app-sort-{{ sort_key }}-{{ section.id }}" type="radio" name="sort_by" value="{{ sort_key }}" {% if current_sort == sort_key %}checked{% endif %}>
+                    <span class="collection-filter-v2__indicator" aria-hidden="true"></span>
+                    <span class="collection-filter-v2__choice-label">{{ sort_label | strip }}</span>
+                  </label>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        </details>
+      {%- elsif collection.sort_by != blank -%}
+        <input type="hidden" name="sort_by" value="{{ collection.sort_by | escape }}">
+      {%- endif -%}
+    </div>
+
+    <div class="collection-filter-v2__footer">
+      <button class="collection-filter-v2__clear" type="button" data-collection-filter-clear>Clear all</button>
+      <button class="collection-filter-v2__submit" type="submit" data-collection-filter-app-submit>
+        Show <span data-collection-filter-app-result-count>{{ collection.products_count }}</span> Items
+      </button>
+    </div>
+  </form>
+</div>
