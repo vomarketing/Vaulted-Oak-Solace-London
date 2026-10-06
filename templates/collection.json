@@ -62,7 +62,7 @@
       ],
       "settings": {
         "use_search_and_discovery_filters": true,
-        "enable_sorting": true,
+        "enable_sorting": false,
         "enable_first_image_last_tag": false,
         "set_first_image_as_hover": true
       }
