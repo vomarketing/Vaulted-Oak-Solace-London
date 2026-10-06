@@ -123,6 +123,44 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
   line-height: 1;
 }
 
+.collection-header__filter-sort--mobile {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  body.template-collection {
+    padding-bottom: calc(56px + env(safe-area-inset-bottom));
+  }
+
+  .collection-header__inner {
+    justify-content: center;
+  }
+
+  .collection-header__content {
+    text-align: center;
+  }
+
+  .collection-header__filter-sort--desktop {
+    display: none;
+  }
+
+  .collection-header__filter-sort--mobile {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 9;
+    display: flex;
+    width: 100%;
+    height: calc(56px + env(safe-area-inset-bottom));
+    justify-content: center;
+    padding: 0 20px env(safe-area-inset-bottom);
+    border-top: 1px solid #999;
+    background: #fff;
+    text-align: center;
+  }
+}
+
 .clc-List .prd-List_Items {
   gap: 50px;
 }

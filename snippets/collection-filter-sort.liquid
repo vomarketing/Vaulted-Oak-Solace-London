@@ -18,8 +18,12 @@
   {%- endfor -%}
 {%- endif -%}
 
+{%- if section.settings.enable_sorting and collection.sort_by != blank and collection.sort_by != collection.default_sort_by -%}
+  {%- assign active_filter_count = active_filter_count | plus: 1 -%}
+{%- endif -%}
+
 <button
-  class="collection-header__filter-sort"
+  class="collection-header__filter-sort collection-header__filter-sort--{{ placement | default: 'desktop' }}"
   type="button"
   data-module-drawers-trigger="clc-filters"
 >
