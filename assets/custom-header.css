@@ -78,6 +78,8 @@
   }
 
   .hd-MobileNav_Cart {
+    width: 16px;
+    height: 16px;
     background-color: var(--Color_Primary);
     transition: background-color 0.4s ease, color 0.4s ease;
 
@@ -261,14 +263,27 @@
   }
 }
 
+@media (min-width: 901px) {
+  .hd-Header {
+    .hd-MobileNav_Cart {
+      &[data-cart-empty="false"] {
+        .template-product & {
+          background-color: var(--color-black);
+        }
+
+        .hd-MobileNav_CartCount {
+          .template-product & {
+            color: var(--color-white);
+          }
+        }
+      }
+    }
+  }
+}
+
 @media (min-width: 1201px) {
   .hd-Header_Inner.lyt-Container {
     padding-inline: 40px 35px;
-  }
-
-  .hd-Nav_Cart {
-    width: 19px;
-    height: 19px;
   }
 
   .hd-Header_Body {

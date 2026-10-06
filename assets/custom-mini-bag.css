@@ -256,7 +256,7 @@
 .mbg-Drawer .mbg-Tooltip{
   position:absolute;
   bottom:calc(100% + 10px);
-  left:0;
+  left: 55px;
   width:min(280px,75vw);
   padding:20px;
   border:1px solid #000;
@@ -352,6 +352,11 @@
 
   .mbg-Drawer .mbg-Item {
     gap: 10px;
+    margin-bottom: 40px;
+  }
+
+  .mbg-Drawer .mbg-Row{
+    margin-top: 10px;
   }
 
   .mbg-Drawer .mbg-Footer{
