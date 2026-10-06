@@ -9,6 +9,10 @@ if (!window.CartPageController) {
       size: '[data-bag-size]',
       sizeVariant: '[data-bag-size-variant]',
       error: '[data-bag-error]',
+      accordion: '[data-bag-accordion]',
+      info: '[data-bag-info]',
+      infoOpen: '[data-bag-info-open]',
+      infoClose: '[data-bag-info-close]',
       cartCount: '[data-push-cart-count]',
       cartEmpty: '[data-cart-empty]'
     };
@@ -16,7 +20,8 @@ if (!window.CartPageController) {
     static classes = {
       isOpen: 'is-open',
       isLoading: 'is-loading',
-      isBusy: 'is-busy'
+      isBusy: 'is-busy',
+      isClosing: 'is-closing'
     };
 
     constructor() {
@@ -42,8 +47,71 @@ if (!window.CartPageController) {
       document.addEventListener('click', (e) => this.onClick(e), { signal });
 
       document.addEventListener('keydown', (e) => {
-        if (e.key === 'Escape') this.closeSizeMenus(true);
+        if (e.key !== 'Escape') return;
+
+        const info = document.querySelector(`${this.selectors.info}[open]`);
+        if (info) {
+          // Keep the dialog open so the closing animation can run.
+          e.preventDefault();
+          this.closeInfo(info);
+          return;
+        }
+
+        this.closeSizeMenus(true);
       }, { signal });
+
+      // `toggle` and `cancel` do not bubble.
+      document.addEventListener('toggle', (e) => this.onAccordionToggle(e), { capture: true, signal });
+
+      document.addEventListener('cancel', (e) => {
+        if (!e.target.matches?.(this.selectors.info)) return;
+        e.preventDefault();
+        this.closeInfo(e.target);
+      }, { capture: true, signal });
+
+      document.addEventListener('mini-bag:updated', () => this.refresh(), { signal });
+    }
+
+    openInfo(dialog) {
+      if (!dialog || dialog.open) return;
+      dialog.classList.remove(this.classes.isClosing);
+      dialog.showModal();
+    }
+
+    closeInfo(dialog) {
+      if (!dialog?.open || dialog.classList.contains(this.classes.isClosing)) return;
+
+      let timer;
+      const onEnd = (e) => {
+        if (e.target === dialog && !e.pseudoElement) finish();
+      };
+      const finish = () => {
+        clearTimeout(timer);
+        dialog.removeEventListener('animationend', onEnd);
+        dialog.classList.remove(this.classes.isClosing);
+        dialog.close();
+      };
+
+      dialog.classList.add(this.classes.isClosing);
+
+      if (getComputedStyle(dialog).animationName === 'none') {
+        finish();
+        return;
+      }
+
+      dialog.addEventListener('animationend', onEnd);
+      timer = setTimeout(finish, 500);
+    }
+
+    // Fallback for browsers without exclusive <details name> support.
+    onAccordionToggle(e) {
+      const accordion = e.target;
+      if (!(accordion instanceof HTMLDetailsElement) || !accordion.open) return;
+      if (!accordion.matches(this.selectors.accordion)) return;
+
+      accordion.parentElement.querySelectorAll(this.selectors.accordion).forEach((other) => {
+        if (other !== accordion) other.open = false;
+      });
     }
 
     onClick(e) {
@@ -51,6 +119,18 @@ if (!window.CartPageController) {
 
       const root = this.root;
       if (!root || !root.contains(e.target)) return;
+
+      if (e.target.closest(this.selectors.infoOpen)) {
+        this.openInfo(root.querySelector(this.selectors.info));
+        return;
+      }
+
+      // A click on the ::backdrop targets the dialog itself.
+      const info = e.target.closest(this.selectors.info);
+      if (info) {
+        if (e.target === info || e.target.closest(this.selectors.infoClose)) this.closeInfo(info);
+        return;
+      }
 
       const item = e.target.closest(this.selectors.item);
       if (!item) return;
@@ -169,28 +249,45 @@ if (!window.CartPageController) {
     }
 
     render(cart) {
-      const root = this.root;
-      const html = cart.sections?.[root.dataset.sectionId];
-
-      if (!html) {
+      if (!this.replaceRoot(cart.sections?.[this.root.dataset.sectionId])) {
         window.location.reload();
         return;
       }
+
+      this.updateCartCount(cart.item_count);
+
+      document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart } }));
+      document.dispatchEvent(new CustomEvent('mini-bag:refresh'));
+    }
+
+    async refresh() {
+      const root = this.root;
+      if (!root) return;
+
+      try {
+        const url = new URL(window.location.pathname, window.location.origin);
+        url.searchParams.set('section_id', root.dataset.sectionId);
+
+        const response = await fetch(url, { credentials: 'same-origin', cache: 'no-store' });
+        if (!response.ok || !this.replaceRoot(await response.text())) throw new Error(response.statusText);
+      } catch (error) {
+        console.error('[Cart page]', error);
+        window.location.reload();
+      }
+    }
+
+    replaceRoot(html) {
+      const root = this.root;
+      if (!root || typeof html !== 'string') return false;
 
       const nextRoot = new DOMParser()
         .parseFromString(html, 'text/html')
         .querySelector(this.selectors.root);
 
-      if (!nextRoot) {
-        window.location.reload();
-        return;
-      }
+      if (!nextRoot) return false;
 
       root.replaceWith(nextRoot);
-
-      this.updateCartCount(cart.item_count);
-
-      document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart } }));
+      return true;
     }
 
     updateCartCount(count) {

@@ -19,7 +19,6 @@
       flex-direction: column;
       justify-content: center;
       min-height: calc(100dvh - var(--header-height, 0px));
-      padding-top: 60px;
     }
   }
 
@@ -89,7 +88,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: calc(100dvh - var(--header-height, 0px) - var(--footer-height, 0px));
+  min-height: calc(100dvh - var(--header-height, 0px));
   padding-top: 40px;
   padding-bottom: 30px;
 
@@ -159,13 +158,163 @@
 }
 
 .cart-Empty_Link {
+  line-height: inherit;
   text-decoration: underline;
   text-underline-position: from-font;
   white-space: nowrap;
   transition: opacity 0.2s ease;
 
-  &:hover {
-    opacity: 0.5;
+  @media (hover: hover) {
+    &:hover {
+      opacity: 0.5;
+    }
+  }
+}
+
+/* Shipping & Returns dialog, mirrors the mini bag information panel */
+html:has(.bag-Info[open]) {
+  overflow: hidden;
+}
+
+.bag-Info {
+  position: fixed;
+  inset: var(--header-height, 52px) 0 0;
+  width: 100%;
+  max-width: none;
+  height: auto;
+  max-height: none;
+  margin: 0;
+  padding: 0;
+  border: 0;
+  background-color: var(--color-white, #ffffff);
+  color: var(--color-black, #000000);
+  line-height: 1.5;
+
+  --Bag_InfoOffset: translate3d(0, 100%, 0);
+
+  @media (min-width: 1201px) {
+    --Bag_InfoOffset: translate3d(100%, 0, 0);
+
+    inset: 0 0 0 auto;
+    width: 774px;
+  }
+
+  @media (min-width: 1440px) {
+    width: 570px;
+  }
+
+  &[open] {
+    display: flex;
+    flex-direction: column;
+    animation: bag-info-in 0.45s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  &::backdrop {
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+
+  &[open]::backdrop {
+    animation: bag-info-fade-in 0.45s ease;
+  }
+
+  /* Set by custom-cart.js; the dialog is closed when the animation ends. */
+  &.is-closing {
+    animation: bag-info-out 0.3s cubic-bezier(0.4, 0, 1, 1) forwards;
+  }
+
+  &.is-closing::backdrop {
+    animation: bag-info-fade-out 0.3s ease forwards;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    &[open],
+    &[open]::backdrop,
+    &.is-closing,
+    &.is-closing::backdrop {
+      animation: none;
+    }
+  }
+
+  :where(h2, h3) {
+    margin: 0;
+    font: inherit;
+    letter-spacing: inherit;
+  }
+}
+
+.bag-Info_Header {
+  display: flex;
+  flex: none;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+
+  @media (min-width: 1201px) {
+    padding: 40px;
+    border-bottom: 0;
+  }
+}
+
+.bag-Info_Close {
+  min-height: 24px;
+}
+
+.bag-Info_Body {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 28px 16px;
+
+  @media (min-width: 1201px) {
+    padding: 10px 40px 40px;
+  }
+
+  h3 {
+    margin: 24px 0 8px;
+    font-weight: var(--font-weight-medium);
+
+    &:first-child {
+      margin-top: 0;
+    }
+  }
+
+  p {
+    margin-bottom: 40px;
+
+    @media (min-width: 1201px) {
+      margin-bottom: 50px;
+    }
+  }
+
+  a {
+    text-decoration: underline;
+  }
+}
+
+@keyframes bag-info-in {
+  from {
+    transform: var(--Bag_InfoOffset);
+  }
+}
+
+@keyframes bag-info-out {
+  to {
+    transform: var(--Bag_InfoOffset);
+  }
+}
+
+@keyframes bag-info-fade-in {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes bag-info-fade-out {
+  to {
+    opacity: 0;
   }
 }
 
@@ -313,8 +462,10 @@
   text-decoration: none;
   transition: opacity 0.2s ease;
 
-  &:hover {
-    opacity: 0.5;
+  @media (hover: hover) {
+    &:hover {
+      opacity: 0.5;
+    }
   }
 }
 
@@ -332,8 +483,15 @@
   padding: 4px;
   transition: opacity 0.2s ease;
 
-  &:hover {
-    opacity: 0.5;
+  @media (hover: hover) {
+    &:hover {
+      opacity: 0.5;
+    }
+  }
+
+  &:disabled {
+    opacity: 0.35;
+    cursor: default;
   }
 }
 
@@ -346,8 +504,10 @@
 .bag-Item_Remove {
   transition: opacity 0.2s ease;
 
-  &:hover {
-    opacity: 0.5;
+  @media (hover: hover) {
+    &:hover {
+      opacity: 0.5;
+    }
   }
 }
 
@@ -398,8 +558,10 @@
   height: 16px;
   transition: opacity 0.2s ease;
 
-  &:hover {
-    opacity: 0.5;
+  @media (hover: hover) {
+    &:hover {
+      opacity: 0.5;
+    }
   }
 
   svg {
@@ -491,8 +653,10 @@
     line-height: 14px;
   }
 
-  &:hover {
-    opacity: 0.5;
+  @media (hover: hover) {
+    &:hover {
+      opacity: 0.5;
+    }
   }
 
   &:disabled {
@@ -554,14 +718,15 @@
   text-transform: capitalize;
   transition: background-color 0.2s ease, color 0.2s ease;
 
-  &:hover {
-    background-color: var(--color-black, #000000);
-    color: var(--color-white, #ffffff);
+  @media (hover: hover) {
+    &:hover {
+      background-color: var(--color-black, #000000);
+      color: var(--color-white, #ffffff);
+    }
   }
 }
 
-/* snippets/cart-duties-note */
-.cart-DutiesNote {
+.bag-Summary_Note {
   font-style: italic;
   font-weight: var(--font-weight-medium);
   max-width: 342px;
@@ -596,8 +761,10 @@
     display: none;
   }
 
-  &:hover .bag-Accordion_Title {
-    opacity: 0.5;
+  @media (hover: hover) {
+    &:hover .bag-Accordion_Title {
+      opacity: 0.5;
+    }
   }
 }
 
