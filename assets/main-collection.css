@@ -281,6 +281,10 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
   .rte-RichText {
     color: #fff
   }
+
+  @media (max-width: 767px) {
+    bottom: 20px
+  }
 }
 
 .clc-List .clc-PromotedCard_Title {

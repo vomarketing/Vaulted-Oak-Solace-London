@@ -1,7 +1,7 @@
 {%- liquid
   assign promoted_image = collection.metafields.custom.promoted_image.value
   assign promoted_mobile_image = collection.metafields.custom.promoted_mobile_image.value | default: promoted_image
-  assign promoted_text = collection.metafields.custom.promoted_text.value
+  assign promoted_text = collection.metafields.custom.promoted_text
   assign promoted_is_product = collection.metafields.custom.promoted_is_a_product.value
   assign promoted_product = collection.metafields.custom.promoted_product.value
   assign promoted_link = collection.metafields.custom.promoted_link.value
@@ -44,7 +44,7 @@
       </div>
     {%- elsif promoted_text != blank -%}
       <div class="clc-PromotedCard_Text rte-RichText">
-        {{ promoted_text | escape }}
+        {{ promoted_text | metafield_tag }}
       </div>
     {%- endif -%}
   </div>
