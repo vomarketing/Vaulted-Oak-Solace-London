@@ -69,9 +69,13 @@
   gap:20px;
 }
 
-.mbg-Drawer .mbg-Header h2{
+.mbg-Drawer .mbg-Header h2 {
   text-decoration:underline;
   text-underline-offset:3px;
+}
+
+.mbg-Drawer .mbg-Header h2.MiniBagTitle--shipping {
+  text-decoration: none;
 }
 
 .mbg-Drawer .mbg-Header button{
