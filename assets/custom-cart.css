@@ -13,6 +13,16 @@
   letter-spacing: 0;
   text-transform: none;
 
+  @media (min-width: 768px) and (max-width: 1023px) {
+    &:not(.bag-Page-empty) {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      min-height: calc(100dvh - var(--header-height, 0px));
+      padding-top: 60px;
+    }
+  }
+
   @media (min-width: 1024px) {
     --Bag_Gutter: 40px;
 
@@ -167,6 +177,10 @@
   width: 100%;
   margin: 0 auto;
 
+  @media (min-width: 768px) {
+    max-width: 522px;
+  }
+
   @media (min-width: 1024px) {
     display: grid;
     grid-template-columns: minmax(0, 422px) minmax(40px, 167px) minmax(0, 302px);
@@ -189,8 +203,14 @@
 .bag-Page_Main {
   display: flex;
   flex-direction: column;
-  gap: 50px;
+  gap: 40px;
   min-width: 0;
+  padding-bottom: 20px;
+
+  @media (min-width: 768px) {
+    gap: 50px;
+    padding-bottom: 0;
+  }
 
   @media (min-width: 1024px) {
     grid-column: 1;
@@ -200,11 +220,12 @@
 .bag-Page_Aside {
   display: flex;
   flex-direction: column;
-  gap: 50px;
+  gap: 40px;
   min-width: 0;
 
   @media (min-width: 1024px) {
     grid-column: 3;
+    gap: 50px;
   }
 }
 
@@ -216,18 +237,31 @@
 .bag-Page_Items {
   display: flex;
   flex-direction: column;
-  gap: 50px;
+  gap: 40px;
+
+  @media (min-width: 768px) {
+    gap: 50px;
+  }
 }
 
 /* Line item */
 .bag-Item {
   display: grid;
-  grid-template-columns: 110px minmax(0, 1fr) minmax(93px, auto);
+  grid-template-columns: 98px minmax(0, 1fr) min-content;
   grid-template-areas:
     "image info aside"
     "error error error";
-  column-gap: 20px;
+  column-gap: 10px;
   transition: opacity 0.2s ease;
+
+  @media (min-width: 768px) {
+    grid-template-columns: 115px minmax(0, 1fr) minmax(93px, auto);
+  }
+
+  @media (min-width: 1024px) {
+    grid-template-columns: 110px minmax(0, 1fr) minmax(93px, auto);
+    column-gap: 20px;
+  }
 
   &.is-loading {
     opacity: 0.5;
@@ -379,20 +413,40 @@
   color: var(--color-error, #ce0000);
 }
 
-/* Change size dropdown */
 .bag-Size {
-  position: absolute;
-  top: -65px;
+  position: fixed;
+  right: 0;
+  bottom: 0;
   left: 0;
-  z-index: 2;
+  z-index: 20;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 11px;
-  width: 130px;
-  padding: 10px;
-  border: 1px solid var(--color-black, #000000);
+  gap: 16px;
+  padding: 31px var(--Bag_Gutter) 15px;
+  border-top: 1px solid #757575;
   background-color: var(--color-white, #ffffff);
+
+  @media (max-width: 1023px) {
+    transition: transform 0.3s ease;
+
+    @starting-style {
+      transform: translateY(100%);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    position: absolute;
+    top: -65px;
+    right: auto;
+    bottom: auto;
+    left: 0;
+    z-index: 2;
+    gap: 11px;
+    width: 130px;
+    padding: 10px;
+    border: 1px solid var(--color-black, #000000);
+  }
 
   @media (min-width: 1441px) {
     top: -18px;
@@ -404,23 +458,38 @@
 }
 
 .bag-Size_Heading {
-  margin: var(--Bag_Trim) 0;
+  margin: -4px 0;
+  font-size: 14px;
   white-space: nowrap;
+
+  @media (min-width: 1024px) {
+    margin: var(--Bag_Trim) 0;
+    font-size: inherit;
+  }
 }
 
 .bag-Size_Items {
   display: flex;
   flex-direction: column;
-  gap: 11px;
   width: 100%;
+
+  @media (min-width: 1024px) {
+    gap: 11px;
+  }
 }
 
 .bag-Size_Button {
   display: block;
   width: 100%;
-  line-height: 14px;
+  font-size: 16px;
+  line-height: 42px;
   text-align: center;
   transition: opacity 0.2s ease;
+
+  @media (min-width: 1024px) {
+    font-size: inherit;
+    line-height: 14px;
+  }
 
   &:hover {
     opacity: 0.5;
@@ -447,7 +516,11 @@
 .bag-Summary_Rows {
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  gap: 10px;
+
+  @media (min-width: 1024px) {
+    gap: 20px;
+  }
 }
 
 .bag-Summary_Row {
@@ -491,6 +564,11 @@
 .cart-DutiesNote {
   font-style: italic;
   font-weight: var(--font-weight-medium);
+  max-width: 342px;
+
+  @media (min-width: 768px) {
+    max-width: none;
+  }
 }
 
 /* Accordions */
@@ -505,9 +583,14 @@
   align-items: center;
   justify-content: space-between;
   gap: 20px;
+  padding: 2px 0;
   line-height: 16px;
   list-style: none;
   cursor: pointer;
+
+  @media (min-width: 1024px) {
+    padding: 0;
+  }
 
   &::-webkit-details-marker {
     display: none;
