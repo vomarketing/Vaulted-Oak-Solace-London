@@ -22,6 +22,8 @@
     "favicon_small": "shopify://shop_images/black-favicon.png",
     "favicon_medium": "shopify://shop_images/black-favicon.png",
     "favicon_large": "shopify://shop_images/black-favicon.png",
+    "cart_empty_delivery_link_url": "#",
+    "cart_empty_live_chat_url": "#",
     "lookbook_link": "shopify://pages/lookbook-landing",
     "lookbook_link_text": "BACK TO LOOKBOOKS",
     "newsletter_enable": true,
