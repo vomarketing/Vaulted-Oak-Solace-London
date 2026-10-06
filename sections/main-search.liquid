@@ -65,6 +65,13 @@
     if current_tags.size > 0
       assign active_filter_count = active_filter_count | plus: current_tags.size
     endif
+
+    assign show_filter_button = false
+    if search.performed
+      if search.results_count > 0 or active_filter_count > 0
+        assign show_filter_button = true
+      endif
+    endif
   -%}
 
   <div class="search-page">
@@ -74,11 +81,11 @@
       <div class="search-header">
         <div class="search-header__inner">
           <div class="search-header__content">
-            <h1 class="search-header__title text-med-14">
+            <h1 class="search-header__title text-reg-12">
               {%- if search.performed and search.terms != blank -%}
-                Search for "{{ search.terms }}":
+                Search for “{{ search.terms | escape }}”<span class="search-header__colon">:</span>
               {%- else -%}
-                {{ 'general.search.title' | t | default: 'Search' }}
+                {{ 'general.search.title' | t }}
               {%- endif -%}
             </h1>
           </div>
@@ -107,13 +114,13 @@
             {%- endfor -%}
           </div>
 
-          {%- if search.performed and search.results_count > 0 -%}
+          {%- if show_filter_button -%}
             <button
-              class="search-header__filter-sort text-med-12 uppercase js-search-filter-trigger"
+              class="search-header__filter-sort text-reg-12 js-search-filter-trigger"
               type="button"
               data-module-drawers-trigger="search-filters"
             >
-              <span>{{ 'collections.general.filter_and_sort' | t | default: 'Filter & Sort' }}{% if active_filter_count > 0 %} ({{ active_filter_count }}){% endif %}</span>
+              <span>{{ 'collections.general.filter_and_sort' | t }}{% if active_filter_count > 0 %} ({{ active_filter_count }}){% endif %}</span>
               <span class="search-header__filter-icon" aria-hidden="true">+</span>
             </button>
           {%- endif -%}
@@ -146,10 +153,10 @@
 
         {%- else -%}
           <div class="search-empty">
-            <h2 class="search-empty__title text-med-14 uppercase">{{ 'general.search.no_results_title' | t | default: 'No Results Found' }}</h2>
-            <p class="search-empty__text text-reg-12">{{ 'general.search.no_results_html' | t: terms: search.terms | default: 'Your search for could not be found. Please check your spelling or try another search term.' }}</p>
-            <a href="{{ routes.all_products_collection_url | default: '/collections/all' }}" class="search-empty__button text-med-12 uppercase">
-              {{ 'general.search.continue_shopping' | t | default: 'Explore Collections' }}
+            <h2 class="search-empty__title text-med-14 uppercase">{{ 'general.search.no_results_title' | t }}</h2>
+            <p class="search-empty__text text-reg-12">{{ 'general.search.no_results_html' | t }}</p>
+            <a href="{{ routes.all_products_collection_url }}" class="search-empty__button text-med-12 uppercase">
+              {{ 'general.search.continue_shopping' | t }}
             </a>
           </div>
         {%- endif -%}
@@ -161,10 +168,10 @@
               type="search"
               name="q"
               class="search-page__input text-reg-14 js-search-page-input"
-              placeholder="{{ 'general.search.placeholder' | t | default: 'Search...' }}"
+              placeholder="{{ 'general.search.placeholder' | t }}"
               value="{{ search.terms | escape }}"
             />
-            <button type="submit" class="search-page__submit js-search-page-submit" aria-label="{{ 'general.search.search' | t | default: 'Search' }}">
+            <button type="submit" class="search-page__submit js-search-page-submit" aria-label="{{ 'general.search.submit' | t }}">
               {%- render 'bao-search' -%}
             </button>
           </form>
@@ -173,15 +180,23 @@
 
     </div>
 
+    {%- if show_filter_button -%}
+      {%- render 'collection-filter-sort',
+        placement: 'mobile',
+        drawer: 'search-filters',
+        active_filter_count: active_filter_count
+      -%}
+    {%- endif -%}
+
     {%- comment -%} Search & Discovery Filter Drawer {%- endcomment -%}
     <div
-      class="drw-Drawer drw-Drawer-fromRight js-search-filter-drawer"
+      class="drw-Drawer drw-Drawer-fromRight drw-Drawer-filters"
       data-module-drawers-drawer="search-filters"
       data-module-drawers-move-me="root"
     >
       <div class="drw-Drawer_Inner">
         <div class="drw-Drawer_Body">
-          {%- render 'search-filter-app', search: search, section: section -%}
+          {%- render 'collection-filter-app', section: section, context: 'search' -%}
         </div>
       </div>
     </div>
