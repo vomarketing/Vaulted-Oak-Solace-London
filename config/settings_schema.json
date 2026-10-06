@@ -66,6 +66,12 @@
         "label": "Delivery information"
       },
       {
+        "type": "richtext",
+        "id": "mbg_delivery_summary",
+        "label": "Tooltip and empty bag text",
+        "info": "Short delivery summary shown in the shipping tooltip and empty bag."
+      },
+      {
         "type": "text",
         "id": "mbg_email",
         "label": "Customer service email"

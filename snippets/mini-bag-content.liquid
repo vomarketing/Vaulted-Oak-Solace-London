@@ -12,7 +12,9 @@
     {% if cart.item_count == 0 %}
       <p>Your bag is empty.</p>
       <div class="mbg-EmptyHelp">
-        {% if settings.mbg_delivery != blank %}<div>{{ settings.mbg_delivery }}</div>{% endif %}
+        {% if settings.mbg_delivery_summary != blank %}
+          <div>{{ settings.mbg_delivery_summary }}</div>
+        {% endif %}
         <button type="button" class="mbg-Link" data-mini-info>More information</button>
         {% if settings.mbg_email != blank %}
           <div class="mbg-Help"><p>Need help?</p><a class="mbg-Link" href="mailto:{{ settings.mbg_email | escape }}">Email</a></div>
@@ -28,7 +30,18 @@
       {% if cart.requires_shipping %}
         <div class="mbg-Row"><div class="mbg-Shipping">Shipping
           <button type="button" class="mbg-InfoButton" data-mini-tooltip-toggle aria-label="Shipping information" aria-expanded="false" aria-controls="MiniBagShippingTip">i</button>
-          <div class="mbg-Tooltip" id="MiniBagShippingTip" data-mini-tooltip hidden>{% if settings.mbg_delivery != blank %}{{ settings.mbg_delivery }}{% else %}Shipping rates are calculated at checkout.{% endif %}</div>
+            <div
+              class="mbg-Tooltip"
+              id="MiniBagShippingTip"
+              data-mini-tooltip
+              hidden
+            >
+              {% if settings.mbg_delivery_summary != blank %}
+                {{ settings.mbg_delivery_summary }}
+              {% else %}
+                Shipping rates are calculated at checkout.
+              {% endif %}
+            </div>
         </div><span>Calculated at checkout</span></div>
       {% endif %}
       {% if cart.taxes_included %}<div class="mbg-Row"><span>Taxes</span><span>Included</span></div>{% endif %}
