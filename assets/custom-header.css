@@ -115,6 +115,15 @@
     }
   }
 
+  &[data-header-mode="dark"] {
+    .hd-Nav_Cart[data-cart-empty="false"],
+    .hd-MobileNav_Cart[data-cart-empty="false"] {
+      .template-index & {
+        background-color: var(--color-black);
+      }
+    }
+  }
+
   .hd-Nav_CartCount {
     display: none;
   }
