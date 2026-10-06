@@ -353,6 +353,34 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
   display: none;
 }
 
+@media (max-width: 767px) {
+  .clc-List .prd-Card_Summary {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0;
+  }
+
+  .clc-List .prd-Card_Details,
+  .clc-List .prd-Card_Price {
+    width: 100%;
+  }
+
+  .clc-List .prd-Card_Price,
+  .clc-List .prd-Card_Meta {
+    margin-left: 0;
+  }
+
+  .clc-List .prd-Card_Price {
+    margin-top: 2px;
+  }
+
+  .clc-List .prd-Card_Price .prd-Price {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+  }
+}
+
 @media (min-width: 901px) {
   .lyt-Container {
     padding-inline: 40px;
