@@ -81,6 +81,20 @@
         "id": "mbg_final_sale_message",
         "label": "Final sale message",
         "default": "All online archive sale items are final sale. No returns or exchanges."
+      },
+      {
+        "type": "textarea",
+        "id": "mbg_note_included",
+        "label": "Note — duties and taxes included",
+        "default": "Prices now include customs duties, import fees and taxes. No additional charges will be incurred upon delivery.",
+        "info": "Shown when the market's Show duties and taxes metafield is true."
+      },
+      {
+        "type": "textarea",
+        "id": "mbg_note_default",
+        "label": "Note — default",
+        "default": "Shipping and any applicable duties or taxes are confirmed at checkout.",
+        "info": "Shown when the market's Show duties and taxes metafield is false or empty."
       }
     ]
   },
