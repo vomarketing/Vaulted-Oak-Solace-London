@@ -54,5 +54,8 @@
 }
 
 .collection-pagination__direction[aria-disabled='true'] {
+  cursor: default;
   opacity: 0.35;
+  pointer-events: none;
+  text-decoration: none;
 }
