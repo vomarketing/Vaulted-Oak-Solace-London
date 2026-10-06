@@ -22,7 +22,15 @@
     };
     function setInfo(value) {
       info.hidden = !value; content.hidden = value;
-      if (value) title.textContent = 'Shipping & Returns'; else sync();
+      if (value) {
+        title.textContent = 'Shipping & Returns';
+        title.classList.add('MiniBagTitle--shipping');
+      } else {
+        sync();
+        if (title.classList.contains('MiniBagTitle--shipping')) {
+          title.classList.remove('MiniBagTitle--shipping');
+        }
+      }
       if (isOpen()) drawer.querySelector('[data-mini-close]').focus({preventScroll:true});
     }
     function sync() {
