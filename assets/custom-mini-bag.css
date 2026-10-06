@@ -226,9 +226,10 @@
   margin: 20px 0;
 }
 
-.mbg-Drawer .mbg-Note{
-  font-size:12px;
-  font-style:italic;
+.mbg-Drawer .mbg-Note {
+  font-weight: 500;
+  font-size: 12px;
+  font-style: italic;
 }
 
 .mbg-Drawer .mbg-Shipping{
@@ -281,8 +282,8 @@
   margin-top:0;
 }
 
-.mbg-Drawer .mbg-Information p{
-  margin-bottom:12px;
+.mbg-Drawer .mbg-Information p {
+  margin-bottom: 50px;
 }
 
 .mbg-Drawer .mbg-Information a{
@@ -348,6 +349,10 @@
 
   .mbg-Drawer .mbg-Scroll{
     padding: 40px 20px 30px;
+  }
+
+  .mbg-Drawer .mbg-Information p {
+    margin-bottom: 40px;
   }
 
   .mbg-Drawer .mbg-Item {
