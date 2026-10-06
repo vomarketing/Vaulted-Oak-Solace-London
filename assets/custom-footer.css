@@ -57,6 +57,8 @@
   body:not([data-fullpage-scroll]) & {
     position: relative;
     height: auto;
+    overflow: visible;
+    overscroll-behavior: auto;
   }
 
   body.template-product:not(.is-editorial-active)[data-fullpage-scroll] & {
