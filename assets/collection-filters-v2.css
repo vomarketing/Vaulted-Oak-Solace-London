@@ -1,17 +1,20 @@
-.drw-Drawer[data-module-drawers-drawer="clc-filters"] {
+.drw-Drawer[data-module-drawers-drawer="clc-filters"],
+.drw-Drawer[data-module-drawers-drawer="search-filters"] {
   width: min(100%, 775px);
   background: #fff;
   color: #000;
 }
 
-.drw-Drawer[data-module-drawers-drawer="clc-filters"] .drw-Drawer_Inner {
+.drw-Drawer[data-module-drawers-drawer="clc-filters"] .drw-Drawer_Inner,
+.drw-Drawer[data-module-drawers-drawer="search-filters"] .drw-Drawer_Inner {
   width: 100%;
   max-width: none;
   min-height: 100%;
   margin: 0;
 }
 
-.drw-Drawer[data-module-drawers-drawer="clc-filters"] .drw-Drawer_Body {
+.drw-Drawer[data-module-drawers-drawer="clc-filters"] .drw-Drawer_Body,
+.drw-Drawer[data-module-drawers-drawer="search-filters"] .drw-Drawer_Body {
   height: 100%;
 }
 

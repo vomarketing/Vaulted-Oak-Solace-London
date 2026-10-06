@@ -41,6 +41,8 @@
         "other": "{{ count }} results for \"{{ terms }}\""
       },
       "no_results_html": "Please try a different search term or go back to the <a href=\"/\">homepage</a>.",
+      "no_results_title": "No Results Found",
+      "continue_shopping": "Explore Collections",
       "results": "Results",
       "view_all": "View All",
       "reset": "Reset",
@@ -215,6 +217,7 @@
     "sorting": {
       "title": "Sort by",
       "featured": "Featured",
+      "relevance": "Relevance",
       "best_selling": "Best Selling",
       "az": "Alphabetically, A-Z",
       "za": "Alphabetically, Z-A",
