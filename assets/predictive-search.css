@@ -3,6 +3,8 @@
   --pred-search-text: #000000;
   --pred-search-border: #000000;
   --pred-search-transition: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  --pred-search-ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --pred-search-ease-in-out: cubic-bezier(0.4, 0, 0.2, 1);
 }
 
 predictive-search {
@@ -41,6 +43,20 @@ predictive-search {
   }
 
   /* Slide in / fade down on mobile */
+  .drw-Drawer_Inner,
+  .pred-Horizontal_Inner {
+    opacity: 0;
+    transform: translateY(-8px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+  }
+
+  &.drw-Drawer-active .drw-Drawer_Inner,
+  &.drw-Drawer-active .pred-Horizontal_Inner {
+    opacity: 1;
+    transform: none;
+    transition: opacity 0.45s ease 0.1s, transform 0.6s var(--pred-search-ease-out) 0.1s;
+  }
+
   &.drw-Drawer-searchVertical,
   &.drw-Drawer-searchHorizontal {
     transform: translateY(-10px);
@@ -56,11 +72,35 @@ predictive-search {
     padding-top: 40px;
   }
 
-  @media (min-width: 901px) {
+  @media (max-width: 1200px) {
+    .drw-Drawer_Inner {
+      padding: 0 20px;
+      box-sizing: border-box;
+    }
+  }
+
+  @media (min-width: 768px) and (max-width: 1200px) {
+    .drw-Drawer_Inner,
+    .pred-Horizontal_Inner {
+      width: 100%;
+      max-width: 522px;
+      margin: 0 auto;
+      padding: 0;
+      box-sizing: content-box;
+
+      @supports (margin-left: round(down, 1.5px, 1px)) {
+        margin-left: max(0px, round(down, calc((100% - 522px) / 2), 1px));
+        margin-right: 0;
+      }
+    }
+  }
+
+  @media (min-width: 1201px) {
     padding-top: 40px;
 
     /* Desktop Horizontal Drawer */
     &.drw-Drawer-searchHorizontal {
+      --pred-search-gap: 35px;
       top: var(--header-height, 107px);
       right: 0;
       left: 0;
@@ -69,20 +109,34 @@ predictive-search {
       max-width: 100vw;
       height: calc(100dvh - var(--header-height, 107px));
       max-height: calc(100dvh - var(--header-height, 107px));
+      box-sizing: border-box;
+      padding-top: max(40px, calc(197px - var(--header-height, 107px)));
       box-shadow: none;
-      transform: translateY(-10px);
+      opacity: 1;
+      transform: none;
+      clip-path: inset(0 0 100% 0);
+      interpolate-size: allow-keywords;
+      transition:
+        clip-path 0.4s var(--pred-search-ease-in-out),
+        visibility 0s linear 0.4s,
+        height 0.5s var(--pred-search-ease-out);
 
       &.drw-Drawer-active {
-        transform: translateY(0);
+        transform: none;
+        clip-path: inset(0 0 0 0);
+        transition:
+          clip-path 0.6s var(--pred-search-ease-out),
+          visibility 0s,
+          height 0.5s var(--pred-search-ease-out);
       }
 
-      /* Khi input có value -> height auto */
       &.drw-Drawer-searchHasValue {
         bottom: auto;
         width: 100%;
         max-width: 100%;
         height: auto;
-        padding-bottom: 110px;
+        min-height: calc(540px - var(--header-height, 107px));
+        padding-bottom: 40px;
       }
 
       .pred-Horizontal_Inner {
@@ -91,6 +145,17 @@ predictive-search {
         margin: 0 auto;
         padding: 0;
         box-sizing: border-box;
+        transform: translateY(-16px);
+
+        @supports (margin-left: round(down, 1.5px, 1px)) {
+          margin-left: max(0px, round(down, calc((100% - 610px) / 2), 1px));
+          margin-right: 0;
+        }
+      }
+
+      &.drw-Drawer-active .pred-Horizontal_Inner {
+        transform: none;
+        transition: opacity 0.4s ease 0.15s, transform 0.7s var(--pred-search-ease-out) 0.15s;
       }
 
       .pred-Horizontal_Close {
@@ -108,87 +173,104 @@ predictive-search {
       .pred-Search_Results {
         width: 100%;
         max-width: 610px;
-        margin-top: 36px;
         margin-left: auto;
         margin-right: auto;
         padding: 0;
-        box-sizing: border-box;
-      }
-
-      .pred-Search_Grid {
-        width: 100%;
-        max-width: 100%;
-        grid-template-columns: 160px minmax(0, 1fr);
-        gap: 24px;
-        align-items: start;
-        box-sizing: border-box;
-      }
-
-      .pred-Search_ColSuggestions {
-        min-width: 0;
-        width: 100%;
-      }
-
-      .pred-Search_ColProducts {
-        min-width: 0;
-        width: 100%;
-        max-width: 100%;
-        box-sizing: border-box;
-      }
-
-      .pred-Search_ProductsGrid {
-        width: 100%;
-        max-width: 100%;
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 12px;
         box-sizing: border-box;
       }
     }
 
     /* Desktop Vertical Drawer */
     &.drw-Drawer-searchVertical {
+      --pred-search-gap: 50px;
       top: 0;
       right: 0;
       bottom: 0;
       left: auto;
-      width: 774px;
-      max-width: 774px;
+      width: max(560px, 40.3125vw);
+      max-width: 100vw;
       height: 100vh;
       height: 100dvh;
       max-height: 100vh;
       max-height: 100dvh;
-      padding-top: 30px;
-      padding-left: 40px;
-      padding-right: 40px;
-      padding-bottom: 40px;
+      padding: 35px 40px 40px;
       z-index: 105;
-      box-shadow: -4px 0 25px rgba(0, 0, 0, 0.08);
+      box-shadow: none;
+      opacity: 1;
       transform: translateX(100%);
+      transition: transform 0.45s var(--pred-search-ease-in-out), visibility 0s linear 0.45s;
 
       &.drw-Drawer-active {
         transform: translateX(0);
+        transition: transform 0.6s var(--pred-search-ease-out), visibility 0s;
+      }
+
+      .drw-Drawer_Inner {
+        transform: translateX(24px);
+      }
+
+      &.drw-Drawer-active .drw-Drawer_Inner {
+        transform: none;
+        transition: opacity 0.45s ease 0.18s, transform 0.6s var(--pred-search-ease-out) 0.18s;
       }
 
       .pred-Vertical_Header {
         display: flex !important;
-        margin-bottom: 50px;
-      }
-
-      .pred-Search_Grid {
-        grid-template-columns: 160px minmax(0, 1fr);
-        gap: 30px;
-        align-items: start;
-      }
-
-      .pred-Search_ProductsGrid {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-        gap: 16px;
+        margin-bottom: 46px;
       }
     }
   }
 }
 
-/* Vertical Layout Header */
+@media (min-width: 1201px) {
+  .drw-Drawers .drw-Drawers_Backdrop {
+    transition: opacity 0.3s ease 0.15s, visibility 0.3s ease 0.15s, background-color 0s linear 0.45s;
+  }
+
+  body.has-horizontal-search-active .drw-Drawers_Backdrop {
+    background-color: transparent;
+    transition-delay: 0s;
+  }
+
+  body.has-search-active:not(.has-horizontal-search-active) .drw-Drawers_Backdrop {
+    background-color: rgba(0, 0, 0, 0.4);
+    transition: opacity 0.5s var(--pred-search-ease-out), visibility 0s, background-color 0s;
+  }
+
+  body.has-search-active:not(.has-horizontal-search-active) .hd-Header_Logo {
+    opacity: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .drw-Drawer-search,
+  .drw-Drawer-search .drw-Drawer_Inner,
+  .drw-Drawer-search .pred-Horizontal_Inner {
+    transform: none !important;
+  }
+
+  .drw-Drawer-search.drw-Drawer-searchVertical,
+  .drw-Drawer-search.drw-Drawer-searchHorizontal {
+    opacity: 0;
+    clip-path: none;
+    transition: opacity 0.2s ease, visibility 0s linear 0.2s;
+
+    &.drw-Drawer-active {
+      opacity: 1;
+      clip-path: none;
+      transition: opacity 0.2s ease, visibility 0s;
+    }
+  }
+
+  .drw-Drawer-search .pred-Search_Results,
+  .drw-Drawer-search .pred-Search_NoResults,
+  .drw-Drawer-search .pred-Search_Suggested,
+  .drw-Drawer-search .pred-Search_QueryItem,
+  .drw-Drawer-search .pred-Skeleton {
+    animation: none !important;
+  }
+}
+
 .pred-Vertical_Header {
   display: flex;
   align-items: baseline;
@@ -213,7 +295,7 @@ predictive-search {
     }
   }
 
-  @media (max-width: 900px) {
+  @media (max-width: 1200px) {
     display: none !important;
   }
 }
@@ -252,13 +334,19 @@ predictive-search {
     height: 14px;
   }
 
-  @media (max-width: 900px) {
+  @media (max-width: 1200px) {
     display: none !important;
   }
 }
 
 /* Main Predictive Search Components */
+/* Figma spacing is measured on cap-height-trimmed text; a 18px line box adds ~5px per edge */
 .pred-Search {
+  .text-reg-12,
+  .text-med-12 {
+    line-height: 18px;
+  }
+
   .pred-Search_FormWrapper {
     width: 100%;
   }
@@ -266,19 +354,22 @@ predictive-search {
   .pred-Search_InputWrapper {
     position: relative;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
+    height: 24px;
     border-bottom: 1px solid var(--pred-search-border);
-    padding-bottom: 6px;
+    box-sizing: border-box;
 
     .pred-Search_Input {
       flex: 1;
       width: 100%;
-      padding: 0;
+      height: 18px;
+      padding: 0 60px 0 5px;
       background: transparent;
       border: none;
       outline: none;
       border-radius: 0;
       -webkit-appearance: none;
+      appearance: none;
 
       &::placeholder {
         opacity: 0.5;
@@ -288,8 +379,8 @@ predictive-search {
 
     .pred-Search_Submit {
       position: absolute;
+      top: 0;
       right: 0;
-      bottom: 8px;
       color: var(--pred-search-text);
       background: transparent;
       border: none;
@@ -305,7 +396,7 @@ predictive-search {
   }
 
   .pred-Search_NoResults {
-    margin-top: 35px;
+    margin-top: calc(var(--pred-search-gap, 35px) - 5px);
 
     .pred-Search_NoResultsText {
       margin: 0;
@@ -313,10 +404,10 @@ predictive-search {
   }
 
   .pred-Search_Suggested {
-    margin-top: 35px;
+    margin-top: var(--pred-search-gap, 35px);
 
     .pred-Search_Heading {
-      margin-bottom: 20px;
+      margin-bottom: 16px;
       text-transform: capitalize;
     }
 
@@ -326,7 +417,12 @@ predictive-search {
       margin: 0;
 
       .pred-Search_SuggestedItem {
-        margin-bottom: 20px;
+        display: flex;
+        margin-bottom: 11px;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
 
         .pred-Search_SuggestedBtn {
           display: inline-block;
@@ -347,27 +443,33 @@ predictive-search {
     }
   }
 
+  .pred-Search_NoResults.is-visible + .pred-Search_Suggested {
+    margin-top: calc(var(--pred-search-gap, 35px) - 5px);
+  }
+
   .pred-Search_Results {
-    margin-top: 50px;
+    margin-top: var(--pred-search-gap, 35px);
   }
 
   .pred-Search_Grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 30px;
+    display: flex;
+    flex-direction: column;
 
     .pred-Search_ColSuggestions {
-      display: flex;
-      flex-direction: column;
+      display: contents;
 
       .pred-Search_QueryList {
+        order: 2;
         display: flex;
         flex-direction: column;
-        gap: 20px;
-        list-style: none;
+        gap: 11px;
+        margin: 0;
         padding: 0;
+        list-style: none;
 
         .pred-Search_QueryItem {
+          display: flex;
+
           .pred-Search_QueryLink {
             display: inline-block;
             text-decoration: none;
@@ -385,8 +487,8 @@ predictive-search {
       }
 
       .pred-Search_ViewAll {
-        flex-grow: 1;
-        margin-top: 20px;
+        order: 4;
+        margin-top: 25px;
 
         .pred-Search_ViewAllLink {
           display: inline-block;
@@ -400,43 +502,187 @@ predictive-search {
       }
     }
 
+    .pred-Search_Heading {
+      order: 1;
+      margin-bottom: 16px;
+    }
+
     .pred-Search_ColProducts {
+      order: 3;
       min-width: 0;
       width: 100%;
       max-width: 100%;
-    }
-
-    .pred-Search_Heading {
-      margin-bottom: 20px;
+      margin-top: 26px;
     }
   }
 
   .pred-Search_ProductsGrid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 10px;
+    gap: 18px;
     width: 100%;
     min-width: 0;
   }
 
-  .pred-Search_Loading {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 30px 0;
+  .pred-Card .pred-Card_ImageContainer {
+    aspect-ratio: 3 / 4;
+  }
 
-    .pred-Search_Spinner {
-      width: 24px;
-      height: 24px;
-      border: 2px solid rgba(0, 0, 0, 0.1);
-      border-top-color: #000000;
-      border-radius: 50%;
-      animation: pred-spin 0.6s linear infinite;
+  .pred-Card:nth-child(n + 4) {
+    display: none;
+  }
+
+  .pred-Search_Results,
+  .pred-Search_NoResults,
+  .pred-Search_Suggested {
+    animation: pred-fade-in 0.35s var(--pred-search-ease-out);
+  }
+
+}
+
+@media (min-width: 768px) and (max-width: 1200px) {
+  .pred-Search {
+    .pred-Search_FormWrapper {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .pred-Search_NoResults {
+      order: 1;
+      margin-top: 20px;
+    }
+
+    .pred-Search_NoResults.is-visible + .pred-Search_Suggested {
+      margin-top: var(--pred-search-gap, 35px);
+    }
+
+    .pred-Search_Grid .pred-Search_ColSuggestions .pred-Search_ViewAll {
+      margin-top: 24px;
+    }
+
+    .pred-Search_ProductsGrid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .pred-Card .pred-Card_ImageContainer {
+      aspect-ratio: 123 / 167;
+    }
+
+    .pred-Card:nth-child(n + 4) {
+      display: flex;
     }
   }
 }
 
-/* Product Card Component */
+@media (min-width: 1201px) {
+  .pred-Search {
+    .pred-Search_Suggested .pred-Search_Heading {
+      margin-bottom: 15px;
+    }
+
+    .pred-Search_Grid {
+      flex-direction: row;
+      align-items: stretch;
+      gap: 20px;
+
+      .pred-Search_ColSuggestions {
+        display: flex;
+        flex-direction: column;
+        flex: 1 0 120px;
+        min-width: 0;
+
+        .pred-Search_ViewAll {
+          margin-top: auto;
+          margin-bottom: -5px;
+          padding-top: 11px;
+        }
+      }
+
+      .pred-Search_ColProducts {
+        flex: 0 1 auto;
+        width: auto;
+        margin-top: 0;
+      }
+
+      .pred-Search_Heading {
+        margin-bottom: 15px;
+      }
+    }
+
+    .pred-Search_ProductsGrid {
+      display: flex;
+      gap: 10px;
+      width: auto;
+    }
+
+    .pred-Card {
+      flex: 0 1 128px;
+      width: 128px;
+      min-width: 0;
+
+      .pred-Card_ImageContainer {
+        aspect-ratio: 128 / 160;
+      }
+    }
+  }
+}
+
+.pred-Search_QueryItem:not(.pred-Search_QueryItem-skeleton) {
+  animation: pred-fade 0.3s ease;
+}
+
+.pred-Search_QueryItem-skeleton {
+  display: flex;
+  align-items: center;
+  min-height: 18px;
+
+  &:nth-child(1) .pred-Skeleton-text {
+    width: 72px;
+  }
+
+  &:nth-child(2) .pred-Skeleton-text {
+    width: 104px;
+  }
+
+  &:nth-child(3) .pred-Skeleton-text {
+    width: 56px;
+  }
+}
+
+.pred-Skeleton {
+  display: block;
+  background-image: linear-gradient(90deg, #f5f5f5 0%, #ebebeb 50%, #f5f5f5 100%);
+  background-size: 200% 100%;
+  animation: pred-shimmer 1.4s ease-in-out infinite;
+}
+
+.pred-Skeleton-text {
+  height: 9px;
+}
+
+@keyframes pred-fade-in {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+}
+
+@keyframes pred-fade {
+  from {
+    opacity: 0;
+  }
+}
+
+@keyframes pred-shimmer {
+  from {
+    background-position: 100% 0;
+  }
+  to {
+    background-position: -100% 0;
+  }
+}
+
 .pred-Card {
   position: relative;
   display: flex;
@@ -450,9 +696,9 @@ predictive-search {
   .pred-Card_ImageContainer {
     position: relative;
     width: 100%;
-    aspect-ratio: 127 / 158;
     overflow: hidden;
     margin-bottom: 0;
+    background-color: #f5f5f5;
 
     .pred-Card_ImageOuter {
       width: 100%;
@@ -463,7 +709,12 @@ predictive-search {
         height: 100%;
         object-fit: cover;
         object-position: center;
-        transition: transform 0.4s ease;
+        opacity: 0;
+        transition: opacity 0.4s ease;
+
+        &.is-visible {
+          opacity: 1;
+        }
       }
     }
   }
@@ -508,17 +759,5 @@ predictive-search {
     bottom: 0;
     left: 0;
     z-index: 1;
-  }
-
-  @media (min-width: 901px) {
-    .pred-Card_ImageContainer {
-      margin-bottom: 8px;
-    }
-  }
-}
-
-@keyframes pred-spin {
-  to {
-    transform: rotate(360deg);
   }
 }
