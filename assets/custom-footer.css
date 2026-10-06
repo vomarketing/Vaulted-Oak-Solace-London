@@ -23,7 +23,7 @@
     visibility: visible;
   }
 
-  @media (min-width: 1024px) {
+  @media (min-width: 1201px) {
     top: auto;
     bottom: -100px;
     height: auto;
@@ -40,7 +40,7 @@
     }
   }
 
-  @media (max-width: 1023px) {
+  @media (max-width: 1200px) {
     body[data-fullpage-scroll] & {
       z-index: 1;
       opacity: 1;
@@ -105,7 +105,7 @@
   color: var(--Color_Secondary, #000000);
   padding: 50px 0 55px;
 
-  @media (max-width: 1023px) {
+  @media (max-width: 1200px) {
     flex: 1 0 auto;
 
     body[data-fullpage-scroll] & {
@@ -124,8 +124,7 @@
   letter-spacing: 0;
   text-transform: none;
 
-  @media (min-width: 1024px) {
-    padding: 33px 0 37px;
+  @media (min-width: 1201px) {
     transition: color 0.3s ease;
 
     &[data-footer-mode="light"],
@@ -178,7 +177,7 @@
     max-width: none;
     padding: 0 var(--Footer_Gutter);
 
-    @media (min-width: 1024px) {
+    @media (min-width: 1201px) {
       display: block;
     }
   }
@@ -191,22 +190,13 @@
     margin-block: auto;
     text-align: left;
 
-    @media (min-width: 768px) and (max-width: 1023px) {
+    @media (min-width: 768px) and (max-width: 1200px) {
       max-width: 387px;
     }
 
-    @media (min-width: 1024px) {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      grid-template-areas:
-        "about about newsletter newsletter"
-        "primary secondary newsletter newsletter"
-        "meta meta copyright copyright";
-      gap: 30px 20px;
-      margin-block: 0;
-    }
-
     @media (min-width: 1201px) {
+      display: grid;
+      margin-block: 0;
       grid-template-columns: minmax(0, 630fr) minmax(0, 397fr) minmax(0, 391fr) minmax(0, 422fr);
       grid-template-rows: auto 18px;
       grid-template-areas:
@@ -246,7 +236,7 @@
   }
 
   .ft-Footer_Item-instagram {
-    @media (min-width: 1024px) {
+    @media (min-width: 1201px) {
       display: none;
     }
   }
@@ -289,7 +279,7 @@
     display: none;
     grid-area: meta;
 
-    @media (min-width: 1024px) {
+    @media (min-width: 1201px) {
       display: block;
       align-self: end;
     }
@@ -301,7 +291,7 @@
     align-self: flex-start;
     opacity: 0.5;
 
-    @media (min-width: 1024px) {
+    @media (min-width: 1201px) {
       align-self: end;
       justify-self: end;
     }
@@ -310,13 +300,13 @@
   .ft-Newsletter_Heading-desktop {
     display: none;
 
-    @media (min-width: 1024px) {
+    @media (min-width: 1201px) {
       display: block;
     }
   }
 
   .ft-Newsletter_Heading-mobile {
-    @media (min-width: 1024px) {
+    @media (min-width: 1201px) {
       display: none;
     }
   }
