@@ -176,6 +176,23 @@
   background: #fff;
 }
 
+.collection-filter-v2__clear {
+  display: block;
+  margin-bottom: 40px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+}
+
+.collection-filter-v2__clear:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
+}
+
 .collection-filter-v2__submit {
   display: block;
   width: 100%;
