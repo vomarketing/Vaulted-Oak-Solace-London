@@ -176,6 +176,7 @@ if (!customElements.get('predictive-search')) {
             if (this.input) {
               this.input.focus();
               const val = this.input.value.trim();
+              this.currentQuery = val;
               if (val.length > 0) {
                 this.updateValueState(true);
                 this.fetchSuggestions(val);
@@ -626,7 +627,7 @@ if (!customElements.get('predictive-search')) {
       }
       this.currentQuery = '';
       if (this.input) {
-        this.input.value = '';
+        this.input.value = this.input.defaultValue;
       }
       if (this.queriesList) {
         this.queriesList.innerHTML = '';
