@@ -4,19 +4,13 @@
 
     {%- if section.settings.mobile_image != blank -%}
       <div class="pg-404_HeaderImage pg-404_HeaderImage-mobile">
-        {%- render 'responsive-image' with
-          image: section.settings.mobile_image,
-          width: 375,
-          height: 375 -%}
+        {%- render 'responsive-image' with image, image: section.settings.mobile_image, width: 375, height: 375 -%}
       </div>
     {%- endif -%}
 
     {%- if section.settings.desktop_image != blank -%}
       <div class="pg-404_HeaderImage pg-404_HeaderImage-desktop">
-        {%- render 'responsive-image' with
-          image: section.settings.desktop_image,
-          width: 1440,
-          height: 435 -%}
+        {%- render 'responsive-image' with image, image: section.settings.desktop_image, width: 1440, height: 435 -%}
       </div>
     {%- endif -%}
 
@@ -110,3 +104,26 @@
   ]
 }
 {% endschema %}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: |-
+    {%- render 'responsive-image' with
+              image: section.settings.mobile_image,
+              width: 375,
+              height: 375 -%}
+  to: "{%- render 'responsive-image' with image, image: section.settings.mobile_image,
+    width: 375, height: 375 -%}"
+  position: 195..302
+- from: |-
+    {%- render 'responsive-image' with
+              image: section.settings.desktop_image,
+              width: 1440,
+              height: 435 -%}
+  to: "{%- render 'responsive-image' with image, image: section.settings.desktop_image,
+    width: 1440, height: 435 -%}"
+  position: 464..573
+{% endcomment %}
