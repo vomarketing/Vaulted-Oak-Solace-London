@@ -50,4 +50,14 @@
   }
 </script>
 
-{%- render 'iwish_v2' with component: "head-script" -%}
+{%- render 'iwish_v2' with component, component: "head-script" -%}
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: '{%- render ''iwish_v2'' with component: "head-script" -%}'
+  to: '{%- render ''iwish_v2'' with component, component: "head-script" -%}'
+  position: 1691..1757
+{% endcomment %}
