@@ -4,15 +4,22 @@
   assign promoted_text = collection.metafields.custom.promoted_text
   assign promoted_is_product = collection.metafields.custom.promoted_is_a_product.value
   assign promoted_product = collection.metafields.custom.promoted_product.value
-  assign promoted_link = collection.metafields.custom.promoted_link.value
+  assign promoted_url = collection.metafields.custom.promoted_url.value
+  assign promoted_link = blank
 
-  if promoted_is_product and promoted_product != blank
-    assign promoted_link = promoted_product.url
+  if promoted_is_product
+    if promoted_product != blank
+      assign promoted_link = promoted_product.url
+    endif
+  elsif promoted_url != blank
+    assign promoted_link = promoted_url
   endif
 -%}
 <div class="clc-PromotedCard js-Animate" data-animation="Fade">
   {%- if promoted_link != blank -%}
-    <a class="clc-PromotedCard_Link" href="{{ promoted_link }}">
+    <a class="clc-PromotedCard_Link" href="{{ promoted_link | escape }}">
+  {%- else -%}
+    <div class="clc-PromotedCard_Link">
   {%- endif -%}
 
   <div class="clc-PromotedCard_ImageContainer">
@@ -51,5 +58,7 @@
 
   {%- if promoted_link != blank -%}
     </a>
+  {%- else -%}
+    </div>
   {%- endif -%}
 </div>
