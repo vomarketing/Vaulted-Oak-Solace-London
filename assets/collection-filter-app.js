@@ -9,10 +9,19 @@
     const clear = root.querySelector('[data-collection-filter-clear]');
     if (!form || !count || !submit) return;
 
-    root.querySelectorAll('.collection-filter-v2__group').forEach((group) => {
+    const groups = Array.from(root.querySelectorAll('.collection-filter-v2__group'));
+    const initialInputState = Array.from(form.querySelectorAll('input')).map((input) => ({
+      input,
+      checked: input.checked
+    }));
+    const initialGroupState = groups.map((group) => group.open);
+    const initialResultCount = count.textContent;
+    let request;
+
+    groups.forEach((group) => {
       group.addEventListener('toggle', () => {
         if (!group.open) return;
-        root.querySelectorAll('.collection-filter-v2__group').forEach((other) => {
+        groups.forEach((other) => {
           if (other !== group) other.open = false;
         });
       });
@@ -22,7 +31,7 @@
       const hasSelectedFilter = !!form.querySelector('input[type="checkbox"]:checked');
       const selectedSort = form.querySelector('input[type="radio"][name="sort_by"]:checked');
       const hasSelectedSort = !!selectedSort && selectedSort.value !== form.dataset.defaultSort;
-      root.querySelectorAll('.collection-filter-v2__group').forEach((group) => {
+      groups.forEach((group) => {
         const isSelected = group.classList.contains('collection-filter-v2__group--sort')
           ? hasSelectedSort
           : !!group.querySelector('input[type="checkbox"]:checked');
@@ -31,6 +40,28 @@
       if (clear) clear.hidden = !hasSelectedFilter && !hasSelectedSort;
     };
     updateSelectionState();
+
+    const restoreAppliedState = () => {
+      if (request) request.abort();
+      request = null;
+      initialInputState.forEach(({ input, checked }) => {
+        input.checked = checked;
+      });
+      groups.forEach((group, index) => {
+        group.open = initialGroupState[index];
+      });
+      count.textContent = initialResultCount;
+      submit.removeAttribute('aria-busy');
+      updateSelectionState();
+    };
+
+    const drawer = root.closest('[data-module-drawers-drawer]');
+    if (drawer && 'MutationObserver' in window) {
+      const drawerObserver = new MutationObserver(() => {
+        if (!drawer.classList.contains('drw-Drawer-active')) restoreAppliedState();
+      });
+      drawerObserver.observe(drawer, { attributes: true, attributeFilter: ['class'] });
+    }
 
     const selectedUrl = () => {
       const url = new URL(form.action, window.location.origin);
@@ -57,7 +88,6 @@
       });
     }
 
-    let request;
     form.addEventListener('change', async () => {
       updateSelectionState();
       if (request) request.abort();
