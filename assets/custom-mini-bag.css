@@ -150,6 +150,10 @@
   overflow-wrap:anywhere;
 }
 
+.mbg-Drawer .mbg-Details a {
+  font-weight: 400;
+}
+
 .mbg-Drawer .mbg-Details p {
   margin-top: 10px;
 }
