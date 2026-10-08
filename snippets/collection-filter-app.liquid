@@ -70,7 +70,7 @@
               </summary>
 
               <div class="collection-filter-v2__panel">
-                <ul class="collection-filter-v2__options">
+                <ul class="collection-filter-v2__options{% if filter.values.size > 10 %} collection-filter-v2__options--multi-column{% endif %}">
                   {%- for filter_value in filter.values -%}
                     {%- assign option_id = id_prefix | append: '-' | append: filter.param_name | handleize | append: '-' | append: forloop.index -%}
                     <li class="collection-filter-v2__option">

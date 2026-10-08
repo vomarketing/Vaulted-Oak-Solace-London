@@ -136,7 +136,7 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
     margin: 10px auto 0;
   }
 
-  @media (max-width: 400px) {
+  @media (max-width: 500px) {
     max-width: 322px;
   }
 }
@@ -220,12 +220,12 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
     gap: 40px 20px;
   }
 
-  @media (min-width: 401px) and (max-width: 1024px) {
+  @media (min-width: 501px) and (max-width: 1024px) {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
 
-@media (max-width: 400px) {
+@media (max-width: 500px) {
   .clc-List--mobile-columns-1 .prd-List_Items {
     grid-template-columns: minmax(0, 1fr);
   }
@@ -310,6 +310,7 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
 
   @media (max-width: 1024px) {
     z-index: 2;
+    aspect-ratio: 235 / 318;
     display: flex;
     overflow-x: auto;
     overflow-y: hidden;
@@ -320,6 +321,18 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
     &::-webkit-scrollbar {
       display: none;
     }
+  }
+}
+
+@media (max-width: 500px) {
+  .clc-List--mobile-columns-2 .prd-Card_ImageContainer {
+    aspect-ratio: 171 / 232;
+    height: auto;
+  }
+
+  .clc-List--mobile-columns-1 .prd-Card_ImageContainer {
+    aspect-ratio: 235 / 318;
+    height: auto;
   }
 }
 

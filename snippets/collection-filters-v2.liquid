@@ -82,7 +82,7 @@
               </summary>
 
               <div class="collection-filter-v2__panel">
-                <ul class="collection-filter-v2__options">
+                <ul class="collection-filter-v2__options{% if group_tags.size > 10 %} collection-filter-v2__options--multi-column{% endif %}">
                   {%- for group_tag in group_tags -%}
                     {%- assign tag = group_tag | split: '^' | last -%}
                     {%- assign tag_handle = tag | handleize | replace: '-amp-', '-' -%}
