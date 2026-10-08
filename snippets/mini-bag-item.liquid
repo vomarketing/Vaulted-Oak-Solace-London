@@ -24,5 +24,10 @@
     <span aria-label="Quantity {{ item.quantity }}">{{ item.quantity }}</span>
     <button type="button" data-mini-step="1" aria-label="Increase quantity">+</button>
   </div>
-  <button class="mbg-Remove" type="button" data-mini-remove aria-label="Remove {{ item.product.title | escape }}">Remove</button>
+  <div class="mbg-Remove-Wishlist">
+    <button class="mbg-Remove" type="button" data-mini-remove aria-label="Remove {{ item.product.title | escape }}">Remove</button>
+    <button class="bag-Item_Wishlist" type="button" aria-label="{{ 'wishlist.add_to_wishlist' | t }}">
+      {%- render 'icons', icon: 'bookmark' -%}
+    </button>
+  </div>
 </article>
