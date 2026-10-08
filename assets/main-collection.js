@@ -36,7 +36,7 @@
       this.header = document.querySelector(CollectionScrollController.selectors.header);
       this.collectionHeader = document.querySelector(CollectionScrollController.selectors.collectionHeader);
 
-      if (!this.header || !this.collectionHeader) {
+      if (!this.canStick()) {
         this.destroyResizeObserver();
         document.body.classList.remove(CollectionScrollController.classes.enabled);
         this.showHeader();
@@ -49,6 +49,15 @@
       this.lastScrollY = Math.max(window.scrollY, 0);
       this.accumulatedDelta = 0;
       this.update(true);
+    }
+
+    canStick() {
+      return Boolean(
+        this.header
+        && this.collectionHeader
+        && window.matchMedia('(min-width: 1025px)').matches
+        && !this.collectionHeader.classList.contains('collection-header--with-description')
+      );
     }
 
     bindEvents() {
@@ -107,6 +116,14 @@
     }
 
     handleResize() {
+      const canStick = this.canStick();
+      if (canStick !== document.body.classList.contains(CollectionScrollController.classes.enabled)) {
+        this.refresh();
+        return;
+      }
+
+      if (!canStick) return;
+
       this.measureHeader();
       this.lastScrollY = Math.max(window.scrollY, 0);
       this.accumulatedDelta = 0;
@@ -127,7 +144,7 @@
     }
 
     update(force = false) {
-      if (!this.header || !this.collectionHeader) return;
+      if (!this.canStick()) return;
 
       const scrollY = Math.max(window.scrollY, 0);
       const delta = scrollY - this.lastScrollY;

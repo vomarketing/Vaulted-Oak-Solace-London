@@ -1,4 +1,5 @@
-<section class="collection-header js-Animate" data-animation="Fade" data-collection-sticky-header>
+{%- assign collection_description_text = collection.description | strip_html | strip -%}
+<section class="collection-header{% if collection_description_text != blank %} collection-header--with-description{% endif %} js-Animate" data-animation="Fade" data-collection-sticky-header>
   <div class="collection-header__inner lyt-Container">
     {%- render 'collection-header-content', collection: collection -%}
     {%- render 'collection-filter-sort', section: section, current_tags: current_tags, placement: 'desktop' -%}

@@ -6,6 +6,9 @@
 <script src="{{ 'collection-filters-v2.js' | asset_url }}" defer></script>
 
 {%- assign current_sort = collection.sort_by | default: collection.default_sort_by -%}
+{%- assign default_sort = collection.default_sort_by | default: 'manual' -%}
+{%- assign has_open_group = false -%}
+{%- assign has_active_filters = false -%}
 
 <div class="collection-filter-v2" data-collection-filter-v2>
   <form
@@ -15,6 +18,7 @@
     data-collection-filter-form
     data-section-id="{{ section.id }}"
     data-collection-url="{{ collection.url }}"
+    data-default-sort="{{ default_sort | escape }}"
   >
     <div class="collection-filter-v2__header">
       <h2 class="collection-filter-v2__title">{{ 'collections.general.filter_and_sort' | t }}</h2>
@@ -35,6 +39,7 @@
             {%- for current_tag in current_tags -%}
               {%- if current_tag contains tag_prefix -%}
                 {%- assign group_has_active_tag = true -%}
+                {%- assign has_active_filters = true -%}
                 {%- break -%}
               {%- endif -%}
             {%- endfor -%}
@@ -57,10 +62,16 @@
               {%- assign group_tags = group_tags | sort -%}
             {%- endif -%}
 
+            {%- assign group_is_open = false -%}
+            {%- if group_has_active_tag and has_open_group == false -%}
+              {%- assign group_is_open = true -%}
+              {%- assign has_open_group = true -%}
+            {%- endif -%}
+
             <details
-              class="collection-filter-v2__group" {{ block.shopify_attributes }} {% if group_has_active_tag %}open{% endif %}>
+              class="collection-filter-v2__group{% if group_has_active_tag %} has-selection{% endif %}" {{ block.shopify_attributes }} {% if group_is_open %}open{% endif %}>
               <summary class="collection-filter-v2__summary">
-                <span>{{ block.settings.title | escape }}</span>
+                <span class="collection-filter-v2__summary-label">{{ block.settings.title | escape }} <span class="collection-filter-v2__selected-check" aria-hidden="true">✓</span></span>
                 <span class="collection-filter-v2__toggle" aria-hidden="true"></span>
               </summary>
 
@@ -97,9 +108,9 @@
       </div>
 
       {%- if section.settings.enable_sorting -%}
-        <details class="collection-filter-v2__group collection-filter-v2__group--sort" open>
+        <details class="collection-filter-v2__group collection-filter-v2__group--sort{% if collection.sort_by != blank and collection.sort_by != default_sort %} has-selection{% endif %}" {% unless has_open_group %}open{% endunless %}>
           <summary class="collection-filter-v2__summary">
-            <span>Sort By</span>
+            <span class="collection-filter-v2__summary-label">Sort By <span class="collection-filter-v2__selected-check" aria-hidden="true">✓</span></span>
             <span class="collection-filter-v2__toggle" aria-hidden="true"></span>
           </summary>
 
@@ -137,7 +148,10 @@
     </div>
 
     <div class="collection-filter-v2__footer">
-      <button class="collection-filter-v2__clear" type="button" data-collection-filter-clear>Clear all</button>
+      {%- if collection.sort_by != blank and collection.sort_by != default_sort -%}
+        {%- assign has_active_filters = true -%}
+      {%- endif -%}
+      <button class="collection-filter-v2__clear" type="button" data-collection-filter-clear{% unless has_active_filters %} hidden{% endunless %}>Clear all</button>
       <button class="collection-filter-v2__submit" type="submit" data-collection-filter-submit>
         Show <span data-collection-filter-result-count>{{ collection.products_count }}</span> Items
       </button>
