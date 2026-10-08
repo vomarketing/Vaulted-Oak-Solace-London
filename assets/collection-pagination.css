@@ -1,12 +1,12 @@
 .collection-pagination {
   display: flex;
   justify-content: center;
+  width: 100%;
   margin: 50px 0;
   padding: 50px 0;
-  width: 100%;
 
-  @media (max-width:1024px) {
-   padding: 0;
+  @media (max-width: 1024px) {
+    padding: 0;
   }
 }
 
@@ -14,13 +14,6 @@
 .collection-pagination__pages {
   align-items: center;
   display: flex;
-}
-
-.collection-pagination__inner {
-  gap: 20px;
-}
-
-.collection-pagination__pages {
   gap: 20px;
 }
 
