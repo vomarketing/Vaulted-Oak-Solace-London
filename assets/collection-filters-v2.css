@@ -252,7 +252,8 @@
 
 /* Collection bottom sheet */
 @media (max-width: 1024px) {
-  .drw-Drawer[data-module-drawers-drawer="clc-filters"] {
+  .drw-Drawer[data-module-drawers-drawer="clc-filters"],
+  .drw-Drawer[data-module-drawers-drawer="search-filters"] {
     top: auto;
     right: 0;
     bottom: 0;
