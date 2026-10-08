@@ -1,0 +1,84 @@
+{%- doc -%}
+	Newsletter popup form submitted to Klaviyo via custom-footer.js.
+
+	@param {string} form_id
+	@param {string} placeholder
+	@param {string} klaviyo_company_id
+	@param {string} klaviyo_list_id
+	@param {string} source
+	@param {string} disclaimer
+{%- enddoc -%}
+
+<form
+	id="{{ form_id }}"
+	class="ft-Newsletter_Form ft-NewsletterPopup_Form"
+	action="#"
+	data-footer-newsletter-form
+	data-klaviyo-company-id="{{ klaviyo_company_id | escape }}"
+	data-klaviyo-list-id="{{ klaviyo_list_id | escape }}"
+	data-klaviyo-source="{{ source | escape }}"
+	data-country="{{ localization.country.iso_code }}"
+	data-newsletter-popup-form
+>
+	<fieldset class="ft-NewsletterPopup_Interests">
+		<legend>Interested in:</legend>
+
+		<label>
+			<input
+				type="radio"
+				name="newsletter_interest"
+				value="{{ interest_1 | escape }}"
+				required
+				checked
+			>
+			<span>{{ interest_1 | escape }}</span>
+		</label>
+
+		<label>
+			<input
+				type="radio"
+				name="newsletter_interest"
+				value="{{ interest_2 | escape }}"
+				required
+			>
+			<span>{{ interest_2 | escape }}</span>
+		</label>
+	</fieldset>
+
+	<div class="ft-Newsletter_Bottom">
+		<div class="ft-Newsletter_Field">
+			<label class="util-ScreenReaderOnly" for="{{ form_id }}-email">
+				{{ 'layout.footer.newsletter_email' | t }}
+			</label>
+
+			<input
+				class="ft-Newsletter_Input"
+				id="{{ form_id }}-email"
+				type="email"
+				name="email"
+				placeholder="{{ placeholder }}"
+				autocomplete="email"
+				autocapitalize="off"
+				spellcheck="false"
+				required
+			>
+
+			<button class="ft-Newsletter_Submit" type="submit">
+				{{ 'layout.footer.newsletter_submit' | t }}
+			</button>
+		</div>
+
+		<p
+			class="ft-Newsletter_Status"
+			role="status"
+			aria-live="polite"
+			data-footer-newsletter-status
+			data-success-message="{{ 'layout.footer.newsletter_success' | t | escape }}"
+			data-error-message="{{ 'layout.footer.newsletter_error' | t | escape }}"
+		></p>
+
+		{%- if disclaimer != blank -%}
+			<div class="ft-Newsletter_Disclaimer">{{ disclaimer }}</div>
+		{%- endif -%}
+	</div>
+</form>
