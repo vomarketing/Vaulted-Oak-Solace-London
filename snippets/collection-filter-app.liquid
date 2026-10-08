@@ -59,7 +59,13 @@
             {%- endif -%}
             <details class="collection-filter-v2__group{% if filter.active_values.size > 0 %} has-selection{% endif %}" {% if group_is_open %}open{% endif %}>
               <summary class="collection-filter-v2__summary">
-                <span class="collection-filter-v2__summary-label">{{ filter.label | escape }} <span class="collection-filter-v2__selected-check" aria-hidden="true">✓</span></span>
+                <span class="collection-filter-v2__summary-label">{{ filter.label | escape }}
+                  <span class="collection-filter-v2__selected-check" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="7" viewBox="0 0 10 7" fill="none">
+                      <path d="M2.98967 6.61917L0 3.64617L0.612667 3.01667L2.98967 5.39367L8.4 0L9.01267 0.612834L2.98967 6.61917Z" fill="black"/>
+                    </svg>
+                  </span>
+                </span>
                 <span class="collection-filter-v2__toggle" aria-hidden="true"></span>
               </summary>
 
@@ -92,7 +98,13 @@
       {%- if section.settings.enable_sorting -%}
         <details class="collection-filter-v2__group collection-filter-v2__group--sort{% if filter_source.sort_by != blank and filter_source.sort_by != default_sort %} has-selection{% endif %}" {% unless has_open_group %}open{% endunless %}>
           <summary class="collection-filter-v2__summary">
-            <span class="collection-filter-v2__summary-label">Sort By <span class="collection-filter-v2__selected-check" aria-hidden="true">✓</span></span>
+            <span class="collection-filter-v2__summary-label">Sort By
+              <span class="collection-filter-v2__selected-check" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="7" viewBox="0 0 10 7" fill="none">
+                  <path d="M2.98967 6.61917L0 3.64617L0.612667 3.01667L2.98967 5.39367L8.4 0L9.01267 0.612834L2.98967 6.61917Z" fill="black"/>
+                </svg>
+              </span>
+            </span>
             <span class="collection-filter-v2__toggle" aria-hidden="true"></span>
           </summary>
           <div class="collection-filter-v2__panel">
