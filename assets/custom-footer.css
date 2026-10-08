@@ -526,15 +526,30 @@
 .ft-NewsletterPopup_Interests label {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
+  gap: 10px;
   cursor: pointer;
 }
 
 .ft-NewsletterPopup_Interests input[type="radio"] {
-  width: 14px;
-  height: 14px;
+  appearance: none;
+  -webkit-appearance: none;
+  flex: 0 0 18px;
+  width: 18px;
+  height: 18px;
   margin: 0;
-  accent-color: #000;
+  border: 1px solid #000;
+  border-radius: 0;
+  background: #fff;
+  cursor: pointer;
+}
+
+.ft-NewsletterPopup_Interests input[type="radio"]:checked {
+  background: #000;
+}
+
+.ft-NewsletterPopup_Interests input[type="radio"]:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
 }
 
 .ft-NewsletterPopup_Form .ft-Newsletter_Disclaimer p {
@@ -545,9 +560,31 @@ body.is-newsletter-popup-open {
   overflow: hidden;
 }
 
+@media (max-width: 1200px) {
+  .ft-NewsletterPopup {
+    padding: 40px;
+  }
+}
+
 @media (max-width: 1024px) {
   .ft-NewsletterPopup {
-    padding: 20px;
+    padding: 0;
+    transform: translateY(50px);
+    transition: opacity 280ms ease, visibility 0s linear 280ms, transform 280ms ease;
+  }
+
+  .ft-NewsletterPopup.is-open {
+    transform: translateY(0);
+  }
+
+  .ft-Footer_NewsletterTrigger {
+    flex-direction: row-reverse;
+  }
+
+  .ft-NewsletterPopup_Dialog {
+    width: 100%;
+    border-right: none;
+    border-left: none;
   }
 }
 
