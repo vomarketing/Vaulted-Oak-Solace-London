@@ -72,27 +72,38 @@
   {%- endfor -%}
 {%- endif -%}
 
+{%- capture product_card_url -%}
+  {{- product.url | within: collection -}}{%- unless is_default_variant -%}?variant={{- current_variant.id -}}{%- endunless -%}
+{%- endcapture -%}
+
+{%- liquid
+  assign image_tag = 'div'
+  if enable_card_swipe
+    assign image_tag = 'a'
+  endif
+-%}
+
 <div class="prd-Card util-FauxLink {% unless current_variant.available %}prd-Card-unavaliable{% endunless %}"{% if has_size_option %} data-module="product-card" data-product-card-handle="{{ product.handle }}"{% endif %}>
 
   <div class="prd-Card_ImageContainer">
-    {%- if hover_image != blank -%}
-      <div class="prd-Card_Image prd-Card_Image-hoverImage">
-        {%- render 'responsive-image',
-          image: hover_image,
-          width: 1600,
-          height: 2382
-        -%}
-      </div>
-    {%- endif -%}
-
     {%- if card_image != blank -%}
-      <div class="prd-Card_Image">
+      <{{ image_tag }} class="prd-Card_Image"{% if enable_card_swipe %} href="{{ product_card_url }}" aria-label="{{ product.title | escape }}"{% endif %}>
         {%- render 'responsive-image',
           image: card_image,
           width: 1600,
           height: 2382
         -%}
-      </div>
+      </{{ image_tag }}>
+    {%- endif -%}
+
+    {%- if hover_image != blank -%}
+      <{{ image_tag }} class="prd-Card_Image prd-Card_Image-hoverImage"{% if enable_card_swipe %} href="{{ product_card_url }}" aria-label="{{ product.title | escape }}"{% endif %}>
+        {%- render 'responsive-image',
+          image: hover_image,
+          width: 1600,
+          height: 2382
+        -%}
+      </{{ image_tag }}>
     {%- endif -%}
   </div>
 
@@ -246,5 +257,5 @@
 
   </div>
 
-  <a class="prd-Card_FauxLink util-FauxLink_Link" href="{{- product.url | within: collection -}}{%- unless is_default_variant -%}?variant={{- current_variant.id -}}{%- endunless -%}"></a>
+  <a class="prd-Card_FauxLink util-FauxLink_Link" href="{{ product_card_url }}"></a>
 </div>

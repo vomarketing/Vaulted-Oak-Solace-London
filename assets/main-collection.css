@@ -305,12 +305,45 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
 
 /* Product card */
 .clc-List .prd-Card_ImageContainer {
+  display: block;
   aspect-ratio: 99 / 134;
+
+  @media (max-width: 1024px) {
+    z-index: 2;
+    display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
 }
 
 .clc-List .prd-Card_Image,
 .clc-List .prd-Card_Image .rsp-Image {
   height: 100%;
+}
+
+.clc-List .prd-Card_Image {
+  display: block;
+
+  @media (max-width: 1024px) {
+    width: 100%;
+    flex: 0 0 100%;
+    scroll-snap-align: start;
+  }
+}
+
+.clc-List .prd-Card_Image-hoverImage {
+  @media (max-width: 1024px) {
+    position: relative;
+    opacity: 1;
+    transition: none;
+  }
 }
 
 .clc-List .prd-Card_Image .rsp-Image::before {
@@ -320,6 +353,16 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
 @media (max-width: 1024px) {
   .prd-Card_OverlayContent {
     display: none;
+  }
+
+  .clc-List .prd-Card:hover .prd-Card_Content {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .clc-List .prd-Card:hover .prd-Card_Overlay {
+    opacity: 0;
+    visibility: hidden;
   }
 }
 

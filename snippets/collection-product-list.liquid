@@ -41,6 +41,7 @@
           <div class="prd-List_Item{% if is_nlos_product %} NLOS{% endif %} js-Animate" data-animation="Fade">
             {%- render 'product-card',
               product: product,
+              enable_card_swipe: true,
               check_first_image_tag: section.settings.enable_first_image_last_tag,
               first_image_as_hover: section.settings.set_first_image_as_hover
             -%}
