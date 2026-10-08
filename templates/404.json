@@ -3,11 +3,10 @@
     "main": {
       "type": "404-header",
       "settings": {
-        "title": "404 ERROR",
+        "title": "404 Error",
         "text": "The page you're looking for can't be found",
         "link": "/",
-        "link_text": "Continue Shopping",
-        "collection": ""
+        "link_text": "Back to Home"
       }
     }
   },
