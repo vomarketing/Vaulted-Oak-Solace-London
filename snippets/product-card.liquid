@@ -72,56 +72,71 @@
   {%- endfor -%}
 {%- endif -%}
 
+{%- capture product_card_url -%}
+  {{- product.url | within: collection -}}{%- unless is_default_variant -%}?variant={{- current_variant.id -}}{%- endunless -%}
+{%- endcapture -%}
+
+{%- liquid
+  assign image_tag = 'div'
+  if enable_card_swipe
+    assign image_tag = 'a'
+  endif
+-%}
+
 <div class="prd-Card util-FauxLink {% unless current_variant.available %}prd-Card-unavaliable{% endunless %}"{% if has_size_option %} data-module="product-card" data-product-card-handle="{{ product.handle }}"{% endif %}>
 
   <div class="prd-Card_ImageContainer">
-    {%- if hover_image != blank -%}
-      <div class="prd-Card_Image prd-Card_Image-hoverImage">
-        {%- render 'responsive-image',
-          image: hover_image,
-          width: 1600,
-          height: 2382
-        -%}
-      </div>
-    {%- endif -%}
-
     {%- if card_image != blank -%}
-      <div class="prd-Card_Image">
+      <{{ image_tag }} class="prd-Card_Image"{% if enable_card_swipe %} href="{{ product_card_url }}" aria-label="{{ product.title | escape }}"{% endif %}>
         {%- render 'responsive-image',
           image: card_image,
           width: 1600,
           height: 2382
         -%}
-      </div>
+      </{{ image_tag }}>
+    {%- endif -%}
+
+    {%- if hover_image != blank -%}
+      <{{ image_tag }} class="prd-Card_Image prd-Card_Image-hoverImage"{% if enable_card_swipe %} href="{{ product_card_url }}" aria-label="{{ product.title | escape }}"{% endif %}>
+        {%- render 'responsive-image',
+          image: hover_image,
+          width: 1600,
+          height: 2382
+        -%}
+      </{{ image_tag }}>
     {%- endif -%}
   </div>
 
   <div class="prd-Card_Bottom">
     <div class="prd-Card_Content fz-12_12">
-      <p class="prd-Card_Kicker{% if product.compare_at_price > product.price %} prd-Card_Kicker-red{% endif %}">
-        {%- if product.compare_at_price > product.price -%}
-          {{ 'products.product.on_sale' | t }}
+      <div class="prd-Card_Summary">
+        <div class="prd-Card_Details">
+          <p class="prd-Card_Kicker{% if product.compare_at_price > product.price %} prd-Card_Kicker-red{% endif %}">
+            {%- if product.compare_at_price > product.price -%}
+              {{ 'products.product.on_sale' | t }}
+            {%- endif -%}
+          </p>
+
+          <h3 class="prd-Card_Title fz-12_12">
+            {{ product.title }}
+          </h3>
+        </div>
+
+        {%- if show_add_to_bag_button and has_size_option and option_key -%}
+          <div class="prd-Card_Meta">
+            {%- assign option_name = size_option.name -%}
+            {%- assign downcased_option_name = option_name | downcase -%}
+            {%- if downcased_option_name contains 'size' -%}
+              {%- assign option_name = 'products.product.size' | t -%}
+            {%- endif -%}
+            {{ option_name }} {{ current_variant[option_key] }}
+          </div>
+        {%- else -%}
+          <div class="prd-Card_Price">
+            {%- render 'product-price', product: product %}
+          </div>
         {%- endif -%}
-      </p>
-
-      <h3 class="prd-Card_Title fz-12_12">
-        {{ product.title }} 
-      </h3>
-
-      {%- if show_add_to_bag_button and has_size_option and option_key -%}
-        <div class="prd-Card_Meta">
-          {%- assign option_name = size_option.name -%}
-          {%- assign downcased_option_name = option_name | downcase -%}
-          {%- if downcased_option_name contains 'size' -%}
-            {%- assign option_name = 'products.product.size' | t -%}
-          {%- endif -%}
-          {{ option_name }} {{ current_variant[option_key] }}
-        </div>
-      {%- else -%}
-        <div class="prd-Card_Price">
-          {%- render 'product-price', product: product %}
-        </div>
-      {%- endif -%}
+      </div>
 
       {% comment %} Passed in from product-card-loader when on wishlist page {% endcomment %}
       {%- if wishlist_remove_link_html -%}
@@ -242,5 +257,5 @@
 
   </div>
 
-  <a class="prd-Card_FauxLink util-FauxLink_Link" href="{{- product.url | within: collection -}}{%- unless is_default_variant -%}?variant={{- current_variant.id -}}{%- endunless -%}"></a>
+  <a class="prd-Card_FauxLink util-FauxLink_Link" href="{{ product_card_url }}"></a>
 </div>

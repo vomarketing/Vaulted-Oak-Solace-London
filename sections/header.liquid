@@ -207,6 +207,9 @@
                 <span class="hd-MobileNav_Icon hd-MobileNav_Icon-search">
                   {%- render 'bao-search' -%}
                 </span>
+                <span class="hd-MobileNav_Icon hd-MobileNav_Icon-close" style="display: none;">
+                  {%- render 'bao-close' -%}
+                </span>
               </a>
             </div>
           </div>
@@ -223,10 +226,9 @@
             <li class="hd-Nav_Item">
               <a
                 class="hd-Nav_Link"
-                {% unless request.page_type == 'search' %}href="/search"{% endunless %}
-                {% if request.page_type == 'search' %}href="#"{% endif %}
+                href="{{ routes.search_url }}"
                 {% if request.page_type == 'search' %} aria-current="page"{% endif %}
-                {% unless request.page_type == 'search' %} data-module-drawers-trigger="search"{% endunless %}
+                data-module-drawers-trigger="search"
               >
                 {{ 'layout.header.search' | t }}
               </a>

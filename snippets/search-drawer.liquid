@@ -1,61 +1,297 @@
-<div class="drw-Drawer drw-Drawer-search drw-Drawer-fromRight" data-module-drawers-drawer="search">
+{%- if settings.search_provider == 'klevu' -%}
+  <div class="drw-Drawer drw-Drawer-search drw-Drawer-fromRight" data-module-drawers-drawer="search">
+    <button type="button" class="drw-Drawer_Close drw-Drawer_Close-mobile" data-module-drawers-close="search">
+      {%- render 'bao-close' -%}
+    </button>
+    <button type="button" class="drw-Drawer_Close drw-Drawer_Close-desktop" data-module-drawers-close="search">
+      {%- render 'bao-close' -%}
+    </button>
 
-  <button type="button" class="drw-Drawer_Close drw-Drawer_Close-mobile" data-module-drawers-close="search">
-    {%- render 'bao-close' -%}
-  </button>
+    <div class="drw-Drawer_Inner">
+      <div class="psh-Search fz-13_18" data-module="search">
+        <div class="psh-Search_TopBar">
+          <h4 class="psh-Search_Title fz-25_33">
+            {{ 'layout.header.search' | t }}
+          </h4>
+        </div>
 
-  <button type="button" class="drw-Drawer_Close drw-Drawer_Close-desktop text-reg-14" data-module-drawers-close="search">
-    Close
-  </button>
+        <div class="psh-Search_Body">
+          <form action="/search" method="get" role="search" class="frm-Form psh-Search_Form" data-el="search.form">
+            <label for="Push-Search" class="util-ScreenReaderOnly">
+              {{ 'general.search.placeholder' | t }}
+            </label>
 
-  <div class="drw-Drawer_Inner">
-    <div
-      class="psh-Search fz-13_18"
-      data-module="search"
-    >
-      <div class="psh-Search_TopBar">
-        <h4 class="psh-Search_Title text-reg-14">
-          {{ 'layout.header.search' | t }}
-        </h4>
-      </div>
+            <input type="search"
+              name="q"
+              id="Push-Search"
+              class="frm-Form_Input psh-Search_Input"
+              value="{{ search.terms | escape }}"
+              data-el="search.input"
+            />
+            <button class="psh-Search_Button psh-Search_Button-search" data-el="search.submit" aria-hidden="true">
+              {{ 'general.search.search' | t }}
+            </button>
+            <button class="psh-Search_Button psh-Search_Button-reset fz-10_10" data-el="search.reset" aria-hidden="true">
+              {{ 'general.search.reset' | t }}
+            </button>
+          </form>
+        </div>
 
-      <div class="psh-Search_Body">
-        <form action="/search" method="get" role="search" class="frm-Form psh-Search_Form" data-el="search.form">
-          <label for="Push-Search" class="util-ScreenReaderOnly">
-            {{ 'general.search.placeholder' | t }}
-          </label>
-
-          <input type="search"
-            name="q"
-            id="Push-Search"
-            class="frm-Form_Input psh-Search_Input"
-            value="{{ search.terms | escape }}"
-            data-el="search.input"
-            placeholder="Search"
-          />
-          <button class="psh-Search_Button psh-Search_Button-search text-reg-14" data-el="search.submit" aria-hidden="true">
-            {{ 'general.search.submit' | t }}
-          </button>
-          <button class="psh-Search_Button psh-Search_Button-reset text-reg-14" data-el="search.reset" aria-hidden="true">
-            {{ 'general.search.reset' | t }}
-          </button>
-        </form>
-
-      </div>
-
-      <div class="psh-Search_Klevu">
-        <div id="klv-PopularSearches" class="klv-PopularSearches" data-el="search.popular">
-          <div class="klv-PopularSearches_Heading text-reg-14">
-            {{ 'general.search.popular_searches' | t }}
+        <div class="psh-Search_Klevu">
+          <div id="klv-PopularSearches" class="klv-PopularSearches" data-el="search.popular">
+            <div class="klv-PopularSearches_Heading fz-10_10">
+              {{ 'general.search.popular_searches' | t }}
+            </div>
+            <ul class="klv-PopularSearches_Items" data-el="search.popularItems">
+              {% comment %} placeholder for popular search terms {% endcomment %}
+            </ul>
           </div>
-
-          <ul class="klv-PopularSearches_Items" data-el="search.popularItems">
-            {% comment %} placeholder for popular search terms {% endcomment %}
-          </ul>
         </div>
       </div>
+    </div>
+  </div>
 
+{%- else -%}
+
+  {%- assign search_layout = settings.search_drawer_layout | default: 'vertical' -%}
+
+  {%- liquid
+    assign raw_suggested_terms = settings.search_suggested_terms
+    assign suggested_terms = raw_suggested_terms | newline_to_br | split: '<br />'
+    if suggested_terms.size <= 1
+      assign suggested_terms = raw_suggested_terms | split: ','
+    endif
+  -%}
+
+  {%- if search_layout == 'horizontal' -%}
+    {%- comment -%} SEARCH HORIZONTAL LAYOUT (Full-width Dropdown / Overlay) {%- endcomment -%}
+    <div
+      class="drw-Drawer drw-Drawer-search drw-Drawer-searchHorizontal js-predictive-search-drawer"
+      data-module-drawers-drawer="search"
+      role="dialog"
+      aria-modal="true"
+      aria-label="{{ 'layout.header.search' | t | default: 'Search' }}"
+    >
+      <predictive-search
+        class="pred-Search pred-Search--horizontal js-predictive-search"
+        data-layout="horizontal"
+        data-currency-symbol="{{ cart.currency.symbol }}"
+        data-routes-search="{{ routes.search_url }}"
+      >
+        <div class="pred-Horizontal_Inner lyt-Container">
+          <button
+            type="button"
+            class="pred-Horizontal_Close js-predictive-search-close"
+            data-module-drawers-close="search"
+            aria-label="{{ 'general.accessibility.close' | t }}"
+          >
+            {%- render 'bao-close' -%}
+          </button>
+
+          <div class="pred-Search_FormWrapper">
+            <form action="{{ routes.search_url }}" method="get" role="search" class="pred-Search_Form js-predictive-search-form">
+              <div class="pred-Search_InputWrapper">
+                <input
+                  type="text"
+                  name="q"
+                  id="Predictive-Search-Input-Horizontal"
+                  class="pred-Search_Input text-reg-12 js-predictive-search-input"
+                  placeholder="{{ 'general.search.input_placeholder' | t }}"
+                  value="{{ search.terms | escape }}"
+                  autocomplete="off"
+                  autocorrect="off"
+                  autocapitalize="off"
+                  spellcheck="false"
+                  role="combobox"
+                  aria-expanded="false"
+                  aria-owns="predictive-search-results-horizontal"
+                  aria-controls="predictive-search-results-horizontal"
+                  aria-haspopup="listbox"
+                  aria-autocomplete="list"
+                />
+                <button type="submit" class="pred-Search_Submit text-reg-12 js-predictive-search-submit">
+                  {{ 'general.search.submit_label' | t }}
+                </button>
+              </div>
+            </form>
+
+            {%- comment -%} No Results Message {%- endcomment -%}
+            <div class="pred-Search_NoResults js-predictive-search-no-results text-reg-12" style="display: none;">
+              <p class="pred-Search_NoResultsText">{{ 'general.search.no_results' | t }} '<span class="js-predictive-search-no-results-query"></span>'.</p>
+            </div>
+
+            {%- comment -%} Suggested Terms {%- endcomment -%}
+            <div class="pred-Search_Suggested js-predictive-search-suggested">
+              <div class="pred-Search_Heading text-med-12">
+                {{ 'general.search.suggested_terms' | t }}
+              </div>
+              <ul class="pred-Search_SuggestedList js-predictive-search-suggested-list" role="list">
+                {%- for term in suggested_terms -%}
+                  {%- assign clean_term = term | strip | strip_newlines -%}
+                  {%- if clean_term != blank -%}
+                    <li class="pred-Search_SuggestedItem">
+                      <button type="button" class="pred-Search_SuggestedBtn text-reg-12 js-predictive-search-suggested-btn" data-query="{{ clean_term | escape }}">
+                        {{ clean_term }}
+                      </button>
+                    </li>
+                  {%- endif -%}
+                {%- endfor -%}
+              </ul>
+            </div>
+          </div>
+
+          {%- comment -%} Results Grid {%- endcomment -%}
+          <div
+            id="predictive-search-results-horizontal"
+            class="pred-Search_Results pred-Search_Results--horizontal js-predictive-search-results"
+            tabindex="-1"
+            aria-live="polite"
+            style="display: none;"
+          >
+            <div class="pred-Search_Grid js-predictive-search-grid">
+              {%- comment -%} Left Column: Query suggestions & View All {%- endcomment -%}
+              <div class="pred-Search_ColSuggestions">
+                <div class="pred-Search_Heading text-med-12">
+                  {{ 'general.search.searching_for' | t }}
+                </div>
+                <ul class="pred-Search_QueryList js-predictive-search-queries" role="listbox">
+                  {%- comment -%} Injected dynamically by predictive-search.js {%- endcomment -%}
+                </ul>
+                <div class="pred-Search_ViewAll">
+                  <a href="{{ routes.search_url }}" class="pred-Search_ViewAllLink text-reg-12 js-predictive-search-view-all">
+                    {{ 'general.search.view_all_results' | t }}
+                  </a>
+                </div>
+              </div>
+
+              {%- comment -%} Right Column: Product Cards {%- endcomment -%}
+              <div class="pred-Search_ColProducts">
+                <div class="pred-Search_ProductsGrid js-predictive-search-products">
+                  {%- comment -%} Injected dynamically by predictive-search.js {%- endcomment -%}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </predictive-search>
     </div>
 
-  </div>
-</div>
+  {%- else -%}
+    {%- comment -%} SEARCH VERTICAL LAYOUT (Right Slide-out Drawer) {%- endcomment -%}
+    <div
+      class="drw-Drawer drw-Drawer-search drw-Drawer-searchVertical drw-Drawer-fromRight js-predictive-search-drawer"
+      data-module-drawers-drawer="search"
+      role="dialog"
+      aria-modal="true"
+      aria-label="{{ 'layout.header.search' | t | default: 'Search' }}"
+    >
+      <predictive-search
+        class="pred-Search pred-Search--vertical js-predictive-search"
+        data-layout="vertical"
+        data-currency-symbol="{{ cart.currency.symbol }}"
+        data-routes-search="{{ routes.search_url }}"
+      >
+        <div class="drw-Drawer_Inner">
+          <div class="pred-Vertical_Header">
+            <span class="pred-Vertical_Title text-reg-12">
+              {{ 'layout.header.search' | t }}
+            </span>
+            <button
+              type="button"
+              class="pred-Vertical_Close text-reg-12 js-predictive-search-close"
+              data-module-drawers-close="search"
+            >
+              {{ 'general.accessibility.close' | t }}
+            </button>
+          </div>
+
+          <div class="pred-Search_FormWrapper pred-Search_FormWrapper--vertical">
+            <form action="{{ routes.search_url }}" method="get" role="search" class="pred-Search_Form js-predictive-search-form">
+              <div class="pred-Search_InputWrapper">
+                <input
+                  type="text"
+                  name="q"
+                  id="Predictive-Search-Input-Vertical"
+                  class="pred-Search_Input text-reg-12 js-predictive-search-input"
+                  placeholder="{{ 'general.search.input_placeholder' | t }}"
+                  value="{{ search.terms | escape }}"
+                  autocomplete="off"
+                  autocorrect="off"
+                  autocapitalize="off"
+                  spellcheck="false"
+                  role="combobox"
+                  aria-expanded="false"
+                  aria-owns="predictive-search-results-vertical"
+                  aria-controls="predictive-search-results-vertical"
+                  aria-haspopup="listbox"
+                  aria-autocomplete="list"
+                />
+                <button type="submit" class="pred-Search_Submit text-reg-12 js-predictive-search-submit">
+                  {{ 'general.search.submit_label' | t }}
+                </button>
+              </div>
+            </form>
+
+            {%- comment -%} No Results Message {%- endcomment -%}
+            <div class="pred-Search_NoResults js-predictive-search-no-results text-reg-12" style="display: none;">
+              <p class="pred-Search_NoResultsText">{{ 'general.search.no_results' | t }} '<span class="js-predictive-search-no-results-query"></span>'.</p>
+            </div>
+
+            {%- comment -%} Suggested Terms {%- endcomment -%}
+            <div class="pred-Search_Suggested js-predictive-search-suggested">
+              <div class="pred-Search_Heading text-med-12">
+                {{ 'general.search.suggested_terms' | t }}
+              </div>
+              <ul class="pred-Search_SuggestedList js-predictive-search-suggested-list" role="list">
+                {%- for term in suggested_terms -%}
+                  {%- assign clean_term = term | strip | strip_newlines -%}
+                  {%- if clean_term != blank -%}
+                    <li class="pred-Search_SuggestedItem">
+                      <button type="button" class="pred-Search_SuggestedBtn text-reg-12 js-predictive-search-suggested-btn" data-query="{{ clean_term | escape }}">
+                        {{ clean_term }}
+                      </button>
+                    </li>
+                  {%- endif -%}
+                {%- endfor -%}
+              </ul>
+            </div>
+          </div>
+
+          <div
+            id="predictive-search-results-vertical"
+            class="pred-Search_Results pred-Search_Results--vertical js-predictive-search-results"
+            tabindex="-1"
+            aria-live="polite"
+            style="display: none;"
+          >
+            <div class="pred-Search_Grid js-predictive-search-grid">
+              {%- comment -%} Left Column: Query suggestions & View All {%- endcomment -%}
+              <div class="pred-Search_ColSuggestions">
+                <div class="pred-Search_Heading text-med-12">
+                  {{ 'general.search.searching_for' | t }}
+                </div>
+                <ul class="pred-Search_QueryList js-predictive-search-queries" role="listbox">
+                  {%- comment -%} Injected dynamically by predictive-search.js {%- endcomment -%}
+                </ul>
+                <div class="pred-Search_ViewAll">
+                  <a href="{{ routes.search_url }}" class="pred-Search_ViewAllLink text-reg-12 js-predictive-search-view-all">
+                    {{ 'general.search.view_all_results' | t }}
+                  </a>
+                </div>
+              </div>
+
+              {%- comment -%} Right Column: Product Cards {%- endcomment -%}
+              <div class="pred-Search_ColProducts">
+                <div class="pred-Search_ProductsGrid js-predictive-search-products">
+                  {%- comment -%} Injected dynamically by predictive-search.js {%- endcomment -%}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </predictive-search>
+    </div>
+
+  {%- endif -%}
+
+{%- endif -%}

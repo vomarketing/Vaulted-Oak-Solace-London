@@ -1,0 +1,172 @@
+{%- comment -%}
+  Keep the existing collection tag data and filter blocks. Selected tag handles
+  are applied through the legacy collection URL; multiple tags currently use AND.
+{%- endcomment -%}
+{{ 'collection-filters-v2.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'collection-filters-v2.js' | asset_url }}" defer></script>
+
+{%- assign current_sort = collection.sort_by | default: collection.default_sort_by -%}
+{%- assign default_sort = collection.default_sort_by | default: 'manual' -%}
+{%- assign has_open_group = false -%}
+{%- assign has_active_filters = false -%}
+
+<div class="collection-filter-v2" data-collection-filter-v2>
+  <form
+    class="collection-filter-v2__form"
+    action="{{ collection.url }}"
+    method="get"
+    data-collection-filter-form
+    data-section-id="{{ section.id }}"
+    data-collection-url="{{ collection.url }}"
+    data-default-sort="{{ default_sort | escape }}"
+  >
+    <div class="collection-filter-v2__header">
+      <h2 class="collection-filter-v2__title">{{ 'collections.general.filter_and_sort' | t }}</h2>
+      <button class="collection-filter-v2__close" type="button" data-module-drawers-close="clc-filters">
+        {{ 'collections.general.filter_close' | t }}
+      </button>
+    </div>
+
+    <div class="collection-filter-v2__body">
+      <div class="collection-filter-v2__groups">
+        {%- for block in section.blocks -%}
+          {%- if block.type == 'filter' and block.settings.filter_key != blank -%}
+            {%- assign filter_key = block.settings.filter_key -%}
+            {%- assign tag_prefix = 'filter-' | append: filter_key | append: ': ' -%}
+            {%- assign group_tags = '' -%}
+            {%- assign group_has_active_tag = false -%}
+
+            {%- for current_tag in current_tags -%}
+              {%- if current_tag contains tag_prefix -%}
+                {%- assign group_has_active_tag = true -%}
+                {%- assign has_active_filters = true -%}
+                {%- break -%}
+              {%- endif -%}
+            {%- endfor -%}
+
+            {%- for collection_tag in collection.all_tags -%}
+              {%- if collection_tag contains tag_prefix -%}
+                {%- if filter_key == 'size' -%}
+                  {%- assign size_value = collection_tag | split: ':' | last | strip -%}
+                  {%- assign size_padding_length = 4 | minus: size_value.size -%}
+                  {%- assign size_padding = '0000' | slice: 0, size_padding_length -%}
+                  {%- assign group_tags = group_tags | append: ',' | append: size_padding | append: size_value | append: '^' | append: collection_tag -%}
+                {%- else -%}
+                  {%- assign group_tags = group_tags | append: ',' | append: collection_tag -%}
+                {%- endif -%}
+              {%- endif -%}
+            {%- endfor -%}
+
+            {%- assign group_tags = group_tags | remove_first: ',' | split: ',' -%}
+            {%- if filter_key == 'size' -%}
+              {%- assign group_tags = group_tags | sort -%}
+            {%- endif -%}
+
+            {%- assign group_is_open = false -%}
+            {%- if group_has_active_tag and has_open_group == false -%}
+              {%- assign group_is_open = true -%}
+              {%- assign has_open_group = true -%}
+            {%- endif -%}
+
+            <details
+              class="collection-filter-v2__group{% if group_has_active_tag %} has-selection{% endif %}" {{ block.shopify_attributes }} {% if group_is_open %}open{% endif %}>
+              <summary class="collection-filter-v2__summary">
+                <span class="collection-filter-v2__summary-label">{{ block.settings.title | escape }}
+                  <span class="collection-filter-v2__selected-check" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="7" viewBox="0 0 10 7" fill="none">
+                      <path d="M2.98967 6.61917L0 3.64617L0.612667 3.01667L2.98967 5.39367L8.4 0L9.01267 0.612834L2.98967 6.61917Z" fill="black"/>
+                    </svg>
+                  </span>
+                </span>
+                <span class="collection-filter-v2__toggle" aria-hidden="true"></span>
+              </summary>
+
+              <div class="collection-filter-v2__panel">
+                <ul class="collection-filter-v2__options{% if group_tags.size > 10 %} collection-filter-v2__options--multi-column{% endif %}">
+                  {%- for group_tag in group_tags -%}
+                    {%- assign tag = group_tag | split: '^' | last -%}
+                    {%- assign tag_handle = tag | handleize | replace: '-amp-', '-' -%}
+                    {%- assign option_id = 'collection-filter-v2-' | append: block.id | append: '-' | append: forloop.index -%}
+                    <li class="collection-filter-v2__option">
+                      <label class="collection-filter-v2__choice" for="{{ option_id }}">
+                        <input
+                          class="collection-filter-v2__input"
+                          id="{{ option_id }}"
+                          type="checkbox"
+                          name="filter_tag"
+                          value="{{ tag_handle | escape }}"
+                          {% if current_tags contains tag %}checked{% endif %}
+                        >
+                        <span class="collection-filter-v2__indicator" aria-hidden="true"></span>
+                        <span
+                          class="collection-filter-v2__choice-label">{{ tag | remove: tag_prefix | split: '|' | last | escape }}</span>
+                      </label>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+                {%- if group_tags.size == 0 -%}
+                  <p class="collection-filter-v2__empty">No options available</p>
+                {%- endif -%}
+              </div>
+            </details>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      {%- if section.settings.enable_sorting -%}
+        <details class="collection-filter-v2__group collection-filter-v2__group--sort{% if collection.sort_by != blank and collection.sort_by != default_sort %} has-selection{% endif %}" {% unless has_open_group %}open{% endunless %}>
+          <summary class="collection-filter-v2__summary">
+            <span class="collection-filter-v2__summary-label">Sort By
+              <span class="collection-filter-v2__selected-check" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="7" viewBox="0 0 10 7" fill="none">
+                  <path d="M2.98967 6.61917L0 3.64617L0.612667 3.01667L2.98967 5.39367L8.4 0L9.01267 0.612834L2.98967 6.61917Z" fill="black"/>
+                </svg>
+              </span>
+            </span>
+            <span class="collection-filter-v2__toggle" aria-hidden="true"></span>
+          </summary>
+
+          <div class="collection-filter-v2__panel">
+            <ul class="collection-filter-v2__options">
+              {%- assign sort_keys = 'manual,created-descending,price-ascending,price-descending' | split: ',' -%}
+              {%- for sort_key in sort_keys -%}
+                {%- capture sort_label -%}
+                  {%- case sort_key -%}
+                    {%- when 'manual' -%}{{ 'collections.sorting.featured' | t}}
+                    {%- when 'created-descending' -%}{{ 'collections.sorting.new_in' | t }}
+                    {%- when 'price-ascending' -%}{{ 'collections.sorting.ascending_price' | t }}
+                    {%- when 'price-descending' -%}{{ 'collections.sorting.descending_price' | t }}
+                  {%- endcase -%}
+                {%- endcapture -%}
+                <li class="collection-filter-v2__option">
+                  <label class="collection-filter-v2__choice" for="collection-filter-v2-sort-{{ sort_key }}">
+                    <input
+                      class="collection-filter-v2__input"
+                      id="collection-filter-v2-sort-{{ sort_key }}"
+                      type="radio"
+                      name="sort_by"
+                      value="{{ sort_key }}"
+                      {% if current_sort == sort_key %}checked{% endif %}
+                    >
+                    <span class="collection-filter-v2__indicator" aria-hidden="true"></span>
+                    <span class="collection-filter-v2__choice-label">{{ sort_label | strip }}</span>
+                  </label>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        </details>
+      {%- endif -%}
+    </div>
+
+    <div class="collection-filter-v2__footer">
+      {%- if collection.sort_by != blank and collection.sort_by != default_sort -%}
+        {%- assign has_active_filters = true -%}
+      {%- endif -%}
+      <button class="collection-filter-v2__clear" type="button" data-collection-filter-clear{% unless has_active_filters %} hidden{% endunless %}>Clear all</button>
+      <button class="collection-filter-v2__submit" type="submit" data-collection-filter-submit>
+        Show <span data-collection-filter-result-count>{{ collection.products_count }}</span> Items
+      </button>
+    </div>
+  </form>
+</div>

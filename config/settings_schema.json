@@ -338,6 +338,52 @@
     ]
   },
   {
+    "name": "Search",
+    "settings": [
+      {
+        "type": "select",
+        "id": "search_provider",
+        "label": "Search Provider",
+        "options": [
+          {
+            "value": "shopify",
+            "label": "Shopify Search & Discovery"
+          },
+          {
+            "value": "klevu",
+            "label": "Klevu (Legacy 3rd-party)"
+          }
+        ],
+        "default": "shopify",
+        "info": "Choose between Shopify native Search & Discovery or Klevu 3rd-party search."
+      },
+      {
+        "type": "select",
+        "id": "search_drawer_layout",
+        "label": "Quick Search UI Layout",
+        "options": [
+          {
+            "value": "horizontal",
+            "label": "Horizontal Layout (Full-width Dropdown)"
+          },
+          {
+            "value": "vertical",
+            "label": "Vertical Drawer (Right Slide-out)"
+          }
+        ],
+        "default": "vertical",
+        "info": "Choose the layout for the quick search popup/drawer."
+      },
+      {
+        "type": "textarea",
+        "id": "search_suggested_terms",
+        "label": "Suggested Search Terms",
+        "default": "Bridal\nRed Dress\nFull Length\nMetallic",
+        "info": "List of popular/suggested search terms (one per line or comma-separated)."
+      }
+    ]
+  },
+  {
     "name": "Misc",
     "settings": [
       {

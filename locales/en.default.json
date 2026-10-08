@@ -41,11 +41,19 @@
         "other": "{{ count }} results for \"{{ terms }}\""
       },
       "no_results_html": "Please try a different search term or go back to the <a href=\"/\">homepage</a>.",
+      "no_results_title": "No Results Found",
+      "continue_shopping": "Explore Collections",
+      "all_results": "All Results",
       "results": "Results",
       "view_all": "View All",
       "reset": "Reset",
       "refine": "Refine",
       "no_results": "No results found for",
+      "input_placeholder": "Search",
+      "submit_label": "Submit",
+      "suggested_terms": "Suggested Terms",
+      "searching_for": "Searching For:",
+      "view_all_results": "View all results",
       "popular_searches": "Popular Searches",
       "filter_by": "Filter By",
       "categories": "Categories",
@@ -226,7 +234,10 @@
       "shop_now": "Shop now",
       "filter": "Filter",
       "filter_title": "Filter By",
-      "filter_close": "Close"
+      "filter_close": "Close",
+      "filter_and_sort": "Filter & Sort",
+      "read_more" : "Read More",
+      "read_less" : "Read Less"
     },
     "per_page": {
       "title": "Per page"
@@ -234,13 +245,17 @@
     "sorting": {
       "title": "Sort by",
       "featured": "Featured",
+      "relevance": "Relevance",
       "best_selling": "Best Selling",
       "az": "Alphabetically, A-Z",
       "za": "Alphabetically, Z-A",
       "price_ascending": "Price, low to high",
       "price_descending": "Price, high to low",
       "date_descending": "Date, new to old",
-      "date_ascending": "Date, old to new"
+      "date_ascending": "Date, old to new",
+      "new_in": "New In",
+      "ascending_price": "Ascending Price",
+      "descending_price": "Descending Price"
     }
   },
   "customer": {

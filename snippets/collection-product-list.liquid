@@ -1,0 +1,62 @@
+<div class="clc-List_Body">
+  <div class="prd-List">
+    <div class="prd-List_Items">
+      {%- assign rendered_product_count = 0 -%}
+      {%- assign promo_rendered = false -%}
+
+      {%- for product in products -%}
+        {%- liquid
+          assign show_product = true
+          assign is_nlos_product = false
+
+          if product.tags contains 'NLOS'
+            assign is_nlos_product = true
+            unless is_theme_preview
+              assign show_product = false
+            endunless
+          endif
+
+          if selected_size != blank
+            for variant in product.variants
+              if variant.title == selected_size
+                unless variant.available
+                  assign show_product = false
+                endunless
+                break
+              endif
+            endfor
+          endif
+        -%}
+
+        {%- if show_product -%}
+          {%- assign current_grid_position = rendered_product_count | plus: 1 -%}
+
+          {%- if has_promoted_item and promo_rendered == false and current_grid_position == promoted_item_index -%}
+            <div class="prd-List_Item prd-List_Item-promoted">
+              {%- render 'collection-promoted-card', collection: collection -%}
+            </div>
+            {%- assign promo_rendered = true -%}
+          {%- endif -%}
+
+          <div class="prd-List_Item{% if is_nlos_product %} NLOS{% endif %} js-Animate" data-animation="Fade">
+            {%- render 'product-card',
+              product: product,
+              enable_card_swipe: true,
+              check_first_image_tag: section.settings.enable_first_image_last_tag,
+              first_image_as_hover: section.settings.set_first_image_as_hover
+            -%}
+          </div>
+
+          {%- assign rendered_product_count = rendered_product_count | plus: 1 -%}
+        {%- endif -%}
+      {%- endfor -%}
+
+      {%- assign trailing_grid_position = rendered_product_count | plus: 1 -%}
+      {%- if has_promoted_item and promo_rendered == false and trailing_grid_position == promoted_item_index -%}
+        <div class="prd-List_Item prd-List_Item-promoted">
+          {%- render 'collection-promoted-card', collection: collection -%}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+</div>

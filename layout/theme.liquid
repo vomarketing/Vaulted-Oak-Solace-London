@@ -5,7 +5,9 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
     <meta name="author" content="By Association Only" />
-    <link rel="preconnect" href="https://js.klevu.com">
+    {%- if settings.search_provider == 'klevu' -%}
+      <link rel="preconnect" href="https://js.klevu.com">
+    {%- endif -%}
     <link rel="preconnect" href="https://use.typekit.net" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
 
@@ -92,9 +94,16 @@
     <link rel="preload" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"></noscript>
 
+    {%- if settings.search_provider != 'klevu' -%}
+      {{ 'predictive-search.css' | asset_url | stylesheet_tag }}
+      <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
     {{ content_for_header }}
 
-    {%- render 'klevu-head' -%}
+    {%- if settings.search_provider == 'klevu' -%}
+      {%- render 'klevu-head' -%}
+    {%- endif -%}
 
   </head>
 
@@ -154,7 +163,9 @@
 
     {%- render 'drawers' -%}
 
-    {%- render 'klevu-foot' -%}
+    {%- if settings.search_provider == 'klevu' -%}
+      {%- render 'klevu-foot' -%}
+    {%- endif -%}
 
     {%- render 'back-in-stock-helper' -%}
 
