@@ -3,7 +3,13 @@
 <script src="{{ 'main-collection.js' | asset_url }}" defer="defer"></script>
 
 {%- liquid
-  assign pagination_amount = 15
+  assign items_per_page = section.settings.products_per_page | default: 15 | plus: 0 | floor
+  if items_per_page < 1
+    assign items_per_page = 1
+  elsif items_per_page > 250
+    assign items_per_page = 250
+  endif
+  assign pagination_amount = items_per_page
   assign has_promoted_item = false
   assign promoted_item_index = null
   assign is_theme_preview = false
@@ -14,9 +20,9 @@
   if promoted_item_index_value != blank and promoted_image != blank
     assign promoted_item_index = promoted_item_index_value | plus: 0
 
-    if promoted_item_index > 0 and promoted_item_index <= 15
+    if items_per_page > 1 and promoted_item_index > 0 and promoted_item_index <= items_per_page
       assign has_promoted_item = true
-      assign pagination_amount = 14
+      assign pagination_amount = items_per_page | minus: 1
     endif
   endif
 
@@ -37,7 +43,7 @@
 {%- render 'collection-header', collection: collection, section: section, current_tags: current_tags -%}
 
 {%- paginate collection.products by pagination_amount -%}
-  <section class="clc-List">
+  <section class="clc-List clc-List--mobile-columns-{{ section.settings.mobile_columns | default: '2' }}">
     <div class="clc-List_Inner lyt-Container">
       {%- render 'collection-product-list',
         products: collection.products,
@@ -73,6 +79,23 @@
 {
   "name": "Main collection",
   "settings": [
+    {
+      "type": "number",
+      "id": "products_per_page",
+      "label": "Products per page",
+      "info": "Enter 1–250. A promo card uses one slot when the value is at least 2.",
+      "default": 15
+    },
+    {
+      "type": "select",
+      "id": "mobile_columns",
+      "label": "Mobile columns (400px and below)",
+      "options": [
+        { "value": "1", "label": "1 column" },
+        { "value": "2", "label": "2 columns" }
+      ],
+      "default": "2"
+    },
     {
       "type": "checkbox",
       "id": "use_search_and_discovery_filters",
