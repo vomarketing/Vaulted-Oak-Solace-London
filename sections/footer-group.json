@@ -22,8 +22,12 @@
         "newsletter_heading": "Subscribe to our newsletter for exclusive access",
         "newsletter_heading_mobile": "Subscribe for Exclusive Access",
         "newsletter_disclaimer": "<p>By subscribing, you agree to receive emails from Solace London. You can unsubscribe at any time. See our <a href=\"/policies/privacy-policy\" title=\"Privacy Policy\">Privacy Policy</a>.</p>",
-        "klaviyo_public_key": "",
-        "klaviyo_list_id": ""
+        "klaviyo_public_key": "XuEqtQ",
+        "klaviyo_list_id": "TEqAUi",
+        "newsletter_popup_enabled": true,
+        "newsletter_popup_trigger_text": "Subscribe to our newsletter for exclusive access",
+        "newsletter_popup_interest_1": "Ready To Wear",
+        "newsletter_popup_interest_2": "Bridal"
       }
     },
     "store-switcher": {

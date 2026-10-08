@@ -20,6 +20,18 @@
     },
     "header": {
       "type": "header",
+      "blocks": {
+        "mega_menu_UmWQeE": {
+          "type": "mega_menu",
+          "settings": {
+            "menu_item_title": "Shop",
+            "menu_content": "shop-mega-menu"
+          }
+        }
+      },
+      "block_order": [
+        "mega_menu_UmWQeE"
+      ],
       "settings": {
         "left_navigation": "desktop-left",
         "right_navigation": "desktop-right",
