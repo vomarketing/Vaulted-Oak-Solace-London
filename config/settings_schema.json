@@ -324,7 +324,7 @@
             "label": "Vertical Drawer (Right Slide-out)"
           }
         ],
-        "default": "horizontal",
+        "default": "vertical",
         "info": "Choose the layout for the quick search popup/drawer."
       },
       {

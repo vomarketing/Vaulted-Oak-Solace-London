@@ -143,6 +143,10 @@
         margin-left: 0;
         text-align: left;
       }
+
+      &[hidden] {
+        display: none;
+      }
     }
 
     .search-header__quick-toggle {
@@ -196,6 +200,7 @@
         color: #000000;
         line-height: 18px;
         text-decoration: none;
+        text-transform: capitalize;
         cursor: pointer;
         transition: opacity var(--search-transition);
 

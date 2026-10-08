@@ -59,17 +59,9 @@
     assign pagination_amount = section.settings.products_per_page | default: 16
     assign products_per_row = section.settings.products_per_row | default: '4'
 
-    assign quick_filter_param = section.settings.quick_filter_param | strip
-    assign quick_filter_prefix = section.settings.quick_filter_tag_prefix | strip
-    assign quick_filter_prefix_size = quick_filter_prefix | size
-
     assign active_filter_count = 0
-    assign quick_filter = blank
     for filter in search.filters
       assign active_filter_count = active_filter_count | plus: filter.active_values.size
-      if quick_filter_param != blank and filter.param_name == quick_filter_param
-        assign quick_filter = filter
-      endif
     endfor
 
     assign show_filter_button = false
@@ -96,39 +88,13 @@
             </h1>
           </div>
 
-          {%- comment -%} Center: Quick filters from a Search & Discovery filter {%- endcomment -%}
-          {%- liquid
-            assign quick_filter_count = 0
-            assign quick_filter_active_labels = ''
-          -%}
-          {%- capture quick_filter_items -%}
-            {%- if quick_filter != blank -%}
-              {%- for filter_value in quick_filter.values -%}
-                {%- assign value_head = filter_value.value | slice: 0, quick_filter_prefix_size -%}
-                {%- if quick_filter_prefix_size == 0 or value_head == quick_filter_prefix -%}
-                  {%- if quick_filter_prefix_size > 0 -%}
-                    {%- assign tag_label = filter_value.value | remove_first: quick_filter_prefix | strip -%}
-                  {%- else -%}
-                    {%- assign tag_label = filter_value.label -%}
-                  {%- endif -%}
-                  {%- assign quick_filter_count = quick_filter_count | plus: 1 -%}
-                  {%- if filter_value.active -%}
-                    {%- assign quick_filter_active_labels = quick_filter_active_labels | append: ', ' | append: tag_label -%}
-                  {%- endif -%}
-                  <a
-                    href="{% if filter_value.active %}{{ filter_value.url_to_remove }}{% else %}{{ filter_value.url_to_add }}{% endif %}"
-                    class="search-header__tag text-reg-12{% if filter_value.active %} is-active{% endif %}"
-                    {% if filter_value.active %}aria-current="true"{% endif %}
-                  >
-                    {{ tag_label | escape }}
-                  </a>
-                {%- endif -%}
-              {%- endfor -%}
-            {%- endif -%}
-          {%- endcapture -%}
-
-          {%- if quick_filter_count > 0 -%}
-            <div class="search-header__quick js-search-quick">
+          {%- if search.performed and search.terms != blank -%}
+            <div
+              class="search-header__quick js-search-quick"
+              data-query="{{ search.terms | escape }}"
+              data-limit="{{ section.settings.suggested_terms_limit | default: 3 }}"
+              hidden
+            >
               <button
                 class="search-header__quick-toggle text-reg-12 js-search-quick-toggle"
                 type="button"
@@ -141,9 +107,7 @@
                 {%- render 'icons', icon: 'arrow-down', class: 'search-header__quick-icon' -%}
               </button>
 
-              <div class="search-header__tags" id="SearchQuickFilters-{{ section.id }}">
-                {{ quick_filter_items }}
-              </div>
+              <div class="search-header__tags js-search-quick-list" id="SearchQuickFilters-{{ section.id }}"></div>
             </div>
           {%- endif -%}
 
@@ -281,16 +245,14 @@
       "default": true
     },
     {
-      "type": "text",
-      "id": "quick_filter_param",
-      "label": "Header quick filter source",
-      "default": "filter.p.tag"
-    },
-    {
-      "type": "text",
-      "id": "quick_filter_tag_prefix",
-      "label": "Header quick filter value prefix",
-      "default": "filter-category:"
+      "type": "range",
+      "id": "suggested_terms_limit",
+      "label": "Header suggested terms",
+      "info": "Number of suggested search terms shown next to the search title. Each term links to its own results page.",
+      "min": 1,
+      "max": 10,
+      "step": 1,
+      "default": 3
     },
     {
       "type": "header",

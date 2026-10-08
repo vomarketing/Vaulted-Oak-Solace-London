@@ -68,6 +68,10 @@ predictive-search {
     transform: translate(0, 0);
   }
 
+  &.drw-Drawer-searchVertical {
+    padding: 0;
+  }
+
   @media (min-width: 768px) {
     padding-top: 40px;
   }
@@ -187,18 +191,22 @@ predictive-search {
       right: 0;
       bottom: 0;
       left: auto;
-      width: max(560px, 40.3125vw);
+      width: 570px;
       max-width: 100vw;
       height: 100vh;
       height: 100dvh;
       max-height: 100vh;
       max-height: 100dvh;
-      padding: 35px 40px 40px;
+      padding: 0;
       z-index: 105;
       box-shadow: none;
       opacity: 1;
       transform: translateX(100%);
       transition: transform 0.45s var(--pred-search-ease-in-out), visibility 0s linear 0.45s;
+
+      @media (min-width: 1441px) {
+        width: 774px;
+      }
 
       &.drw-Drawer-active {
         transform: translateX(0);
@@ -216,7 +224,7 @@ predictive-search {
 
       .pred-Vertical_Header {
         display: flex !important;
-        margin-bottom: 46px;
+        margin-bottom: 50px;
       }
     }
   }
@@ -519,13 +527,13 @@ predictive-search {
   .pred-Search_ProductsGrid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 18px;
+    gap: 10px;
     width: 100%;
     min-width: 0;
   }
 
   .pred-Card .pred-Card_ImageContainer {
-    aspect-ratio: 3 / 4;
+    aspect-ratio: 115 / 144;
   }
 
   .pred-Card:nth-child(n + 4) {
@@ -538,6 +546,9 @@ predictive-search {
     animation: pred-fade-in 0.35s var(--pred-search-ease-out);
   }
 
+  .drw-Drawer-search &.pred-Search--vertical .drw-Drawer_Inner {
+    padding: 40px 20px;
+  }
 }
 
 @media (min-width: 768px) and (max-width: 1200px) {
@@ -566,7 +577,7 @@ predictive-search {
     }
 
     .pred-Card .pred-Card_ImageContainer {
-      aspect-ratio: 123 / 167;
+      aspect-ratio: 123 / 154;
     }
 
     .pred-Card:nth-child(n + 4) {
@@ -578,7 +589,7 @@ predictive-search {
 @media (min-width: 1201px) {
   .pred-Search {
     .pred-Search_Suggested .pred-Search_Heading {
-      margin-bottom: 15px;
+      margin-bottom: 20px;
     }
 
     .pred-Search_Grid {
@@ -623,6 +634,27 @@ predictive-search {
 
       .pred-Card_ImageContainer {
         aspect-ratio: 128 / 160;
+      }
+    }
+
+    &.pred-Search--vertical {
+      .pred-Search_Grid .pred-Search_ColProducts {
+        flex: 0 0 313px;
+        width: 313px;
+
+        @media (min-width: 1441px) {
+          flex-basis: 403px;
+          width: 403px;
+        }
+      }
+
+      .pred-Search_ProductsGrid {
+        width: 100%;
+      }
+
+      .pred-Card {
+        flex: 1 1 0;
+        width: auto;
       }
     }
   }
