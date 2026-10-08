@@ -81,7 +81,7 @@
           <div class="search-header__content">
             <h1 class="search-header__title text-reg-12">
               {%- if search.performed and search.terms != blank -%}
-                Search for “{{ search.terms | escape }}”<span class="search-header__colon">:</span>
+                Search for “{{ search.terms | escape }}” ({{ search.results_count }})
               {%- else -%}
                 {{ 'general.search.title' | t }}
               {%- endif -%}
