@@ -232,18 +232,77 @@ if (!window.FooterNewsletterController) {
   class FooterNewsletterController {
     static selectors = {
       newsletterForm: '[data-footer-newsletter-form]',
-      newsletterStatus: '[data-footer-newsletter-status]'
+      newsletterStatus: '[data-footer-newsletter-status]',
+      newsletterPopupOpen: '[data-newsletter-popup-open]',
+      newsletterPopup: '[data-newsletter-popup]',
+      newsletterPopupClose: '[data-newsletter-popup-close]'
     };
 
     constructor() {
       this.selectors = FooterNewsletterController.selectors;
       this.abortController = new AbortController();
+      this.activePopup = null;
+      this.previousFocus = null;
 
       this.bindEvents();
     }
 
+    closePopup() {
+      if (!this.activePopup) return;
+
+      this.activePopup.classList.remove('is-open');
+      this.activePopup.hidden = true;
+      this.activePopup.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('is-newsletter-popup-open');
+
+      const trigger = this.previousFocus;
+      this.activePopup = null;
+      this.previousFocus = null;
+
+      trigger?.focus();
+    }
+
     bindEvents() {
       const { signal } = this.abortController;
+
+      document.addEventListener('click', (e) => {
+        const openButton = e.target.closest(this.selectors.newsletterPopupOpen);
+
+        if (openButton) {
+          const popupId = openButton.getAttribute('aria-controls');
+          const popup = popupId ? document.getElementById(popupId) : null;
+
+          if (!popup) return;
+
+          this.previousFocus = openButton;
+          this.activePopup = popup;
+
+          popup.hidden = false;
+          popup.setAttribute('aria-hidden', 'false');
+          document.body.classList.add('is-newsletter-popup-open');
+
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              popup.classList.add('is-open');
+            });
+          });
+
+          popup.querySelector('.ft-NewsletterPopup_Dialog')?.focus();
+          return;
+        }
+
+        const closeButton = e.target.closest(this.selectors.newsletterPopupClose);
+
+        if (closeButton && this.activePopup?.contains(closeButton)) {
+          this.closePopup();
+        }
+      }, { signal });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && this.activePopup) {
+          this.closePopup();
+        }
+      }, { signal });
 
       document.addEventListener('submit', (e) => {
         const form = e.target.closest(this.selectors.newsletterForm);
@@ -270,6 +329,19 @@ if (!window.FooterNewsletterController) {
       }
 
       const properties = { newsletter_country: country };
+
+      if (form.hasAttribute('data-newsletter-popup-form')) {
+        const selectedInterest = form.querySelector(
+          'input[name="newsletter_interest"]:checked'
+        )?.value;
+
+        if (!selectedInterest) {
+          setStatus('Please select an interest.');
+          return;
+        }
+
+        properties.newsletter_interest = selectedInterest;
+      }
 
       const payload = {
         data: {

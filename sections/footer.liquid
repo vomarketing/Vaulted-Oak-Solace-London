@@ -73,23 +73,94 @@
       {%- endif -%}
 
       <div class="ft-Footer_Newsletter">
-        <div class="ft-Newsletter">
-          {%- if section.settings.newsletter_heading_mobile != blank -%}
-            <p class="ft-Newsletter_Heading ft-Newsletter_Heading-mobile">{{ section.settings.newsletter_heading_mobile }}</p>
-            <p class="ft-Newsletter_Heading ft-Newsletter_Heading-desktop">{{ section.settings.newsletter_heading }}</p>
-          {%- elsif section.settings.newsletter_heading != blank -%}
-            <p class="ft-Newsletter_Heading">{{ section.settings.newsletter_heading }}</p>
-          {%- endif -%}
+        {% if section.settings.newsletter_popup_enabled %}
+          <button
+            class="ft-Footer_NewsletterTrigger"
+            type="button"
+            data-newsletter-popup-open
+            aria-haspopup="dialog"
+            aria-controls="FooterNewsletterPopup-{{ section.id }}"
+          >
+            <span class="ft-Footer_NewsletterTriggerIcon" aria-hidden="true">
+              <svg xmlns="http://www.w3.org/2000/svg" width="5" height="8" viewBox="0 0 5 8" fill="none">
+                <path d="M3.15 3.76917L0 0.619167L0.619167 0L4.38833 3.76917L0.619167 7.53833L0 6.91917L3.15 3.76917Z" fill="currentColor"/>
+              </svg>
+            </span>
+            {{ section.settings.newsletter_popup_trigger_text | escape }}
+          </button>
 
-          {%- render 'footer-newsletter-form',
-            form_id: 'FooterNewsletter',
-            placeholder: newsletter_placeholder,
-            klaviyo_company_id: klaviyo_company_id,
-            klaviyo_list_id: klaviyo_list_id,
-            source: 'Footer newsletter',
-            disclaimer: section.settings.newsletter_disclaimer
-          -%}
-        </div>
+          <div
+            class="ft-NewsletterPopup"
+            id="FooterNewsletterPopup-{{ section.id }}"
+            data-newsletter-popup
+            aria-hidden="true"
+            hidden
+          >
+            <button
+              class="ft-NewsletterPopup_Overlay"
+              type="button"
+              data-newsletter-popup-close
+              aria-label="Close newsletter popup"
+              tabindex="-1"
+            ></button>
+
+            <section
+              class="ft-NewsletterPopup_Dialog"
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="FooterNewsletterPopupTitle-{{ section.id }}"
+              tabindex="-1"
+            >
+              <header class="ft-NewsletterPopup_Header">
+                <h2 id="FooterNewsletterPopupTitle-{{ section.id }}">Newsletter</h2>
+
+                <button
+                  class="ft-NewsletterPopup_Close"
+                  type="button"
+                  data-newsletter-popup-close
+                >
+                  Close
+                </button>
+              </header>
+
+              <div class="ft-NewsletterPopup_Content">
+                <p>
+                  Subscribe to the Solace London newsletter for the latest collections,
+                  early access to new campaigns and exclusive products.
+                </p>
+
+                {% render 'footer-newsletter-popup-form',
+                  form_id: 'FooterNewsletterPopup-' | append: section.id,
+                  placeholder: newsletter_placeholder,
+                  klaviyo_company_id: klaviyo_company_id,
+                  klaviyo_list_id: klaviyo_list_id,
+                  source: 'Footer newsletter popup',
+                  disclaimer: section.settings.newsletter_disclaimer,
+                  interest_1: section.settings.newsletter_popup_interest_1,
+                  interest_2: section.settings.newsletter_popup_interest_2
+                %}
+              </div>
+            </section>
+          </div>
+        {% else %}
+          <div class="ft-Newsletter">
+            {%- if section.settings.newsletter_heading_mobile != blank -%}
+              <p class="ft-Newsletter_Heading ft-Newsletter_Heading-mobile">{{ section.settings.newsletter_heading_mobile }}</p>
+              <p class="ft-Newsletter_Heading ft-Newsletter_Heading-desktop">{{ section.settings.newsletter_heading }}</p>
+              {%- elsif section.settings.newsletter_heading != blank -%}
+              <p class="ft-Newsletter_Heading">{{ section.settings.newsletter_heading }}</p>
+            {%- endif -%}
+
+            {%- render 'footer-newsletter-form',
+              form_id: 'FooterNewsletter',
+              placeholder: newsletter_placeholder,
+              klaviyo_company_id: klaviyo_company_id,
+              klaviyo_list_id: klaviyo_list_id,
+              source: 'Footer newsletter',
+              disclaimer: section.settings.newsletter_disclaimer
+            -%}
+          </div>
+        {% endif %}
       </div>
 
       <div class="ft-Footer_Meta">
@@ -173,6 +244,34 @@
       "id": "klaviyo_list_id",
       "label": "Default list ID",
       "info": "Used for countries without a matching \"Klaviyo list\" block. Find it in Klaviyo > Lists & segments > list > Settings."
+    },
+    {
+      "type": "header",
+      "content": "Newsletter popup"
+    },
+    {
+      "type": "checkbox",
+      "id": "newsletter_popup_enabled",
+      "label": "Enable newsletter popup",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "newsletter_popup_trigger_text",
+      "label": "Popup trigger text",
+      "default": "Subscribe to our newsletter for exclusive access"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_popup_interest_1",
+      "label": "Interest option 1",
+      "default": "Ready To Wear"
+    },
+    {
+      "type": "text",
+      "id": "newsletter_popup_interest_2",
+      "label": "Interest option 2",
+      "default": "Bridal"
     }
   ],
   "blocks": [
