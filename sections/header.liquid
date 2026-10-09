@@ -244,6 +244,21 @@
               </li>
             {%- endfor -%}
 
+            {%- if section.settings.show_help_box and section.settings.help_label != blank -%}
+              <li class="hd-Nav_Item">
+                <button
+                  type="button"
+                  class="hd-Nav_Link"
+                  data-help-box-open
+                  aria-controls="HelpBox"
+                  aria-expanded="false"
+                  aria-haspopup="dialog"
+                >
+                  {{ section.settings.help_label }}
+                </button>
+              </li>
+            {%- endif -%}
+
             {%- if shop.customer_accounts_enabled -%}
               <li class="hd-Nav_Item">
                 <a
@@ -327,6 +342,10 @@
     {%- endif -%}
   {%- endfor -%}
 </header>
+
+{%- if section.settings.show_help_box -%}
+  {%- render 'help-box', menu: section.settings.help_menu -%}
+{%- endif -%}
 
  {% comment %} <div class="hd-AnimatedHeader" style="display: none;">
   <div class="hd-AnimatedHeader_Logo">
@@ -437,6 +456,25 @@
       "type": "link_list",
       "id": "right_navigation",
       "label": "Right navigation"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_help_box",
+      "label": "Show help box",
+      "default": true,
+      "info": "Shows the Help button and the contact panel."
+    },
+    {
+      "type": "text",
+      "id": "help_label",
+      "label": "Help label",
+      "default": "Help"
+    },
+    {
+      "type": "link_list",
+      "id": "help_menu",
+      "label": "Help menu",
+      "info": "Links shown in the contact panel, such as Shipping, Returns and FAQs."
     },
     {
       "type": "header",

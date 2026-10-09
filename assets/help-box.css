@@ -1,0 +1,189 @@
+.hb-HelpBox[hidden] {
+  display: none;
+}
+
+.hb-HelpBox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  padding: 40px;
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 280ms ease, visibility 0s linear 280ms;
+}
+
+.hb-HelpBox.is-open {
+  opacity: 1;
+  visibility: visible;
+  transition-delay: 0s;
+}
+
+.hb-HelpBox_Overlay {
+  display: none;
+}
+
+.hb-HelpBox_Dialog {
+  width: 450px;
+  border: 1px solid #000;
+  background: #fff;
+  color: #000;
+  outline: none;
+  pointer-events: auto;
+  font-family: var(--font-family-primary);
+  font-size: 12px;
+  font-weight: var(--font-weight-regular);
+  line-height: 18px;
+  opacity: 0;
+  transform: translateY(12px);
+  transition: opacity 280ms ease, transform 350ms cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.hb-HelpBox.is-open .hb-HelpBox_Dialog {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hb-HelpBox_Header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 20px;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.hb-HelpBox_Title,
+.hb-HelpBox_Close,
+.hb-HelpBox_EmailText,
+.hb-HelpBox_Link {
+  text-box-trim: trim-both;
+  text-box-edge: cap alphabetic;
+}
+
+.hb-HelpBox_Title {
+  font: inherit;
+  letter-spacing: 0;
+  text-transform: none;
+}
+
+.hb-HelpBox_Close {
+  font: inherit;
+  cursor: pointer;
+}
+
+.hb-HelpBox_Body {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+  padding: 20px;
+}
+
+.hb-HelpBox_Email {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.hb-HelpBox_EmailText {
+  flex: 1;
+}
+
+.hb-HelpBox_Chevron {
+  flex: 0 0 16px;
+  width: 16px;
+  height: 16px;
+}
+
+.hb-HelpBox_Links {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.hb-HelpBox_Close:focus-visible,
+.hb-HelpBox_Email:focus-visible,
+.hb-HelpBox_Link:focus-visible,
+button[data-help-box-open]:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: 3px;
+}
+
+.hd-Header button.hd-Nav_Link[data-help-box-open] {
+  appearance: none;
+}
+
+.hb-HelpBox_Launcher {
+  display: none;
+}
+
+@media (max-width: 1200px) {
+  .hb-HelpBox_Launcher {
+    position: fixed;
+    right: 20px;
+    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    z-index: 30;
+    display: block;
+    padding: 15px 14px;
+    border: 1px solid #000;
+    background: #fff;
+    color: #000;
+    font-family: var(--font-family-primary);
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 18px;
+    text-box-trim: trim-both;
+    text-box-edge: cap alphabetic;
+    appearance: none;
+  }
+
+  body:has(.pdp-sticky-atc-mobile .pdp-size-drawer.is-visible) .hb-HelpBox_Launcher {
+    bottom: calc(73px + env(safe-area-inset-bottom, 0px));
+  }
+
+  .hb-HelpBox {
+    align-items: stretch;
+    flex-direction: column;
+    padding: 0;
+  }
+
+  .hb-HelpBox.is-open {
+    pointer-events: auto;
+  }
+
+  .hb-HelpBox_Overlay {
+    display: block;
+    flex: 1;
+    min-height: 0;
+    background: rgba(0, 0, 0, 0.6);
+    cursor: pointer;
+  }
+
+  .hb-HelpBox_Dialog {
+    width: 100%;
+    border: 0;
+    transform: translateY(100%);
+  }
+
+  .hb-HelpBox.is-open .hb-HelpBox_Dialog {
+    transform: translateY(0);
+  }
+
+  .hb-HelpBox_Body {
+    padding-bottom: 30px;
+  }
+
+  body.is-help-box-open {
+    overflow: hidden;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hb-HelpBox,
+  .hb-HelpBox_Dialog {
+    transition-duration: 0.01ms;
+  }
+}
