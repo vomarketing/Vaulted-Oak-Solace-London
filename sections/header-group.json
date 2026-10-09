@@ -35,6 +35,9 @@
       "settings": {
         "left_navigation": "desktop-left",
         "right_navigation": "desktop-right",
+        "show_help_box": true,
+        "help_label": "Help",
+        "help_menu": "help-menu",
         "header_background_style": "transparent",
         "transparent_homepage_only": false,
         "transparent_color_scheme": "light",
