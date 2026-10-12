@@ -15,8 +15,7 @@ if (!customElements.get('product-buy-buttons')) {
       bisBox: '.js-pdp-bis-box',
       bisEmail: '.js-pdp-bis-email',
       bisSubmit: '.js-pdp-bis-submit',
-      bisResponse: '.js-pdp-bis-response',
-      wishlistAddBtn: '.js-Wishlist_Button-add'
+      bisResponse: '.js-pdp-bis-response'
     };
 
     static classes = {
@@ -59,15 +58,11 @@ if (!customElements.get('product-buy-buttons')) {
       this.initSizeDrawer();
       this.initVariantSelection();
       this.initBisForm();
-      this.initWishlist();
     }
 
     disconnectedCallback() {
       if (this.abortController) {
         this.abortController.abort();
-      }
-      if (this.wishlistObserver) {
-        this.wishlistObserver.disconnect();
       }
       if (this.sectionObserver) {
         this.sectionObserver.disconnect();
@@ -718,23 +713,6 @@ if (!customElements.get('product-buy-buttons')) {
         }
       }
 
-      const wishlistAdd = this.querySelector(this.selectors.wishlistAddBtn);
-      if (wishlistAdd) {
-        wishlistAdd.dataset.variant = variantId;
-        wishlistAdd.setAttribute('data-variant', variantId);
-        const productId = wishlistAdd.getAttribute('data-product') || this.getAttribute('data-product-id');
-        if (productId) {
-          wishlistAdd.setAttribute('data-product', productId);
-        }
-        if (window.iWishlistmain && productId && window.iWishlistmain[productId]) {
-          if (window.iWishlistmain[productId].includes(String(variantId))) {
-            wishlistAdd.classList.add('iwishAdded', 'is-added', 'pdp-cta-wishlist__btn--active');
-          } else {
-            wishlistAdd.classList.remove('iwishAdded', 'is-added', 'pdp-cta-wishlist__btn--active');
-          }
-        }
-      }
-
       const bisTrigger = document.querySelector('[data-el="back-in-stock.trigger"]');
       if (bisTrigger) {
         bisTrigger.dataset.variantId = variantId;
@@ -757,51 +735,6 @@ if (!customElements.get('product-buy-buttons')) {
           inventoryQty
         }
       }));
-    }
-
-    initWishlist() {
-      const wishlistBtn = this.querySelector(this.selectors.wishlistAddBtn);
-      if (!wishlistBtn) return;
-      const { signal } = this.abortController;
-
-      const iconsContainer = wishlistBtn.querySelector('.pdp-cta-wishlist__icons');
-      const originalIconsHtml = iconsContainer ? iconsContainer.innerHTML : wishlistBtn.innerHTML;
-
-      this.wishlistObserver = new MutationObserver(() => {
-        const currentIcons = wishlistBtn.querySelector('.pdp-cta-wishlist__icons');
-        if (!currentIcons || !currentIcons.querySelector('svg')) {
-          wishlistBtn.innerHTML = `
-            <span class="pdp-cta-wishlist__icons">
-              ${originalIconsHtml}
-            </span>
-          `;
-        }
-      });
-      this.wishlistObserver.observe(wishlistBtn, { childList: true });
-
-      wishlistBtn.addEventListener('click', (e) => {
-        e.preventDefault();
-        const masterSelect = this.querySelector(this.selectors.masterSelect);
-        const variantId = wishlistBtn.getAttribute('data-variant') || (masterSelect ? masterSelect.value : '');
-        const productId = wishlistBtn.getAttribute('data-product') || this.getAttribute('data-product-id') || '';
-
-        wishlistBtn.setAttribute('data-variant', variantId);
-        wishlistBtn.setAttribute('data-product', productId);
-
-        const isCurrentlyAdded = wishlistBtn.classList.contains('is-added') || wishlistBtn.classList.contains('iwishAdded') || wishlistBtn.classList.contains('pdp-cta-wishlist__btn--active');
-
-        if (isCurrentlyAdded) {
-          wishlistBtn.classList.remove('is-added', 'iwishAdded', 'pdp-cta-wishlist__btn--active');
-          if (window.wishlist && typeof window.wishlist.removeFromWishlist === 'function') {
-            window.wishlist.removeFromWishlist(wishlistBtn, variantId, false);
-          }
-        } else {
-          wishlistBtn.classList.add('is-added', 'iwishAdded', 'pdp-cta-wishlist__btn--active');
-          if (window.wishlist && typeof window.wishlist.addToWishlist === 'function') {
-            window.wishlist.addToWishlist(wishlistBtn, variantId, false);
-          }
-        }
-      }, { signal });
     }
 
     removeVariantParamFromUrl() {

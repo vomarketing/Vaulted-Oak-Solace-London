@@ -283,6 +283,41 @@
 
     {%- endif -%}
 
+    {%- if settings.wishlist_enable -%}
+      {%- liquid
+        assign wishlist_sized = true
+        for option in product.options
+          assign downcased_option = option | downcase
+          if downcased_option contains 'size'
+            assign wishlist_sized = false
+            break
+          endif
+        endfor
+      -%}
+      <wishlist-toggle
+        data-product-id="{{ product.id }}"
+        data-product-handle="{{ product.handle }}"
+        data-variant-id="{{ current_variant.id }}"
+        data-sized="{{ wishlist_sized }}"
+      >
+        <button
+          type="button"
+          class="prd-Card_Wishlist wsl-Toggle"
+          aria-label="{{ 'wishlist.save_item' | t: title: product.title | escape }}"
+          aria-pressed="false"
+        >
+          <span class="prd-Card_WishlistIcons-small">
+            {%- render 'icons', icon: 'bookmark-small', class: 'wsl-Toggle_Icon-outline' -%}
+            {%- render 'icons', icon: 'bookmark-small-filled', class: 'wsl-Toggle_Icon-filled' -%}
+          </span>
+          <span class="prd-Card_WishlistIcons-large">
+            {%- render 'icons', icon: 'bookmark', class: 'wsl-Toggle_Icon-outline' -%}
+            {%- render 'icons', icon: 'bookmark-filled', class: 'wsl-Toggle_Icon-filled' -%}
+          </span>
+        </button>
+      </wishlist-toggle>
+    {%- endif -%}
+
   </div>
 
   <a class="prd-Card_FauxLink util-FauxLink_Link" href="{{ product_card_url }}"></a>

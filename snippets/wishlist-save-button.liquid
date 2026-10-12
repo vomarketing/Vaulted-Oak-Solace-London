@@ -1,0 +1,22 @@
+{%- doc -%}
+  Bookmark toggle that saves a cart line's variant without removing it from the bag.
+
+  @param {object} line_item - Cart line item
+  @param {string} class - Additional button class
+{%- enddoc -%}
+
+<wishlist-toggle
+  data-product-id="{{ line_item.product_id }}"
+  data-product-handle="{{ line_item.product.handle }}"
+  data-variant-id="{{ line_item.variant_id }}"
+>
+  <button
+    class="wsl-Toggle {{ class }}"
+    type="button"
+    aria-label="{{ 'wishlist.save_item' | t: title: line_item.product.title | escape }}"
+    aria-pressed="false"
+  >
+    {%- render 'icons', icon: 'bookmark', class: 'wsl-Toggle_Icon-outline' -%}
+    {%- render 'icons', icon: 'bookmark-filled', class: 'wsl-Toggle_Icon-filled' -%}
+  </button>
+</wishlist-toggle>

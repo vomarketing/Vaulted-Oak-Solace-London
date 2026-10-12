@@ -553,16 +553,10 @@ html:has(.bag-Info[open]) {
 }
 
 .bag-Item_Wishlist {
+  flex-shrink: 0;
   display: block;
   width: 16px;
   height: 16px;
-  transition: opacity 0.2s ease;
-
-  @media (hover: hover) {
-    &:hover {
-      opacity: 0.5;
-    }
-  }
 
   svg {
     display: block;
