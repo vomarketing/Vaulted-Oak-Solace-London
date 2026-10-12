@@ -138,10 +138,19 @@ button[data-help-box-open]:focus-visible {
     text-box-trim: trim-both;
     text-box-edge: cap alphabetic;
     appearance: none;
+    transition: bottom 0.3s ease;
   }
 
   body:has(.pdp-sticky-atc-mobile .pdp-size-drawer.is-visible) .hb-HelpBox_Launcher {
     bottom: calc(73px + env(safe-area-inset-bottom, 0px));
+  }
+
+  body:has(.fullpage-slide.swiper-slide-active .hero-fullscreen__controls) .hb-HelpBox_Launcher {
+    bottom: calc(88px + env(safe-area-inset-bottom, 0px));
+
+    @media (max-width: 640px) {
+      bottom: calc(82px + env(safe-area-inset-bottom, 0px));
+    }
   }
 
   body.is-newsletter-popup-open .hb-HelpBox_Launcher {
