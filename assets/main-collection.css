@@ -264,6 +264,13 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
   height: 100%;
 }
 
+.clc-List .clc-PromotedCard_Image video {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
 .clc-List .clc-PromotedCard_Image .rsp-Image::before {
   padding-top: 0 !important;
 }
@@ -282,10 +289,10 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
   line-height: 18px;
   text-align: center;
   text-transform: none;
-  color: #fff;
+  color: var(--clc-promoted-card-text-color, #fff);
 
   .rte-RichText {
-    color: #fff
+    color: var(--clc-promoted-card-text-color, #fff);
   }
 
   @media (max-width: 767px) {

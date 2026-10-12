@@ -9,22 +9,8 @@
   elsif items_per_page > 250
     assign items_per_page = 250
   endif
-  assign pagination_amount = items_per_page
-  assign has_promoted_item = false
-  assign promoted_item_index = null
   assign is_theme_preview = false
   assign selected_size = blank
-  assign promoted_item_index_value = collection.metafields.custom.promoted_index.value
-  assign promoted_image = collection.metafields.custom.promoted_image.value
-
-  if promoted_item_index_value != blank and promoted_image != blank
-    assign promoted_item_index = promoted_item_index_value | plus: 0
-
-    if items_per_page > 1 and promoted_item_index > 0 and promoted_item_index <= items_per_page
-      assign has_promoted_item = true
-      assign pagination_amount = items_per_page | minus: 1
-    endif
-  endif
 
   for current_tag in current_tags
     assign current_filter_key = current_tag | split: ':' | first | handleize
@@ -42,7 +28,7 @@
 
 {%- render 'collection-header', collection: collection, section: section, current_tags: current_tags -%}
 
-{%- paginate collection.products by pagination_amount -%}
+{%- paginate collection.products by items_per_page -%}
   <section class="clc-List clc-List--mobile-columns-{{ section.settings.mobile_columns | default: '2' }}">
     <div class="clc-List_Inner lyt-Container">
       {%- render 'collection-product-list',
@@ -51,8 +37,7 @@
         section: section,
         selected_size: selected_size,
         is_theme_preview: is_theme_preview,
-        has_promoted_item: has_promoted_item,
-        promoted_item_index: promoted_item_index
+        current_page: paginate.current_page
       -%}
       {%- render 'collection-pagination', paginate: paginate -%}
     </div>
@@ -83,7 +68,7 @@
       "type": "number",
       "id": "products_per_page",
       "label": "Products per page",
-      "info": "Enter 1–250. A promo card uses one slot when the value is at least 2.",
+      "info": "Enter 1–250. Promo cards appear in addition to the products per page.",
       "default": 15
     },
     {
