@@ -15,21 +15,34 @@
       class="collection-header__description{% if description_needs_toggle %} collection-header__description--truncated{% endif %}"
       data-collection-description
     >
-      <div class="collection-header__description-copy" id="collection-description-{{ collection.id }}" data-collection-description-copy>
-        {{ collection.description }}
-      </div>
       {%- if description_needs_toggle -%}
-        <button
-          class="collection-header__description-toggle"
-          type="button"
-          aria-expanded="false"
-          aria-controls="collection-description-{{ collection.id }}"
-          data-collection-description-toggle
-          data-read-more="{{ 'collections.general.read_more' | t | escape }}"
-          data-read-less="{{ 'collections.general.read_less' | t | escape }}"
-        >
-          {{ 'collections.general.read_more' | t }}
-        </button>
+        <div class="collection-header__description-preview">
+          {{ collection.description | strip_html | truncate: 240, '' }}
+          <button
+            class="collection-header__description-toggle"
+            type="button"
+            aria-expanded="false"
+            data-collection-description-toggle
+            data-read-more="{{ 'collections.general.read_more' | t | escape }}"
+            data-read-less="{{ 'collections.general.read_less' | t | escape }}"
+          >{{ 'collections.general.read_more' | t }}</button>
+        </div>
+
+        <div class="collection-header__description-full" hidden>
+          {{ collection.description }}
+          <button
+            class="collection-header__description-toggle"
+            type="button"
+            aria-expanded="true"
+            data-collection-description-toggle
+            data-read-more="{{ 'collections.general.read_more' | t | escape }}"
+            data-read-less="{{ 'collections.general.read_less' | t | escape }}"
+          >{{ 'collections.general.read_less' | t }}</button>
+        </div>
+      {%- else -%}
+        <div class="collection-header__description-full">
+          {{ collection.description }}
+        </div>
       {%- endif -%}
     </div>
   {%- endif -%}

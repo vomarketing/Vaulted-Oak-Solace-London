@@ -73,17 +73,23 @@
         if (description.dataset.descriptionInitialized === 'true') return;
         description.dataset.descriptionInitialized = 'true';
 
-        const toggle = description.querySelector('[data-collection-description-toggle]');
-        if (!toggle) return;
+        const preview = description.querySelector('.collection-header__description-preview');
+        const full = description.querySelector('.collection-header__description-full');
+        const toggles = description.querySelectorAll('[data-collection-description-toggle]');
 
-        toggle.addEventListener('click', () => {
-          const scrollY = window.scrollY;
-          const isExpanded = description.classList.toggle('is-expanded');
-          toggle.setAttribute('aria-expanded', String(isExpanded));
-          toggle.textContent = isExpanded ? toggle.dataset.readLess : toggle.dataset.readMore;
+        if (!preview || !full || !toggles.length) return;
 
-          window.requestAnimationFrame(() => {
-            if (window.scrollY !== scrollY) window.scrollTo(0, scrollY);
+        toggles.forEach((toggle) => {
+          toggle.addEventListener('click', () => {
+            const isExpanded = !description.classList.contains('is-expanded');
+
+            description.classList.toggle('is-expanded', isExpanded);
+            preview.hidden = isExpanded;
+            full.hidden = !isExpanded;
+
+            toggles.forEach((button) => {
+              button.setAttribute('aria-expanded', String(isExpanded));
+            });
           });
         });
       });
