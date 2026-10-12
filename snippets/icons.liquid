@@ -38,6 +38,19 @@
       <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5"/>
     </svg>
 
+  {%- when 'arrow-down' -%}
+    <svg
+      class="{{ icon_class }}"
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path d="M8 10.2192L4.23083 6.45L4.85 5.83083L8 8.98083L11.15 5.83083L11.7692 6.45L8 10.2192Z" fill="currentColor"/>
+    </svg>
+
   {%- when 'chevron-right' -%}
     <svg
       class="{{ icon_class }}"
@@ -84,6 +97,32 @@
       fill="none"
     >
       <path d="M0.5 0.5H11.5V13.5L6.36719 7.61523L0.615637 13.5L0.5 0.5Z" stroke="black" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+
+  {%- when 'bookmark' -%}
+    <svg
+      class="{{ icon_class }}"
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path d="M14.0024 0.583008V15.417L8.34814 9.93457L2.12842 15.2988L1.99756 0.583008H14.0024ZM3.10693 12.8662L8.39014 8.46191C9.93049 10.2214 11.467 10.9843 13.0024 12.748V1.58301H3.00732L3.10693 12.8662Z" fill="currentColor"/>
+    </svg>
+
+  {%- when 'bookmark-filled' -%}
+    <svg
+      class="{{ icon_class }}"
+      xmlns="http://www.w3.org/2000/svg"
+      width="16"
+      height="16"
+      viewBox="0 0 16 16"
+      fill="none"
+      aria-hidden="true"
+    >
+      <path d="M14.0024 0.583008V15.417L8.34814 8.93457L2.12842 15.2988L1.99756 0.583008H14.0024Z" fill="currentColor"/>
     </svg>
 
   {%- when 'play' -%}

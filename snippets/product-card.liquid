@@ -45,6 +45,12 @@
 
   if prefer_packshot
     assign card_image = product.metafields.custom.packshot_image.value | default: product.images.first
+  elsif packshot_when_available
+    assign packshot_image = product.metafields.custom.packshot_image.value
+    if packshot_image != blank
+      assign default_card_image = card_image
+      assign card_image = packshot_image
+    endif
   endif
 
   assign hover_image = nil
@@ -68,6 +74,14 @@
       break
     endif
   endfor
+
+  if default_card_image != blank
+    assign card_image_file = card_image.src | split: '?' | first | split: '/' | last
+    assign default_card_image_file = default_card_image.src | split: '?' | first | split: '/' | last
+    if default_card_image_file != card_image_file
+      assign hover_image = default_card_image
+    endif
+  endif
 -%}
 
 {%- if product.options.size == 1 -%}

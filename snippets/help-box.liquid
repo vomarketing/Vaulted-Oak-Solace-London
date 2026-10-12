@@ -1,0 +1,67 @@
+<style>
+  {{ 'help-box.css' | inline_asset_content }}
+</style>
+<script src="{{ 'help-box.js' | asset_url }}" defer="defer"></script>
+
+<help-box>
+  <button
+    type="button"
+    class="hb-HelpBox_Launcher"
+    data-help-box-open
+    aria-controls="HelpBox"
+    aria-expanded="false"
+    aria-haspopup="dialog"
+  >
+    Contact Us
+  </button>
+
+  <div
+    class="hb-HelpBox"
+    id="HelpBox"
+    aria-hidden="true"
+    hidden
+  >
+    <button
+      class="hb-HelpBox_Overlay"
+      type="button"
+      data-help-box-close
+      aria-label="Close contact"
+      tabindex="-1"
+    ></button>
+
+    <section
+      class="hb-HelpBox_Dialog"
+      role="dialog"
+      aria-modal="false"
+      aria-labelledby="HelpBoxTitle"
+      tabindex="-1"
+    >
+      <header class="hb-HelpBox_Header">
+        <h2 class="hb-HelpBox_Title" id="HelpBoxTitle">Contact Us</h2>
+        <button class="hb-HelpBox_Close" type="button" data-help-box-close>Close</button>
+      </header>
+
+      <div class="hb-HelpBox_Body">
+        <a class="hb-HelpBox_Email" href="mailto:help@solacelondon.com">
+          <span class="hb-HelpBox_EmailText">
+            Email us<br>
+            help@solacelondon.com
+          </span>
+          <span class="hb-HelpBox_Chevron" aria-hidden="true">
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+              <path d="M8.93 8 5.78 4.85l.62-.62L10.17 8l-3.77 3.77-.62-.62L8.93 8Z" fill="currentColor"/>
+            </svg>
+          </span>
+        </a>
+
+        {%- if menu != blank and linklists[menu].links.size > 0 -%}
+          <nav class="hb-HelpBox_Links" aria-label="Contact Us">
+            {%- for link in linklists[menu].links -%}
+              <a class="hb-HelpBox_Link" href="{{ link.url }}">{{ link.title }}</a>
+            {%- endfor -%}
+          </nav>
+        {%- endif -%}
+      </div>
+    </section>
+  </div>
+</help-box>
