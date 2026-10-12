@@ -57,7 +57,6 @@
 
   {%- liquid
     assign pagination_amount = section.settings.products_per_page | default: 16
-    assign products_per_row = section.settings.products_per_row | default: '4'
 
     assign active_filter_count = 0
     for filter in search.filters
@@ -127,14 +126,16 @@
       {%- if search.performed -%}
         {%- if search.results_count > 0 -%}
           {%- paginate search.results by pagination_amount -%}
-            <section class="clc-List">
+            <section class="clc-List clc-List--mobile-columns-{{ section.settings.mobile_columns | default: '2' }}">
               <div class="prd-List">
-                <div class="prd-List_Items prd-List_Items--{{ products_per_row }}-col">
+                <div class="prd-List_Items prd-List_Items--3-col">
                   {%- for item in search.results -%}
                     {%- if item.object_type == 'product' -%}
                       <div class="prd-List_Item js-Animate" data-animation="Fade">
                         {%- render 'product-card',
                           product: item,
+                          enable_card_swipe: true,
+                          packshot_when_available: true,
                           check_first_image_tag: section.settings.enable_first_image_last_tag,
                           first_image_as_hover: section.settings.set_first_image_as_hover
                         -%}
@@ -210,22 +211,6 @@
       "content": "Layout Settings"
     },
     {
-      "type": "select",
-      "id": "products_per_row",
-      "label": "Desktop products per row",
-      "options": [
-        {
-          "value": "3",
-          "label": "3 Cards"
-        },
-        {
-          "value": "4",
-          "label": "4 Cards"
-        }
-      ],
-      "default": "4"
-    },
-    {
       "type": "range",
       "id": "products_per_page",
       "label": "Products per page",
@@ -233,6 +218,16 @@
       "max": 36,
       "step": 1,
       "default": 16
+    },
+    {
+      "type": "select",
+      "id": "mobile_columns",
+      "label": "Mobile columns (500px and below)",
+      "options": [
+        { "value": "1", "label": "1 column" },
+        { "value": "2", "label": "2 columns" }
+      ],
+      "default": "2"
     },
     {
       "type": "header",
@@ -245,6 +240,20 @@
       "default": true
     },
     {
+      "type": "checkbox",
+      "id": "enable_first_image_last_tag",
+      "label": "Always show 1st image (Ignore tags)",
+      "info": "When enabled, all products in search results will display their 1st image (featured image / flatlay), ignoring any 'first_image_last' product tags.",
+      "default": false
+    },
+    {
+      "type": "checkbox",
+      "id": "set_first_image_as_hover",
+      "label": "Set 1st image as hover",
+      "info": "When enabled, products with 'first_image_last' tags will display their 1st image on hover.",
+      "default": true
+    },
+    {
       "type": "range",
       "id": "suggested_terms_limit",
       "label": "Header suggested terms",
@@ -253,24 +262,6 @@
       "max": 10,
       "step": 1,
       "default": 3
-    },
-    {
-      "type": "header",
-      "content": "Product Card Settings"
-    },
-    {
-      "type": "checkbox",
-      "id": "enable_first_image_last_tag",
-      "label": "Always show 1st image (Ignore tags)",
-      "info": "When enabled, all products will display their 1st image, ignoring 'first_image_last' tags.",
-      "default": false
-    },
-    {
-      "type": "checkbox",
-      "id": "set_first_image_as_hover",
-      "label": "Set 1st image as hover",
-      "info": "When enabled, products with 'first_image_last' tags will display their 1st image on hover.",
-      "default": false
     }
   ]
 }
