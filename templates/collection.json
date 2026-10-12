@@ -63,7 +63,7 @@
       "settings": {
         "products_per_page": 17,
         "mobile_columns": "2",
-        "use_search_and_discovery_filters": false,
+        "use_search_and_discovery_filters": true,
         "enable_sorting": true,
         "enable_first_image_last_tag": false,
         "set_first_image_as_hover": true
