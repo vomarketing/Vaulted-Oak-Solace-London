@@ -105,6 +105,24 @@
     ]
   },
   {
+    "name": "Wishlist",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "wishlist_enable",
+        "label": "Enable wishlist",
+        "default": true,
+        "info": "Saved items are stored by the iWish (Mst: Wishlist Prime) app."
+      },
+      {
+        "type": "link_list",
+        "id": "wishlist_empty_menu",
+        "label": "Empty Saved tab menu",
+        "info": "Links shown when there are no saved items."
+      }
+    ]
+  },
+  {
     "name": "App Icons",
     "settings": [
       {
