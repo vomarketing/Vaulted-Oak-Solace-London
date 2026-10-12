@@ -236,7 +236,8 @@
       .hd-Header_Nav-right {
         .hd-Nav_Link,
         .hd-Nav_Link--account,
-        .hd-Nav_Link[data-module-drawers-trigger="search"] {
+        .hd-Nav_Link[data-module-drawers-trigger="search"],
+        .hd-Nav_Wishlist {
           color: var(--color-black);
         }
       }

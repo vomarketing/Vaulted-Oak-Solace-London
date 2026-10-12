@@ -256,6 +256,23 @@
               </li>
             {%- endif -%}
 
+            {%- if settings.wishlist_enable -%}
+              <li class="hd-Nav_Item">
+                <wishlist-indicator data-filled="false">
+                  <button
+                    type="button"
+                    class="hd-Nav_Wishlist"
+                    aria-label="{{ 'wishlist.saved' | t | escape }}"
+                    data-module-drawers-trigger="cart"
+                    data-mini-tab-target="saved"
+                  >
+                    {%- render 'icons', icon: 'bookmark', class: 'hd-Nav_WishlistIcon-outline' -%}
+                    {%- render 'icons', icon: 'bookmark-filled', class: 'hd-Nav_WishlistIcon-filled' -%}
+                  </button>
+                </wishlist-indicator>
+              </li>
+            {%- endif -%}
+
             <li class="hd-Nav_Item">
               <a
                 class="hd-Nav_Cart"
