@@ -141,8 +141,11 @@ button[data-help-box-open]:focus-visible {
     transition: bottom 0.3s ease;
   }
 
-  body:has(.pdp-sticky-atc-mobile.is-visible) .hb-HelpBox_Launcher {
-    bottom: calc(73px + env(safe-area-inset-bottom, 0px));
+  @media (max-width: 900px) {
+    body:not(.is-editorial-active, .is-pdp-transitioning):has(product-buy-buttons .pdp-size-drawer:not(.is-hidden-by-section)) .hb-HelpBox_Launcher,
+    body:has(.pdp-sticky-atc-mobile.is-visible) .hb-HelpBox_Launcher {
+      bottom: calc(73px + env(safe-area-inset-bottom, 0px));
+    }
   }
 
   body:has(.fullpage-slide.swiper-slide-active .hero-fullscreen__controls) .hb-HelpBox_Launcher {
