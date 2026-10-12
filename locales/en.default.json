@@ -406,16 +406,17 @@
     }
   },
   "wishlist": {
-    "your_wishlist": "Your Wishlist",
-    "wishlist_drawer_title": "Wishlist",
-    "temporarilly_saved_html": "Wishlist is not saved permanently yet. Please {{ login }} or {{ register }}",
     "add_to_wishlist": "Add to Wishlist",
     "added_to_wishlist": "Wishlist",
     "remove_from_wishlist": "Remove",
-    "removed_from_wishlist": "Removed",
-    "login_message": "Please enter your email and password below to access your wishlist",
-    "loading": "Loading",
-    "empty": "Your Wishlist is empty."
+    "saved": "Saved",
+    "drawer_label": "Bag and saved items",
+    "empty": "There are no saved items.",
+    "select_size": "Select size",
+    "select_size_heading": "Select {{ option }}",
+    "size_label": "{{ option }}: {{ size }}",
+    "save_item": "Save {{ title }}",
+    "remove_item": "Remove {{ title }} from saved items"
   },
   "gift_card": {
     "general": {
