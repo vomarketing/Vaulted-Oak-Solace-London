@@ -184,9 +184,9 @@
         {{- 'cart.bag.remove' | t -}}
       </button>
 
-      <button class="bag-Item_Wishlist" type="button" aria-label="{{ 'wishlist.add_to_wishlist' | t }}">
-        {%- render 'icons', icon: 'bookmark' -%}
-      </button>
+      {%- if settings.wishlist_enable -%}
+        {%- render 'wishlist-save-button', line_item: line_item, class: 'bag-Item_Wishlist' -%}
+      {%- endif -%}
     </div>
   </div>
 
