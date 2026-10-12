@@ -144,6 +144,11 @@ button[data-help-box-open]:focus-visible {
     bottom: calc(73px + env(safe-area-inset-bottom, 0px));
   }
 
+  body.is-newsletter-popup-open .hb-HelpBox_Launcher {
+    visibility: hidden;
+    pointer-events: none;
+  }
+
   .hb-HelpBox {
     align-items: stretch;
     flex-direction: column;
