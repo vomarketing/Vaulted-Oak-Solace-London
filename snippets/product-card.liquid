@@ -68,6 +68,12 @@
       break
     endif
   endfor
+
+  assign size_label_market = 'UK'
+
+  if localization.country.iso_code == 'US'
+    assign size_label_market = 'US'
+  endif
 -%}
 
 {%- if product.options.size == 1 -%}
@@ -191,7 +197,9 @@
           </select>
           <input type="hidden" name="quantity" value="1" />
 
-          <p class="prd-Card_Text">{{ 'products.card.size_label' | t }}</p>
+          <p class="prd-Card_Text">
+            AVAILABLE {{ size_label_market }} SIZES
+          </p>
 
           <div class="prd-Card_Options" data-el="product-card.options">
             {%- for value in size_option.values -%}
