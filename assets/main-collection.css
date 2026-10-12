@@ -428,6 +428,10 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
   text-transform: none;
 }
 
+.clc-List .prd-Card_PreOrder {
+  margin-top: 5px;
+}
+
 .clc-List .prd-Card_Price,
 .clc-List .prd-Card_Meta {
   flex: none;

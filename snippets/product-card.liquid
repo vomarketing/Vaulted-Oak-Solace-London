@@ -58,6 +58,16 @@
       endif
     endfor
   endif
+
+  assign has_pre_order_tag = false
+
+  for tag in product.tags
+    assign downcased_tag = tag | downcase | strip
+    if downcased_tag == 'pre-order'
+      assign has_pre_order_tag = true
+      break
+    endif
+  endfor
 -%}
 
 {%- if product.options.size == 1 -%}
@@ -120,6 +130,10 @@
           <h3 class="prd-Card_Title fz-12_12">
             {{ product.title }}
           </h3>
+
+          {%- if has_pre_order_tag -%}
+            <p class="prd-Card_PreOrder">Pre-order</p>
+          {%- endif -%}
         </div>
 
         {%- if show_add_to_bag_button and has_size_option and option_key -%}
