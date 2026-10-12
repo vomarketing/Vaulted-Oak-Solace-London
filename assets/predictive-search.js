@@ -209,6 +209,21 @@ if (!customElements.get('predictive-search')) {
       return this.getAttribute('data-currency-symbol') || '£';
     }
 
+    get predictiveSearchUrl() {
+      return this.getAttribute('data-routes-predictive-search') || '/search/suggest';
+    }
+
+    get sectionId() {
+      return this.getAttribute('data-section-id') || 'predictive-search';
+    }
+
+    parseSectionData(html) {
+      const doc = new DOMParser().parseFromString(html, 'text/html');
+      const dataEl = doc.querySelector('[data-predictive-search-results]');
+      if (!dataEl) throw new Error('Predictive search data not found');
+      return JSON.parse(dataEl.textContent);
+    }
+
     updateValueState(hasValue) {
       if (this.drawer) {
         this.drawer.classList.toggle(this.classes.drawerHasValue, hasValue);
@@ -385,14 +400,14 @@ if (!customElements.get('predictive-search')) {
       this.showLoading(true);
 
       try {
-        const endpoint = `/search/suggest.json?q=${encodeURIComponent(
+        const endpoint = `${this.predictiveSearchUrl}?q=${encodeURIComponent(
           query
-        )}&resources[type]=query,product&resources[limit]=${Math.max(this.maxQueries, this.maxProducts)}&resources[limit_scope]=each`;
+        )}&resources[type]=query,product&resources[limit]=${Math.max(this.maxQueries, this.maxProducts)}&resources[limit_scope]=each&section_id=${this.sectionId}`;
 
         const response = await fetch(endpoint, { signal: this.abortController.signal });
         if (!response.ok) throw new Error(`Search request failed: ${response.status}`);
 
-        const json = await response.json();
+        const json = this.parseSectionData(await response.text());
 
         // Manage cache size limit
         if (this.cache.size >= this.maxCacheEntries) {
@@ -472,7 +487,7 @@ if (!customElements.get('predictive-search')) {
 
       this.clearSkeletonState();
 
-      if (queries.length === 0 && products.length === 0) {
+      if (products.length === 0) {
         if (this.noResultsQueryEl) {
           this.noResultsQueryEl.textContent = query;
         }
@@ -520,7 +535,7 @@ if (!customElements.get('predictive-search')) {
       }
 
       if (this.productsContainer) {
-        const displayProducts = products.slice(0, this.maxProducts);
+        const displayProducts = this.sortByNewest(products.slice(0, this.maxProducts));
 
         if (displayProducts.length > 0) {
           this.productsContainer.innerHTML = displayProducts
@@ -584,6 +599,10 @@ if (!customElements.get('predictive-search')) {
       this.openResults();
     }
 
+    sortByNewest(products) {
+      return [...products].sort((a, b) => (b.published_date || '').localeCompare(a.published_date || ''));
+    }
+
     resizeImageUrl(url, width) {
       const safeUrl = this.sanitizeUrl(url);
       try {
@@ -627,7 +646,7 @@ if (!customElements.get('predictive-search')) {
       }
       this.currentQuery = '';
       if (this.input) {
-        this.input.value = this.input.defaultValue;
+        this.input.value = '';
       }
       if (this.queriesList) {
         this.queriesList.innerHTML = '';

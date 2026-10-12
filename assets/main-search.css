@@ -76,16 +76,17 @@
     grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 40px 20px;
 
-    @media (min-width: 1201px) {
+    @media (min-width: 1025px) {
       &.prd-List_Items--3-col {
         grid-template-columns: repeat(3, minmax(0, 1fr));
         gap: 50px;
       }
+    }
+  }
 
-      &.prd-List_Items--4-col {
-        grid-template-columns: repeat(4, minmax(0, 1fr));
-        gap: 50px;
-      }
+  .clc-List--mobile-columns-1 .prd-List_Items {
+    @media (max-width: 500px) {
+      grid-template-columns: minmax(0, 1fr);
     }
   }
 }

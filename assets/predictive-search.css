@@ -622,14 +622,12 @@ predictive-search {
     }
 
     .pred-Search_ProductsGrid {
-      display: flex;
+      grid-template-columns: repeat(3, minmax(0, 128px));
       gap: 10px;
       width: auto;
     }
 
     .pred-Card {
-      flex: 0 1 128px;
-      width: 128px;
       min-width: 0;
 
       .pred-Card_ImageContainer {
@@ -649,12 +647,8 @@ predictive-search {
       }
 
       .pred-Search_ProductsGrid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
         width: 100%;
-      }
-
-      .pred-Card {
-        flex: 1 1 0;
-        width: auto;
       }
     }
   }
