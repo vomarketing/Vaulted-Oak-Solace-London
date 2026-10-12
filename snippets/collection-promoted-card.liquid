@@ -3,7 +3,7 @@
   assign promoted_image = promo.desktop_image.value
   assign promoted_mobile_image = promo.mobile_image.value | default: promoted_image
   assign promoted_video = promo.video.value
-  assign promoted_text = promo.overlay_text.value
+  assign promoted_text = promo.overlay_text
   assign text_color = promo.text_color.value
   assign promoted_link = promo.link.value
 -%}
@@ -69,7 +69,7 @@
         {%- if promoted_text != blank -%}
           <div class="clc-PromotedCard_Content fz-12_12">
             <div class="clc-PromotedCard_Text rte-RichText">
-              {{ promoted_text | escape }}
+              {{ promoted_text | metafield_tag }}
             </div>
           </div>
         {%- endif -%}
