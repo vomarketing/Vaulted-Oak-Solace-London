@@ -199,7 +199,7 @@
     @media (min-width: 1201px) {
       display: grid;
       margin-block: 0;
-      grid-template-columns: minmax(0, 630fr) minmax(0, 397fr) minmax(0, 391fr) minmax(0, 422fr);
+      grid-template-columns: minmax(0, 630fr) minmax(0, 397fr) minmax(0, 391fr) minmax(min-content, 422fr);
       grid-template-rows: auto 18px;
       grid-template-areas:
         "about primary secondary newsletter"
@@ -304,6 +304,8 @@
 
     @media (min-width: 1201px) {
       display: block;
+      max-width: none;
+      white-space: nowrap;
     }
   }
 
@@ -421,6 +423,10 @@
   font: inherit;
   text-align: left;
   cursor: pointer;
+
+  @media (min-width: 1201px) {
+    white-space: nowrap;
+  }
 }
 
 .ft-NewsletterPopup[hidden] {
