@@ -1,0 +1,89 @@
+{%- liquid
+  assign has_final_sale = false
+
+  for item in cart.items
+    if item.variant.compare_at_price != blank
+      if item.variant.compare_at_price > item.variant.price
+        assign has_final_sale = true
+        break
+      endif
+    endif
+  endfor
+-%}
+<div class="mbg-State" data-mini-state data-count="{{ cart.item_count }}">
+  <div class="mbg-Scroll">
+    {% if cart.item_count == 0 %}
+      <p>Your bag is empty.</p>
+      <div class="mbg-EmptyHelp">
+        {% if settings.mbg_delivery_summary != blank %}
+          <div>{{ settings.mbg_delivery_summary }}</div>
+        {% endif %}
+        <button type="button" class="mbg-Link" data-mini-info>More information</button>
+        {% if settings.mbg_help_text != blank or settings.mbg_email != blank %}
+          <div class="mbg-Help">
+            <p>Need help?</p>
+
+            {% if settings.mbg_help_text != blank %}
+              <p class="mbg-HelpText">
+                {{ settings.mbg_help_text | escape | newline_to_br }}
+              </p>
+            {% endif %}
+
+            {% if settings.mbg_email != blank %}
+              <a class="mbg-Link" href="mailto:{{ settings.mbg_email | escape }}">Email</a>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    {% else %}
+      {% if has_final_sale %}<p class="mbg-FinalSale">{{ settings.mbg_final_sale_message | default: 'All online archive sale items are final sale. No returns or exchanges.' | escape }}</p>{% endif %}
+      {% for item in cart.items %}{% render 'mini-bag-item', item: item %}{% endfor %}
+    {% endif %}
+  </div>
+  {% if cart.item_count > 0 %}
+    <footer class="mbg-Footer">
+      {% if cart.requires_shipping %}
+        <div class="mbg-Row"><div class="mbg-Shipping">Shipping
+          <button type="button" class="mbg-InfoButton" data-mini-tooltip-toggle aria-label="Shipping information" aria-expanded="false" aria-controls="MiniBagShippingTip">
+            <svg xmlns="http://www.w3.org/2000/svg" width="2" height="8" viewBox="0 0 2 8" fill="none">
+              <path d="M0.152344 7.27197V2.72461H1.42969V7.27197H0.152344ZM0.796875 1.58789C0.578125 1.58789 0.390625 1.50977 0.234375 1.35352C0.078125 1.19727 0 1.00977 0 0.791016C0 0.572266 0.078125 0.386719 0.234375 0.234375C0.390625 0.078125 0.578125 0 0.796875 0C1.01562 0 1.20312 0.078125 1.35938 0.234375C1.51562 0.386719 1.59375 0.572266 1.59375 0.791016C1.59375 1.00977 1.51562 1.19727 1.35938 1.35352C1.20312 1.50977 1.01562 1.58789 0.796875 1.58789Z" fill="currentCOlor"/>
+            </svg>
+          </button>
+            <div
+              class="mbg-Tooltip"
+              id="MiniBagShippingTip"
+              data-mini-tooltip
+              hidden
+            >
+              {% if settings.mbg_delivery_summary != blank %}
+                {{ settings.mbg_delivery_summary }}
+              {% else %}
+                Shipping rates are calculated at checkout.
+              {% endif %}
+            </div>
+        </div><span>Calculated at checkout</span></div>
+      {% endif %}
+      {% if localization.market.metafields.custom.show_duties_and_taxes.value == true %}
+        <div class="mbg-Row">
+          <span>Duties and Taxes</span>
+          <span>Included</span>
+        </div>
+      {% endif %}
+      {% for discount in cart.cart_level_discount_applications %}<div class="mbg-Row"><span>{{ discount.title | escape }}</span><span>−{{ discount.total_allocated_amount | money }}</span></div>{% endfor %}
+      <div class="mbg-Row"><span>Subtotal</span><span>{{ cart.total_price | money }}</span></div>
+      <form action="{{ routes.cart_url }}" method="post"><button class="mbg-Checkout" type="submit" name="checkout">Checkout</button></form>
+      <a class="mbg-ViewCart" href="{{ routes.cart_url }}">View your cart</a>
+      {%- liquid
+        assign mbg_note = settings.mbg_note_default
+
+        if localization.market.metafields.custom.show_duties_and_taxes.value == true
+          assign mbg_note = settings.mbg_note_included
+        endif
+      -%}
+
+      {% if mbg_note != blank %}
+        <p class="mbg-Note">{{ mbg_note | escape | newline_to_br }}</p>
+      {% endif %}
+    </footer>
+  {% endif %}
+</div>
