@@ -1,0 +1,476 @@
+{% comment %}Settings{% endcomment %}
+
+{% capture global_font_family %}Helvetica, Arial, sans-serif{% endcapture %}
+{% capture global_font_colour %}#000000{% endcapture %}
+{% capture global_border_colour %}#808080{% endcapture %}
+{% capture global_section_background %}#ffffff{% endcapture %}
+{% capture global_image_background %}#f7f7f7{% endcapture %}
+
+{% capture site_url %}https://www.solacelondon.com{% endcapture %}
+
+{% comment %}Label shown before the variant value when a product has a single option, e.g. "Size: 10". Leave blank to show the value only.{% endcomment %}
+{% capture single_variant_label %}Size{% endcapture %}
+
+{% comment %}Intro{% endcomment %}
+
+{% capture intro_title %}Thank you for your order!{% endcapture %}
+{% capture intro_status %}Your order is being processed.{% endcapture %}
+{% capture intro_text %}Please see your order information below. After your order ships we will send another email with tracking information.{% endcapture %}
+
+{% comment %}Buttons{% endcomment %}
+
+{% capture order_link_text %}View Your Order{% endcapture %}
+{% capture contact_button_text %}Contact Customer Care{% endcapture %}
+{% capture contact_button_url %}{{ site_url }}/pages/contact{% endcapture %}
+
+{% comment %}Shared inline styles{% endcomment %}
+
+{% capture text_style %}font-family: {{ global_font_family }}; font-size: 12px; line-height: 18px; mso-line-height-rule: exactly; color: {{ global_font_colour }};{% endcapture %}
+{% capture link_style %}color: {{ global_font_colour }}; text-decoration: none;{% endcapture %}
+
+{% comment %}Payment methods{% endcomment %}
+
+{% capture payment_methods %}
+  {% for transaction in transactions %}
+    {% if transaction.status == "success" or transaction.status == "pending" %}
+      {% if transaction.kind == "authorization" or transaction.kind == "sale" %}
+        {% if transaction.payment_details.credit_card_company %}
+          {{ transaction.payment_details.credit_card_company }}{% if transaction.payment_details.credit_card_last_four_digits %} ending in {{ transaction.payment_details.credit_card_last_four_digits }}{% endif %}<br>
+        {% else %}
+          {{ transaction.gateway | replace: "_", " " | capitalize }}<br>
+        {% endif %}
+      {% endif %}
+    {% endif %}
+  {% endfor %}
+{% endcapture %}
+{% assign payment_methods = payment_methods | strip %}
+
+<!DOCTYPE html>
+<html lang="en" xmlns="http://www.w3.org/1999/xhtml" xmlns:v="urn:schemas-microsoft-com:vml" xmlns:o="urn:schemas-microsoft-com:office:office">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="x-apple-disable-message-reformatting">
+  <meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
+  <meta name="color-scheme" content="light only">
+  <meta name="supported-color-schemes" content="light only">
+  <title>{{ intro_title }}</title>
+  <!--[if mso]>
+  <noscript>
+    <xml>
+      <o:OfficeDocumentSettings>
+        <o:PixelsPerInch>96</o:PixelsPerInch>
+      </o:OfficeDocumentSettings>
+    </xml>
+  </noscript>
+  <style type="text/css">
+    table, td, a, span { font-family: Helvetica, Arial, sans-serif !important; }
+  </style>
+  <![endif]-->
+  <style type="text/css">
+    /* Reset styles */
+    :root { color-scheme: light only; supported-color-schemes: light only; }
+    body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+    table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse; }
+    img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; display: block; }
+    body { height: 100% !important; margin: 0 !important; padding: 0 !important; width: 100% !important; background-color: {{ global_section_background }}; }
+    a[x-apple-data-detectors] { color: inherit !important; text-decoration: none !important; font-size: inherit !important; font-family: inherit !important; font-weight: inherit !important; line-height: inherit !important; }
+    u + #body a { color: inherit; text-decoration: none; font-size: inherit; font-family: inherit; font-weight: inherit; line-height: inherit; }
+    .address p { margin: 0; }
+
+    @media (max-width: 480px) {
+      .email-wrapper { padding-left: 20px !important; padding-right: 20px !important; }
+      .logo-cell { padding-top: 40px !important; padding-bottom: 40px !important; }
+      .stack { display: block !important; width: 100% !important; }
+      .stack-gap { padding-bottom: 18px !important; }
+      .product-image { width: 90px !important; }
+      .product-image img { width: 90px !important; }
+      .footer-cell { padding-top: 50px !important; padding-bottom: 50px !important; }
+    }
+  </style>
+</head>
+<body id="body" style="margin: 0; padding: 0; width: 100%; background-color: {{ global_section_background }}; -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%;">
+
+  <!-- Preheader -->
+  <div style="display: none; font-size: 1px; line-height: 1px; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all;">
+    Your order {{ order_name }} is being processed.
+    &#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;&#8204;&nbsp;
+  </div>
+
+  <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" bgcolor="{{ global_section_background }}" style="width: 100%; background-color: {{ global_section_background }};">
+    <tr>
+      <td align="center" valign="top">
+        <!--[if mso]>
+        <table role="presentation" width="640" border="0" cellpadding="0" cellspacing="0" align="center"><tr><td>
+        <![endif]-->
+        <table role="presentation" class="email-container" width="100%" border="0" cellpadding="0" cellspacing="0" align="center" style="width: 100%; max-width: 640px; margin: 0 auto;">
+          <tr>
+            <td class="email-wrapper" style="padding: 0 20px;">
+
+              <!-- HEADER / LOGO -->
+              <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td class="logo-cell" align="center" style="padding: 58px 0 50px;">
+                    <a href="{{ shop.url }}" target="_blank" style="{{ link_style }}">
+                      {% if shop.email_logo_url %}
+                        <img src="{{ shop.email_logo_url }}" alt="{{ shop.name }}" width="{{ shop.email_logo_width | default: 241 }}" style="display: block; margin: 0 auto; border: 0; height: auto; max-width: 100%;">
+                      {% else %}
+                        <span style="font-family: {{ global_font_family }}; font-size: 24px; font-weight: 300; letter-spacing: 4px; text-transform: uppercase; color: {{ global_font_colour }};">{{ shop.name }}</span>
+                      {% endif %}
+                    </a>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- INTRO -->
+              <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="{{ text_style }}">
+                {% if customer.first_name != blank %}
+                  <tr>
+                    <td style="padding-bottom: 18px;">Hi {{ customer.first_name }},</td>
+                  </tr>
+                {% endif %}
+                <tr>
+                  <td style="padding-bottom: 18px;">{{ intro_title }}</td>
+                </tr>
+                <tr>
+                  <td style="padding-bottom: 18px;">{{ intro_status }}</td>
+                </tr>
+                <tr>
+                  <td style="padding-bottom: 30px;">{{ intro_text }}</td>
+                </tr>
+              </table>
+
+              <!-- Rule -->
+              <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="border-top: 1px solid {{ global_border_colour }}; font-size: 1px; line-height: 1px; mso-line-height-rule: exactly;">&nbsp;</td>
+                </tr>
+              </table>
+
+              <!-- ORDER / CUSTOMER INFORMATION -->
+              <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="{{ text_style }}">
+                <tr>
+                  <td width="53%" valign="top" style="width: 53%; vertical-align: top; padding: 29px 0 18px; text-transform: uppercase;">Order number: {{ order_name | remove: '#' }}</td>
+                  <td width="47%" valign="top" align="right" style="width: 47%; vertical-align: top; padding: 29px 0 18px; text-align: right;">
+                    {% if order_status_url %}
+                      <a href="{{ order_status_url }}" target="_blank" style="color: {{ global_font_colour }}; text-decoration: underline;">{{ order_link_text }}</a>
+                    {% endif %}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="stack stack-gap address" width="53%" valign="top" style="width: 53%; vertical-align: top; padding-bottom: 30px;">
+                    {% if billing_address %}
+                      Billing Address<br>
+                      {{ billing_address | format_address | remove: '<p>' | remove: '</p>' }}
+                      {% if billing_address.phone != blank %}<br>{{ billing_address.phone }}{% endif %}
+                    {% endif %}
+                  </td>
+                  <td class="stack address" width="47%" valign="top" style="width: 47%; vertical-align: top; padding-bottom: 30px;">
+                    {% if requires_shipping and shipping_address %}
+                      Shipping Address<br>
+                      {{ shipping_address | format_address | remove: '<p>' | remove: '</p>' }}
+                      {% if shipping_address.phone != blank %}<br>{{ shipping_address.phone }}{% endif %}
+                    {% endif %}
+                  </td>
+                </tr>
+                <tr>
+                  <td class="stack stack-gap" width="53%" valign="top" style="width: 53%; vertical-align: top; padding-bottom: 30px;">
+                    Date Placed<br>
+                    {{ created_at | date: "%d.%m.%y" }}
+                  </td>
+                  <td class="stack" width="47%" valign="top" style="width: 47%; vertical-align: top; padding-bottom: 30px;">
+                    {% if requires_shipping and shipping_method %}
+                      Shipping Method<br>
+                      {{ shipping_method.title }}
+                    {% endif %}
+                  </td>
+                </tr>
+                {% if payment_methods != blank %}
+                  <tr>
+                    <td colspan="2" valign="top" style="vertical-align: top; padding-bottom: 30px;">
+                      Payment Method<br>
+                      {{ payment_methods }}
+                    </td>
+                  </tr>
+                {% endif %}
+              </table>
+
+              <!-- Rule -->
+              <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="border-top: 1px solid {{ global_border_colour }}; font-size: 1px; line-height: 1px; mso-line-height-rule: exactly;">&nbsp;</td>
+                </tr>
+              </table>
+
+              <!-- ORDER SUMMARY -->
+              <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="{{ text_style }}">
+                <tr>
+                  <td style="padding: 29px 0 30px; text-transform: uppercase;">In this order</td>
+                </tr>
+                {% for line in subtotal_line_items %}
+                  {% if line.product.title %}
+                    {% assign line_title = line.product.title %}
+                  {% else %}
+                    {% assign line_title = line.title %}
+                  {% endif %}
+                  {% assign line_variant = line.variant.title %}
+                  {% assign line_image_url = line.image | img_url: 'large' %}
+                  {% assign line_image_protocol = line_image_url | slice: 0, 2 %}
+                  {% if line_image_protocol == '//' %}
+                    {% assign line_image_url = line_image_url | prepend: 'https:' %}
+                  {% endif %}
+                  {% if line.url != blank %}
+                    {% assign line_url = shop.url | append: line.url %}
+                  {% else %}
+                    {% assign line_url = '' %}
+                  {% endif %}
+                  <tr>
+                    <td style="padding-bottom: 30px;">
+                      <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="{{ text_style }}">
+                        <tr>
+                          {% if line.image %}
+                            <td class="product-image" width="110" valign="top" bgcolor="{{ global_image_background }}" style="width: 110px; vertical-align: top; background-color: {{ global_image_background }};">
+                              {% if line_url != blank %}<a href="{{ line_url }}" target="_blank" style="{{ link_style }}">{% endif %}
+                                <img src="{{ line_image_url }}" alt="{{ line_title | escape }}" width="110" style="display: block; width: 110px; height: auto; border: 0;">
+                              {% if line_url != blank %}</a>{% endif %}
+                            </td>
+                            <td width="20" style="width: 20px; font-size: 1px; line-height: 1px;">&nbsp;</td>
+                          {% endif %}
+                          <td valign="top" style="vertical-align: top;">
+                            {% if line_url != blank %}
+                              <a href="{{ line_url }}" target="_blank" style="{{ link_style }}">{{ line_title }}</a>
+                            {% else %}
+                              {{ line_title }}
+                            {% endif %}
+                            {% unless line_variant == blank or line_variant == 'Default Title' %}
+                              {% assign variant_values = line_variant | split: ' / ' %}
+                              {% if variant_values.size == 1 and single_variant_label != blank %}
+                                <br>{{ single_variant_label }}: {{ line_variant }}
+                              {% else %}
+                                {% for value in variant_values %}
+                                  <br>{{ value }}
+                                {% endfor %}
+                              {% endif %}
+                            {% endunless %}
+                            {% if line.quantity > 1 %}
+                              <br>Quantity: {{ line.quantity }}
+                            {% endif %}
+                            {% if line.refunded_quantity > 0 %}
+                              <br>Refunded
+                            {% endif %}
+                          </td>
+                          <td width="1" valign="top" align="right" style="width: 1%; padding-left: 10px; vertical-align: top; text-align: right; white-space: nowrap;">
+                            {% if line.original_line_price != line.final_line_price %}
+                              <del style="text-decoration: line-through;">{{ line.original_line_price | money }}</del><br>
+                            {% endif %}
+                            {{ line.final_line_price | money }}
+                          </td>
+                        </tr>
+                      </table>
+                    </td>
+                  </tr>
+                {% endfor %}
+              </table>
+
+              <!-- Rule -->
+              <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td style="border-top: 1px solid {{ global_border_colour }}; font-size: 1px; line-height: 1px; mso-line-height-rule: exactly;">&nbsp;</td>
+                </tr>
+              </table>
+
+              <!-- COSTS -->
+              <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="{{ text_style }}">
+                <tr>
+                  <td colspan="2" style="padding-top: 29px; font-size: 1px; line-height: 1px;">&nbsp;</td>
+                </tr>
+
+                {% if discounts_amount > 0 %}
+                  {% if discounts.first.code %}
+                    {% capture discount_title %}Discount ({{ discounts.first.code }}){% endcapture %}
+                  {% else %}
+                    {% capture discount_title %}Discount{% endcapture %}
+                  {% endif %}
+                  <tr>
+                    <td align="left" style="padding-bottom: 5px;">{{ discount_title }}</td>
+                    <td align="right" style="padding-bottom: 5px; text-align: right;">{{ discounts_savings | money }}</td>
+                  </tr>
+                {% endif %}
+
+                <tr>
+                  <td align="left" style="padding-bottom: 5px;">Subtotal</td>
+                  <td align="right" style="padding-bottom: 5px; text-align: right;">{{ subtotal_price | money }}</td>
+                </tr>
+
+                {% if requires_shipping %}
+                  <tr>
+                    <td align="left" style="padding-bottom: 5px;">Shipping</td>
+                    <td align="right" style="padding-bottom: 5px; text-align: right;">{{ shipping_price | money }}</td>
+                  </tr>
+                {% endif %}
+
+                {% if shipping_address.country_code == 'US' %}
+                  {% assign us_total_tax = 0 %}
+                  {% for tax_line in tax_lines %}
+                    {% assign us_total_tax = us_total_tax | plus: tax_line.price %}
+                  {% endfor %}
+                  {% if us_total_tax > 0 %}
+                    <tr>
+                      <td align="left" style="padding-bottom: 5px;">Taxes</td>
+                      <td align="right" style="padding-bottom: 5px; text-align: right;">{{ us_total_tax | money }}</td>
+                    </tr>
+                  {% endif %}
+                {% else %}
+                  {% for tax_line in tax_lines %}
+                    {% if tax_line.price > 0 %}
+                      <tr>
+                        <td align="left" style="padding-bottom: 5px;">{{ tax_line.title }}</td>
+                        <td align="right" style="padding-bottom: 5px; text-align: right;">{{ tax_line.price | money }}</td>
+                      </tr>
+                    {% endif %}
+                  {% endfor %}
+                {% endif %}
+
+                {% if total_tip and total_tip > 0 %}
+                  <tr>
+                    <td align="left" style="padding-bottom: 5px;">Tip</td>
+                    <td align="right" style="padding-bottom: 5px; text-align: right;">{{ total_tip | money }}</td>
+                  </tr>
+                {% endif %}
+
+                <tr>
+                  <td align="left" style="padding-bottom: 30px;">Order Total</td>
+                  <td align="right" style="padding-bottom: 30px; text-align: right;">{{ total_price | money }}</td>
+                </tr>
+              </table>
+
+              <!-- TRANSACTIONS (split payments / refunds) -->
+              {% assign transaction_size = 0 %}
+              {% assign transaction_amount = 0 %}
+              {% for transaction in transactions %}
+                {% unless transaction.kind == "capture" or transaction.kind == "void" %}
+                  {% assign transaction_size = transaction_size | plus: 1 %}
+                  {% assign transaction_amount = transaction_amount | plus: transaction.amount %}
+                {% endunless %}
+              {% endfor %}
+
+              {% if transaction_size > 1 or transaction_amount < total_price %}
+                <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="{{ text_style }}">
+                  {% for transaction in transactions %}
+                    {% if transaction.status == "success" %}
+                      {% if transaction.kind == "authorization" or transaction.kind == "sale" %}
+                        {% if transaction.payment_details.credit_card_company %}
+                          {% capture transaction_name %}{{ transaction.payment_details.credit_card_company }} (ending in {{ transaction.payment_details.credit_card_last_four_digits }}){% endcapture %}
+                        {% else %}
+                          {% capture transaction_name %}{{ transaction.gateway | replace: "_", " " | capitalize }}{% endcapture %}
+                        {% endif %}
+                        <tr>
+                          <td align="left" style="padding-bottom: 5px;">{{ transaction_name }}</td>
+                          <td align="right" style="padding-bottom: 5px; text-align: right;">{{ transaction.amount | money }}</td>
+                        </tr>
+                      {% endif %}
+                    {% endif %}
+
+                    {% if transaction.kind == 'refund' %}
+                      {% if transaction.payment_details.credit_card_company %}
+                        {% assign refund_method_title = transaction.payment_details.credit_card_company %}
+                      {% else %}
+                        {% assign refund_method_title = transaction.gateway | replace: "_", " " %}
+                      {% endif %}
+                      <tr>
+                        <td align="left" style="padding-bottom: 5px;">Refund ({{ refund_method_title | capitalize }})</td>
+                        <td align="right" style="padding-bottom: 5px; text-align: right;">-{{ transaction.amount | money }}</td>
+                      </tr>
+                    {% endif %}
+                  {% endfor %}
+                  <tr>
+                    <td colspan="2" style="padding-bottom: 25px; font-size: 1px; line-height: 1px;">&nbsp;</td>
+                  </tr>
+                </table>
+              {% endif %}
+
+              <!-- CONTACT BUTTON -->
+              <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td align="center" style="border: 1px solid {{ global_font_colour }}; padding: 15px 10px; {{ text_style }}">
+                    <a href="{{ contact_button_url }}" target="_blank" style="display: block; {{ link_style }} font-family: {{ global_font_family }}; font-size: 12px; line-height: 18px;">{{ contact_button_text }}</a>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- FOOTER -->
+              <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td class="footer-cell" style="padding: 68px 0 76px;">
+                    <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="font-family: {{ global_font_family }}; color: {{ global_font_colour }}; table-layout: fixed;">
+                      <tr>
+                        <td align="left" valign="top" style="padding-bottom: 30px; vertical-align: top;">
+                          <table role="presentation" border="0" cellpadding="0" cellspacing="0" align="left">
+                            <tr>
+                              <td style="padding-right: 30px; font-family: {{ global_font_family }}; font-size: 12px; line-height: 14px; mso-line-height-rule: exactly;">
+                                <a href="{{ site_url }}/collections/new-arrivals" target="_blank" style="{{ link_style }}">New in</a>
+                              </td>
+                              <td style="font-family: {{ global_font_family }}; font-size: 12px; line-height: 14px; mso-line-height-rule: exactly;">
+                                <a href="{{ site_url }}/collections/icons" target="_blank" style="{{ link_style }}">Icons</a>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                        <td align="right" style="padding-bottom: 30px; font-size: 12px; line-height: 14px; mso-line-height-rule: exactly; text-align: right;">
+                          <a href="https://www.instagram.com/solacelondon" target="_blank" style="{{ link_style }}">Instagram</a>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td colspan="2" style="padding-bottom: 30px;">
+                          <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0">
+                            <tr>
+                              <td style="border-top: 1px solid {{ global_border_colour }}; font-size: 1px; line-height: 1px; mso-line-height-rule: exactly;">&nbsp;</td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                      <tr>
+                        <td align="left" valign="top" style="vertical-align: top;">
+                          <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="font-family: {{ global_font_family }}; font-size: 10px; line-height: 12px; mso-line-height-rule: exactly;">
+                            <tr>
+                              <td align="left" style="padding-bottom: 5px;">
+                                <a href="{{ site_url }}/pages/contact" target="_blank" style="{{ link_style }}">Contact us</a>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td align="left">
+                                <a href="{{ site_url }}/pages/shipping-returns" target="_blank" style="{{ link_style }}">Shipping &amp; Returns</a>
+                              </td>
+                            </tr>
+                          </table>
+                        </td>
+                        <td align="right" valign="top" style="vertical-align: top;">
+                          <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="font-family: {{ global_font_family }}; font-size: 10px; line-height: 12px; mso-line-height-rule: exactly;">
+                            <tr>
+                              <td align="right" style="padding-bottom: 5px; text-align: right;">
+                                <a href="{{ unsubscribe_url }}" target="_blank" style="{{ link_style }}">Unsubscribe</a>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td align="right" style="text-align: right; color: {{ global_font_colour }};">Solace London, 21 Club Row, London, E2 7EY</td>
+                            </tr>
+                          </table>
+                        </td>
+                      </tr>
+                    </table>
+                  </td>
+                </tr>
+              </table>
+
+            </td>
+          </tr>
+        </table>
+        <!--[if mso]>
+        </td></tr></table>
+        <![endif]-->
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
