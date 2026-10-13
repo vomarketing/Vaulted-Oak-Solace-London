@@ -159,6 +159,7 @@
 
       if (force || scrollY <= 10 || isHeaderActive) {
         this.showHeader();
+        document.body.classList.remove('is-collection-nav-scrolling-up');
         this.accumulatedDelta = 0;
         this.lastScrollY = scrollY;
         return;
@@ -177,9 +178,11 @@
 
       if (this.accumulatedDelta >= directionThreshold && scrollY > hideAfter) {
         this.hideHeader();
+        document.body.classList.remove('is-collection-nav-scrolling-up');
         this.accumulatedDelta = 0;
       } else if (this.accumulatedDelta <= -directionThreshold) {
         this.showHeader();
+        document.body.classList.add('is-collection-nav-scrolling-up');
         this.accumulatedDelta = 0;
       }
 

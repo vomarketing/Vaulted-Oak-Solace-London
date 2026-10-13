@@ -99,10 +99,6 @@
   display: none;
 }
 
-.collection-filter-v2__group.has-selection .collection-filter-v2__selected-check {
-  display: inline;
-}
-
 .collection-filter-v2__toggle {
   position: relative;
   display: block;
@@ -174,15 +170,50 @@
 .collection-filter-v2__indicator {
   position: relative;
   display: inline-block;
-  width: 14px;
-  height: 14px;
+  width: 12px;
+  height: 12px;
   flex: none;
+}
+
+.collection-filter-v2__input[type="checkbox"] + .collection-filter-v2__indicator {
+  order: 2;
+  border: 0;
+  border-radius: 0;
+}
+
+.collection-filter-v2__input[type="checkbox"] + .collection-filter-v2__indicator + .collection-filter-v2__choice-label {
+  order: 1;
+}
+
+.collection-filter-v2__input[type="checkbox"]:checked + .collection-filter-v2__indicator::after {
+  position: absolute;
+  top: 1px;
+  left: 3px;
+  width: 4px;
+  height: 7px;
+  border: solid currentColor;
+  border-width: 0 1px 1px 0;
+  content: "";
+  transform: rotate(45deg);
+}
+
+.collection-filter-v2__input[type="radio"] + .collection-filter-v2__indicator {
+  order: 0;
   border: 1px solid currentColor;
   border-radius: 50%;
 }
 
-.collection-filter-v2__input:checked + .collection-filter-v2__indicator {
+.collection-filter-v2__input[type="radio"] + .collection-filter-v2__indicator + .collection-filter-v2__choice-label {
+  order: 1;
+}
+
+.collection-filter-v2__input[type="radio"]:checked + .collection-filter-v2__indicator {
   background: currentColor;
+}
+
+.collection-filter-v2__input:focus-visible + .collection-filter-v2__indicator {
+  outline: 2px solid currentColor;
+  outline-offset: 3px;
 }
 
 .collection-filter-v2__input:focus-visible + .collection-filter-v2__indicator {
