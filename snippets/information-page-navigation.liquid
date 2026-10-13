@@ -8,7 +8,7 @@
 	<nav class="info-Page_Navigation" aria-label="Information pages">
 		{%- for link in navigation_menu.links -%}
 			<a
-				class="info-Page_NavigationLink{% if link.active %} is-active{% endif %}"
+				class="info-Page_NavigationLink text-reg-12{% if link.active %} is-active{% endif %}"
 				href="{{ link.url }}"
 				{% if link.active %}aria-current="page"{% endif %}
 			>
