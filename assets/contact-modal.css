@@ -86,7 +86,7 @@
     transform: translateX(100%);
   }
 
-  @media (min-width: 1440px) {
+  @media (min-width: 1600px) {
     max-width: 774px;
   }
 }
@@ -223,7 +223,7 @@
   width: 100%;
 
   &.contact-modal__field--message {
-    @media (min-width: 1440px) {
+    @media (min-width: 1600px) {
       width: calc(50% - 15px);
     }
   }
