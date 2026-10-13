@@ -6,7 +6,6 @@ if (!customElements.get('hero-fullscreen')) {
       this.selectors = {
         video: '.js-hero-video',
         playbackBtn: '.js-playback-toggle',
-        centerPlay: '.js-center-play',
         muteBtn: '.js-mute-toggle',
         progress: '.js-timeline-range',
         played: '.js-timeline-played',
@@ -17,13 +16,11 @@ if (!customElements.get('hero-fullscreen')) {
       };
 
       this.classes = {
-        isPaused: 'is-paused',
-        isPlaying: 'is-playing'
+        isPaused: 'is-paused'
       };
 
       this.video = null;
       this.playbackBtn = null;
-      this.centerPlay = null;
       this.muteBtn = null;
       this.progress = null;
       this.played = null;
@@ -51,7 +48,6 @@ if (!customElements.get('hero-fullscreen')) {
       if (!this.video) return;
 
       this.playbackBtn = this.querySelector(this.selectors.playbackBtn);
-      this.centerPlay = this.querySelector(this.selectors.centerPlay);
       this.muteBtn = this.querySelector(this.selectors.muteBtn);
       this.progress = this.querySelector(this.selectors.progress);
       this.played = this.querySelector(this.selectors.played);
@@ -95,14 +91,6 @@ if (!customElements.get('hero-fullscreen')) {
 
     initCustomControls() {
       if (!this.showControls) return;
-
-      if (this.centerPlay) {
-        this.listen(this.centerPlay, 'click', (event) => {
-          event.preventDefault();
-          event.stopPropagation();
-          this.togglePlayback();
-        });
-      }
 
       if (this.muteBtn) {
         this.listen(this.muteBtn, 'click', (event) => {
@@ -158,8 +146,6 @@ if (!customElements.get('hero-fullscreen')) {
 
       const isPlaying = !this.video.paused && !this.video.ended;
 
-      this.classList.toggle(this.classes.isPlaying, isPlaying);
-
       if (this.playbackBtn) {
         this.playbackBtn.classList.toggle(this.classes.isPaused, !isPlaying);
         this.playbackBtn.setAttribute('aria-label', isPlaying ? 'Pause video' : 'Play video');
@@ -167,10 +153,6 @@ if (!customElements.get('hero-fullscreen')) {
         if (this.showControls) {
           this.playbackBtn.innerHTML = isPlaying ? this.icons.pause : this.icons.play;
         }
-      }
-
-      if (this.centerPlay) {
-        this.centerPlay.setAttribute('aria-label', isPlaying ? 'Pause video' : 'Play video');
       }
     }
 
@@ -299,7 +281,6 @@ if (!customElements.get('hero-fullscreen')) {
 
       this.video = null;
       this.playbackBtn = null;
-      this.centerPlay = null;
       this.muteBtn = null;
       this.progress = null;
       this.played = null;

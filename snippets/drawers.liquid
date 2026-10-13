@@ -58,22 +58,42 @@
         <div class="drw-Nav_Logo">
           {%- render 'bao-logo' -%}
         </div>
+
+        <div class="drw-Nav_Footer">
+          <a
+            class="drw-Nav_FooterButton"
+            href="{{ routes.cart_url }}"
+            {% unless request.page_type == 'cart' %}data-module-drawers-trigger="cart"{% endunless %}
+          >
+            {{- 'layout.header.bag' | t }} (<span data-push-cart-count>{{ cart.item_count }}</span>)
+          </a>
+
+          {%- if settings.wishlist_enable -%}
+            <button
+              type="button"
+              class="drw-Nav_FooterButton"
+              data-module-drawers-trigger="cart"
+              data-mini-tab-target="saved"
+            >
+              {{- 'wishlist.saved_products' | t }} (<wishlist-count>0</wishlist-count>)
+            </button>
+          {%- endif -%}
+        </div>
       </div>
     </div>
   </div>
 
   {%- render 'search-drawer' -%}
-  {%- if request.page_type == 'search' -%}
+  {%- if request.page_type == 'search' and settings.search_provider == 'klevu' -%}
     {%- render 'search-filter-drawer' -%}
   {%- endif -%}
 
-  {%- unless request.page_type == 'cart' -%}
+  {%- unless request.page_type == 'cart' and settings.wishlist_enable == false -%}
     {%- render 'push-cart-drawer' -%}
   {%- endunless -%}
 
   {%- if request.page_type == 'product' -%}
     {%- render 'back-in-stock-drawer' -%}
-    {%- render 'wishlist-drawer' -%}
   {%- endif -%}
 
 </div>
