@@ -1,5 +1,4 @@
 .faq-Page {
-  padding: 64px 5.3vw 120px;
   color: #000;
   box-sizing: border-box;
   min-height: max(900px, 100vh);
@@ -21,7 +20,7 @@
   }
 
   .faq-Faqs_Header {
-    padding: 12px 0;
+    padding: 10px 0;
   }
 
   .faq-Faqs_Title {
@@ -30,7 +29,7 @@
   }
 
   .faq-Faqs_Body {
-    margin-bottom: 20px;
+    margin-bottom: 15px;
   }
 
   .faq-Faqs_Text {
