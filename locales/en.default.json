@@ -80,7 +80,8 @@
       "menu": "Menu",
       "search": "Search",
       "account": "Account",
-      "cart": "Cart"
+      "cart": "Cart",
+      "bag": "Bag"
     },
     "navigation": {
       "close_menu": "Close"
@@ -410,6 +411,7 @@
     "added_to_wishlist": "Wishlist",
     "remove_from_wishlist": "Remove",
     "saved": "Saved",
+    "saved_products": "Saved Products",
     "drawer_label": "Bag and saved items",
     "empty": "There are no saved items.",
     "select_size": "Select size",
