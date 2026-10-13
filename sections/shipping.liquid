@@ -1,0 +1,311 @@
+{{ 'footer-page.css' | asset_url | stylesheet_tag }}
+{{ 'shipping-page.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'custom-shipping.js' | asset_url }}" defer="defer"></script>
+
+<section class="shipping-Page pg-Page lyt-Container js-shipping-page">
+  <div class="pg-Page_Inner">
+    {%- render 'information-page-navigation', menu: section.settings.navigation_menu -%}
+
+	  {%- assign seen_categories = '|' -%}
+	  {%- assign first_category_handle = '' -%}
+
+	  <div class="shipping-Page_Toc" data-shipping-toc aria-expanded="false">
+		  {%- assign initial_category_label = '' -%}
+		  {%- for block in section.blocks -%}
+			  {%- assign initial_category_label = block.settings.category | strip -%}
+			  {%- if initial_category_label != blank -%}
+				  {%- break -%}
+			  {%- endif -%}
+		  {%- endfor -%}
+
+		  <button
+			  class="shipping-Page_TocTrigger"
+			  type="button"
+			  aria-expanded="false"
+			  aria-controls="shipping-toc-panel-{{ section.id }}"
+			  data-shipping-toc-trigger
+		  >
+			  <span class="shipping-Page_TocTriggerText">
+			    <span class="shipping-Page_TocLabel">Frequent Questions</span>
+			    <span class="shipping-Page_TocSelected" data-shipping-selected-label>
+			      {{ initial_category_label | escape }}
+			    </span>
+			  </span>
+			  <span class="shipping-Page_TocIcon" aria-hidden="true"></span>
+		  </button>
+
+		  <div class="shipping-Page_TocOverlay" data-shipping-toc-overlay></div>
+
+		  <nav
+			  class="shipping-Page_TocPanel"
+			  id="shipping-toc-panel-{{ section.id }}"
+			  aria-label="{{ section.settings.toc_label | escape }}"
+			  data-shipping-toc-panel
+		  >
+			  <ul>
+				  {%- assign seen_categories = '|' -%}
+
+				  {%- for block in section.blocks -%}
+					  {%- assign category = block.settings.category | strip -%}
+					  {%- assign category_handle = category | handleize -%}
+					  {%- capture category_token -%}|{{ category_handle }}|{%- endcapture -%}
+
+					  {%- if category != blank -%}
+						  {%- unless seen_categories contains category_token -%}
+							  {%- if first_category_handle == blank -%}
+								  {%- assign first_category_handle = category_handle -%}
+							  {%- endif -%}
+
+							  <li>
+								  <button
+									  class="shipping-Page_TocLink{% if first_category_handle == category_handle %} is-active{% endif %}"
+									  type="button"
+									  data-shipping-category="{{ category_handle }}"
+									  {% if first_category_handle == category_handle %}aria-current="true"{% endif %}
+								  >
+									  {{ category | escape }}
+								  </button>
+							  </li>
+
+						  {%- assign seen_categories = seen_categories | append: category_handle | append: '|' -%}
+						  {%- endunless -%}
+					  {%- endif -%}
+				  {%- endfor -%}
+			  </ul>
+		  </nav>
+	  </div>
+
+	  <div class="shipping-Page_Content">
+		  {%- assign seen_categories = '|' -%}
+
+		  {%- for block in section.blocks -%}
+			  {%- assign category = block.settings.category | strip -%}
+			  {%- assign category_handle = category | handleize -%}
+			  {%- capture category_token -%}|{{ category_handle }}|{%- endcapture -%}
+
+			  {%- if category != blank -%}
+				  {%- unless seen_categories contains category_token -%}
+				  {%- assign is_active_category = false -%}
+					  {%- if category_handle == first_category_handle -%}
+						  {%- assign is_active_category = true -%}
+					  {%- endif -%}
+
+					  <section
+						  class="shipping-Page_Group"
+						  data-shipping-panel="{{ category_handle }}"
+						  {% unless is_active_category %}hidden{% endunless %}
+					  >
+						  <h2 class="shipping-Page_GroupTitle text-reg-14">{{ category | escape }}</h2>
+
+						  <div class="shipping-Page_Items">
+							  {%- for item in section.blocks -%}
+								  {%- assign item_category = item.settings.category | strip -%}
+
+								  {%- if item_category == category -%}
+									  <details
+										  class="shipping-Page_Item"
+										  {% if item.settings.open_by_default %}open{% endif %}
+										  {{ item.shopify_attributes }}
+									  >
+										  <summary class="shipping-Page_Question text-reg-14">
+											  <span>{{ item.settings.question | escape }}</span>
+											  <span class="shipping-Page_AccordionIcon" aria-hidden="true">
+		                      {%- render 'bao-icon-arrow-down' -%}
+		                    </span>
+										  </summary>
+
+										  <div class="shipping-Page_Answer rte-RichText">
+											  {{ item.settings.answer_before_table }}
+
+											  {%- if item.settings.show_rates_table -%}
+												  {%- assign destinations = item.settings.table_destinations | newline_to_br | split: '<br />' -%}
+												  {%- assign delivery_times = item.settings.table_delivery_times | newline_to_br | split: '<br />' -%}
+												  {%- assign costs = item.settings.table_costs | newline_to_br | split: '<br />' -%}
+
+												  <div class="shipping-Page_TableWrap">
+													  <table class="shipping-Page_RatesTable">
+														  <thead>
+														  <tr>
+															  <th scope="col">{{ item.settings.table_heading_destination | escape }}</th>
+															  <th scope="col">{{ item.settings.table_heading_delivery | escape }}</th>
+															  <th scope="col">{{ item.settings.table_heading_cost | escape }}</th>
+														  </tr>
+														  </thead>
+														  <tbody>
+														  {%- for destination in destinations -%}
+															  {%- assign row_index = forloop.index0 -%}
+															  {%- assign delivery_time = delivery_times[row_index] | strip -%}
+															  {%- assign cost = costs[row_index] | strip -%}
+
+															  {%- if destination != blank -%}
+																  <tr>
+																	  <td>{{ destination | strip | escape }}</td>
+																	  <td>{{ delivery_time | escape }}</td>
+																	  <td>{{ cost | escape }}</td>
+																  </tr>
+															  {%- endif -%}
+														  {%- endfor -%}
+														  </tbody>
+													  </table>
+												  </div>
+											  {%- endif -%}
+
+											  {{ item.settings.answer_after_table }}
+										  </div>
+									  </details>
+								  {%- endif -%}
+							  {%- endfor -%}
+						  </div>
+					  </section>
+
+				  {%- assign seen_categories = seen_categories | append: category_handle | append: '|' -%}
+				  {%- endunless -%}
+			  {%- endif -%}
+		  {%- endfor -%}
+	  </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Shipping",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "navigation_menu",
+      "label": "Information navigation"
+    },
+    {
+      "type": "text",
+      "id": "toc_label",
+      "label": "Mobile table of contents label",
+      "default": "Frequent Questions"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "shipping_item",
+      "name": "Shipping content item",
+      "settings": [
+        {
+          "type": "text",
+          "id": "category",
+          "label": "Sidebar section title",
+          "default": "Shipping Charges"
+        },
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Accordion title",
+          "default": "Delivery information"
+        },
+        {
+	        "type": "richtext",
+	        "id": "answer_before_table",
+	        "label": "Content before table"
+	      },
+	      {
+	        "type": "checkbox",
+	        "id": "show_rates_table",
+	        "label": "Show shipping rates table",
+	        "default": false
+	      },
+	      {
+	        "type": "text",
+	        "id": "table_heading_destination",
+	        "label": "First table column heading",
+	        "default": "Destination"
+	      },
+	      {
+	        "type": "text",
+	        "id": "table_heading_delivery",
+	        "label": "Second table column heading",
+	        "default": "Delivery Time"
+	      },
+	      {
+	        "type": "text",
+	        "id": "table_heading_cost",
+	        "label": "Third table column heading",
+	        "default": "Cost"
+	      },
+	      {
+	        "type": "textarea",
+	        "id": "table_destinations",
+	        "label": "Destinations — one per line",
+	        "default": "UK\nEurope\nRest of the World*"
+	      },
+	      {
+	        "type": "textarea",
+	        "id": "table_delivery_times",
+	        "label": "Delivery times — one per line",
+	        "default": "Next working day\n1 - 3 working days\n3 - 5 working days"
+	      },
+	      {
+	        "type": "textarea",
+	        "id": "table_costs",
+	        "label": "Costs — one per line",
+	        "default": "£10\n£15\n£25"
+	      },
+	      {
+	        "type": "richtext",
+	        "id": "answer_after_table",
+	        "label": "Content after table"
+	      },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link text"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link URL"
+        },
+        {
+          "type": "checkbox",
+          "id": "open_by_default",
+          "label": "Open by default",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Shipping",
+      "blocks": [
+        {
+          "type": "shipping_item",
+          "settings": {
+            "category": "Shipping Charges",
+            "question": "Shipping rates",
+            "open_by_default": true,
+            "show_rates_table": true
+          }
+        },
+        {
+          "type": "shipping_item",
+          "settings": {
+            "category": "Tracking Your Order",
+            "question": "How can I track my order?"
+          }
+        },
+        {
+          "type": "shipping_item",
+          "settings": {
+            "category": "Duties & Taxes",
+            "question": "Will I need to pay duties or taxes?"
+          }
+        },
+        {
+          "type": "shipping_item",
+          "settings": {
+            "category": "Refused Deliveries",
+            "question": "What happens if I refuse delivery?"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
