@@ -1,116 +1,129 @@
-<div
-  class="faq-Faqs"
-  data-module="accordion"
-  data-module-lazy
-  data-section-id="{{ section.id }}"
-  data-section-type="faqs"
-  data-accordion-initial-state="{{ section.settings.initial_state }}"
-  data-accordion-open-one-at-a-time="{{ section.settings.show_one_at_a_time }}"
->
-  <ul class="faq-Faqs_Items" data-el="accordion.items">
-    {%- for block in section.blocks -%}
-      {%- assign should_be_open = false -%}
+{{ 'footer-page.css' | asset_url | stylesheet_tag }}
+<section class="faq-Page pg-Page lyt-Container">
+  <div class="pg-Page_Inner">
+    {%- render 'information-page-navigation', menu: section.settings.navigation_menu -%}
 
-      {%- if section.settings.initial_state == 'closedButFirstOpen' and forloop.index == 1 -%}
-        {%- assign should_be_open = true -%}
-      {%- endif -%}
+    <div
+      class="faq-Faqs"
+      data-module="accordion"
+      data-module-lazy
+      data-section-id="{{ section.id }}"
+      data-section-type="faqs"
+      data-accordion-initial-state="{{ section.settings.initial_state }}"
+      data-accordion-open-one-at-a-time="{{ section.settings.show_one_at_a_time }}"
+    >
+      <ul class="faq-Faqs_Items" data-el="accordion.items">
+        {%- for block in section.blocks -%}
+          {%- assign should_be_open = false -%}
 
-      {%- if section.settings.initial_state == 'open' -%}
-        {%- assign should_be_open = true -%}
-      {%- endif -%}
+          {%- if section.settings.initial_state == 'closedButFirstOpen' and forloop.first -%}
+            {%- assign should_be_open = true -%}
+            {%- elsif section.settings.initial_state == 'open' -%}
+            {%- assign should_be_open = true -%}
+          {%- endif -%}
 
-      <li
-        class="faq-Faqs_Item"
-        data-el="accordion.item"
-        aria-expanded="{% if should_be_open == 'open' %}true{% else %}false{% endif %}"
-      >
-        {%- if block.settings.title != blank -%}
-          <header class="faq-Faqs_Header">
-            <h4 class="faq-Faqs_Title" data-el="accordion.trigger">
-              {{ block.settings.title }}
-              <span class="faq-Faqs_Icon">{%- render 'bao-icon-arrow-down' -%}</span>
-            </h4>
-          </header>
-        {%- endif -%}
+          <li
+            class="faq-Faqs_Item"
+            data-el="accordion.item"
+            aria-expanded="{{ should_be_open }}"
+            {{ block.shopify_attributes }}
+          >
+            {%- if block.settings.title != blank -%}
+              <header class="faq-Faqs_Header">
+                <h4 class="faq-Faqs_Title text-reg-14" data-el="accordion.trigger">
+                  {{ block.settings.title | escape }}
+                  <span class="faq-Faqs_Icon" aria-hidden="true">
+                  {%- render 'bao-icon-arrow-down' -%}
+                </span>
+                </h4>
+              </header>
+            {%- endif -%}
 
-        <div class="faq-Faqs_Body" data-el="accordion.body">
-          {%- if block.settings.text != blank -%}
-            <div class="faq-Faqs_Text rte-RichText">
-              {{ block.settings.text }}
+            <div class="faq-Faqs_Body" data-el="accordion.body">
+              {%- if block.settings.text != blank -%}
+                <div class="faq-Faqs_Text rte-RichText">
+                  {{ block.settings.text }}
+                </div>
+              {%- endif -%}
+
+              {%- if block.settings.link_text != blank and block.settings.link_url != blank -%}
+                <a class="faq-Faqs_Button btn-Primary" href="{{ block.settings.link_url }}">
+                  {{ block.settings.link_text | escape }}
+                </a>
+              {%- endif -%}
             </div>
-          {%- endif -%}
-
-          {%- if block.settings.link_text != blank -%}
-            <a class="faq-Faqs_Button btn-Primary" href="{{ block.settings.link_url }}">
-              {{ block.settings.link_text }}
-            </a>
-          {%- endif -%}
-        </div>
-      </li>
-    {%- endfor -%}
-  </ul>
-</div>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  </div>
+</section>
 
 {%- render 'structured-data-faq', blocks: section.blocks -%}
 
 {% schema %}
-  {
-    "name": "FAQs",
-    "settings": [
-      {
-        "type": "select",
-        "id": "initial_state",
-        "label": "What should the initial state of the accordions be?",
-        "options": [
-          {
-            "value": "closed",
-            "label": "Closed"
-          },
-          {
-            "value": "closedButFirstOpen",
-            "label": "Closed but first open"
-          },
-          {
-            "value": "open",
-            "label": "Open"
-          }
-        ],
-        "default": "closedButFirstOpen"
-      },
-      {
-        "type": "checkbox",
-        "id": "show_one_at_a_time",
-        "label": "Should opening an accordion close all of the others?",
-        "default": false
-      }
-    ],
-    "blocks": [
-      {
-        "type": "faq",
-        "name": "FAQ",
-        "settings": [
-          {
-            "type": "text",
-            "id": "title",
-            "label": "Title"
-          },
-          {
-            "type": "richtext",
-            "id": "text",
-            "label": "Text"
-          },
-          {
-            "type": "text",
-            "id": "link_text",
-            "label": "Link text"
-          },
-          {
-            "type": "url",
-            "id": "link_url",
-            "label": "Link url"
-          }
-        ]
-      }
-    ]
-  }
+{
+  "name": "FAQs",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "navigation_menu",
+      "label": "Information navigation"
+    },
+    {
+      "type": "select",
+      "id": "initial_state",
+      "label": "What should the initial state of the accordions be?",
+      "options": [
+        {
+          "value": "closed",
+          "label": "Closed"
+        },
+        {
+          "value": "closedButFirstOpen",
+          "label": "Closed but first open"
+        },
+        {
+          "value": "open",
+          "label": "Open"
+        }
+      ],
+      "default": "closedButFirstOpen"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_one_at_a_time",
+      "label": "Should opening an accordion close all of the others?",
+      "default": false
+    }
+  ],
+  "blocks": [
+    {
+      "type": "faq",
+      "name": "FAQ",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text"
+        },
+        {
+          "type": "text",
+          "id": "link_text",
+          "label": "Link text"
+        },
+        {
+          "type": "url",
+          "id": "link_url",
+          "label": "Link url"
+        }
+      ]
+    }
+  ]
+}
 {% endschema %}
