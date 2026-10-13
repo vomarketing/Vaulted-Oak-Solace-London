@@ -11,14 +11,24 @@ body.template-collection.util-Drawer-active .hd-Header_Logo {
   position: sticky;
   top: var(--collection-header-offset);
   z-index: calc(var(--z-header, 90) - 1);
-  padding: 39px 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 118px;
   background-color: transparent;
-  transition: top 0.3s cubic-bezier(0.22, 1, 0.36, 1);
+  transition: top 0.3s cubic-bezier(0.22, 1, 0.36, 1), min-height 0.3s cubic-bezier(0.22, 1, 0.36, 1);
 
   @media (max-width: 1024px) {
-    padding: 30px;
+    min-height: 100px;
+    padding: 0 30px;
     position: relative;
     top: auto;
+  }
+}
+
+@media (min-width: 1025px) {
+  body.template-collection.is-collection-nav-scrolling-up .collection-header {
+    min-height: 40px;
   }
 }
 
