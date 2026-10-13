@@ -27,7 +27,7 @@
   }
 }
 
-.mbg-Drawer .wsl-Panel[aria-busy=true] .wsl-List {
+.mbg-Drawer .wsl-Panel[aria-busy=true] .wsl-List:not(:has(.wsl-Skeleton)) {
   opacity: 0.55;
   pointer-events: none;
 }
@@ -222,6 +222,49 @@
   }
 }
 
+/* Loading placeholders, shaped like .wsl-Item */
+.mbg-Drawer .wsl-Skeleton {
+  pointer-events: none;
+}
+
+.mbg-Drawer .wsl-Skeleton_Block {
+  display: block;
+  background: linear-gradient(90deg, #f2f2f2 25%, #e8e8e8 50%, #f2f2f2 75%) 0 0 / 200% 100%;
+  animation: wsl-Shimmer 1.4s linear infinite;
+}
+
+.mbg-Drawer .wsl-Skeleton_Group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+
+.mbg-Drawer .wsl-Skeleton_Line {
+  width: 80%;
+  height: 12px;
+}
+
+.mbg-Drawer .wsl-Skeleton_Line-short {
+  width: 45%;
+}
+
+.mbg-Drawer .wsl-Skeleton_Line-price {
+  width: 56px;
+}
+
+.mbg-Drawer .wsl-Skeleton_Button {
+  width: 130px;
+  max-width: 100%;
+  height: 40px;
+}
+
+@keyframes wsl-Shimmer {
+  to {
+    background-position: -200% 0;
+  }
+}
+
 @media (max-width: 1200px) {
   .mbg-Drawer .wsl-Scroll {
     padding: 40px 20px 30px;
@@ -293,6 +336,10 @@
 @media (prefers-reduced-motion: reduce) {
   .mbg-Drawer .wsl-Size {
     transition: none;
+  }
+
+  .mbg-Drawer .wsl-Skeleton_Block {
+    animation: none;
   }
 }
 

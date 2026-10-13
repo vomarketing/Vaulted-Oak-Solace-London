@@ -31,6 +31,21 @@
         </div>
         <div class="wsl-List" data-wishlist-list></div>
       </div>
+      <template data-wishlist-skeleton>
+        <div class="wsl-Item wsl-Skeleton" aria-hidden="true">
+          <span class="wsl-Item_Image wsl-Skeleton_Block"></span>
+          <span class="wsl-Item_Details">
+            <span class="wsl-Skeleton_Group">
+              <span class="wsl-Skeleton_Block wsl-Skeleton_Line"></span>
+              <span class="wsl-Skeleton_Block wsl-Skeleton_Line wsl-Skeleton_Line-short"></span>
+            </span>
+            <span class="wsl-Skeleton_Block wsl-Skeleton_Button"></span>
+          </span>
+          <span class="wsl-Item_Aside">
+            <span class="wsl-Skeleton_Block wsl-Skeleton_Line wsl-Skeleton_Line-price"></span>
+          </span>
+        </div>
+      </template>
     </wishlist-panel>
   {%- endif -%}
 </div>
