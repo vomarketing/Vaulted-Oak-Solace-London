@@ -49,8 +49,22 @@
       <nav class="ft-Footer_Column ft-Footer_Column-primary" aria-label="{{ 'layout.footer.navigation_primary' | t }}">
         <ul class="ft-Footer_Items">
           {%- for link in linklists[section.settings.navigation].links -%}
+            {%- assign is_contact_modal = false -%}
+            {%- if link.url contains '#contactUSModal' or link.url contains '#contact-modal' or link.url contains '#contactUsModal' -%}
+              {%- assign is_contact_modal = true -%}
+            {%- endif -%}
             <li class="ft-Footer_Item">
-              <a class="ft-Footer_Link" href="{{ link.url }}">{{ link.title }}</a>
+              <a
+                class="ft-Footer_Link"
+                href="{{ link.url }}"
+                {% if is_contact_modal %}
+                  data-contact-modal-trigger
+                  aria-haspopup="dialog"
+                  aria-controls="contactUSModal"
+                {% endif %}
+              >
+                {{- link.title -}}
+              </a>
             </li>
           {%- endfor -%}
 
@@ -64,8 +78,22 @@
         <nav class="ft-Footer_Column ft-Footer_Column-secondary" aria-label="{{ 'layout.footer.navigation_secondary' | t }}">
           <ul class="ft-Footer_Items">
             {%- for link in linklists[section.settings.navigation_secondary].links -%}
+              {%- assign is_contact_modal = false -%}
+              {%- if link.url contains '#contactUSModal' or link.url contains '#contact-modal' or link.url contains '#contactUsModal' -%}
+                {%- assign is_contact_modal = true -%}
+              {%- endif -%}
               <li class="ft-Footer_Item">
-                <a class="ft-Footer_Link" href="{{ link.url }}">{{ link.title }}</a>
+                <a
+                  class="ft-Footer_Link"
+                  href="{{ link.url }}"
+                  {% if is_contact_modal %}
+                    data-contact-modal-trigger
+                    aria-haspopup="dialog"
+                    aria-controls="contactUSModal"
+                  {% endif %}
+                >
+                  {{- link.title -}}
+                </a>
               </li>
             {%- endfor -%}
           </ul>
@@ -129,8 +157,10 @@
                   early access to new campaigns and exclusive products.
                 </p>
 
+                {%- assign form_id = 'FooterNewsletterPopup-' | append: section.id -%}
+
                 {% render 'footer-newsletter-popup-form',
-                  form_id: 'FooterNewsletterPopup-' | append: section.id,
+                  form_id: form_id,
                   placeholder: newsletter_placeholder,
                   klaviyo_company_id: klaviyo_company_id,
                   klaviyo_list_id: klaviyo_list_id,
@@ -173,6 +203,11 @@
     </div>
   </div>
 </footer>
+{%- for block in section.blocks -%}
+  {%- if block.type == 'contact_us' -%}
+    {%- render 'contact-modal', block: block -%}
+  {%- endif -%}
+{%- endfor -%}
 
 {% schema %}
 {
@@ -289,6 +324,38 @@
           "type": "text",
           "id": "list_id",
           "label": "List ID"
+        }
+      ]
+    },
+    {
+      "type": "contact_us",
+      "name": "Contact Us",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Modal title",
+          "default": "Contact"
+        },
+        {
+          "type": "richtext",
+          "id": "intro",
+          "label": "Intro / Care team info",
+          "default": "<p>Our Customer Care team is available Monday – Friday, 9:00am – 5:00pm UK time, excluding UK bank holidays.</p><p>We aim to respond the same working day.</p>"
+        },
+        {
+          "type": "textarea",
+          "id": "topics",
+          "label": "Topics (one per line)",
+          "default": "Order Enquiry\nReturns Enquiry\nShipping Information\nPress Enquiry\nOther",
+          "info": "Enter each dropdown topic on a separate line"
+        },
+        {
+          "type": "text",
+          "id": "success_message",
+          "label": "Success message",
+          "default": "Thanks for contacting us. We'll get back to you as soon as possible."
         }
       ]
     }
