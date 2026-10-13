@@ -3,11 +3,14 @@ if (!window.SLWishlist) {
 
   const IWISH_KEY = 'iWishlistmain';
   const IWISH_COUNT_KEY = 'iWishCnt';
+  const IWISH_SYNC_KEY = 'iWishsync';
   const META_KEY = 'slWishlistMeta';
   const UNAVAILABLE_KEY = 'slWishlistUnavailable';
   const IWISH_TIMEOUT = 15000;
+  const IWISH_SYNC_TIMEOUT = 10000;
   const STOREFRONT_API_VERSION = '2025-07';
   const CHANGE_EVENT = 'wishlist:change';
+  const SKELETON_COUNT = 3;
 
   const HANDLES_QUERY = `
     query WishlistHandles($ids: [ID!]!) {
@@ -49,14 +52,22 @@ if (!window.SLWishlist) {
       // Kept in iWish so restored products return; rechecked each session.
       this.unavailable = new Set(readJSON(UNAVAILABLE_KEY, [], 'sessionStorage').map(String));
 
+      // True while iWish fetches a logged-in customer's wishlist for the first time on this device.
+      this.syncing = this.isSyncPending();
+
       // Called by iWish after merging a logged-in customer's wishlist.
       const previousSyncFn = window.iWishsyncFn;
       window.iWishsyncFn = (...args) => {
         if (typeof previousSyncFn === 'function') previousSyncFn(...args);
+        this.syncing = false;
         this.emit();
       };
 
-      this.iwishReady.then(() => this.emit());
+      this.iwishReady.then((isLoaded) => {
+        if (!isLoaded) this.syncing = false;
+        if (this.syncing) setTimeout(() => this.stopSyncing(), IWISH_SYNC_TIMEOUT);
+        this.emit();
+      });
 
       window.addEventListener('storage', (e) => {
         if (e.key !== IWISH_KEY && e.key !== META_KEY) return;
@@ -189,6 +200,22 @@ if (!window.SLWishlist) {
     }
 
     // iWish bridge
+
+    isSyncPending() {
+      try {
+        return parseInt(window.iwish_cid, 10) > 0 && localStorage.getItem(IWISH_SYNC_KEY) !== 'true';
+      } catch (error) {
+        return false;
+      }
+    }
+
+    // iWish never calls iWishsyncFn if its sync request fails.
+    stopSyncing() {
+      if (!this.syncing) return;
+
+      this.syncing = false;
+      this.emit();
+    }
 
     isIWishLoaded() {
       return typeof window.iwish_addOnly === 'function'
@@ -543,6 +570,8 @@ if (!window.SLWishlist) {
       drawer: '[data-mini-bag]',
       list: '[data-wishlist-list]',
       empty: '[data-wishlist-empty]',
+      skeleton: '[data-wishlist-skeleton]',
+      skeletonItem: '.wsl-Skeleton',
       item: 'wishlist-item',
       size: '[data-wishlist-size]',
       openSizeMenu: '[data-wishlist-size-menu]:not([hidden])'
@@ -566,6 +595,7 @@ if (!window.SLWishlist) {
       this.drawer = this.closest(this.selectors.drawer);
       this.list = this.querySelector(this.selectors.list);
       this.empty = this.querySelector(this.selectors.empty);
+      this.skeleton = this.querySelector(this.selectors.skeleton);
       if (!this.list || !this.empty) return;
 
       super.connectedCallback();
@@ -614,12 +644,27 @@ if (!window.SLWishlist) {
 
     syncEmptyState() {
       const isEmpty = store.count() === 0;
-      this.drawer?.setAttribute('data-saved-empty', String(isEmpty));
+      const isLoading = isEmpty && store.syncing;
+      this.drawer?.setAttribute('data-saved-empty', String(isEmpty && !isLoading));
+      if (!isEmpty) return;
 
-      if (isEmpty) {
+      this.empty.hidden = isLoading;
+      this.toggleAttribute('aria-busy', isLoading);
+      if (isLoading) {
+        this.showSkeleton();
+      } else {
         this.list.replaceChildren();
-        this.empty.hidden = false;
       }
+    }
+
+    showSkeleton(count = SKELETON_COUNT) {
+      if (!this.skeleton || this.list.querySelector(this.selectors.skeletonItem)) return;
+
+      const nodes = Array.from(
+        { length: Math.min(count, SKELETON_COUNT) },
+        () => this.skeleton.content.cloneNode(true)
+      );
+      this.list.replaceChildren(...nodes);
     }
 
     closeSizeMenus(restoreFocus = false) {
@@ -634,13 +679,13 @@ if (!window.SLWishlist) {
       const items = store.items();
 
       if (!items.length) {
-        this.list.replaceChildren();
-        this.empty.hidden = false;
+        this.syncEmptyState();
         return;
       }
 
       this.empty.hidden = true;
       this.setAttribute('aria-busy', 'true');
+      if (!this.items.length) this.showSkeleton(items.length);
 
       try {
         await this.resolveHandles(items);
