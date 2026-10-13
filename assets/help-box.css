@@ -199,6 +199,12 @@ button[data-help-box-open]:focus-visible {
   }
 }
 
+@media (max-width: 640px) {
+  body.template-collection .hb-HelpBox_Launcher {
+    bottom: calc(60px + env(safe-area-inset-bottom, 0px));
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .hb-HelpBox,
   .hb-HelpBox_Dialog {
