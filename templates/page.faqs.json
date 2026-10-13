@@ -76,7 +76,7 @@
         "faq_URgdrp"
       ],
       "settings": {
-        "navigation_menu": "",
+        "navigation_menu": "page-menu",
         "initial_state": "closedButFirstOpen",
         "show_one_at_a_time": false
       }
