@@ -1,0 +1,7 @@
+{%- doc -%}
+  Shipping & Returns content, shared by the mini bag information panel and the bag page dialog.
+{%- enddoc -%}
+
+{% if settings.mbg_delivery != blank %}<div>{{ settings.mbg_delivery }}</div>{% endif %}
+{% if shop.shipping_policy.body != blank %}<h3>Shipping</h3><div>{{ shop.shipping_policy.body }}</div>{% endif %}
+{% if shop.refund_policy.body != blank %}<h3>Returns</h3><div>{{ shop.refund_policy.body }}</div>{% endif %}

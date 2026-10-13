@@ -7,14 +7,34 @@
   assign background_color = section.settings.background_color | default: '#000000'
   assign content_vertical_alignment = section.settings.content_vertical_alignment | default: 'bottom'
   assign is_video = false
+  assign video_desktop_url = ''
+  assign video_mobile_url = ''
   if section.settings.media_type == 'video'
     assign is_video = true
+    if section.settings.video_desktop != blank
+      assign video_desktop_url = section.settings.video_desktop.sources[1].url | default: section.settings.video_desktop.sources[0].url
+    elsif section.settings.video_url_desktop != blank
+      assign video_desktop_url = section.settings.video_url_desktop
+    endif
+
+    if section.settings.video_mobile != blank
+      assign video_mobile_url = section.settings.video_mobile.sources[1].url | default: section.settings.video_mobile.sources[0].url
+    elsif section.settings.video_url_mobile != blank
+      assign video_mobile_url = section.settings.video_url_mobile
+    else
+      assign video_mobile_url = video_desktop_url
+    endif
   endif
 
   assign enable_custom_mobile_height = false
   assign custom_mobile_height = section.settings.custom_mobile_height | default: 667 | at_least: 1
   if is_video == false and section.settings.enable_custom_mobile_height
     assign enable_custom_mobile_height = true
+  endif
+
+  assign has_controls = false
+  if is_video and video_desktop_url != blank and section.settings.show_video_controls
+    assign has_controls = true
   endif
 
   # Only the first section in the template is the LCP candidate. Later heroes
@@ -30,7 +50,7 @@
 -%}
 
 <hero-fullscreen
-  class="hero-fullscreen js-hero-fullscreen{% if enable_custom_mobile_height %} hero-fullscreen--custom-mobile-height{% endif %}"
+  class="hero-fullscreen js-hero-fullscreen{% if enable_custom_mobile_height %} hero-fullscreen--custom-mobile-height{% endif %}{% if has_controls %} hero-fullscreen--has-controls{% endif %}"
   id="hero-{{ section.id }}"
   data-header-mode="{{ header_mode }}"
   data-text-color="{{ text_color }}"
@@ -38,29 +58,9 @@
   style="--hero-background-color: {{ background_color }}; --hero-content-text-color: {{ text_color }};{% if enable_custom_mobile_height %} --hero-custom-mobile-height: {{ custom_mobile_height }}px;{% endif %}"
   data-autoplay="{{ section.settings.video_autoplay }}"
   data-show-controls="{{ section.settings.show_video_controls }}"
-  {% if enable_custom_mobile_height %}style="--hero-custom-mobile-height: {{ custom_mobile_height }}px;"{% endif %}
 >
   <div class="hero-fullscreen__media global-media">
     {%- if is_video -%}
-      {%- liquid
-        assign video_desktop_url = ''
-        assign video_mobile_url = ''
-
-        if section.settings.video_desktop != blank
-          assign video_desktop_url = section.settings.video_desktop.sources[1].url | default: section.settings.video_desktop.sources[0].url
-        elsif section.settings.video_url_desktop != blank
-          assign video_desktop_url = section.settings.video_url_desktop
-        endif
-
-        if section.settings.video_mobile != blank
-          assign video_mobile_url = section.settings.video_mobile.sources[1].url | default: section.settings.video_mobile.sources[0].url
-        elsif section.settings.video_url_mobile != blank
-          assign video_mobile_url = section.settings.video_url_mobile
-        else
-          assign video_mobile_url = video_desktop_url
-        endif
-      -%}
-
       {%- if video_desktop_url != blank -%}
         <video
           class="hero-fullscreen__video js-hero-video"
@@ -150,16 +150,6 @@
   </div>
 
   {%- if video_desktop_url != blank and section.settings.show_video_controls -%}
-    <button
-      type="button"
-      class="hero-fullscreen__center-play js-center-play"
-      aria-label="Play video"
-    >
-      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true" focusable="false">
-        <path d="M8 5v14l11-7z"/>
-      </svg>
-    </button>
-
     <div class="hero-fullscreen__controls js-video-controls">
       <div class="hero-fullscreen__timeline">
         <span class="hero-fullscreen__time js-current-time">00:00</span>

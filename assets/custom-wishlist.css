@@ -1,0 +1,415 @@
+/* Saved tab (mini bag) */
+.mbg-Drawer .wsl-Scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  padding: 10px 40px 40px;
+}
+
+.mbg-Drawer .wsl-Empty_Links {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  margin: 41px 0 0;
+  padding: 0;
+  list-style: none;
+
+  a {
+    transition: opacity 0.2s ease;
+    font-weight: 400;
+
+    @media (hover: hover) {
+      &:hover {
+        opacity: 0.5;
+      }
+    }
+  }
+}
+
+.mbg-Drawer .wsl-Panel[aria-busy=true] .wsl-List {
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+.mbg-Drawer .wsl-Item {
+  display: grid;
+  grid-template-columns: 110px minmax(0, 1fr) auto;
+  gap: 20px;
+  margin-bottom: 50px;
+  transition: opacity 0.2s ease;
+
+  &.is-loading {
+    opacity: 0.35;
+    pointer-events: none;
+  }
+
+  &:last-child {
+    margin-bottom: 0 !important;
+  }
+}
+
+.mbg-Drawer .wsl-Item_Image {
+  display: block;
+  align-self: start;
+  aspect-ratio: 110 / 147;
+  background: #f7f7f7;
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+}
+
+.mbg-Drawer .wsl-Item_Details {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 10px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+.mbg-Drawer .wsl-Item_Size {
+  position: relative;
+}
+
+.mbg-Drawer .wsl-Item_SizeToggle {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-height: 24px;
+  transition: opacity 0.2s ease;
+
+  @media (hover: hover) {
+    &:hover {
+      opacity: 0.5;
+    }
+  }
+
+  svg {
+    display: block;
+    flex: none;
+    transition: transform 0.2s ease;
+  }
+
+  &[aria-expanded=true] svg {
+    transform: rotate(180deg);
+  }
+}
+
+.mbg-Drawer .wsl-Item_Add {
+  width: 130px;
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid #000;
+  background: #fff;
+  font-weight: 500;
+  transition: background-color 0.2s ease, color 0.2s ease;
+
+  @media (hover: hover) {
+    &:not(:disabled):hover {
+      background: #000;
+      color: #fff;
+    }
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.5;
+  }
+}
+
+.mbg-Drawer .wsl-Item_Error {
+  color: #ce0000;
+}
+
+.mbg-Drawer .wsl-Item_Aside {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 20px;
+  text-align: right;
+}
+
+.mbg-Drawer .wsl-Item_Price {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  column-gap: 10px;
+  max-width: 110px;
+  white-space: nowrap;
+}
+
+.mbg-Drawer .wsl-Item_PriceCompare {
+  color: #333;
+}
+
+.mbg-Drawer .wsl-Item_PriceSale {
+  color: #ce0000;
+}
+
+.mbg-Drawer .wsl-Item_Remove {
+  display: block;
+  width: 16px;
+  height: 16px;
+  transition: opacity 0.2s ease;
+
+  @media (hover: hover) {
+    &:hover {
+      opacity: 0.5;
+    }
+  }
+
+  svg {
+    display: block;
+  }
+}
+
+.mbg-Drawer .wsl-Size {
+  position: absolute;
+  top: -5px;
+  left: 0;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 11px;
+  width: 130px;
+  padding: 10px;
+  border: 1px solid #000;
+  background: #fff;
+}
+
+.mbg-Drawer .wsl-Size_Heading {
+  white-space: nowrap;
+}
+
+.mbg-Drawer .wsl-Size_Items {
+  display: flex;
+  flex-direction: column;
+  gap: 11px;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.mbg-Drawer .wsl-Size_Button {
+  display: block;
+  width: 100%;
+  line-height: 14px;
+  text-align: center;
+  transition: opacity 0.2s ease;
+
+  @media (hover: hover) {
+    &:not(:disabled):hover {
+      opacity: 0.5;
+    }
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+
+  &[aria-current=true] {
+    text-decoration: underline;
+    text-underline-position: from-font;
+  }
+}
+
+@media (max-width: 1200px) {
+  .mbg-Drawer .wsl-Scroll {
+    padding: 40px 20px 30px;
+  }
+
+  .mbg-Drawer .wsl-Item {
+    gap: 10px;
+    margin-bottom: 40px;
+  }
+
+  /* The drawer is transformed, so this is fixed to the drawer's bottom edge. */
+  .mbg-Drawer .wsl-Size {
+    position: fixed;
+    top: auto;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 3;
+    gap: 0;
+    width: auto;
+    padding: 15px 20px max(16px, env(safe-area-inset-bottom));
+    border: 0;
+    border-top: 1px solid rgba(0, 0, 0, 0.5);
+    font-size: 14px;
+    transition: transform 0.3s ease;
+
+    @starting-style {
+      transform: translateY(100%);
+    }
+  }
+
+  .mbg-Drawer .wsl-Size_Heading {
+    line-height: 44px;
+  }
+
+  .mbg-Drawer .wsl-Size_Items {
+    gap: 0;
+  }
+
+  .mbg-Drawer .wsl-Size_Button {
+    line-height: 44px;
+  }
+}
+
+@media (max-width: 834px) {
+  .mbg-Drawer .wsl-Item {
+    grid-template-columns: 116px minmax(0, 1fr) auto;
+  }
+
+  .mbg-Drawer .wsl-Item_Image {
+    aspect-ratio: 116 / 155;
+  }
+}
+
+@media (max-width: 767px) {
+  .mbg-Drawer .wsl-Item {
+    grid-template-columns: 98px minmax(0, 1fr) auto;
+  }
+
+  .mbg-Drawer .wsl-Item_Image {
+    aspect-ratio: 98 / 130;
+  }
+
+  .mbg-Drawer .wsl-Item_Price {
+    max-width: 88px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .mbg-Drawer .wsl-Size {
+    transition: none;
+  }
+}
+
+/* Bookmark toggles */
+wishlist-toggle,
+wishlist-indicator {
+  display: contents;
+}
+
+.wsl-Toggle {
+  display: block;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  transition: opacity 0.2s ease;
+
+  svg {
+    display: block;
+  }
+
+  .wsl-Toggle_Icon-filled,
+  &[aria-pressed=true] .wsl-Toggle_Icon-outline {
+    display: none;
+  }
+
+  &[aria-pressed=true] .wsl-Toggle_Icon-filled {
+    display: block;
+  }
+
+  @media (hover: hover) {
+    &:hover .wsl-Toggle_Icon-outline {
+      display: none;
+    }
+
+    &:hover .wsl-Toggle_Icon-filled {
+      display: block;
+    }
+  }
+}
+
+/* Header */
+.hd-Nav_Wishlist {
+  display: block;
+  width: 16px;
+  height: 16px;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: var(--Header_TextColor);
+  cursor: pointer;
+  transition: color 0.3s ease;
+
+  svg {
+    display: block;
+  }
+
+  .hd-Nav_WishlistIcon-filled,
+  wishlist-indicator[data-filled=true] & .hd-Nav_WishlistIcon-outline {
+    display: none;
+  }
+
+  wishlist-indicator[data-filled=true] & .hd-Nav_WishlistIcon-filled {
+    display: block;
+  }
+}
+
+/* Product card */
+.prd-Card_Bottom {
+  position: relative;
+}
+
+.prd-Card_Wishlist {
+  position: absolute;
+  top: 0;
+  right: 0;
+  z-index: 2;
+  color: #000;
+}
+
+.prd-Card_WishlistIcons-large {
+  display: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .prd-Card_Wishlist {
+    top: 1px;
+    opacity: 0;
+  }
+
+  .prd-Card_WishlistIcons-small {
+    display: none;
+  }
+
+  .prd-Card_WishlistIcons-large {
+    display: block;
+  }
+
+  .prd-Card:has(.prd-Card_Wishlist) .prd-Card_OverlayContent {
+    padding-right: 36px;
+  }
+
+  .prd-Card:hover .prd-Card_Wishlist,
+  .prd-Card_Wishlist:focus-visible {
+    opacity: 1;
+  }
+}
+
+@media not ((hover: hover) and (pointer: fine)) {
+  .prd-Card:has(.prd-Card_Wishlist) .prd-Card_Content {
+    padding-right: 32px;
+  }
+}
+
+/* The iWish app embed's launcher and sidebar are replaced by the mini bag's Saved tab. */
+.iwish-float-icon,
+#iwish-drawer-root {
+  display: none !important;
+}

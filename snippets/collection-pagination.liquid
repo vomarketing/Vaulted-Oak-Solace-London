@@ -1,0 +1,31 @@
+{%- if paginate.pages > 1 -%}
+  <nav class="collection-pagination" aria-label="Pagination">
+    <div class="collection-pagination__inner">
+      {%- if paginate.previous.is_link -%}
+        <a class="collection-pagination__direction" href="{{ paginate.previous.url }}">Prev</a>
+      {%- else -%}
+        <span class="collection-pagination__direction" aria-disabled="true">Prev</span>
+      {%- endif -%}
+
+      <ol class="collection-pagination__pages">
+        {%- for part in paginate.parts -%}
+          <li class="collection-pagination__item">
+            {%- if part.is_link -%}
+              <a class="collection-pagination__link" href="{{ part.url }}">{{ part.title }}</a>
+            {%- elsif part.title == paginate.current_page -%}
+              <span class="collection-pagination__link" aria-current="page">{{ part.title }}</span>
+            {%- else -%}
+              <span class="collection-pagination__ellipsis">{{ part.title }}</span>
+            {%- endif -%}
+          </li>
+        {%- endfor -%}
+      </ol>
+
+      {%- if paginate.next.is_link -%}
+        <a class="collection-pagination__direction" href="{{ paginate.next.url }}">Next</a>
+      {%- else -%}
+        <span class="collection-pagination__direction" aria-disabled="true">Next</span>
+      {%- endif -%}
+    </div>
+  </nav>
+{%- endif -%}

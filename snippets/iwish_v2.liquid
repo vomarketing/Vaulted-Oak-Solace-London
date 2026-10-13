@@ -32,48 +32,18 @@
     var iwish_added_txt_col = "{{- 'wishlist.added_to_wishlist' | t -}}";
     var iwish_add_txt_col = "{{- 'wishlist.add_to_wishlist' | t -}}";
 
-    document.addEventListener('DOMContentLoaded', function () {
-
-      window.wishlist = {
-        wishlistCountEls: document.querySelectorAll('.js-Wishlist_Count'),
-        onWishlistLinkClick: function(event) {
-          if(typeof(Storage) !== "undefined") {
-            event.preventDefault();
-            iWishPost('{{- wishlist_page_url -}}',{iwishlist:JSON.stringify(iWishlistmain), cId: iwish_cid});
-          }
-          return false
-        },
-        addToWishlist: function(element,variantId,isCollection) {
-          if((isCollection === "true") || (isCollection === true)){
-            iwish_addCollection(jQuery(element), variantId)
-          }else{
-            iwish_add(jQuery(element), variantId);
-          }
-          this.updateWishlistCount()
-        },
-        removeFromWishlist: function(element,variantId,isWishlistPage) {
-          iwish_remove(jQuery(element), variantId)
-          var addButton = element.parentNode.querySelector('.js-Wishlist_Button-add')
-          if(addButton){
-            addButton.classList.remove('iwishAdded')
-          }
-          this.updateWishlistCount()
-          if(isWishlistPage) {
-            window.location.href = window.location.href
-          }
-        },
-        updateWishlistCount() {
-          if (typeof(Storage) !== "undefined") {
-            for(wishlistCountEl of window.wishlist.wishlistCountEls){
-              var count = (typeof(localStorage.iWishCnt) != "undefined") ? localStorage.iWishCnt : 0
-              wishlistCountEl.dataset.count = count
-              wishlistCountEl.innerHTML = count
-            }
-          }
-        }
+    window.wishlist = {
+      addToWishlist: function(element, variantId) {
+        if (!window.SLWishlist) return;
+        window.SLWishlist.add(element.dataset.product, variantId, { handle: element.dataset.productHandle, sized: true });
+      },
+      removeFromWishlist: function(element) {
+        if (!window.SLWishlist) return;
+        window.SLWishlist.remove(element.dataset.product);
       }
+    };
 
-      window.wishlist.updateWishlistCount()
+    document.addEventListener('DOMContentLoaded', function () {
 
       function asyncLoadRequiredJs() {
         var iwishSrc = "https://cdn.myshopapps.com/iwish/iwishlist_v2.js";
@@ -111,25 +81,6 @@
 
 {%- endif -%}
 
-{% comment %} Link to wishlist app page {% endcomment %}
-{%- if component == 'wishlist-page-link' -%}
-<a
-  class="{{ css_class }}_Link {{ css_class }}_Link-withIcon"
-  title="{{ 'layout.header.wishlist' | t }}"
-    href="{{- wishlist_page_url -}}"
-    onclick="window.wishlist.onWishlistLinkClick(event)"
-  >
-  <span class="{{ css_class }}_Icon {{ css_class }}_Icon-heart">
-    {%- render 'bao-heart' -%}
-    <span class="{{ css_class }}_Count js-Wishlist_Count" data-count="0">0</span>
-  </span>
-
-  <span class="{{ css_class }}_LinkText {% if hide_text %} util-ScreenReaderOnly{% endif %}">
-    {{ 'layout.header.wishlist' | t }}
-  </span>
-</a>
-{%- endif -%}
-
 {% comment %} Add to Wishlist {% endcomment %}
 {%- if component == 'add-to-wishlist' -%}
   <div class="prd-Wishlist prd-Wishlist-{{ page_type }}">
@@ -140,9 +91,9 @@
 
     <button class="prd-Wishlist_Button prd-Wishlist_Button-{{ page_type }} prd-Wishlist_Button-add iWishAddColl iwishcheck js-Wishlist_Button js-Wishlist_Button-add"
       onclick="this.parentElement.classList.add('prd-Wishlist-added'); window.wishlist.addToWishlist(this, this.dataset.variant, '{{- is_collection -}}')"
-      {%- unless customer -%}data-module-drawers-trigger="wishlist"{%- endunless -%}
       data-variant="{{- variant.id -}}"
       data-product="{{- product.id -}}"
+      data-product-handle="{{- product.handle -}}"
       data-pTitle="{{- product.title | escape -}}"
       title="{{- 'wishlist.add_to_wishlist' | t -}}"
     >
