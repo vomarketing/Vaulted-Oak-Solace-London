@@ -240,24 +240,25 @@
         </span>
       </button>
 
-      {%- if section.settings.wishlist_enable -%}
-        <div class="pdp-cta-wishlist">
+      {%- if section.settings.wishlist_enable and settings.wishlist_enable -%}
+        <wishlist-toggle
+          class="pdp-cta-wishlist"
+          data-source="pdp"
+          data-product-id="{{ product.id }}"
+          data-product-handle="{{ product.handle }}"
+          data-variant-id="{{ current_variant.id }}"
+        >
           <button
             type="button"
-            class="pdp-cta-wishlist__btn js-Wishlist_Button js-Wishlist_Button-add"
-            {%- unless customer -%}data-module-drawers-trigger="wishlist"{%- endunless -%}
-            data-variant="{{ current_variant.id }}"
-            data-product="{{ product.id }}"
-            data-pTitle="{{ product.title | escape }}"
-            data-ptitle="{{ product.title | escape }}"
-            aria-label="{{ 'wishlist.add_to_wishlist' | t }}"
-            title="{{ 'wishlist.add_to_wishlist' | t }}"
+            class="pdp-cta-wishlist__btn"
+            aria-label="{{ 'wishlist.save_item' | t: title: product.title | escape }}"
+            aria-pressed="false"
           >
             <span class="pdp-cta-wishlist__icons">
               {%- render 'icons', icon: 'wishlist', class: 'pdp-cta-wishlist__icon' -%}
             </span>
           </button>
-        </div>
+        </wishlist-toggle>
       {%- endif -%}
     </div>
 
