@@ -1,0 +1,134 @@
+.faq-Page {
+  padding: 64px 5.3vw 120px;
+  color: #000;
+  box-sizing: border-box;
+  min-height: max(900px, 100vh);
+  background: #fff;
+  font-size: 12px;
+  line-height: 1.5;
+
+  .pg-Page_Inner {
+    max-width: 580px;
+    margin: 0 auto;
+  }
+
+  .faq-Faqs_Items {
+    border-top: none;
+  }
+
+  .faq-Faqs_Item {
+    border-bottom: none;
+  }
+
+  .faq-Faqs_Header {
+    padding: 12px 0;
+  }
+
+  .faq-Faqs_Title {
+    font-weight: 500;
+    line-height: 1.5;
+  }
+
+  .faq-Faqs_Body {
+    margin-bottom: 20px;
+  }
+
+  .faq-Faqs_Text {
+    margin-top: 10px;
+    margin-bottom: 0;
+  }
+
+  .rte-RichText > p {
+    font-size: 12px;
+    line-height: 1.5;
+    color: #000;
+  }
+
+  .faq-Faqs_Icon {
+    width: 16px;
+    height: 16px;
+    pointer-events: none;
+  }
+
+  .faq-Faqs_Icon svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .faq-Faqs_Button {
+    margin-top: 20px;
+    margin-bottom: 0;
+    padding: 0;
+    border: none;
+    text-decoration: underline;
+  }
+}
+
+.info-Page_Navigation {
+  display: flex;
+  flex-wrap: nowrap;
+  justify-content: center;
+  margin: 0 auto 134px;
+  gap: 12px 20px;
+}
+
+.info-Page_NavigationLink {
+  flex: 0 0 auto;
+  color: inherit;
+  white-space: nowrap;
+  text-decoration: none;
+}
+
+.info-Page_NavigationLink:hover,
+.info-Page_NavigationLink.is-active {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+@media (max-width: 1440px) {
+  .faq-Page {
+    .pg-Page_Inner {
+      max-width: 655px;
+    }
+  }
+}
+
+@media (max-width: 1279px) {
+  .faq-Page {
+    .pg-Page_Inner {
+      max-width: 522px;
+    }
+  }
+
+  .info-Page_Navigation {
+    margin-bottom: 50px;
+  }
+}
+
+@media (max-width: 640px) {
+  .faq-Page {
+    overflow-x: clip;
+
+    .faq-Faqs_Text {
+      margin-top: 5px;
+    }
+  }
+
+  .info-Page_Navigation {
+    box-sizing: border-box;
+    width: 100%;
+    justify-content: flex-start;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
+    gap: 0 24px;
+    margin-bottom: 68px;
+    padding-bottom: 8px;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .info-Page_Navigation::-webkit-scrollbar {
+    display: none;
+  }
+}

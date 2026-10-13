@@ -1,0 +1,19 @@
+{%- assign navigation_menu = menu -%}
+
+{%- if navigation_menu == blank -%}
+	{%- assign navigation_menu = section.settings.navigation_menu -%}
+{%- endif -%}
+
+{%- if navigation_menu != blank -%}
+	<nav class="info-Page_Navigation" aria-label="Information pages">
+		{%- for link in navigation_menu.links -%}
+			<a
+				class="info-Page_NavigationLink{% if link.active %} is-active{% endif %}"
+				href="{{ link.url }}"
+				{% if link.active %}aria-current="page"{% endif %}
+			>
+				{{ link.title | escape }}
+			</a>
+		{%- endfor -%}
+	</nav>
+{%- endif -%}
