@@ -11,7 +11,7 @@
   class="legal-content lyt-Container legal-content--{{ layout_style }} text-reg-12"
   data-section-id="{{ section.id }}"
   data-layout="{{ layout_style }}"
-  data-mobile-accordion="{{ section.settings.mobile_accordion }}"
+  data-mobile-sidebar-drawer="{{ section.settings.mobile_sidebar_drawer }}"
   id="LegalContent-{{ section.id }}"
 >
   <div class="legal-content__container">
@@ -36,6 +36,14 @@
     {%- if section.blocks and section.blocks.size > 0 -%}
       {%- if layout_style == 'sidebar' -%}
         {%- comment -%} Mobile & Tablet Dropdown Selector (Active Section Picker) {%- endcomment -%}
+        {%- assign initial_sidebar_label = '' -%}
+        {%- for block in section.blocks -%}
+          {%- assign initial_sidebar_label = block.settings.title | strip -%}
+          {%- if initial_sidebar_label != blank -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+
         <div class="legal-content__dropdown-wrapper">
           <label
             for="LegalSelect-{{ section.id }}"
@@ -106,6 +114,64 @@
             </nav>
           </aside>
 
+          {%- if section.settings.mobile_sidebar_drawer -%}
+            <div class="legal-content__mobile-sidebar" data-legal-mobile-sidebar aria-expanded="false">
+              <button
+                class="legal-content__mobile-sidebar-trigger"
+                type="button"
+                aria-expanded="false"
+                aria-controls="LegalSidebarNav-{{ section.id }}"
+                data-legal-mobile-sidebar-trigger
+              >
+                <span class="legal-content__mobile-sidebar-trigger-text">
+                  <span class="legal-content__mobile-sidebar-label">{{ dropdown_label | escape }}</span>
+                  <span class="legal-content__mobile-sidebar-selected" data-legal-mobile-sidebar-selected>
+                    {{ initial_sidebar_label | escape }}
+                  </span>
+                </span>
+                <span class="legal-content__mobile-sidebar-icon" aria-hidden="true"></span>
+              </button>
+
+              <button
+                class="legal-content__mobile-sidebar-overlay"
+                type="button"
+                aria-label="Close section navigation"
+                tabindex="-1"
+                data-legal-mobile-sidebar-overlay
+              ></button>
+
+              <nav
+                class="legal-content__mobile-sidebar-panel"
+                id="LegalSidebarNav-{{ section.id }}"
+                aria-label="Page sections"
+                data-legal-mobile-sidebar-panel
+              >
+                <ul>
+                  {%- for block in section.blocks -%}
+                    {%- assign sidebar_title = block.settings.title | strip -%}
+                    {%- if sidebar_title != blank -%}
+                      {%- assign anchor_id = sidebar_title | handleize | default: block.id -%}
+                      {%- if anchor_id == blank -%}
+                        {%- assign anchor_id = 'section-' | append: forloop.index -%}
+                      {%- endif -%}
+                      <li>
+                        <button
+                          class="legal-content__mobile-sidebar-link{% if sidebar_title == initial_sidebar_label %} is-active{% endif %}"
+                          type="button"
+                          data-legal-mobile-sidebar-link
+                          data-target="section-{{ anchor_id }}"
+                          {% if sidebar_title == initial_sidebar_label %}aria-current="true"{% endif %}
+                        >
+                          {{ block.settings.title | escape }}
+                        </button>
+                      </li>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </ul>
+              </nav>
+            </div>
+          {%- endif -%}
+
           <div class="legal-content__body">
             {%- for block in section.blocks -%}
               {%- if block and block.settings -%}
@@ -122,7 +188,7 @@
                   data-legal-section
                   data-anchor-id="section-{{ anchor_id }}"
                   {% unless forloop.first %}hidden{% endunless %}
-                  {% unless section.settings.mobile_accordion %}{{ block.shopify_attributes }}{% endunless %}
+                  {{ block.shopify_attributes }}
                 >
                   {%- if block.settings.title != blank -%}
                     <h2 id="heading-{{ anchor_id }}" class="legal-content__heading text-med-12">
@@ -140,28 +206,6 @@
             {%- endfor -%}
           </div>
         </div>
-
-        {%- if section.settings.mobile_accordion -%}
-          <div class="legal-content__mobile-accordion">
-            {%- for block in section.blocks -%}
-              {%- if block and block.settings -%}
-                <details class="legal-content__accordion"{% if forloop.first %} open{% endif %} {{ block.shopify_attributes }}>
-                  <summary class="legal-content__accordion-trigger">
-                    <span>{{ block.settings.title | escape }}</span>
-                    <span class="legal-content__accordion-icon" aria-hidden="true">
-                      {%- render 'bao-icon-arrow-down' -%}
-                    </span>
-                  </summary>
-                  {%- if block.settings.text != blank -%}
-                    <div class="legal-content__accordion-content text-reg-12">
-                      {{ block.settings.text }}
-                    </div>
-                  {%- endif -%}
-                </details>
-              {%- endif -%}
-            {%- endfor -%}
-          </div>
-        {%- endif -%}
 
       {%- else -%}
         {%- comment -%} Full Content Layout (Stacked without Sidebar) {%- endcomment -%}
@@ -236,8 +280,8 @@
     },
     {
       "type": "checkbox",
-      "id": "mobile_accordion",
-      "label": "Show sections as an accordion on mobile",
+      "id": "mobile_sidebar_drawer",
+      "label": "Use mobile sidebar navigation drawer",
       "default": false
     },
     {

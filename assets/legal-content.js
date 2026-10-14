@@ -9,7 +9,13 @@ if (!customElements.get('legal-content')) {
       sections: '[data-legal-section]',
       select: '.legal-content__select',
       dropdownWrapper: '.legal-content__dropdown-wrapper',
-      tocContainer: '.legal-content__toc'
+      tocContainer: '.legal-content__toc',
+      mobileSidebar: '[data-legal-mobile-sidebar]',
+      mobileSidebarTrigger: '[data-legal-mobile-sidebar-trigger]',
+      mobileSidebarOverlay: '[data-legal-mobile-sidebar-overlay]',
+      mobileSidebarPanel: '[data-legal-mobile-sidebar-panel]',
+      mobileSidebarLinks: '[data-legal-mobile-sidebar-link]',
+      mobileSidebarSelected: '[data-legal-mobile-sidebar-selected]'
     };
 
     static classes = {
@@ -37,9 +43,9 @@ if (!customElements.get('legal-content')) {
 
       this.selectEl = this.querySelector(LegalContent.selectors.select);
 
-      if (!this.sections || this.sections.length === 0) return;
-
       this.bindEvents();
+
+      if (!this.sections || this.sections.length === 0) return;
 
       if (this.layoutMode === 'sidebar') {
         this.handleInitialHash();
@@ -59,6 +65,56 @@ if (!customElements.get('legal-content')) {
     bindEvents() {
       if (!this.abortController) return;
       const { signal } = this.abortController;
+
+      const mobileSidebar = this.querySelector(LegalContent.selectors.mobileSidebar);
+      const mobileSidebarTrigger = this.querySelector(LegalContent.selectors.mobileSidebarTrigger);
+      const mobileSidebarOverlay = this.querySelector(LegalContent.selectors.mobileSidebarOverlay);
+      const mobileSidebarPanel = this.querySelector(LegalContent.selectors.mobileSidebarPanel);
+
+      if (mobileSidebar && mobileSidebarTrigger && mobileSidebarOverlay && mobileSidebarPanel) {
+        const setMobileSidebarOpen = (open, restoreFocus = false) => {
+          mobileSidebar.setAttribute('aria-expanded', String(open));
+          mobileSidebarTrigger.setAttribute('aria-expanded', String(open));
+
+          if (open) {
+            const firstLink = mobileSidebarPanel.querySelector(LegalContent.selectors.mobileSidebarLinks);
+            if (firstLink) firstLink.focus();
+          } else if (restoreFocus) {
+            mobileSidebarTrigger.focus();
+          }
+        };
+
+        mobileSidebarTrigger.addEventListener(
+          'click',
+          () => setMobileSidebarOpen(mobileSidebar.getAttribute('aria-expanded') !== 'true'),
+          { signal }
+        );
+
+        mobileSidebarOverlay.addEventListener('click', () => setMobileSidebarOpen(false, true), { signal });
+
+        mobileSidebarPanel.addEventListener(
+          'click',
+          (event) => {
+            const link = event.target.closest(LegalContent.selectors.mobileSidebarLinks);
+            if (!link) return;
+
+            const targetId = link.getAttribute('data-target');
+            if (targetId) this.activateSection(targetId);
+            setMobileSidebarOpen(false);
+          },
+          { signal }
+        );
+
+        document.addEventListener(
+          'keydown',
+          (event) => {
+            if (event.key === 'Escape' && mobileSidebar.getAttribute('aria-expanded') === 'true') {
+              setMobileSidebarOpen(false, true);
+            }
+          },
+          { signal }
+        );
+      }
 
       if (this.layoutMode === 'sidebar') {
         // Desktop TOC clicks
@@ -174,6 +230,22 @@ if (!customElements.get('legal-content')) {
       }
 
       const activeId = targetSection ? (targetSection.getAttribute('data-anchor-id') || targetSection.id) : cleanId;
+
+      const mobileSidebarSelected = this.querySelector(LegalContent.selectors.mobileSidebarSelected);
+      if (mobileSidebarSelected && targetSection) {
+        const heading = targetSection.querySelector('h2, h3, [role="heading"]');
+        if (heading) mobileSidebarSelected.textContent = heading.textContent.trim();
+      }
+
+      this.querySelectorAll(LegalContent.selectors.mobileSidebarLinks).forEach((link) => {
+        const isCurrent = link.getAttribute('data-target') === activeId;
+        link.classList.toggle(LegalContent.classes.active, isCurrent);
+        if (isCurrent) {
+          link.setAttribute('aria-current', 'true');
+        } else {
+          link.removeAttribute('aria-current');
+        }
+      });
 
       if (this.tocLinks && this.tocLinks.length > 0) {
         this.tocLinks.forEach((link) => {
