@@ -96,10 +96,12 @@
   .faq-Page {
     .pg-Page_Inner {
       max-width: 522px;
+      padding-top: 0;
     }
   }
 
   .info-Page_Navigation {
+    margin-top: 30px;
     margin-bottom: 50px;
   }
 }

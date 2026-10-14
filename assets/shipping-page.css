@@ -1,8 +1,6 @@
 .shipping-Page {
   box-sizing: border-box;
   min-height: max(900px, 100vh);
-  padding-top: 64px;
-  padding-bottom: 120px;
   font-size: 12px;
   line-height: 1.5;
 }
@@ -189,13 +187,12 @@
 @media (max-width: 1279px) {
   .shipping-Page {
     min-height: max(700px, 100vh);
-    padding-top: 40px;
-    padding-bottom: 80px;
     overflow-x: clip;
 
     .pg-Page_Inner {
       max-width: 522px;
       margin: 0 auto;
+      padding-top: 0;
     }
   }
 
