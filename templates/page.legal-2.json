@@ -33,6 +33,7 @@
       "settings": {
         "layout_style": "sidebar",
         "dropdown_label": "Frequent Questions",
+        "mobile_sidebar_drawer": true,
         "navigation_menu": "page-menu"
       }
     }
