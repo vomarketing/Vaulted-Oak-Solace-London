@@ -41,7 +41,7 @@
       ],
       "settings": {
         "layout_style": "full_content",
-        "dropdown_label": "Frequent Questions",
+        "dropdown_label": "",
         "navigation_menu": "page-menu"
       }
     }
