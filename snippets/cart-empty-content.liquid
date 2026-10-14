@@ -1,0 +1,46 @@
+{%- doc -%}
+  Empty bag content on the bag page.
+  Delivery and help content reuse the mini bag settings (Theme settings > Cart);
+  "More Information" opens the #BagInfo dialog rendered by sections/main-cart.
+{%- enddoc -%}
+
+<div class="cart-Empty">
+  <p class="cart-Empty_Message">{{ 'cart.bag.empty' | t }}</p>
+
+  <div class="cart-Empty_Block">
+    {%- if settings.mbg_delivery_summary != blank -%}
+      <div class="cart-Empty_Text">{{ settings.mbg_delivery_summary }}</div>
+    {%- endif -%}
+
+    <div class="cart-Empty_Links">
+      <button
+        class="cart-Empty_Link"
+        type="button"
+        aria-haspopup="dialog"
+        aria-controls="BagInfo"
+        data-bag-info-open
+      >
+        {{- 'cart.bag.more_information' | t -}}
+      </button>
+    </div>
+  </div>
+
+  {%- if settings.mbg_help_text != blank or settings.mbg_email != blank -%}
+    <div class="cart-Empty_Block">
+      <div class="cart-Empty_Text">
+        <p>{{ 'cart.bag.need_help' | t }}</p>
+        {%- if settings.mbg_help_text != blank -%}
+          <p>{{ settings.mbg_help_text | escape | newline_to_br }}</p>
+        {%- endif -%}
+      </div>
+
+      {%- if settings.mbg_email != blank -%}
+        <div class="cart-Empty_Links">
+          <a class="cart-Empty_Link" href="mailto:{{ settings.mbg_email | escape }}">
+            {{- 'cart.bag.email' | t -}}
+          </a>
+        </div>
+      {%- endif -%}
+    </div>
+  {%- endif -%}
+</div>

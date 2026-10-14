@@ -45,6 +45,12 @@
 
   if prefer_packshot
     assign card_image = product.metafields.custom.packshot_image.value | default: product.images.first
+  elsif packshot_when_available
+    assign packshot_image = product.metafields.custom.packshot_image.value
+    if packshot_image != blank
+      assign default_card_image = card_image
+      assign card_image = packshot_image
+    endif
   endif
 
   assign hover_image = nil
@@ -57,6 +63,30 @@
         break
       endif
     endfor
+  endif
+
+  assign has_pre_order_tag = false
+
+  for tag in product.tags
+    assign downcased_tag = tag | downcase | strip
+    if downcased_tag == 'pre-order'
+      assign has_pre_order_tag = true
+      break
+    endif
+  endfor
+
+  assign size_label_market = 'UK'
+
+  if localization.country.iso_code == 'US'
+    assign size_label_market = 'US'
+  endif
+
+  if default_card_image != blank
+    assign card_image_file = card_image.src | split: '?' | first | split: '/' | last
+    assign default_card_image_file = default_card_image.src | split: '?' | first | split: '/' | last
+    if default_card_image_file != card_image_file
+      assign hover_image = default_card_image
+    endif
   endif
 -%}
 
@@ -72,56 +102,75 @@
   {%- endfor -%}
 {%- endif -%}
 
+{%- capture product_card_url -%}
+  {{- product.url | within: collection -}}{%- unless is_default_variant -%}?variant={{- current_variant.id -}}{%- endunless -%}
+{%- endcapture -%}
+
+{%- liquid
+  assign image_tag = 'div'
+  if enable_card_swipe
+    assign image_tag = 'a'
+  endif
+-%}
+
 <div class="prd-Card util-FauxLink {% unless current_variant.available %}prd-Card-unavaliable{% endunless %}"{% if has_size_option %} data-module="product-card" data-product-card-handle="{{ product.handle }}"{% endif %}>
 
   <div class="prd-Card_ImageContainer">
-    {%- if hover_image != blank -%}
-      <div class="prd-Card_Image prd-Card_Image-hoverImage">
-        {%- render 'responsive-image',
-          image: hover_image,
-          width: 1600,
-          height: 2382
-        -%}
-      </div>
-    {%- endif -%}
-
     {%- if card_image != blank -%}
-      <div class="prd-Card_Image">
+      <{{ image_tag }} class="prd-Card_Image"{% if enable_card_swipe %} href="{{ product_card_url }}" aria-label="{{ product.title | escape }}"{% endif %}>
         {%- render 'responsive-image',
           image: card_image,
           width: 1600,
           height: 2382
         -%}
-      </div>
+      </{{ image_tag }}>
+    {%- endif -%}
+
+    {%- if hover_image != blank -%}
+      <{{ image_tag }} class="prd-Card_Image prd-Card_Image-hoverImage"{% if enable_card_swipe %} href="{{ product_card_url }}" aria-label="{{ product.title | escape }}"{% endif %}>
+        {%- render 'responsive-image',
+          image: hover_image,
+          width: 1600,
+          height: 2382
+        -%}
+      </{{ image_tag }}>
     {%- endif -%}
   </div>
 
   <div class="prd-Card_Bottom">
     <div class="prd-Card_Content fz-12_12">
-      <p class="prd-Card_Kicker{% if product.compare_at_price > product.price %} prd-Card_Kicker-red{% endif %}">
-        {%- if product.compare_at_price > product.price -%}
-          {{ 'products.product.on_sale' | t }}
-        {%- endif -%}
-      </p>
+      <div class="prd-Card_Summary">
+        <div class="prd-Card_Details">
+          <p class="prd-Card_Kicker{% if product.compare_at_price > product.price %} prd-Card_Kicker-red{% endif %}">
+            {%- if product.compare_at_price > product.price -%}
+              {{ 'products.product.on_sale' | t }}
+            {%- endif -%}
+          </p>
 
-      <h3 class="prd-Card_Title fz-12_12">
-        {{ product.title }} 
-      </h3>
+          <h3 class="prd-Card_Title fz-12_12">
+            {{ product.title }}
+          </h3>
 
-      {%- if show_add_to_bag_button and has_size_option and option_key -%}
-        <div class="prd-Card_Meta">
-          {%- assign option_name = size_option.name -%}
-          {%- assign downcased_option_name = option_name | downcase -%}
-          {%- if downcased_option_name contains 'size' -%}
-            {%- assign option_name = 'products.product.size' | t -%}
+          {%- if has_pre_order_tag -%}
+            <p class="prd-Card_PreOrder">Pre-order</p>
           {%- endif -%}
-          {{ option_name }} {{ current_variant[option_key] }}
         </div>
-      {%- else -%}
-        <div class="prd-Card_Price">
-          {%- render 'product-price', product: product %}
-        </div>
-      {%- endif -%}
+
+        {%- if show_add_to_bag_button and has_size_option and option_key -%}
+          <div class="prd-Card_Meta">
+            {%- assign option_name = size_option.name -%}
+            {%- assign downcased_option_name = option_name | downcase -%}
+            {%- if downcased_option_name contains 'size' -%}
+              {%- assign option_name = 'products.product.size' | t -%}
+            {%- endif -%}
+            {{ option_name }} {{ current_variant[option_key] }}
+          </div>
+        {%- else -%}
+          <div class="prd-Card_Price">
+            {%- render 'product-price', product: product %}
+          </div>
+        {%- endif -%}
+      </div>
 
       {% comment %} Passed in from product-card-loader when on wishlist page {% endcomment %}
       {%- if wishlist_remove_link_html -%}
@@ -162,7 +211,9 @@
           </select>
           <input type="hidden" name="quantity" value="1" />
 
-          <p class="prd-Card_Text">{{ 'products.card.size_label' | t }}</p>
+          <p class="prd-Card_Text">
+            {{ size_label_market }} SIZES
+          </p>
 
           <div class="prd-Card_Options" data-el="product-card.options">
             {%- for value in size_option.values -%}
@@ -240,7 +291,42 @@
 
     {%- endif -%}
 
+    {%- if settings.wishlist_enable -%}
+      {%- liquid
+        assign wishlist_sized = true
+        for option in product.options
+          assign downcased_option = option | downcase
+          if downcased_option contains 'size'
+            assign wishlist_sized = false
+            break
+          endif
+        endfor
+      -%}
+      <wishlist-toggle
+        data-product-id="{{ product.id }}"
+        data-product-handle="{{ product.handle }}"
+        data-variant-id="{{ current_variant.id }}"
+        data-sized="{{ wishlist_sized }}"
+      >
+        <button
+          type="button"
+          class="prd-Card_Wishlist wsl-Toggle"
+          aria-label="{{ 'wishlist.save_item' | t: title: product.title | escape }}"
+          aria-pressed="false"
+        >
+          <span class="prd-Card_WishlistIcons-small">
+            {%- render 'icons', icon: 'bookmark-small', class: 'wsl-Toggle_Icon-outline' -%}
+            {%- render 'icons', icon: 'bookmark-small-filled', class: 'wsl-Toggle_Icon-filled' -%}
+          </span>
+          <span class="prd-Card_WishlistIcons-large">
+            {%- render 'icons', icon: 'bookmark', class: 'wsl-Toggle_Icon-outline' -%}
+            {%- render 'icons', icon: 'bookmark-filled', class: 'wsl-Toggle_Icon-filled' -%}
+          </span>
+        </button>
+      </wishlist-toggle>
+    {%- endif -%}
+
   </div>
 
-  <a class="prd-Card_FauxLink util-FauxLink_Link" href="{{- product.url | within: collection -}}{%- unless is_default_variant -%}?variant={{- current_variant.id -}}{%- endunless -%}"></a>
+  <a class="prd-Card_FauxLink util-FauxLink_Link" href="{{ product_card_url }}"></a>
 </div>

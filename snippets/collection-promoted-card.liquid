@@ -1,37 +1,82 @@
-<div class="clc-PromotedCard js-Animate" data-animation="Fade">
-  <div class="clc-PromotedCard_ImageContainer">
-    <div class="clc-PromotedCard_Image clc-PromotedCard_Image-desktop">
-      {%- render 'responsive-image-metafield',
-        image: metafields.Image.first,
-        width: 3250,
-        height: 2380
-      -%}
-    </div>
+{%- liquid
+  assign media_type = promo.media_type.value | downcase
+  assign promoted_image = promo.desktop_image.value
+  assign promoted_mobile_image = promo.mobile_image.value | default: promoted_image
+  assign promoted_video = promo.video.value
+  assign promoted_text = promo.overlay_text
+  assign text_color = promo.text_color.value
+  assign promoted_link = promo.link.value
+-%}
 
-    {%- if metafields.Mobile_Image != blank -%}
-      <div class="clc-PromotedCard_Image clc-PromotedCard_Image-mobile">
-        {%- render 'responsive-image-metafield',
-          image: metafields.Mobile_Image.first,
-          width: 824,
-          height: 1161
-        -%}
-      </div>
-    {%- endif -%}
-  </div>
+<div
+  class="clc-PromotedCard js-Animate"
+  data-animation="Fade"
+  {% if text_color != blank %}
+    style="--clc-promoted-card-text-color: {{ text_color }};"
+  {% endif %}
+>
+  {%- if promoted_link != blank -%}
+    <a class="clc-PromotedCard_Link" href="{{ promoted_link | escape }}">
+      {%- else -%}
+      <div class="clc-PromotedCard_Link">
+        {%- endif -%}
 
-  <div class="clc-PromotedCard_Content fz-12_12">
-    {%- if metafields.Is_A_Product == 'true' -%}
-      {%- assign product = all_products[metafields.Product] -%}
+        <div class="clc-PromotedCard_ImageContainer">
+          {%- if media_type == 'video' and promoted_video != blank -%}
+            <div class="clc-PromotedCard_Image clc-PromotedCard_Image-desktop">
+              {{
+              promoted_video
+              | video_tag:
+              autoplay: true,
+              loop: true,
+              muted: true,
+              controls: false,
+              playsinline: true
+              }}
+            </div>
+            <div class="clc-PromotedCard_Image clc-PromotedCard_Image-mobile">
+              {{
+              promoted_video
+              | video_tag:
+              autoplay: true,
+              loop: true,
+              muted: true,
+              controls: false,
+              playsinline: true
+              }}
+            </div>
+            {%- elsif promoted_image != blank -%}
+            <div class="clc-PromotedCard_Image clc-PromotedCard_Image-desktop">
+              {%- render 'responsive-image',
+                image: promoted_image,
+                width: 3250,
+                height: 2380
+              -%}
+            </div>
 
-      <h3 class="clc-PromotedCard_Title fz-12_12">{{ product.title }}</h3>
+            {%- if promoted_mobile_image != blank -%}
+              <div class="clc-PromotedCard_Image clc-PromotedCard_Image-mobile">
+                {%- render 'responsive-image',
+                  image: promoted_mobile_image,
+                  width: 824,
+                  height: 1161
+                -%}
+              </div>
+            {%- endif -%}
+          {%- endif -%}
+        </div>
 
-      <div class="clc-PromotedCard_Price">
-        {%- render 'product-price', product: product %}
-      </div>
-    {%- else -%}
-      <div class="clc-PromotedCard_Text rte-RichText">
-        {{ metafields.Text.html }}
-      </div>
-    {%- endif -%}
-  </div>
+        {%- if promoted_text != blank -%}
+          <div class="clc-PromotedCard_Content fz-12_12">
+            <div class="clc-PromotedCard_Text rte-RichText">
+              {{ promoted_text | metafield_tag }}
+            </div>
+          </div>
+        {%- endif -%}
+
+        {%- if promoted_link != blank -%}
+    </a>
+  {%- else -%}
+</div>
+{%- endif -%}
 </div>

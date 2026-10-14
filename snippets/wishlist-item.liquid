@@ -1,0 +1,169 @@
+{%- doc -%}
+  Saved (wishlist) item rendered inside the mini bag Saved tab.
+
+  @param {object} product - Saved product
+  @param {object} variant - Saved variant
+{%- enddoc -%}
+
+{%- liquid
+  assign size_index = nil
+  assign size_option = nil
+  unless product.has_only_default_variant
+    for option in product.options_with_values
+      assign option_name = option.name | downcase
+      if option_name contains 'size'
+        assign size_index = forloop.index0
+        assign size_option = option
+        break
+      endif
+    endfor
+  endunless
+
+  assign is_discounted = false
+  if variant.compare_at_price > variant.price
+    assign is_discounted = true
+  endif
+
+  assign image = variant.featured_image | default: product.featured_image
+-%}
+
+<wishlist-item
+  class="wsl-Item"
+  data-product-id="{{ product.id }}"
+  data-variant-id="{{ variant.id }}"
+  data-sized="{% if size_option %}false{% else %}true{% endif %}"
+  data-product-available="{{ product.available }}"
+  data-variant-available="{{ variant.available }}"
+>
+  <a class="wsl-Item_Image" href="{{ product.url }}" tabindex="-1" aria-hidden="true">
+    {%- if image -%}
+      {{-
+        image
+        | image_url: width: 348
+        | image_tag:
+          widths: '116, 232, 348',
+          sizes: '(max-width: 767px) 98px, 116px',
+          loading: 'lazy',
+          alt: image.alt
+      -}}
+    {%- endif -%}
+  </a>
+
+  <div class="wsl-Item_Details">
+    <a class="wsl-Item_Title" href="{{ product.url }}">{{ product.title | escape }}</a>
+
+    {%- if size_option -%}
+      {%- assign size_heading = 'wishlist.select_size_heading' | t: option: size_option.name -%}
+      <div class="wsl-Item_Size" data-wishlist-size>
+        <button
+          class="wsl-Item_SizeToggle"
+          type="button"
+          aria-expanded="false"
+          aria-controls="WishlistSize-{{ product.id }}"
+          data-wishlist-size-toggle
+        >
+          <span data-wishlist-size-label data-placeholder="{{ 'wishlist.select_size' | t | escape }}">
+            {{- 'wishlist.select_size' | t -}}
+          </span>
+          {%- render 'icons', icon: 'arrow-down', class: 'wsl-Item_SizeIcon' -%}
+        </button>
+
+        <div
+          class="wsl-Size"
+          id="WishlistSize-{{ product.id }}"
+          role="dialog"
+          aria-label="{{ size_heading | escape }}"
+          hidden
+          data-wishlist-size-menu
+        >
+          <p class="wsl-Size_Heading">{{ size_heading }}</p>
+
+          <ul class="wsl-Size_Items">
+            {%- for value in size_option.values -%}
+              {%- liquid
+                assign option_variant = nil
+                for candidate in product.variants
+                  assign is_match = true
+                  for candidate_value in candidate.options
+                    if forloop.index0 == size_index
+                      if candidate_value != value
+                        assign is_match = false
+                        break
+                      endif
+                    elsif candidate_value != variant.options[forloop.index0]
+                      assign is_match = false
+                      break
+                    endif
+                  endfor
+                  if is_match
+                    assign option_variant = candidate
+                    break
+                  endif
+                endfor
+              -%}
+              {%- if option_variant -%}
+                <li class="wsl-Size_Item">
+                  <button
+                    class="wsl-Size_Button"
+                    type="button"
+                    data-wishlist-size-variant="{{ option_variant.id }}"
+                    data-label="{{ 'wishlist.size_label' | t: option: size_option.name, size: value | escape }}"
+                    {% unless option_variant.available %}disabled{% endunless %}
+                  >
+                    {{- value -}}
+                  </button>
+                </li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        </div>
+      </div>
+    {%- endif -%}
+
+    <form
+      class="wsl-Item_Form"
+      action="{{ routes.cart_add_url }}"
+      method="post"
+      data-push-cart-form
+    >
+      <input type="hidden" name="id" value="{{ variant.id }}" data-wishlist-variant-input>
+      <input type="hidden" name="quantity" value="1">
+      <button
+        class="wsl-Item_Add"
+        type="submit"
+        data-wishlist-add
+        data-label-add="{{ 'products.product.add_to_bag' | t | escape }}"
+        data-label-sold-out="{{ 'products.product.sold_out' | t | escape }}"
+        {% unless product.available %}disabled{% endunless %}
+      >
+        {%- if product.available -%}
+          {{- 'products.product.add_to_bag' | t -}}
+        {%- else -%}
+          {{- 'products.product.sold_out' | t -}}
+        {%- endif -%}
+      </button>
+    </form>
+
+    <p class="wsl-Item_Error" role="alert" data-wishlist-error hidden></p>
+  </div>
+
+  <div class="wsl-Item_Aside">
+    <p class="wsl-Item_Price">
+      {%- if is_discounted -%}
+        <s class="wsl-Item_PriceCompare">{{ variant.compare_at_price | money }}</s>
+        <span class="wsl-Item_PriceSale">{{ variant.price | money }}</span>
+      {%- else -%}
+        {{ variant.price | money }}
+      {%- endif -%}
+    </p>
+
+    <button
+      class="wsl-Item_Remove"
+      type="button"
+      aria-label="{{ 'wishlist.remove_item' | t: title: product.title | escape }}"
+      data-wishlist-remove
+    >
+      {%- render 'icons', icon: 'bookmark-filled' -%}
+    </button>
+  </div>
+</wishlist-item>

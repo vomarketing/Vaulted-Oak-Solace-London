@@ -1,0 +1,49 @@
+<script type="application/json" data-predictive-search-results>
+  {
+    "resources": {
+      "results": {
+        "queries": [
+          {%- for query in predictive_search.resources.queries -%}
+            {
+              "text": {{ query.text | json }},
+              "url": {{ query.url | json }}
+            }{%- unless forloop.last -%},{%- endunless -%}
+          {%- endfor -%}
+        ],
+        "products": [
+          {%- for product in predictive_search.resources.products -%}
+            {%- liquid
+              assign card_image = product.metafields.custom.packshot_image.value
+              if card_image == blank
+                assign card_image = product.featured_image
+                if product.images.size > 1
+                  for tag in product.tags
+                    assign downcased_tag = tag | downcase
+                    if downcased_tag == 'first-image-last' or downcased_tag == 'first_image_last'
+                      assign card_image = product.images[1]
+                      break
+                    endif
+                  endfor
+                endif
+              endif
+              assign image_url = ''
+              if card_image != blank
+                assign image_url = card_image | image_url: width: 1024
+              endif
+            -%}
+            {
+              "title": {{ product.title | json }},
+              "url": {{ product.url | json }},
+              "published_date": {{ product.published_at | date: '%Y-%m-%d' | json }},
+              "price": {{ product.price | divided_by: 100.0 }},
+              "compare_at_price": {% if product.compare_at_price > product.price %}{{ product.compare_at_price | divided_by: 100.0 }}{% else %}null{% endif %},
+              "featured_image": {
+                "url": {{ image_url | json }}
+              }
+            }{%- unless forloop.last -%},{%- endunless -%}
+          {%- endfor -%}
+        ]
+      }
+    }
+  }
+</script>

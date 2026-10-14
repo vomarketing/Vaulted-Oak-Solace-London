@@ -1,0 +1,505 @@
+/* ==========================================================================
+   Contact Modal & Slide-over Drawer Component (<contact-modal>)
+   Mobile-first, native Shopify contact form modal/drawer
+   ========================================================================== */
+
+.contact-modal {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: var(--z-modal, 10000);
+  display: flex;
+  align-items: flex-end;
+  justify-content: stretch;
+  visibility: hidden;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity var(--transition-base, 0.3s ease),
+              visibility var(--transition-base, 0.3s ease);
+
+  @media (min-width: 1024px) {
+    align-items: stretch;
+    justify-content: flex-end;
+  }
+
+  &.is-open,
+  &[aria-hidden="false"]:not([hidden]) {
+    visibility: visible;
+    pointer-events: auto;
+    opacity: 1;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Backdrop Overlay
+   -------------------------------------------------------------------------- */
+.contact-modal__overlay {
+  position: fixed;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  cursor: pointer;
+  transition: opacity var(--transition-smooth, 0.35s ease);
+}
+
+.contact-modal.is-open .contact-modal__overlay {
+  opacity: 1;
+}
+
+/* --------------------------------------------------------------------------
+   Drawer / Sheet Container
+   -------------------------------------------------------------------------- */
+.contact-modal__container {
+  position: relative;
+  z-index: var(--z-base, 1);
+  width: 100%;
+  height: calc(100vh - 125px);
+  height: calc(100dvh - 125px);
+  max-height: calc(100dvh - 125px);
+  max-width: 100%;
+  background-color: var(--color-white, #ffffff);
+  color: var(--color-black, #000000);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  overscroll-behavior: contain;
+  box-shadow: 0 -4px 24px rgba(0, 0, 0, 0.12);
+  transform: translateY(100%);
+  transition: transform var(--transition-smooth, 0.38s cubic-bezier(0.16, 1, 0.3, 1));
+
+  @media (min-width: 768px) {
+    height: auto;
+    max-height: 640px;
+  }
+
+  @media (min-width: 1024px) {
+    width: 100%;
+    max-width: 570px;
+    height: 100%;
+    height: 100dvh;
+    max-height: 100%;
+    box-shadow: -4px 0 24px rgba(0, 0, 0, 0.12);
+    transform: translateX(100%);
+  }
+
+  @media (min-width: 1600px) {
+    max-width: 774px;
+  }
+}
+
+.contact-modal.is-open .contact-modal__container {
+  transform: translateY(0);
+
+  @media (min-width: 1024px) {
+    transform: translateX(0);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Header
+   -------------------------------------------------------------------------- */
+.contact-modal__header {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px;
+  background-color: var(--color-white, #ffffff);
+  border-bottom: 1px solid var(--color-grey-border, rgba(0, 0, 0, 0.15));
+
+  @media (min-width: 768px) {
+    border-bottom: none;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 40px 40px 0;
+  }
+}
+
+.contact-modal__title {
+  margin: 0;
+  color: var(--color-black, #000000);
+}
+
+.contact-modal__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  margin: 0;
+  background: transparent;
+  border: none;
+  color: var(--color-black, #000000);
+  cursor: pointer;
+  transition: opacity var(--transition-fast, 0.2s ease);
+  touch-action: manipulation;
+
+  &:hover {
+    opacity: 0.6;
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-black, #000000);
+    outline-offset: 2px;
+    opacity: 1;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Scrollable Body & Content
+   -------------------------------------------------------------------------- */
+.contact-modal__content {
+  flex: 1 1 auto;
+  padding: 40px 20px 30px;
+  display: flex;
+  flex-direction: column;
+
+  @media (min-width: 768px) {
+    padding: 30px 20px;
+  }
+
+  @media (min-width: 1024px) {
+    padding: 50px 40px 40px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Customer Care Intro
+   -------------------------------------------------------------------------- */
+.contact-modal__intro {
+  margin-bottom: 40px;
+  color: var(--color-black, #000000);
+
+  @media (min-width: 1024px) {
+    margin-bottom: 50px;
+  }
+
+  p {
+    margin: 0 0 14px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Form Grid & Fields
+   -------------------------------------------------------------------------- */
+.contact-modal__form {
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+
+.contact-modal__grid {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+
+  @media (min-width: 768px) {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    column-gap: 26px;
+    row-gap: 26px;
+  }
+
+  @media (min-width: 1024px) {
+    flex: 1 1 auto;
+    grid-template-rows: repeat(4, auto) 1fr;
+    column-gap: 30px;
+    row-gap: 30px;
+  }
+}
+
+.contact-modal__field {
+  position: relative;
+  width: 100%;
+
+  &.contact-modal__field--message {
+    @media (min-width: 1600px) {
+      width: calc(50% - 15px);
+    }
+  }
+}
+
+.contact-modal__field--half {
+  @media (min-width: 768px) {
+    grid-column: span 1;
+  }
+}
+
+.contact-modal__field--full {
+  @media (min-width: 768px) {
+    grid-column: 1 / -1;
+  }
+}
+
+.contact-modal__field--actions {
+  @media (min-width: 1024px) {
+    align-self: end;
+    margin-top: auto;
+  }
+}
+
+/* Base form inputs & select */
+.contact-modal__input,
+.contact-modal__select {
+  width: 100%;
+  height: 24px;
+  margin: 0;
+  background-color: transparent;
+  border: none;
+  border-bottom: 1px solid var(--color-black, #000000);
+  border-radius: 0;
+  color: var(--color-black, #000000);
+  outline: none;
+  box-shadow: none;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: border-bottom-color var(--transition-fast, 0.2s ease);
+
+  &:focus {
+    border-bottom: 1.5px solid var(--color-black, #000000);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-black, #000000);
+    outline-offset: 2px;
+  }
+}
+
+.contact-modal__input {
+  padding-bottom: 13px;
+
+  &::placeholder {
+    text-transform: capitalize;
+    color: var(--color-black, #000000);
+    opacity: 0.5;
+  }
+}
+
+.contact-modal__select-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.contact-modal__select {
+  cursor: pointer;
+}
+
+.contact-modal__select-icon {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 10px;
+  height: 6px;
+  pointer-events: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-black, #000000);
+
+  svg {
+    display: block;
+    width: 10px;
+    height: 6px;
+  }
+}
+
+/* Boxed Message Textarea */
+.contact-modal__textarea {
+  width: 100%;
+  min-height: 187px;
+  padding: 20px;
+  margin: 0;
+  background-color: transparent;
+  border: 1px solid var(--color-black, #000000);
+  border-radius: 0;
+  color: var(--color-black, #000000);
+  outline: none;
+  box-shadow: none;
+  resize: vertical;
+  -webkit-appearance: none;
+  appearance: none;
+  transition: border-color var(--transition-fast, 0.2s ease);
+
+  @media (min-width: 768px) {
+    max-height: 195px;
+  }
+
+  @media (min-width: 1024px) {
+    max-height: 187px;
+  }
+
+  &::placeholder {
+    color: var(--color-grey-muted, #757575);
+    opacity: 1;
+  }
+
+  &:focus {
+    border-color: var(--color-black, #000000);
+    box-shadow: 0 0 0 1px var(--color-black, #000000);
+  }
+
+  &:focus-visible {
+    outline: 2px solid var(--color-black, #000000);
+    outline-offset: 2px;
+  }
+}
+
+/* Submit Button */
+.contact-modal__submit {
+  position: relative;
+  width: 100%;
+  min-height: 48px;
+  padding: 14px 24px;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--color-white, #ffffff);
+  color: var(--color-black, #000000);
+  border: 1px solid var(--color-black, #000000);
+  border-radius: 0;
+  cursor: pointer;
+  transition: background-color var(--transition-base, 0.25s ease),
+              color var(--transition-base, 0.25s ease),
+              border-color var(--transition-base, 0.25s ease);
+  touch-action: manipulation;
+
+  &:hover {
+    background-color: var(--color-black, #000000);
+    color: var(--color-white, #ffffff);
+  }
+
+  &:focus-visible {
+    background-color: var(--color-black, #000000);
+    color: var(--color-white, #ffffff);
+    outline: 2px solid var(--color-black, #000000);
+    outline-offset: 3px;
+  }
+
+  &:disabled,
+  &.is-loading {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+/* Spinner for AJAX submit */
+.contact-modal__spinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  margin-left: 8px;
+  border: 1.5px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: contact-modal-spin 0.65s linear infinite;
+
+  &[hidden] {
+    display: none !important;
+  }
+}
+
+@keyframes contact-modal-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Validation Messages
+   -------------------------------------------------------------------------- */
+.contact-modal__status {
+  margin-top: 18px;
+
+  &:empty {
+    display: none;
+  }
+}
+
+.contact-modal__success {
+  padding: 14px 16px;
+  border: 1px solid var(--color-success, #7ecc67);
+  background-color: #f1f8e9;
+  color: #1b5e20;
+}
+
+.contact-modal__error {
+  padding: 14px 16px;
+  border: 1px solid var(--color-error, #CE0000);
+  background-color: #fff5f5;
+  color: var(--color-error, #CE0000);
+
+  ul {
+    margin: 0;
+    padding-left: 18px;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Body Lock Modifier
+   -------------------------------------------------------------------------- */
+body.is-contact-modal-open {
+  overflow: hidden !important;
+  touch-action: none;
+
+  .shopify-section-group-footer-group {
+    z-index: 100;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Accessibility (ADA / WCAG 2.2 AA)
+   -------------------------------------------------------------------------- */
+.contact-modal {
+  .visually-hidden,
+  .util-ScreenReaderOnly {
+    position: absolute !important;
+    width: 1px !important;
+    height: 1px !important;
+    padding: 0 !important;
+    margin: -1px !important;
+    overflow: hidden !important;
+    clip: rect(0, 0, 0, 0) !important;
+    white-space: nowrap !important;
+    border: 0 !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .contact-modal,
+  .contact-modal__overlay,
+  .contact-modal__container,
+  .contact-modal__close,
+  .contact-modal__input,
+  .contact-modal__select,
+  .contact-modal__textarea,
+  .contact-modal__submit {
+    transition: none !important;
+  }
+
+  .contact-modal__spinner {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+  }
+}
+
+@media (forced-colors: active) {
+  .contact-modal__close:focus-visible,
+  .contact-modal__input:focus-visible,
+  .contact-modal__select:focus-visible,
+  .contact-modal__textarea:focus-visible,
+  .contact-modal__submit:focus-visible {
+    outline: 2px solid Highlight !important;
+  }
+}
