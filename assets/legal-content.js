@@ -245,21 +245,18 @@ if (!customElements.get('legal-content')) {
       );
     }
 
-    activateSection(targetId, options = false, maybeShouldFocus = false) {
+    activateSection(targetId, options = false) {
       if (!targetId || typeof targetId !== 'string') return;
       const cleanId = targetId.replace(/^#/, '').trim();
       if (!cleanId || !this.sections || this.sections.length === 0) return;
 
       let fromDropdown = false;
-      let shouldFocus = false;
       let updateHash = true;
 
       if (typeof options === 'boolean') {
         fromDropdown = options;
-        shouldFocus = Boolean(maybeShouldFocus);
       } else if (typeof options === 'object' && options !== null) {
         fromDropdown = Boolean(options.fromDropdown);
-        shouldFocus = Boolean(options.shouldFocus);
         if (typeof options.updateHash === 'boolean') {
           updateHash = options.updateHash;
         }
@@ -347,16 +344,6 @@ if (!customElements.get('legal-content')) {
         }
       }
 
-      if (shouldFocus && targetSection) {
-        const heading = targetSection.querySelector('.legal-content__heading, h2, h3, [role="heading"]');
-        if (heading && typeof heading.focus === 'function') {
-          if (!heading.hasAttribute('tabindex')) {
-            heading.setAttribute('tabindex', '-1');
-          }
-          heading.focus({ preventScroll: true });
-        }
-      }
-
       if (fromDropdown && typeof window !== 'undefined' && window.innerWidth < 1024) {
         const dropdownBox = this.dropdownWrapper;
         if (dropdownBox && typeof dropdownBox.getBoundingClientRect === 'function') {
@@ -384,7 +371,6 @@ if (!customElements.get('legal-content')) {
             const targetId = targetSection.getAttribute('data-anchor-id') || targetSection.id || rawId;
             this.activateSection(targetId, {
               fromDropdown: false,
-              shouldFocus: false,
               updateHash: false
             });
             return;
@@ -398,7 +384,6 @@ if (!customElements.get('legal-content')) {
         if (firstId) {
           this.activateSection(firstId, {
             fromDropdown: false,
-            shouldFocus: false,
             updateHash: !isInitialLoad
           });
         }
