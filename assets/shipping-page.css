@@ -126,6 +126,11 @@
   margin-bottom: 0;
 }
 
+.shipping-Page_Answer strong,
+.shipping-Page_Answer b {
+  font-weight: var(--shipping-answer-bold-weight, 500);
+}
+
 .shipping-Page_TableWrap {
   max-width: 100%;
   overflow-x: auto;
@@ -188,6 +193,7 @@
   .shipping-Page {
     min-height: max(700px, 100vh);
     overflow-x: clip;
+    z-index: 31;
 
     .pg-Page_Inner {
       max-width: 522px;
@@ -289,5 +295,23 @@
 
   .shipping-Page_Group + .shipping-Page_Group {
     margin-top: 40px;
+  }
+}
+
+@media (max-width: 640px) {
+  .shipping-Page {
+    min-height: 0;
+  }
+
+  .shipping-Page_Toc {
+    margin-top: -16px;
+  }
+
+  .shipping-Page_TocTrigger {
+    padding-top: 0;
+  }
+
+  .shipping-Page_RatesTable {
+    min-width: 0;
   }
 }

@@ -114,7 +114,7 @@
 		                    </span>
 										  </summary>
 
-										  <div class="shipping-Page_Answer rte-RichText">
+										  <div class="shipping-Page_Answer rte-RichText" style="--shipping-answer-bold-weight: {{ item.settings.answer_font_weight | default: '500' }};">
 											  {{ item.settings.answer_before_table }}
 
 											  {%- if item.settings.show_rates_table -%}
@@ -198,6 +198,22 @@
           "id": "question",
           "label": "Accordion title",
           "default": "Delivery information"
+        },
+        {
+          "type": "select",
+          "id": "answer_font_weight",
+          "label": "WYSIWYG bold text font weight",
+          "options": [
+            {
+              "value": "500",
+              "label": "Medium (500)"
+            },
+            {
+              "value": "600",
+              "label": "Bold (600)"
+            }
+          ],
+          "default": "500"
         },
         {
 	        "type": "richtext",
