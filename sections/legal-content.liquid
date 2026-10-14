@@ -11,6 +11,7 @@
   class="legal-content lyt-Container legal-content--{{ layout_style }} text-reg-12"
   data-section-id="{{ section.id }}"
   data-layout="{{ layout_style }}"
+  data-mobile-accordion="{{ section.settings.mobile_accordion }}"
   id="LegalContent-{{ section.id }}"
 >
   <div class="legal-content__container">
@@ -121,7 +122,7 @@
                   data-legal-section
                   data-anchor-id="section-{{ anchor_id }}"
                   {% unless forloop.first %}hidden{% endunless %}
-                  {{ block.shopify_attributes }}
+                  {% unless section.settings.mobile_accordion %}{{ block.shopify_attributes }}{% endunless %}
                 >
                   {%- if block.settings.title != blank -%}
                     <h2 id="heading-{{ anchor_id }}" class="legal-content__heading text-med-12">
@@ -139,6 +140,28 @@
             {%- endfor -%}
           </div>
         </div>
+
+        {%- if section.settings.mobile_accordion -%}
+          <div class="legal-content__mobile-accordion">
+            {%- for block in section.blocks -%}
+              {%- if block and block.settings -%}
+                <details class="legal-content__accordion"{% if forloop.first %} open{% endif %} {{ block.shopify_attributes }}>
+                  <summary class="legal-content__accordion-trigger">
+                    <span>{{ block.settings.title | escape }}</span>
+                    <span class="legal-content__accordion-icon" aria-hidden="true">
+                      {%- render 'bao-icon-arrow-down' -%}
+                    </span>
+                  </summary>
+                  {%- if block.settings.text != blank -%}
+                    <div class="legal-content__accordion-content text-reg-12">
+                      {{ block.settings.text }}
+                    </div>
+                  {%- endif -%}
+                </details>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
 
       {%- else -%}
         {%- comment -%} Full Content Layout (Stacked without Sidebar) {%- endcomment -%}
@@ -210,6 +233,12 @@
       "label": "Dropdown label (Mobile & Tablet)",
       "default": "Frequent Questions",
       "info": "Displayed above the dropdown navigation on mobile and tablet screens"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_accordion",
+      "label": "Show sections as an accordion on mobile",
+      "default": false
     },
     {
       "type": "link_list",
