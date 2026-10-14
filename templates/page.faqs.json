@@ -1,8 +1,85 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "faqs",
-      "settings": {}
+      "blocks": {
+        "faq_9GmCbj": {
+          "type": "faq",
+          "settings": {
+            "title": "How do I make a purchase on solacelondon.com?",
+            "text": "<p>To purchase an item from Solace London’s online store, simply lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.&nbsp;<br/><br/><a href=\"/pages/about-us\" title=\"About us\">This is a link</a><br/><br/>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ulla.</p>",
+            "link_text": "",
+            "link_url": ""
+          }
+        },
+        "faq_dWB6wF": {
+          "type": "faq",
+          "settings": {
+            "title": "Can I purchase as a guest without creating an account?",
+            "text": "<p><em><strong>Lorem ipsum dolor sit amet</strong></em>, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ulla.</p>",
+            "link_text": "",
+            "link_url": ""
+          }
+        },
+        "faq_6NpMCL": {
+          "type": "faq",
+          "settings": {
+            "title": "Which payment methods can I use?",
+            "text": "<p><em>Lorem ipsum dolor sit amet</em>, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ulla.</p>",
+            "link_text": "",
+            "link_url": ""
+          }
+        },
+        "faq_aPDWfA": {
+          "type": "faq",
+          "settings": {
+            "title": "When will my credit/debit card be charged?",
+            "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ulla.</p>",
+            "link_text": "",
+            "link_url": ""
+          }
+        },
+        "faq_hiVpB6": {
+          "type": "faq",
+          "settings": {
+            "title": "Is my payment secure?",
+            "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ulla.</p>",
+            "link_text": "",
+            "link_url": ""
+          }
+        },
+        "faq_URgdrp": {
+          "type": "faq",
+          "settings": {
+            "title": "Can I amend my address or shipping method after placing an order?",
+            "text": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ulla.</p>",
+            "link_text": "This is link",
+            "link_url": "shopify://collections/jumpsuits"
+          }
+        }
+      },
+      "block_order": [
+        "faq_9GmCbj",
+        "faq_dWB6wF",
+        "faq_6NpMCL",
+        "faq_aPDWfA",
+        "faq_hiVpB6",
+        "faq_URgdrp"
+      ],
+      "settings": {
+        "navigation_menu": "page-menu",
+        "initial_state": "closedButFirstOpen",
+        "show_one_at_a_time": false
+      }
     }
   },
   "order": [

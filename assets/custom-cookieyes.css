@@ -1,0 +1,323 @@
+body .cky-consent-container.cky-box-bottom-left {
+  left: 40px;
+  bottom: 40px;
+  width: 450px;
+  max-width: calc(100% - 40px);
+  border-radius: 0;
+}
+
+body .cky-consent-container .cky-consent-bar {
+  padding: 30px 20px;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  background-color: #ffffff !important;
+}
+
+body .cky-consent-container .cky-consent-bar .cky-notice-content-wrapper {
+  padding: 0;
+}
+
+body .cky-consent-container .cky-notice-content-wrapper + div,
+body .cky-consent-container .cky-notice .cky-title,
+body .cky-consent-container .cky-banner-btn-close {
+  display: none;
+}
+
+body .cky-consent-container .cky-notice-group,
+body .cky-consent-container .cky-notice-des,
+body .cky-consent-container .cky-notice-des *,
+body .cky-consent-container .cky-notice-btn-wrapper .cky-btn {
+  font-family: var(--font-family-primary, Inter), sans-serif;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 20px;
+  letter-spacing: 0;
+  color: #000000 !important;
+}
+
+body .cky-consent-container .cky-notice-des {
+  padding: 0;
+}
+
+body .cky-consent-container .cky-notice-des p {
+  margin: 0;
+}
+
+body .cky-consent-container .cky-notice-des a {
+  padding: 0;
+  border: 0 !important;
+  background: transparent !important;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+body .cky-consent-container .cky-notice-btn-wrapper {
+  flex-direction: row;
+  flex-wrap: wrap;
+  gap: 8px 20px;
+  margin-top: 35px;
+  padding: 0;
+}
+
+body .cky-consent-container .cky-notice-btn-wrapper .cky-btn {
+  flex: 0 0 auto;
+  order: 0;
+  width: auto;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  border: 0 !important;
+  border-radius: 0;
+  background: transparent !important;
+  text-align: left;
+  text-decoration: underline !important;
+  text-underline-offset: 2px;
+}
+
+body .cky-modal {
+  border-radius: 0;
+  box-shadow: none;
+}
+
+body .cky-preference-center {
+  width: 640px;
+  max-height: 85vh;
+  border-radius: 0;
+  border-color: #e5e5e5 !important;
+  background-color: #ffffff !important;
+}
+
+body .cky-preference-center,
+body .cky-preference-center p,
+body .cky-preference-center span,
+body .cky-preference-center button,
+body .cky-preference-center li,
+body .cky-preference-center div {
+  font-family: var(--font-family-primary, Inter), sans-serif;
+  letter-spacing: 0;
+}
+
+body .cky-preference-center .cky-preference-header {
+  padding: 30px 30px 20px;
+}
+
+body .cky-preference-center .cky-preference-header .cky-preference-title {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+  color: #000000 !important;
+}
+
+body .cky-preference-center .cky-preference-header .cky-btn-close img {
+  width: 10px;
+  height: 10px;
+  filter: brightness(0);
+}
+
+body .cky-preference-center .cky-preference-body-wrapper {
+  padding: 0 30px;
+}
+
+body .cky-preference-center .cky-preference-content-wrapper,
+body .cky-preference-center .cky-preference-content-wrapper *,
+body .cky-preference-center .cky-accordion-header-des,
+body .cky-preference-center .cky-accordion-header-des * {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #000000 !important;
+}
+
+body .cky-preference-center .cky-preference-content-wrapper {
+  padding: 20px 0;
+}
+
+body .cky-preference-center .cky-preference-content-wrapper p {
+  margin: 0 0 10px;
+}
+
+body .cky-preference-center .cky-preference-content-wrapper p:last-child {
+  margin-bottom: 0;
+}
+
+body .cky-preference-center .cky-preference-content-wrapper .cky-show-desc-btn {
+  font-size: 12px;
+  line-height: 20px;
+  color: #000000 !important;
+  text-decoration: underline !important;
+  text-underline-offset: 3px;
+}
+
+body .cky-preference-center .cky-accordion .cky-accordion-item {
+  margin-top: 20px;
+}
+
+body .cky-preference-center .cky-accordion-chevron {
+  margin-right: 16px;
+}
+
+body .cky-preference-center .cky-accordion .cky-accordion-chevron i::before {
+  top: 6px;
+  border-color: #000000;
+}
+
+body .cky-preference-center .cky-accordion-header .cky-accordion-btn {
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 18px;
+  color: #000000 !important;
+}
+
+body .cky-preference-center .cky-accordion-header .cky-always-active {
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 18px;
+  color: rgba(0, 0, 0, 0.5) !important;
+}
+
+body .cky-preference-center .cky-accordion-header-des {
+  margin: 8px 0 20px;
+}
+
+body .cky-preference-center .cky-accordion.cky-accordion-active .cky-accordion-body {
+  padding: 0 0 0 26px;
+  margin-bottom: 20px;
+}
+
+body .cky-preference-center .cky-audit-table {
+  border-radius: 0;
+  color: #000000 !important;
+  background-color: #f5f5f5 !important;
+  border-color: #e5e5e5 !important;
+}
+
+body .cky-preference-center .cky-audit-table .cky-cookie-des-table,
+body .cky-preference-center .cky-audit-table .cky-empty-cookies-text {
+  font-size: 12px;
+  line-height: 20px;
+  padding: 15px;
+}
+
+body .cky-preference-center .cky-cookie-des-table li div:first-child {
+  font-weight: 500;
+}
+
+body .cky-preference-center .cky-switch input[type="checkbox"] {
+  width: 32px;
+  height: 18px;
+  background-color: #d9d9d9 !important;
+}
+
+body .cky-preference-center .cky-switch input[type="checkbox"]:checked {
+  background-color: #000000 !important;
+}
+
+body .cky-preference-center .cky-switch input[type="checkbox"]::before {
+  width: 14px;
+  height: 14px;
+}
+
+body .cky-preference-center .cky-switch input[type="checkbox"]:checked::before {
+  transform: translateX(14px);
+}
+
+body .cky-preference-center .cky-prefrence-btn-wrapper {
+  flex-direction: row;
+  justify-content: flex-start;
+  gap: 8px 20px;
+  padding: 20px 30px 30px;
+}
+
+body .cky-preference-center .cky-footer-wrapper > div:last-child {
+  display: none;
+}
+
+body .cky-preference-center .cky-prefrence-btn-wrapper .cky-btn {
+  flex: 0 0 auto;
+  order: 0;
+  width: auto;
+  min-height: 0;
+  margin: 0;
+  padding: 0;
+  font-size: 12px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #000000 !important;
+  border: 0 !important;
+  border-radius: 0;
+  background: transparent !important;
+  text-decoration: underline !important;
+  text-underline-offset: 2px;
+}
+
+/* ----- Shared button states ----- */
+
+body .cky-consent-container .cky-notice-btn-wrapper .cky-btn:hover,
+body .cky-preference-center .cky-prefrence-btn-wrapper .cky-btn:hover {
+  filter: none;
+  opacity: 0.6;
+}
+
+body .cky-consent-container .cky-btn:focus-visible,
+body .cky-preference-center .cky-btn:focus-visible,
+body .cky-preference-center .cky-accordion-btn:focus-visible,
+body .cky-preference-center .cky-btn-close:focus-visible {
+  outline: 1px solid #000000;
+  outline-offset: 2px;
+}
+
+@media (max-width: 1023px) {
+  body .cky-consent-container.cky-box-bottom-left {
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: auto;
+    max-width: none;
+  }
+
+  body .cky-consent-container .cky-consent-bar {
+    padding: 26px 20px;
+  }
+
+  body .cky-consent-container .cky-notice-btn-wrapper {
+    margin-top: 40px;
+  }
+}
+
+@media (max-width: 767px) {
+  body .cky-consent-container .cky-consent-bar {
+    padding: 26px 20px 37px;
+  }
+
+  body .cky-consent-container .cky-notice-des {
+    max-height: 40vh;
+    overflow-y: auto;
+  }
+
+  body .cky-consent-container .cky-notice-btn-wrapper {
+    margin-top: 36px;
+  }
+
+  body .cky-preference-center .cky-preference-header {
+    padding: 20px 20px 16px;
+  }
+
+  body .cky-preference-center .cky-preference-body-wrapper {
+    padding: 0 20px;
+  }
+
+  body .cky-preference-center .cky-prefrence-btn-wrapper {
+    flex-direction: row;
+    padding: 16px 20px 20px;
+  }
+
+  body .cky-preference-center .cky-prefrence-btn-wrapper .cky-btn {
+    width: auto;
+    margin: 0;
+  }
+
+  body .cky-preference-center .cky-accordion.cky-accordion-active .cky-accordion-body {
+    padding: 0;
+  }
+}
