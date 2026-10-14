@@ -9,6 +9,8 @@
   background-color: var(--color-white, #ffffff);
   color: var(--color-black, #000000);
   box-sizing: border-box;
+  position: relative;
+  z-index: 31;
 
   @media (min-width: 1201px) {
     padding-top: 0;
