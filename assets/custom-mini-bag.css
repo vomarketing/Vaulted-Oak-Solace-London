@@ -8,7 +8,7 @@
   display:flex;
   flex-direction:column;
   inset:0 0 0 auto;
-  width:40vw;
+  width:39.58vw;
   max-width:none;
   padding:0;
   background:#fff;
@@ -339,16 +339,9 @@
   margin-top: 10px;
 }
 
-@media(min-width:1201px) {
+@media(min-width:1600px) {
   .mbg-Drawer.drw-Drawer {
-    min-width: 774px;
-  }
-}
-
-@media(min-width:1440px) {
-  .mbg-Drawer.drw-Drawer {
-    max-width: 570px;
-    min-width: unset;
+    width: 40.3125vw;
   }
 }
 
