@@ -56,7 +56,6 @@
         this.header
         && this.collectionHeader
         && window.matchMedia('(min-width: 1025px)').matches
-        && !this.collectionHeader.classList.contains('collection-header--with-description')
       );
     }
 

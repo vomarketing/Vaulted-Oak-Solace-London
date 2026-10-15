@@ -39,8 +39,17 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
 }
 
 .collection-header--with-description {
-  position: relative;
-  top: auto;
+  margin-bottom: 0;
+}
+
+.collection-description {
+  margin-top: 10px;
+  margin-bottom: 50px;
+}
+
+.collection-description .collection-header__description-preview,
+.collection-description .collection-header__description-full {
+  margin-top: 0;
 }
 
 .collection-header::before {

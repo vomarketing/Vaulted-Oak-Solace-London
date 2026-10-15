@@ -1,0 +1,44 @@
+{%- assign collection_description_text = collection.description | strip_html | strip -%}
+{%- if collection_description_text != blank -%}
+  {%- assign description_needs_toggle = false -%}
+  {%- if collection_description_text.size > 240 -%}
+    {%- assign description_needs_toggle = true -%}
+  {%- endif -%}
+
+  <div class="collection-description lyt-Container">
+    <div
+      class="collection-header__description{% if description_needs_toggle %} collection-header__description--truncated{% endif %}"
+      data-collection-description
+    >
+      {%- if description_needs_toggle -%}
+        <div class="collection-header__description-preview">
+          {{ collection.description | strip_html | truncate: 240, '' }}
+          <button
+            class="collection-header__description-toggle"
+            type="button"
+            aria-expanded="false"
+            data-collection-description-toggle
+            data-read-more="{{ 'collections.general.read_more' | t | escape }}"
+            data-read-less="{{ 'collections.general.read_less' | t | escape }}"
+          >{{ 'collections.general.read_more' | t }}</button>
+        </div>
+
+        <div class="collection-header__description-full" hidden>
+          {{ collection.description }}
+          <button
+            class="collection-header__description-toggle"
+            type="button"
+            aria-expanded="true"
+            data-collection-description-toggle
+            data-read-more="{{ 'collections.general.read_more' | t | escape }}"
+            data-read-less="{{ 'collections.general.read_less' | t | escape }}"
+          >{{ 'collections.general.read_less' | t }}</button>
+        </div>
+      {%- else -%}
+        <div class="collection-header__description-full">
+          {{ collection.description }}
+        </div>
+      {%- endif -%}
+    </div>
+  </div>
+{%- endif -%}
