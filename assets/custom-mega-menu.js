@@ -31,6 +31,9 @@
         const next = e.relatedTarget?.closest?.('[data-mega-link]');
         if (!next || !this.panel.contains(next)) this.restoreSelection();
       }, options);
+      header.addEventListener('animationend', (e) => {
+        if (e.animationName === 'mm-open') header.removeAttribute('data-mega-opening');
+      }, options);
       header.addEventListener('focusin', (e) => {
         if (this.skipInitialPreview) return;
 
@@ -101,8 +104,10 @@
       this.header.setAttribute('aria-modal', 'true');
       this.header.setAttribute('aria-label', `${trigger.textContent.trim()} navigation`);
       this.header.setAttribute('data-mega-open', '');
+      this.header.setAttribute('data-mega-opening', '');
       panel.dataset.state = this.state;
       panel.hidden = false;
+      panel.querySelectorAll('[data-mega-preview] img').forEach(img => { img.loading = 'eager'; });
       trigger.setAttribute('aria-expanded', 'true');
       this.applyColors(null);
       this.lockPage();
@@ -161,7 +166,6 @@
         el.inert = !active;
         const copy = el.querySelector('[data-mega-copy]');
         if (copy) { copy.hidden = !(active && detail); copy.inert = !(active && detail); }
-        if (active) el.querySelectorAll('img').forEach(img => { img.loading = 'eager'; });
       });
       this.applyColors(link);
     }
@@ -291,10 +295,10 @@
       };
 
       surface.addEventListener('animationend', onAnimationEnd);
-      surface.style.setProperty('--mm-close-from', getComputedStyle(surface).transform);
+      surface.style.setProperty('--mm-close-from', getComputedStyle(surface).clipPath);
       panel.classList.add('is-closing');
 
-      timer = setTimeout(complete, 550);
+      timer = setTimeout(complete, 720);
     }
 
     finishClose(restoreFocus = true) {
@@ -316,6 +320,7 @@
       this.panel.querySelectorAll('[data-mega-preview]').forEach(el => { el.setAttribute('aria-hidden','true'); el.inert = true; });
       oldTrigger?.setAttribute('aria-expanded', 'false');
       this.header.removeAttribute('data-mega-open');
+      this.header.removeAttribute('data-mega-opening');
       for (const [name, value] of this.savedAttributes) {
         if (value === null) this.header.removeAttribute(name); else this.header.setAttribute(name, value);
       }

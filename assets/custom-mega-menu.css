@@ -17,6 +17,16 @@
 }
 
 @media (min-width: 1201px) {
+  .hd-Header {
+    --mm-open-dur: 760ms;
+    --mm-open-delay: 120ms;
+    --mm-open-ease: cubic-bezier(0.32, 0.72, 0, 1);
+    --mm-close-dur: 620ms;
+    --mm-close-ease: cubic-bezier(0.65, 0, 0.35, 1);
+    --mm-cover-delay: 140ms;
+    --mm-content-delay: 290ms;
+  }
+
   .hd-Header[data-mega-open] {
     position: fixed !important;
     inset: 0 0 auto;
@@ -27,6 +37,16 @@
   .hd-Header[data-mega-open] .hd-Header_Body {
     position: relative;
     z-index: 3;
+  }
+
+  .hd-Header[data-mega-open] .hd-Header_Logo,
+  .hd-Header[data-mega-open] .hd-Header_Nav-right {
+    visibility: hidden;
+    transition: visibility 0s linear var(--mm-cover-delay);
+  }
+
+  .hd-Header[data-mega-opening] .hd-Header_Nav-left .hd-Nav_Link {
+    transition: color 0s linear var(--mm-cover-delay), fill 0s linear var(--mm-cover-delay);
   }
 
   .hd-Header[data-mega-open] .hd-Header_NavBackdrop,
@@ -58,8 +78,9 @@
   .mm-Backdrop {
     position: absolute;
     inset: 0;
-    background: rgb(0 0 0 / .5);
-    animation: mm-fade 300ms ease both;
+    background: #000;
+    opacity: .88;
+    animation: mm-shade-in 700ms cubic-bezier(0.25, 1, 0.5, 1) both;
   }
 
   .mm-Panel {
@@ -77,15 +98,21 @@
     font-family: var(--font-family-primary);
     font-size: 12px;
     line-height: 1.5;
-    animation: mm-open 800ms cubic-bezier(0.22, 1, 0.36, 1) both;
+    animation: mm-open var(--mm-open-dur) var(--mm-open-ease) var(--mm-open-delay) both;
   }
 
   .mm-Layer.is-closing .mm-Panel {
-    animation: mm-close 450ms cubic-bezier(0.4, 0, 0.2, 1) both;
+    animation: mm-close var(--mm-close-dur) var(--mm-close-ease) both;
   }
 
   .mm-Layer.is-closing .mm-Backdrop {
-    animation: mm-fade-out 450ms ease both;
+    animation: mm-shade-out 700ms cubic-bezier(0.25, 1, 0.5, 1) both;
+  }
+
+  .mm-Layer.is-closing .mm-Overview {
+    animation:
+      mm-content-out 220ms ease-out both,
+      mm-content-lift 220ms ease-out both;
   }
 
   .mm-Close {
@@ -98,12 +125,16 @@
     color: inherit;
     font: inherit;
     cursor: pointer;
+    animation: mm-cover 0s linear var(--mm-cover-delay) both;
   }
 
   .mm-Overview {
     display: grid;
     grid-template-columns: 20% minmax(0, 1fr);
     gap: 24px;
+    animation:
+      mm-content-in 360ms ease-out var(--mm-content-delay) both,
+      mm-content-drop 560ms cubic-bezier(0.22, 1, 0.36, 1) var(--mm-content-delay) both;
   }
 
   .mm-Group {
@@ -140,19 +171,13 @@
     margin: 0;
     min-width: 0;
     visibility: hidden;
-    opacity: 0;
-    transform: translateY(8px);
     pointer-events: none;
-    transition: opacity 220ms ease,
-    transform 300ms ease, visibility 220ms;
     --preview-width: 419px;
     --preview-ratio: 419 / 562;
   }
 
   .mm-Preview.is-active {
     visibility: visible;
-    opacity: 1;
-    transform: none;
   }
 
   .mm-Preview[data-size="small"] {
@@ -261,12 +286,6 @@
     font: inherit; text-align: inherit; cursor: pointer;
   }
 
-  .mm-Preview.is-active {
-    visibility: visible;
-    opacity: 1;
-    transform: none;
-  }
-
   .mm-Preview.is-active.is-detail {
     pointer-events: auto;
   }
@@ -320,42 +339,44 @@
 }
 
 @keyframes mm-open {
-  from {
-    transform: translate3d(-100%, 0, 0);
+  from { 
+    clip-path: inset(0 0 100% 0); 
   }
-
-  to {
-    transform: translate3d(0, 0, 0);
+  to { 
+    clip-path: inset(0); 
   }
 }
 
 @keyframes mm-close {
-  from {
-    transform: translate3d(0, 0, 0);
+  from { 
+    clip-path: var(--mm-close-from, inset(0)); 
   }
-
-  to {
-    transform: translate3d(-100%, 0, 0);
-  }
-}
-
-@keyframes mm-fade-out {
-  from {
-    opacity: 1;
-  }
-
-  to {
-    opacity: 0;
+  to { 
+    clip-path: inset(0 0 100% 0); 
   }
 }
 
-@keyframes mm-fade { from { opacity: 0; } to { opacity: 1; } }
+@keyframes mm-shade-in { from { opacity: 0; } to { opacity: .88; } }
+@keyframes mm-shade-out { from { opacity: .88; } to { opacity: 0; } }
+
+@keyframes mm-content-in { from { opacity: 0; } to { opacity: 1; } }
+@keyframes mm-content-out { from { opacity: 1; } to { opacity: 0; } }
+@keyframes mm-content-drop { from { transform: translateY(-48px); } to { transform: none; } }
+@keyframes mm-content-lift { from { transform: none; } to { transform: translateY(-48px); } }
+
+@keyframes mm-cover { from { visibility: hidden; } to { visibility: visible; } }
 
 @media (prefers-reduced-motion: reduce) {
-  .mm-Panel, .mm-Backdrop { animation: none; }
-  .mm-Panel, .mm-Preview { transition: none; }
+  .mm-Panel, .mm-Backdrop, .mm-Overview, .mm-Close { animation: none; }
+  .mm-Panel { transition: none; }
   .mm-Layer.is-closing .mm-Panel,
-  .mm-Layer.is-closing .mm-Backdrop {
+  .mm-Layer.is-closing .mm-Backdrop,
+  .mm-Layer.is-closing .mm-Overview {
     animation: none;
+  }
+  .hd-Header[data-mega-open] .hd-Header_Logo,
+  .hd-Header[data-mega-open] .hd-Header_Nav-right,
+  .hd-Header[data-mega-opening] .hd-Header_Nav-left .hd-Nav_Link {
+    transition: none;
   }
 }
