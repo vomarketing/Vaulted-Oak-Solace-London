@@ -21,6 +21,13 @@
     "header": {
       "type": "header",
       "blocks": {
+        "mega_menu_tY48YU": {
+          "type": "mega_menu",
+          "settings": {
+            "menu_item_title": "Dress",
+            "menu_content": "dresses"
+          }
+        },
         "mega_menu_UmWQeE": {
           "type": "mega_menu",
           "settings": {
@@ -30,6 +37,7 @@
         }
       },
       "block_order": [
+        "mega_menu_tY48YU",
         "mega_menu_UmWQeE"
       ],
       "settings": {
