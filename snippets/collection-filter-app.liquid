@@ -29,8 +29,7 @@
 <div class="collection-filter-app collection-filter-v2" data-collection-filter-app>
   <form class="collection-filter-v2__form" action="{{ form_action }}" method="get" data-collection-filter-app-form data-section-id="{{ section.id }}" data-default-sort="{{ default_sort | escape }}">
     {%- if context == 'search' -%}
-      <input type="hidden" name="q" value="{{ search.terms | escape }}">
-      <input type="hidden" name="type" value="product">
+      <input type="hidden" name="q" value="{{ search.terms | replace: '&quot;', '"' | escape }}">
     {%- endif -%}
 
     <div class="collection-filter-v2__header">

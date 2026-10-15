@@ -11,8 +11,69 @@
 
   const termUrl = (item) => {
     const url = new URL(item.url || `${routesRoot()}search?q=${encodeURIComponent(item.text)}`, window.location.origin);
-    url.searchParams.set('type', 'product');
+    url.searchParams.delete('type');
     return `${url.pathname}${url.search}`;
+  };
+
+  const updateSearchLinks = (page, url, searchQuery) => {
+    const query = url.searchParams.get('q') || '';
+    page.querySelectorAll('.collection-pagination a').forEach((link) => {
+      const nextUrl = new URL(link.getAttribute('href'), window.location.origin);
+      nextUrl.searchParams.set('q', query);
+      nextUrl.searchParams.delete('type');
+      nextUrl.searchParams.delete('section_id');
+      link.href = `${nextUrl.pathname}${nextUrl.search}${nextUrl.hash}`;
+    });
+
+    const form = document.querySelector('[data-module-drawers-drawer="search-filters"] [data-collection-filter-app-form]');
+    const queryInput = form?.querySelector('input[name="q"]');
+    if (queryInput) {
+      queryInput.value = query;
+      form.dataset.searchQuery = searchQuery;
+    }
+  };
+
+  const preferQuotedResults = async (page, resolvedQuery) => {
+    const currentUrl = window.location.href;
+    const url = new URL(currentUrl);
+    const query = url.searchParams.get('q')?.trim();
+    updateSearchLinks(page, url, resolvedQuery || query || '');
+    if (!query || resolvedQuery || (query.startsWith('"') && query.endsWith('"'))) return;
+
+    const quotedQuery = `"${query}"`;
+    const sectionUrl = new URL(currentUrl);
+    sectionUrl.searchParams.set('q', quotedQuery);
+    sectionUrl.searchParams.set('type', 'product');
+    sectionUrl.searchParams.set('section_id', page.dataset.sectionId);
+    page.setAttribute('aria-busy', 'true');
+
+    try {
+      const response = await fetch(sectionUrl.href);
+      if (!response.ok) throw new Error(`Search request failed: ${response.status}`);
+      const nextDocument = new DOMParser().parseFromString(await response.text(), 'text/html');
+      const nextPage = nextDocument.querySelector('.js-search-page');
+      const resultCount = parseInt(nextPage?.dataset.resultsCount, 10) || 0;
+
+      if (resultCount > 0 && page.isConnected && window.location.href === currentUrl) {
+        const drawer = document.querySelector('[data-module-drawers-drawer="search-filters"]');
+        const nextDrawer = nextPage.querySelector('[data-module-drawers-drawer="search-filters"]');
+        if (drawer && nextDrawer) {
+          if (page.contains(drawer)) page.after(drawer);
+          drawer.replaceChildren(...nextDrawer.childNodes);
+          nextDrawer.remove();
+        }
+
+        page.replaceChildren(...nextPage.childNodes);
+        page.dataset.resultsCount = nextPage.dataset.resultsCount;
+        updateSearchLinks(page, url, quotedQuery);
+        window.BAO?.application?.reinitialiseModules(page);
+        if (drawer) drawer.dispatchEvent(new CustomEvent('shopify:section:load', { bubbles: true }));
+      }
+    } catch (error) {
+      console.warn('[MainSearch] Quoted search error:', error);
+    } finally {
+      page.removeAttribute('aria-busy');
+    }
   };
 
   const loadTerms = async (quick) => {
@@ -43,7 +104,7 @@
     }
   };
 
-  const init = (root) => {
+  const initQuickSearch = (root) => {
     root.querySelectorAll('.js-search-quick').forEach((quick) => {
       if (quick.dataset.searchQuickInitialized === 'true') return;
       quick.dataset.searchQuickInitialized = 'true';
@@ -57,6 +118,30 @@
         const isOpen = quick.classList.toggle('is-open');
         toggle.setAttribute('aria-expanded', String(isOpen));
       });
+    });
+  };
+
+  const init = (root) => {
+    root.querySelectorAll('.js-search-page').forEach(async (page) => {
+      if (page.dataset.searchPageInitialized === 'true') return;
+      page.dataset.searchPageInitialized = 'true';
+
+      try {
+        const url = new URL(window.location.href);
+        const query = url.searchParams.get('q')?.trim();
+        const quotedQuery = query?.length > 1 && query.startsWith('"') && query.endsWith('"') ? query : null;
+        if (quotedQuery) url.searchParams.set('q', quotedQuery.slice(1, -1));
+        if (quotedQuery || url.searchParams.has('type')) {
+          url.searchParams.delete('type');
+          window.history.replaceState(window.history.state, '', url.href);
+        }
+
+        await preferQuotedResults(page, quotedQuery);
+        if (page.isConnected) initQuickSearch(page);
+      } finally {
+        page.removeAttribute('data-search-pending');
+        page.removeAttribute('aria-busy');
+      }
     });
   };
 
