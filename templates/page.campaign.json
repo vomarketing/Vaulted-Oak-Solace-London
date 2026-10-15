@@ -12,15 +12,16 @@
     "campaign_hero": {
       "type": "hero-fullscreen",
       "settings": {
-        "media_type": "image",
+        "media_type": "video",
         "image_desktop": "shopify://shop_images/RS27_Campaign_Look_07_0513_R3_2.png",
         "image_mobile": "shopify://shop_images/RS27_Campaign_Look_010_0752_R3_2.png",
         "enable_custom_mobile_height": false,
         "custom_mobile_height": 667,
+        "video_desktop": "shopify://files/videos/SOLACE 1 (FINAL MASTER).mp4",
         "video_url_desktop": "",
         "video_url_mobile": "",
         "video_autoplay": true,
-        "show_video_controls": false,
+        "show_video_controls": true,
         "show_overlay": false,
         "overlay_opacity": 0,
         "overlay_color": "#000000",
@@ -63,6 +64,35 @@
         "cta_text": "Shop Collection",
         "cta_link": "#",
         "cta_font_size": "text-reg-12",
+        "cta_uppercase": false
+      }
+    },
+    "campaign_story_01": {
+      "type": "hero-fullscreen",
+      "settings": {
+        "media_type": "image",
+        "image_desktop": "shopify://shop_images/RS27_Campaign_Look_01_0060_R3_2.png",
+        "image_mobile": "shopify://shop_images/RS27_Campaign_Look_010_0714_R3_1.png",
+        "enable_custom_mobile_height": true,
+        "custom_mobile_height": 568,
+        "video_url_desktop": "",
+        "video_url_mobile": "",
+        "video_autoplay": true,
+        "show_video_controls": false,
+        "show_overlay": false,
+        "overlay_opacity": 40,
+        "overlay_color": "#000000",
+        "header_contrast_mode": "light",
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "content_vertical_alignment": "bottom",
+        "heading": "",
+        "heading_font_size": "text-reg-14",
+        "heading_uppercase": false,
+        "description": "",
+        "cta_text": "",
+        "cta_link": "",
+        "cta_font_size": "text-reg-14",
         "cta_uppercase": false
       }
     },
@@ -117,7 +147,7 @@
         "custom_mobile_padding_bottom": 84
       }
     },
-    "campaign_story_01": {
+    "hero_fullscreen_q3z3tn": {
       "type": "hero-fullscreen",
       "settings": {
         "media_type": "image",
@@ -415,8 +445,9 @@
   "order": [
     "campaign_hero",
     "hero_fullscreen_fQtECw",
-    "campaign_two_up_intro",
     "campaign_story_01",
+    "campaign_two_up_intro",
+    "hero_fullscreen_q3z3tn",
     "campaign_editorial_copy",
     "campaign_story_02",
     "campaign_feature_01",
