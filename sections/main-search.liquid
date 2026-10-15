@@ -57,6 +57,13 @@
 
   {%- liquid
     assign pagination_amount = section.settings.products_per_page | default: 16
+    assign display_search_terms = search.terms | replace: '&quot;', '"' | strip
+    assign first_query_character = display_search_terms | slice: 0, 1
+    assign last_query_character = display_search_terms | slice: -1, 1
+    if first_query_character == '"' and last_query_character == '"' and display_search_terms.size > 1
+      assign query_length = display_search_terms.size | minus: 2
+      assign display_search_terms = display_search_terms | slice: 1, query_length
+    endif
 
     assign active_filter_count = 0
     for filter in search.filters
@@ -71,7 +78,15 @@
     endif
   -%}
 
-  <div class="search-page">
+  <div
+    class="search-page js-search-page"
+    data-section-id="{{ section.id | escape }}"
+    data-results-count="{{ search.results_count }}"
+    {% if search.performed and search.terms != blank %}
+      data-search-pending
+      aria-busy="true"
+    {% endif %}
+  >
     <div class="lyt-Container">
 
       {%- comment -%} Search Header {%- endcomment -%}
@@ -80,7 +95,7 @@
           <div class="search-header__content">
             <h1 class="search-header__title text-reg-12">
               {%- if search.performed and search.terms != blank -%}
-                Search for “{{ search.terms | escape }}” ({{ search.results_count }})
+                Search for “{{ display_search_terms | escape }}” ({{ search.results_count }})
               {%- else -%}
                 {{ 'general.search.title' | t }}
               {%- endif -%}
@@ -90,7 +105,7 @@
           {%- if search.performed and search.terms != blank -%}
             <div
               class="search-header__quick js-search-quick"
-              data-query="{{ search.terms | escape }}"
+              data-query="{{ display_search_terms | escape }}"
               data-limit="{{ section.settings.suggested_terms_limit | default: 3 }}"
               hidden
             >

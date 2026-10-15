@@ -97,6 +97,10 @@
       count.textContent = '…';
 
       const url = selectedUrl();
+      if (form.querySelector('input[name="q"]')) {
+        if (form.dataset.searchQuery) url.searchParams.set('q', form.dataset.searchQuery);
+        url.searchParams.set('type', 'product');
+      }
       url.searchParams.set('section_id', form.dataset.sectionId);
 
       try {
