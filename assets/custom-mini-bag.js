@@ -78,7 +78,7 @@
       if (!render(html)) throw new Error('Unable to refresh your bag.');
     }
     async function mutate(endpoint, body, form) {
-      if (busy) return;
+      if (busy) return false;
       ++refreshSequence; setBusy(true); showError('');
       const submitButtons = form ? [...form.querySelectorAll('[type="submit"]')].map(el => [el,el.disabled]) : [];
       submitButtons.forEach(([el]) => { el.disabled = true; });
@@ -106,17 +106,36 @@
           document.dispatchEvent(new CustomEvent('mini-bag:added', {detail:{form}}));
         }
         document.dispatchEvent(new CustomEvent('mini-bag:updated', {detail:{source:'mini-bag'}}));
+        return true;
       } catch (err) {
         // Never retry a cart mutation automatically: the server may have applied it.
         try { await readFresh(); } catch (_) { /* Keep the last known view. */ }
         const message = applied ? 'Your bag was updated, but the display could not refresh. Open View your cart to check it before adding again.' : (err.message || 'Unable to update your bag. Open your cart to check it before trying again.');
         if (!isOpen() && window.drawers) window.drawers.activeDrawerKey = 'cart';
         showError(message);
+        return applied;
       } finally {
         setBusy(false); focusAfter = null;
         submitButtons.forEach(([el,disabled]) => { if (el.isConnected) el.disabled = disabled; });
       }
     }
+    window.SLMiniBag = window.SLMiniBag || {};
+    window.SLMiniBag.removeItem = async key => {
+      if (!key) return false;
+      const removed = await mutate('change',{id:key,quantity:0});
+      if (removed) return true;
+
+      // A failed response can arrive after Shopify applied the mutation.
+      // Verify the cart before the wishlist caller rolls back its save.
+      try {
+        const response = await fetch(`${root}cart.js`, {credentials:'same-origin',cache:'no-store'});
+        if (!response.ok) return false;
+        const cart = await response.json();
+        return !cart.items.some(item => item.key === key);
+      } catch (_) {
+        return false;
+      }
+    };
     document.addEventListener('submit', event => {
       const form = event.target;
       if (!(form instanceof HTMLFormElement) || !form.matches('[data-push-cart-form]')) return;
