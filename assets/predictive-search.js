@@ -205,6 +205,11 @@ if (!customElements.get('predictive-search')) {
       return this.getAttribute('data-routes-search') || '/search';
     }
 
+    getSearchPageUrl(query) {
+      const displayQuery = query.length > 1 && query.startsWith('"') && query.endsWith('"') ? query.slice(1, -1) : query;
+      return this.sanitizeUrl(`${this.searchUrl}?q=${encodeURIComponent(displayQuery)}`);
+    }
+
     get currencySymbol() {
       return this.getAttribute('data-currency-symbol') || '£';
     }
@@ -333,8 +338,15 @@ if (!customElements.get('predictive-search')) {
     }
 
     handleSubmit(e) {
-      if (!this.input || !this.input.value.trim()) {
+      const query = this.input?.value.trim();
+      if (!query) {
         e.preventDefault();
+        return;
+      }
+
+      if (query.length > 1 && query.startsWith('"') && query.endsWith('"')) {
+        e.preventDefault();
+        window.location.assign(this.getSearchPageUrl(query));
       }
     }
 
@@ -383,6 +395,17 @@ if (!customElements.get('predictive-search')) {
       this.showLoading(false);
     }
 
+    async requestSuggestions(query, signal) {
+      const endpoint = `${this.predictiveSearchUrl}?q=${encodeURIComponent(
+        query
+      )}&resources[type]=query,product&resources[limit]=${Math.max(this.maxQueries, this.maxProducts)}&resources[limit_scope]=each&section_id=${this.sectionId}`;
+
+      const response = await fetch(endpoint, { signal });
+      if (!response.ok) throw new Error(`Search request failed: ${response.status}`);
+
+      return this.parseSectionData(await response.text());
+    }
+
     async fetchSuggestions(query) {
       if (this.cache.has(query)) {
         if (this.currentQuery === query) {
@@ -395,19 +418,23 @@ if (!customElements.get('predictive-search')) {
         this.abortController.abort();
       }
       this.abortController = new AbortController();
+      const signal = this.abortController.signal;
 
       this.showSkeleton(query);
       this.showLoading(true);
 
       try {
-        const endpoint = `${this.predictiveSearchUrl}?q=${encodeURIComponent(
-          query
-        )}&resources[type]=query,product&resources[limit]=${Math.max(this.maxQueries, this.maxProducts)}&resources[limit_scope]=each&section_id=${this.sectionId}`;
+        const quotedQuery = query.startsWith('"') && query.endsWith('"') ? query : `"${query}"`;
+        let searchQuery = quotedQuery;
+        let json = await this.requestSuggestions(quotedQuery, signal);
+        if (signal.aborted) return;
 
-        const response = await fetch(endpoint, { signal: this.abortController.signal });
-        if (!response.ok) throw new Error(`Search request failed: ${response.status}`);
-
-        const json = this.parseSectionData(await response.text());
+        // Fall back to the original search when the quoted query has no products.
+        if (!json?.resources?.results?.products?.length && quotedQuery !== query) {
+          searchQuery = query;
+          json = await this.requestSuggestions(query, signal);
+        }
+        json.searchQuery = searchQuery;
 
         // Manage cache size limit
         if (this.cache.size >= this.maxCacheEntries) {
@@ -442,7 +469,7 @@ if (!customElements.get('predictive-search')) {
       if (!this.resultsContainer || !this.queriesList || !this.productsContainer) return;
 
       if (this.viewAllLink) {
-        this.viewAllLink.href = this.sanitizeUrl(`${this.searchUrl}?q=${encodeURIComponent(query)}`);
+        this.viewAllLink.href = this.getSearchPageUrl(query);
       }
 
       if (this.resultsContainer.classList.contains(this.classes.loading)) return;
@@ -531,7 +558,7 @@ if (!customElements.get('predictive-search')) {
       this.clearActiveDescendant();
 
       if (this.viewAllLink) {
-        this.viewAllLink.href = this.sanitizeUrl(`${this.searchUrl}?q=${encodeURIComponent(query)}`);
+        this.viewAllLink.href = this.getSearchPageUrl(query);
       }
 
       if (this.productsContainer) {
