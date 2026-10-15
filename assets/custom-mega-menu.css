@@ -25,6 +25,7 @@
     --mm-close-ease: cubic-bezier(0.65, 0, 0.35, 1);
     --mm-cover-delay: 140ms;
     --mm-content-delay: 290ms;
+    --mm-color-transition: 300ms ease;
   }
 
   .hd-Header[data-mega-open] {
@@ -43,6 +44,10 @@
   .hd-Header[data-mega-open] .hd-Header_Nav-right {
     visibility: hidden;
     transition: visibility 0s linear var(--mm-cover-delay);
+  }
+
+  .hd-Header[data-mega-open] .hd-Header_Nav-left .hd-Nav_Link {
+    transition: color var(--mm-color-transition), fill var(--mm-color-transition);
   }
 
   .hd-Header[data-mega-opening] .hd-Header_Nav-left .hd-Nav_Link {
@@ -93,7 +98,7 @@
     overscroll-behavior: contain;
     background: var(--mm-bg, #fff);
     color: var(--mm-text, #000);
-    transition: background-color 250ms ease, color 250ms ease;
+    transition: background-color var(--mm-color-transition), color var(--mm-color-transition);
     padding: max(150px, 18vh) 40px 50px;
     font-family: var(--font-family-primary);
     font-size: 12px;
@@ -125,6 +130,7 @@
     color: inherit;
     font: inherit;
     cursor: pointer;
+    transition: color var(--mm-color-transition);
     animation: mm-cover 0s linear var(--mm-cover-delay) both;
   }
 
@@ -154,7 +160,8 @@
 
   .mm-Link {
     display: inline-block;
-    color: inherit;
+    color: var(--mm-text, #000);
+    transition: color var(--mm-color-transition);
     text-decoration: none;
   }
 
@@ -178,6 +185,7 @@
 
   .mm-Preview.is-active {
     visibility: visible;
+    pointer-events: auto;
   }
 
   .mm-Preview[data-size="small"] {
@@ -286,10 +294,6 @@
     font: inherit; text-align: inherit; cursor: pointer;
   }
 
-  .mm-Preview.is-active.is-detail {
-    pointer-events: auto;
-  }
-
   .mm-ImageWrap,
   .mm-Copy {
     max-width: 100%;
@@ -367,6 +371,7 @@
 @keyframes mm-cover { from { visibility: hidden; } to { visibility: visible; } }
 
 @media (prefers-reduced-motion: reduce) {
+  .hd-Header { --mm-color-transition: 0s; }
   .mm-Panel, .mm-Backdrop, .mm-Overview, .mm-Close { animation: none; }
   .mm-Panel { transition: none; }
   .mm-Layer.is-closing .mm-Panel,
