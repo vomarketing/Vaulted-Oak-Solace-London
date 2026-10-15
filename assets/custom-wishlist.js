@@ -332,17 +332,40 @@ if (!window.SLWishlist) {
       if (!productId) return;
 
       const isSaved = this.button.getAttribute('aria-pressed') === 'true';
+      const cartItem = this.closest('[data-mini-item]');
+      const shouldStaySaved = isSaved && !!cartItem;
       document.querySelectorAll(`wishlist-toggle[data-product-id="${productId}"]`).forEach((toggle) => {
-        toggle.setPressed?.(!isSaved);
+        toggle.setPressed?.(shouldStaySaved || !isSaved);
       });
 
       if (isSaved) {
+        // A cart-row bookmark always means "move to saved", even if this
+        // product was already saved and the two lists had become duplicated.
+        if (cartItem) {
+          this.moveCartItemToWishlist(productId, this.resolveSelection().variantId, true, cartItem);
+          return;
+        }
         store.remove(productId);
         return;
       }
 
       const { variantId, sized } = this.resolveSelection();
+      if (cartItem) {
+        this.moveCartItemToWishlist(productId, variantId, sized, cartItem);
+        return;
+      }
+
       store.add(productId, variantId, { handle: this.dataset.productHandle, sized });
+    }
+
+    async moveCartItemToWishlist(productId, variantId, sized, cartItem) {
+      const wasSaved = store.has(productId);
+      if (!wasSaved) {
+        await store.add(productId, variantId, { handle: this.dataset.productHandle, sized });
+      }
+
+      const removed = await window.SLMiniBag?.removeItem(cartItem.dataset.key);
+      if (removed !== true && !wasSaved) await store.remove(productId);
     }
 
     resolveSelection() {
