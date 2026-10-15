@@ -15,6 +15,22 @@
     return `${url.pathname}${url.search}`;
   };
 
+  const updateSearchMetadata = (page) => {
+    const count = Number.parseInt(page.dataset.resultsCount, 10);
+    if (!Number.isFinite(count) || count < 0) return;
+
+    const updateCount = (title) =>
+      title.replace(/^(Search:\s*)\d+(\s+)results?\b/i, (_, prefix, spacing) =>
+        `${prefix}${count}${spacing}${count === 1 ? 'result' : 'results'}`
+      );
+
+    document.title = updateCount(document.title);
+    const ogTitle = document.querySelector('meta[property="og:title"]');
+    if (ogTitle) {
+      ogTitle.setAttribute('content', updateCount(ogTitle.getAttribute('content') || ''));
+    }
+  };
+
   const updateSearchLinks = (page, url, searchQuery) => {
     const query = url.searchParams.get('q') || '';
     page.querySelectorAll('.collection-pagination a').forEach((link) => {
@@ -137,7 +153,10 @@
         }
 
         await preferQuotedResults(page, quotedQuery);
-        if (page.isConnected) initQuickSearch(page);
+        if (page.isConnected) {
+          updateSearchMetadata(page);
+          initQuickSearch(page);
+        }
       } finally {
         page.removeAttribute('data-search-pending');
         page.removeAttribute('aria-busy');
