@@ -204,6 +204,7 @@
       this.savedHtmlOverflow = document.documentElement.style.overflow;
       const gutter = Math.max(0, innerWidth - document.documentElement.clientWidth);
       if (gutter) document.body.style.paddingRight = `${parseFloat(getComputedStyle(document.body).paddingRight) + gutter}px`;
+      this.header.style.setProperty('--mm-scrollbar-gap', `${gutter}px`);
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
       // Keep the existing Header inside the dialog so its Shop toggle, logo,
@@ -313,7 +314,7 @@
       for (const [name, value] of this.savedAttributes) {
         if (value === null) this.header.removeAttribute(name); else this.header.setAttribute(name, value);
       }
-      for (const prop of ['--mm-bg','--mm-text','--mm-active']) this.header.style.removeProperty(prop);
+      for (const prop of ['--mm-bg','--mm-text','--mm-active','--mm-scrollbar-gap']) this.header.style.removeProperty(prop);
       document.body.removeAttribute('data-mega-menu-open');
       document.body.style.overflow = this.savedOverflow;
       document.body.style.paddingRight = this.savedPadding;
