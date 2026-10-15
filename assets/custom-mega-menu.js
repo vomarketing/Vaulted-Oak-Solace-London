@@ -5,7 +5,7 @@
     constructor(header) {
       this.header = header;
       this.abort = new AbortController();
-      this.media = matchMedia('(min-width: 1201px)');
+      this.media = matchMedia('(min-width: 902px)');
       this.state = 'closed';
       this.panel = null;
       this.trigger = null;

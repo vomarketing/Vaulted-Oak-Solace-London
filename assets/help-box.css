@@ -120,6 +120,10 @@ button[data-help-box-open]:focus-visible {
   display: none;
 }
 
+body[data-mobile-menu-open] .hb-HelpBox_Launcher {
+  display: none;
+}
+
 @media (max-width: 1200px) {
   .hb-HelpBox_Launcher {
     position: fixed;

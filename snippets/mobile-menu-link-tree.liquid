@@ -1,0 +1,21 @@
+{%- liquid
+  assign next_depth = depth | plus: 1
+-%}
+<ul class="hd-MobileMenu_Links hd-MobileMenu_Links-nested">
+  {%- for link in links -%}
+    {%- assign child_id = id_prefix | append: '-' | append: forloop.index -%}
+    <li class="hd-MobileMenu_Item">
+      {%- if link.links.size > 0 and depth < 1 -%}
+        <button type="button" class="hd-MobileMenu_Link" data-mobile-menu-toggle-submenu aria-controls="{{ child_id }}" aria-expanded="false">
+          {{ link.title | escape }}
+        </button>
+        <div id="{{ child_id }}" class="hd-MobileMenu_Submenu" data-mobile-menu-submenu hidden>
+          {%- if link.url != blank -%}<a class="hd-MobileMenu_ParentLink" href="{{ link.url }}">View all {{ link.title | escape }}</a>{%- endif -%}
+          {%- render 'mobile-menu-link-tree', links: link.links, depth: next_depth, id_prefix: child_id -%}
+        </div>
+      {%- else -%}
+        <a class="hd-MobileMenu_Link" href="{{ link.url }}">{{ link.title | escape }}</a>
+      {%- endif -%}
+    </li>
+  {%- endfor -%}
+</ul>
