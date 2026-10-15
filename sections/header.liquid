@@ -87,6 +87,8 @@
 <script src="{{ 'custom-header.js' | asset_url }}" defer="defer"></script>
 {{ 'custom-mega-menu.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'custom-mega-menu.js' | asset_url }}" defer="defer"></script>
+{{ 'custom-mobile-menu.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'custom-mobile-menu.js' | asset_url }}" defer="defer"></script>
 
 {%- capture initial_pdp_header_mode -%}
   {%- if template.name == 'product' -%}
@@ -184,7 +186,10 @@
               <button
                 type="button"
                 class="mb-MenuTrigger"
-                data-module-drawers-trigger="mobile-menu"
+                data-mobile-menu-toggle
+                aria-expanded="false"
+                aria-controls="MobileMenu-{{ section.id }}"
+                aria-label="Open menu"
               >
                 <span class="mb-MenuTrigger_Line mb-MenuTrigger_Line-top"></span>
                 <span class="mb-MenuTrigger_Line mb-MenuTrigger_Line-middle"></span>
@@ -245,7 +250,6 @@
                 </a>
               </li>
             {%- endfor -%}
-
             {%- if section.settings.show_help_box and section.settings.help_label != blank -%}
               <li class="hd-Nav_Item">
                 <button
@@ -360,6 +364,8 @@
       {% render 'mega-menu-panel', block: block, section_id: section.id %}
     {%- endif -%}
   {%- endfor -%}
+
+  {%- render 'mobile-menu', section: section -%}
 </header>
 
 {%- if section.settings.show_help_box -%}

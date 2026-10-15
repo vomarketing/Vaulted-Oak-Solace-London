@@ -11,8 +11,8 @@
      data-active-color="{{ active_color | escape }}"
   {{ block.shopify_attributes }}>
   <div class="mm-Backdrop" data-mega-dismiss aria-hidden="true"></div>
+  <button type="button" class="mm-Close" data-mega-close aria-label="Close navigation">Close</button>
   <div class="mm-Panel" data-mega-surface>
-    <button type="button" class="mm-Close" data-mega-close aria-label="Close navigation">Close</button>
     <div class="mm-Overview" data-mega-view="overview">
       <nav class="mm-Groups" aria-label="{{ block.settings.menu_item_title | escape }} categories">
         {%- for group in menu.groups.value -%}

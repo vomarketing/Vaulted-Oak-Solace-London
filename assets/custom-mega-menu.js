@@ -5,7 +5,7 @@
     constructor(header) {
       this.header = header;
       this.abort = new AbortController();
-      this.media = matchMedia('(min-width: 1201px)');
+      this.media = matchMedia('(min-width: 902px)');
       this.state = 'closed';
       this.panel = null;
       this.trigger = null;
@@ -25,11 +25,8 @@
         const link = e.target.closest('[data-mega-link]');
         if (link && this.panel.contains(link)) this.activate(link);
       }, options);
-      header.addEventListener('pointerout', (e) => {
-        const link = e.target.closest('[data-mega-link]');
-        if (!link || !this.panel?.contains(link) || link.contains(e.relatedTarget)) return;
-        const next = e.relatedTarget?.closest?.('[data-mega-link]');
-        if (!next || !this.panel.contains(next)) this.restoreSelection();
+      header.addEventListener('animationend', (e) => {
+        if (e.animationName === 'mm-open') header.removeAttribute('data-mega-opening');
       }, options);
       header.addEventListener('focusin', (e) => {
         if (this.skipInitialPreview) return;
@@ -101,8 +98,10 @@
       this.header.setAttribute('aria-modal', 'true');
       this.header.setAttribute('aria-label', `${trigger.textContent.trim()} navigation`);
       this.header.setAttribute('data-mega-open', '');
+      this.header.setAttribute('data-mega-opening', '');
       panel.dataset.state = this.state;
       panel.hidden = false;
+      panel.querySelectorAll('[data-mega-preview] img').forEach(img => { img.loading = 'eager'; });
       trigger.setAttribute('aria-expanded', 'true');
       this.applyColors(null);
       this.lockPage();
@@ -117,11 +116,6 @@
       this.header.dispatchEvent(new CustomEvent('mega-menu:open', { bubbles: true, detail: { id: panel.id } }));
     }
     firstFocus() { return this.panel?.querySelector('[data-mega-link]') || this.panel?.querySelector('[data-mega-close]'); }
-    restoreSelection() {
-      if (!this.panel || this.state === 'closing') return;
-      const focused = document.activeElement?.closest('[data-mega-link]');
-      this.render(this.panel.contains(focused) ? focused : this.selectedLink);
-    }
     activate(link) {
       if (!this.panel || this.state === 'closing') return;
       // Do not hide a CTA while keyboard focus is inside its selected content.
@@ -150,7 +144,7 @@
         el.classList.toggle('is-active', el === link);
         el.classList.toggle('is-selected', el === this.selectedLink);
         if (el.hasAttribute('data-mega-detail')) {
-          el.setAttribute('aria-expanded', String(el === link && detail));
+          el.setAttribute('aria-expanded', String(el === link));
         }
       });
       this.panel.querySelectorAll('[data-mega-preview]').forEach(el => {
@@ -160,8 +154,7 @@
         el.setAttribute('aria-hidden', String(!active));
         el.inert = !active;
         const copy = el.querySelector('[data-mega-copy]');
-        if (copy) { copy.hidden = !(active && detail); copy.inert = !(active && detail); }
-        if (active) el.querySelectorAll('img').forEach(img => { img.loading = 'eager'; });
+        if (copy) { copy.hidden = !active; copy.inert = !active; }
       });
       this.applyColors(link);
     }
@@ -170,7 +163,7 @@
       const defaults = this.panel.dataset;
       const background = own.background || defaults.background || '#ffffff';
       const text = own.foreground || defaults.foreground || '#000000';
-      const active = own.activeColor || defaults.activeColor || defaults.foreground || '#000000';
+      const active = own.activeColor || own.foreground || defaults.activeColor || defaults.foreground || '#000000';
       this.header.style.setProperty('--mm-bg', background);
       this.header.style.setProperty('--mm-text', text);
       this.header.style.setProperty('--mm-active', active);
@@ -211,6 +204,7 @@
       this.savedHtmlOverflow = document.documentElement.style.overflow;
       const gutter = Math.max(0, innerWidth - document.documentElement.clientWidth);
       if (gutter) document.body.style.paddingRight = `${parseFloat(getComputedStyle(document.body).paddingRight) + gutter}px`;
+      this.header.style.setProperty('--mm-scrollbar-gap', `${gutter}px`);
       document.body.style.overflow = 'hidden';
       document.documentElement.style.overflow = 'hidden';
       // Keep the existing Header inside the dialog so its Shop toggle, logo,
@@ -291,10 +285,10 @@
       };
 
       surface.addEventListener('animationend', onAnimationEnd);
-      surface.style.setProperty('--mm-close-from', getComputedStyle(surface).transform);
+      surface.style.setProperty('--mm-close-from', getComputedStyle(surface).clipPath);
       panel.classList.add('is-closing');
 
-      timer = setTimeout(complete, 550);
+      timer = setTimeout(complete, 720);
     }
 
     finishClose(restoreFocus = true) {
@@ -316,10 +310,11 @@
       this.panel.querySelectorAll('[data-mega-preview]').forEach(el => { el.setAttribute('aria-hidden','true'); el.inert = true; });
       oldTrigger?.setAttribute('aria-expanded', 'false');
       this.header.removeAttribute('data-mega-open');
+      this.header.removeAttribute('data-mega-opening');
       for (const [name, value] of this.savedAttributes) {
         if (value === null) this.header.removeAttribute(name); else this.header.setAttribute(name, value);
       }
-      for (const prop of ['--mm-bg','--mm-text','--mm-active']) this.header.style.removeProperty(prop);
+      for (const prop of ['--mm-bg','--mm-text','--mm-active','--mm-scrollbar-gap']) this.header.style.removeProperty(prop);
       document.body.removeAttribute('data-mega-menu-open');
       document.body.style.overflow = this.savedOverflow;
       document.body.style.paddingRight = this.savedPadding;

@@ -202,6 +202,7 @@ if (!window.SolaceHeaderContrast) {
     }
 
     setMode(mode) {
+      if (this.header.hasAttribute('data-mobile-menu-open')) return;
       if (this.currentMode === mode && this.header.getAttribute('data-header-mode') === mode) return;
 
       this.currentMode = mode;
