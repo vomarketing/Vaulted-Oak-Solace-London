@@ -313,11 +313,53 @@
 
   &.hero-fullscreen--has-controls,
   &:has(.hero-fullscreen__controls) {
-    .hero-fullscreen__content {
+
+    .hero-fullscreen__content--controls-above {
       position: absolute;
-      bottom: 20px;
-      left: 60px;
-      right: 60px;
+      left: 20px;
+      right: 20px;
+      bottom: 70px;
+      width: auto;
+      max-width: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      pointer-events: none;
+      height: auto;
+
+      @media (min-width: 768px) {
+        left: 40px;
+        right: 40px;
+        bottom: 80px;
+      }
+
+      @media (min-width: 1440px) {
+        bottom: 100px;
+      }
+
+      > * {
+        pointer-events: auto;
+      }
+
+      .hero-fullscreen__heading,
+      .hero-fullscreen__description,
+      .hero-fullscreen__cta {
+        margin: 0;
+      }
+
+      .hero-fullscreen__description p {
+        margin: 0;
+      }
+    }
+
+    .hero-fullscreen__content--controls-below {
+      position: absolute;
+      left: 20px;
+      right: 20px;
+      bottom: 14px;
       width: auto;
       max-width: none;
       height: 28px;
@@ -329,29 +371,16 @@
       justify-content: center;
       pointer-events: none;
 
+      @media (min-width: 768px) {
+        bottom: 20px;
+        left: 40px;
+        right: 40px;
+      }
+
       @media (min-width: 1440px) {
         bottom: 30px;
-        left: 80px;
-        right: 80px;
-      }
-
-      @media (max-width: 640px) {
-        bottom: 14px;
-        left: 50px;
-        right: 50px;
-      }
-
-      &.hero-fullscreen__content--all-fields {
-        height: auto !important;
-        bottom: 60px !important;
-
-        @media (min-width: 768px) {
-          bottom: 80px !important;
-        }
-
-        @media (min-width: 1201px) {
-          bottom: 100px !important;
-        }
+        left: 40px;
+        right: 40px;
       }
 
       > * {
@@ -359,7 +388,10 @@
       }
 
       .hero-fullscreen__heading,
-      .hero-fullscreen__description,
+      .hero-fullscreen__description {
+        display: none;
+      }
+
       .hero-fullscreen__cta {
         margin: 0;
         white-space: nowrap;
@@ -369,18 +401,6 @@
 
       .hero-fullscreen__description p {
         margin: 0;
-      }
-
-      &.hero-fullscreen__content--all-fields {
-        height: auto;
-        flex-direction: column;
-        gap: 6px;
-
-        .hero-fullscreen__heading,
-        .hero-fullscreen__description,
-        .hero-fullscreen__cta {
-          white-space: normal;
-        }
       }
     }
   }
