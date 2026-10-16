@@ -1,8 +1,23 @@
 .drw-Drawer[data-module-drawers-drawer="clc-filters"],
 .drw-Drawer[data-module-drawers-drawer="search-filters"] {
-  width: min(100%, 775px);
+  width: 39.58vw;
   background: #fff;
   color: #000;
+  transition: transform 0.45s ease, opacity 0.3s ease, visibility 0.45s;
+}
+
+@media (min-width: 1600px) {
+  .drw-Drawer[data-module-drawers-drawer="clc-filters"],
+  .drw-Drawer[data-module-drawers-drawer="search-filters"] {
+    width: 40.3125vw;
+  }
+}
+
+@media (max-width: 1200px) {
+  .drw-Drawer[data-module-drawers-drawer="clc-filters"],
+  .drw-Drawer[data-module-drawers-drawer="search-filters"] {
+    width: 100%;
+  }
 }
 
 .drw-Drawer[data-module-drawers-drawer="clc-filters"] .drw-Drawer_Inner,
@@ -11,6 +26,9 @@
   max-width: none;
   min-height: 100%;
   margin: 0;
+  opacity: 1;
+  transform: none;
+  transition: none;
 }
 
 .drw-Drawer[data-module-drawers-drawer="clc-filters"] .drw-Drawer_Body,
@@ -311,9 +329,6 @@
     .drw-Drawer_Inner {
       height: auto;
       min-height: 0;
-      opacity: 1;
-      transform: none;
-      transition: none;
     }
 
     .drw-Drawer_Body {
