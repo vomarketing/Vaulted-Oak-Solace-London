@@ -51,8 +51,10 @@
       "settings": {
         "left_navigation": "desktop-left",
         "right_navigation": "desktop-right",
+        "mobile_need_help_menu": "need-helps",
         "show_help_box": true,
         "help_label": "Help",
+        "help_mobile_label": "Contact Us",
         "help_title": "Help",
         "help_contact_label": "Contact us",
         "help_contact_email": "",
