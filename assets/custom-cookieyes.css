@@ -75,9 +75,11 @@ body .cky-consent-container .cky-notice-btn-wrapper .cky-btn {
   text-underline-offset: 2px;
 }
 
-body .cky-modal {
+body .cky-modal,
+body .cky-modal.cky-modal-open {
   border-radius: 0;
   box-shadow: none;
+  transition: none;
 }
 
 body .cky-preference-center {
