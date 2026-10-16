@@ -33,21 +33,10 @@
   endif
 
   assign has_controls = false
+  assign video_controls_layout = ''
   if is_video and video_desktop_url != blank and section.settings.show_video_controls
     assign has_controls = true
-  endif
-
-  assign video_content_count = 0
-  if is_video
-    if section.settings.heading != blank
-      assign video_content_count = video_content_count | plus: 1
-    endif
-    if section.settings.cta_text != blank
-      assign video_content_count = video_content_count | plus: 1
-    endif
-    if section.settings.description != blank
-      assign video_content_count = video_content_count | plus: 1
-    endif
+    assign video_controls_layout = section.settings.video_controls_content_layout | default: 'above'
   endif
 
   # Only the first section in the template is the LCP candidate. Later heroes
@@ -122,7 +111,7 @@
     <div class="hero-fullscreen__control-scrim" aria-hidden="true"></div>
   {%- endif -%}
 
-  <div class="hero-fullscreen__content{% if is_video and video_content_count >= 2 %} hero-fullscreen__content--all-fields{% endif %}">
+  <div class="hero-fullscreen__content{% if has_controls %} hero-fullscreen__content--controls-{{ video_controls_layout }}{% endif %}">
     {%- if section.settings.heading != blank -%}
       {%- liquid
         assign heading_size = section.settings.heading_font_size | default: 'text-reg-14'
@@ -309,6 +298,24 @@
       "info": "Shows the timeline, time, play/pause and mute controls. When disabled, the compact play/pause button is used.",
       "default": false,
       "visible_if": "{{ section.settings.media_type == 'video' }}"
+    },
+    {
+      "type": "select",
+      "id": "video_controls_content_layout",
+      "label": "Content layout (with controls bar)",
+      "options": [
+        {
+          "value": "above",
+          "label": "Title & CTA above the bar"
+        },
+        {
+          "value": "below",
+          "label": "One line CTA below the bar"
+        }
+      ],
+      "default": "above",
+      "info": "Choose how content is positioned relative to the video progress bar.",
+      "visible_if": "{{ section.settings.media_type == 'video' and section.settings.show_video_controls == true }}"
     },
     {
       "type": "header",
