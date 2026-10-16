@@ -452,10 +452,6 @@
 body.is-contact-modal-open {
   overflow: hidden !important;
   touch-action: none;
-
-  .shopify-section-group-footer-group {
-    z-index: 100;
-  }
 }
 
 /* --------------------------------------------------------------------------

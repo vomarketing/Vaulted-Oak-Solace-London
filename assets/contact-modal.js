@@ -33,6 +33,12 @@ if (!customElements.get('contact-modal')) {
     }
 
     connectedCallback() {
+      if (this.parentElement !== document.body) {
+        document.querySelectorAll('body > contact-modal').forEach((el) => el.remove());
+        document.body.appendChild(this);
+        return;
+      }
+
       this.abortController = new AbortController();
       this.container = this.querySelector(ContactModal.selectors.container);
       this.form = this.querySelector(ContactModal.selectors.form);
