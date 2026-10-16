@@ -34,11 +34,19 @@
             "menu_item_title": "Shop",
             "menu_content": "shop-mega-menu"
           }
+        },
+        "mega_menu_hNcjwp": {
+          "type": "mega_menu",
+          "settings": {
+            "menu_item_title": "Bridal",
+            "menu_content": "brial-mega-menu"
+          }
         }
       },
       "block_order": [
         "mega_menu_tY48YU",
-        "mega_menu_UmWQeE"
+        "mega_menu_UmWQeE",
+        "mega_menu_hNcjwp"
       ],
       "settings": {
         "left_navigation": "desktop-left",
