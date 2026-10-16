@@ -31,12 +31,8 @@
   endif
 
   assign breadcrumb_collection = product.metafields.custom.primary_collection.value
-  if breadcrumb_collection == blank
-    if product.collections.size == 1
-      assign breadcrumb_collection = product.collections.first
-    elsif collection.handle != blank
-      assign breadcrumb_collection = collection
-    endif
+  if collection.handle != blank
+    assign breadcrumb_collection = collection
   endif
 -%}
 
