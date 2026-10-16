@@ -190,17 +190,40 @@
   }
 }
 
-.featured-image--non-full-height {
+/* A fullpage slide is always one screen tall, so natural height and custom
+   spacing only apply outside it; inside, the full-screen layout fits and centres. */
+:not(.fullpage-slide) > .featured-image--non-full-height {
   min-height: 0;
 }
 
-.featured-image--non-full-height .featured-image__inner {
+:not(.fullpage-slide) > .featured-image--non-full-height .featured-image__inner {
   min-height: 0;
   max-width: var(--featured-image-max-width);
 }
 
-.featured-image--non-full-height .featured-image__image {
+:not(.fullpage-slide) > .featured-image--non-full-height .featured-image__image {
   max-height: none;
+}
+
+/* The image gives way to the text below it so everything fits on one slide. */
+.fullpage-slide > .featured-image {
+  .featured-image__inner {
+    height: var(--featured-image-viewport-height);
+    min-height: 0;
+  }
+
+  .featured-image__media {
+    flex: 0 1 auto;
+    min-height: 0;
+  }
+
+  .featured-image__image {
+    max-height: min(var(--featured-image-media-max-height), 100%);
+  }
+
+  .featured-image__text-content {
+    margin-top: clamp(24px, 5dvh, 48px);
+  }
 }
 
 @media (max-width: 768px) {
@@ -211,14 +234,14 @@
 }
 
 @media (max-width: 979px) {
-  .featured-image--non-full-height.featured-image--custom-mobile-spacing .featured-image__inner {
+  :not(.fullpage-slide) > .featured-image--non-full-height.featured-image--custom-mobile-spacing .featured-image__inner {
     --featured-image-pad-top: var(--featured-image-custom-mobile-padding-top);
     --featured-image-pad-bottom: var(--featured-image-custom-mobile-padding-bottom);
   }
 }
 
 @media (min-width: 980px) {
-  .featured-image--non-full-height.featured-image--custom-spacing .featured-image__inner {
+  :not(.fullpage-slide) > .featured-image--non-full-height.featured-image--custom-spacing .featured-image__inner {
     --featured-image-pad-top: var(--featured-image-custom-padding-top);
     --featured-image-pad-bottom: var(--featured-image-custom-padding-bottom);
   }
@@ -238,6 +261,15 @@
     max-height: none;
     aspect-ratio: auto;
     object-fit: cover;
+  }
+
+  /* Inside a fullpage slide the custom size is a maximum: keep its ratio but fit the screen. */
+  .fullpage-slide > .featured-image--custom-size .featured-image__image {
+    width: auto;
+    height: auto;
+    max-width: 100%;
+    max-height: min(var(--featured-image-media-max-height), 100%);
+    aspect-ratio: var(--featured-image-custom-ratio);
   }
 }
 
