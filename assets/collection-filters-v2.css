@@ -239,11 +239,6 @@
   outline-offset: 3px;
 }
 
-.collection-filter-v2__empty {
-  margin: 0;
-  color: #777;
-}
-
 .collection-filter-v2__group--sort {
   margin-top: 40px;
 }

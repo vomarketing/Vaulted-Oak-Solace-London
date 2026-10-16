@@ -62,6 +62,7 @@
               {%- assign group_tags = group_tags | sort -%}
             {%- endif -%}
 
+            {%- if group_tags.size > 0 -%}
             {%- assign group_is_open = false -%}
             {%- if group_has_active_tag and has_open_group == false -%}
               {%- assign group_is_open = true -%}
@@ -104,11 +105,9 @@
                     </li>
                   {%- endfor -%}
                 </ul>
-                {%- if group_tags.size == 0 -%}
-                  <p class="collection-filter-v2__empty">No options available</p>
-                {%- endif -%}
               </div>
             </details>
+            {%- endif -%}
           {%- endif -%}
         {%- endfor -%}
       </div>
