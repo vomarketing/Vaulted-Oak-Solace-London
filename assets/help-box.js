@@ -4,7 +4,8 @@ if (!customElements.get('help-box')) {
       panel: '.hb-HelpBox',
       dialog: '.hb-HelpBox_Dialog',
       open: '[data-help-box-open]',
-      close: '[data-help-box-close]'
+      close: '[data-help-box-close]',
+      contactModal: '[data-contact-modal-trigger]'
     };
 
     static classes = {
@@ -60,6 +61,11 @@ if (!customElements.get('help-box')) {
 
           if (!this.isOpen) return;
 
+          if (e.target.closest(this.selectors.contactModal)) {
+            this.close(false);
+            return;
+          }
+
           if (e.target.closest(this.selectors.close)) {
             this.close();
             return;
@@ -97,7 +103,7 @@ if (!customElements.get('help-box')) {
       this.dialog.focus();
     }
 
-    close() {
+    close(restoreFocus = true) {
       const trigger = this.trigger;
 
       this.isOpen = false;
@@ -111,7 +117,7 @@ if (!customElements.get('help-box')) {
       window.setTimeout(() => {
         if (this.isOpen) return;
         this.panel.hidden = true;
-        trigger?.focus();
+        if (restoreFocus) trigger?.focus();
       }, 280);
     }
 

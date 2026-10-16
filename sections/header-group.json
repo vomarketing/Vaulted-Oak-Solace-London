@@ -20,6 +20,7 @@
         "help_contact_label": "Contact us",
         "help_contact_email": "",
         "help_contact_link": "shopify://pages/contact",
+        "help_contact_modal": true,
         "help_menu": "help-menu",
         "header_background_style": "transparent",
         "transparent_homepage_only": true,

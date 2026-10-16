@@ -161,7 +161,7 @@ body[data-mobile-menu-open] .hb-HelpBox_Launcher {
   }
 
   body:has(.drw-Drawer-active, .mod-Modal-active, .pdp-size-drawer.is-open) .hb-HelpBox_Launcher,
-  body:is(.is-newsletter-popup-open, .is-size-drawer-open, .is-zoom-modal-active) .hb-HelpBox_Launcher {
+  body:is(.is-newsletter-popup-open, .is-size-drawer-open, .is-zoom-modal-active, .is-contact-modal-open) .hb-HelpBox_Launcher {
     visibility: hidden;
     pointer-events: none;
   }
