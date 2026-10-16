@@ -350,7 +350,7 @@
 </header>
 
 {%- if section.settings.show_help_box -%}
-  {%- render 'help-box', menu: section.settings.help_menu -%}
+  {%- render 'help-box', help: section.settings -%}
 {%- endif -%}
 
  {% comment %} <div class="hd-AnimatedHeader" style="display: none;">
@@ -464,6 +464,10 @@
       "label": "Right navigation"
     },
     {
+      "type": "header",
+      "content": "Help box"
+    },
+    {
       "type": "checkbox",
       "id": "show_help_box",
       "label": "Show help box",
@@ -475,6 +479,36 @@
       "id": "help_label",
       "label": "Help label",
       "default": "Help"
+    },
+    {
+      "type": "text",
+      "id": "help_mobile_label",
+      "label": "Mobile button label",
+      "default": "Contact Us"
+    },
+    {
+      "type": "text",
+      "id": "help_title",
+      "label": "Panel heading",
+      "default": "Help"
+    },
+    {
+      "type": "text",
+      "id": "help_contact_label",
+      "label": "Contact label",
+      "default": "Contact us"
+    },
+    {
+      "type": "text",
+      "id": "help_contact_email",
+      "label": "Contact email",
+      "info": "Shown under the contact label. Leave blank to hide."
+    },
+    {
+      "type": "url",
+      "id": "help_contact_link",
+      "label": "Contact link",
+      "info": "Select the contact page to open the contact form. Leave blank to email the address above."
     },
     {
       "type": "link_list",

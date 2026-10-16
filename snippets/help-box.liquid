@@ -1,3 +1,11 @@
+{%- liquid
+  assign title = help.help_title | default: 'Help'
+  assign contact_url = help.help_contact_link
+  if contact_url == blank and help.help_contact_email != blank
+    assign contact_url = 'mailto:' | append: help.help_contact_email
+  endif
+-%}
+
 <style>
   {{ 'help-box.css' | inline_asset_content }}
 </style>
@@ -12,7 +20,7 @@
     aria-expanded="false"
     aria-haspopup="dialog"
   >
-    Contact Us
+    {{ help.help_mobile_label | default: 'Contact Us' }}
   </button>
 
   <div
@@ -37,26 +45,30 @@
       tabindex="-1"
     >
       <header class="hb-HelpBox_Header">
-        <h2 class="hb-HelpBox_Title" id="HelpBoxTitle">Contact Us</h2>
+        <h2 class="hb-HelpBox_Title" id="HelpBoxTitle">{{ title }}</h2>
         <button class="hb-HelpBox_Close" type="button" data-help-box-close>Close</button>
       </header>
 
       <div class="hb-HelpBox_Body">
-        <a class="hb-HelpBox_Email" href="mailto:help@solacelondon.com">
-          <span class="hb-HelpBox_EmailText">
-            Email us<br>
-            help@solacelondon.com
-          </span>
-          <span class="hb-HelpBox_Chevron" aria-hidden="true">
-            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
-              <path d="M8.93 8 5.78 4.85l.62-.62L10.17 8l-3.77 3.77-.62-.62L8.93 8Z" fill="currentColor"/>
-            </svg>
-          </span>
-        </a>
+        {%- if contact_url != blank -%}
+          <a class="hb-HelpBox_Email" href="{{ contact_url }}">
+            <span class="hb-HelpBox_EmailText">
+              {{ help.help_contact_label }}
+              {%- if help.help_contact_email != blank -%}
+                <br>{{ help.help_contact_email }}
+              {%- endif -%}
+            </span>
+            <span class="hb-HelpBox_Chevron" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                <path d="M8.93 8 5.78 4.85l.62-.62L10.17 8l-3.77 3.77-.62-.62L8.93 8Z" fill="currentColor"/>
+              </svg>
+            </span>
+          </a>
+        {%- endif -%}
 
-        {%- if menu != blank and linklists[menu].links.size > 0 -%}
-          <nav class="hb-HelpBox_Links" aria-label="Contact Us">
-            {%- for link in linklists[menu].links -%}
+        {%- if help.help_menu != blank and linklists[help.help_menu].links.size > 0 -%}
+          <nav class="hb-HelpBox_Links" aria-label="{{ title | escape }}">
+            {%- for link in linklists[help.help_menu].links -%}
               <a class="hb-HelpBox_Link" href="{{ link.url }}">{{ link.title }}</a>
             {%- endfor -%}
           </nav>
