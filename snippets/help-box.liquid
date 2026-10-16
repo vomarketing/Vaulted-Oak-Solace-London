@@ -4,6 +4,9 @@
   if contact_url == blank and help.help_contact_email != blank
     assign contact_url = 'mailto:' | append: help.help_contact_email
   endif
+  if help.help_contact_modal and contact_url == blank
+    assign contact_url = '#contactUSModal'
+  endif
 -%}
 
 <style>
@@ -51,7 +54,15 @@
 
       <div class="hb-HelpBox_Body">
         {%- if contact_url != blank -%}
-          <a class="hb-HelpBox_Email" href="{{ contact_url }}">
+          <a
+            class="hb-HelpBox_Email"
+            href="{{ contact_url }}"
+            {% if help.help_contact_modal %}
+              data-contact-modal-trigger
+              aria-haspopup="dialog"
+              aria-controls="contactUSModal"
+            {% endif %}
+          >
             <span class="hb-HelpBox_EmailText">
               {{ help.help_contact_label }}
               {%- if help.help_contact_email != blank -%}
