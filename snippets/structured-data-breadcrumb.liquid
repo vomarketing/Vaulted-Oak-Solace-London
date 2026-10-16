@@ -7,8 +7,12 @@
   the page. The visual snippet is left as it was.
 
   Trails (Home is always position 1):
-    product           Home > Collection > Product   (Collection only when the URL
-                                                     is /collections/x/products/y)
+    product           Home > Primary collection > Product (when the product
+                                                            metafield is set)
+                      Home > sole collection > Product (when the product has
+                      exactly one collection and no metafield is set)
+                      Otherwise Home > Collection > Product (when the URL is
+                      /collections/x/products/y), or Home > Product
     collection        Home > Collection            (> Tags on filtered pages)
     blog              Home > Blog                  (> Tags on filtered pages)
     article           Home > Blog > Article
@@ -30,7 +34,19 @@
 
   case request.page_type
     when 'product'
-      if collection.handle != blank
+      assign primary_collection = product.metafields.custom.primary_collection.value
+      if primary_collection != blank
+        assign crumb_2_name = primary_collection.title
+        assign crumb_2_url = shop.url | append: primary_collection.url
+        assign crumb_3_name = product.title
+        assign crumb_3_url = shop.url | append: product.url
+      elsif product.collections.size == 1
+        assign primary_collection = product.collections.first
+        assign crumb_2_name = primary_collection.title
+        assign crumb_2_url = shop.url | append: primary_collection.url
+        assign crumb_3_name = product.title
+        assign crumb_3_url = shop.url | append: product.url
+      elsif collection.handle != blank
         assign crumb_2_name = collection.title
         assign crumb_2_url = shop.url | append: collection.url
         assign crumb_3_name = product.title
