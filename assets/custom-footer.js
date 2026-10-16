@@ -96,8 +96,11 @@ if (!window.FooterRevealController) {
     checkVisibility() {
       if (!this.footer) return;
 
-      // On fullpage swiper pages where swiper is active, visibility is driven by fullpage:slideChange events
-      if (document.body.hasAttribute('data-fullpage-scroll') && window.fullpageScrollInstance?.swiper) return;
+      // On fullpage pages, wait for fullpage:ready; once swiper is active, visibility is driven by fullpage:slideChange events
+      if (document.body.hasAttribute('data-fullpage-scroll')) {
+        const fullpage = window.fullpageScrollInstance;
+        if (!fullpage?.isReady || fullpage.swiper) return;
+      }
 
       if (this.mainContent) {
         const rect = this.mainContent.getBoundingClientRect();
@@ -132,7 +135,10 @@ if (!window.FooterRevealController) {
 
       document.addEventListener('fullpage:ready', (e) => {
         this.updateFooterHeight();
-        if (!e.detail?.swiper) return;
+        if (!e.detail?.swiper) {
+          this.checkVisibility();
+          return;
+        }
         const sw = e.detail.swiper;
         const total = sw.slides ? sw.slides.length : 0;
         const isLastSlide = total > 0 && sw.activeIndex === total - 1;

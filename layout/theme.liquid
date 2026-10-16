@@ -70,8 +70,7 @@
     <noscript><link rel="stylesheet" href="https://use.typekit.net/ojr8oqr.css"></noscript>
 
     {% comment %} CookieYes {% endcomment %}
-    <link rel="stylesheet" href="{{ 'custom-cookieyes.css' | asset_url }}" media="print" onload="this.media='all'">
-    <noscript>{{ 'custom-cookieyes.css' | stylesheet_tag }}</noscript>
+    {{ 'custom-cookieyes.css' | asset_url | stylesheet_tag }}
 
     {%- render 'head-script' -%}
 
