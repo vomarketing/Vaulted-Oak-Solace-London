@@ -42,7 +42,7 @@
   overflow: hidden;
   padding-top: var(--mobile-menu-header-height, 60px);
   background: var(--mobile-menu-background, #fff);
-  color: var(--mobile-menu-text, #000);
+  color: #000;
   font-family: Inter, sans-serif;
   font-size: 12px;
   font-style: normal;
@@ -83,11 +83,13 @@
 .hd-Header[data-mobile-menu-open] .hd-MobileNav_Icon,
 .hd-Header[data-mobile-menu-open] .hd-MobileNav_Cart,
 .hd-Header[data-mobile-menu-open] .mb-MenuTrigger {
-  color: var(--mobile-menu-text, #000) !important;
-  fill: var(--mobile-menu-text, #000) !important;
+  color: #000 !important;
+  fill: #000 !important;
 }
 
 .hd-MobileMenu_Scroll {
+  display: flex;
+  flex-direction: column;
   flex: 1 1 auto;
   min-height: 0;
   overflow: auto;
@@ -101,9 +103,15 @@
   width: 100%;
 }
 
+.hd-MobileMenu_Navigation {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+}
+
 .hd-MobileMenu_Navigation > .hd-MobileMenu_Back {
   margin: 0 0 10px;
-} 
+}
 
 .hd-MobileMenu_Links {
   display: flex;
@@ -115,6 +123,10 @@
   list-style: none;
 }
 
+.hd-MobileMenu_Navigation > .hd-MobileMenu_Links {
+  flex: 1 0 auto;
+}
+
 .hd-MobileMenu_Links-nested {
   margin-top: 40px;
 }
@@ -122,6 +134,72 @@
 .hd-MobileMenu_Item {
   margin: 0;
   padding: 0;
+}
+
+.hd-MobileMenu_Item-account {
+  margin-top: 20px;
+}
+
+.hd-MobileMenu_Item-help {
+  margin-top: auto;
+  padding-top: 40px;
+}
+
+.hd-MobileMenu_HelpTitle {
+  margin: 0 0 20px;
+  color: #000;
+  font-family: Inter, sans-serif;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 18px;
+}
+
+.hd-MobileMenu_HelpFeatured,
+.hd-MobileMenu_HelpLinks {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hd-MobileMenu_HelpFeatured {
+  gap: 20px;
+  margin-bottom: 40px;
+}
+
+.hd-MobileMenu_HelpLinks {
+  gap: 15px;
+}
+
+.hd-MobileMenu_HelpLink {
+  color: #000;
+  font: inherit;
+  text-decoration: none;
+}
+
+.hd-MobileMenu_HelpLink-featured {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.hd-MobileMenu_HelpCopy {
+  display: flex;
+  flex-direction: column;
+}
+
+.hd-MobileMenu_HelpArrow {
+  flex: 0 0 8px;
+  width: 8px;
+  height: 8px;
+  margin-right: 4px;
+  border-top: 1px solid currentColor;
+  border-right: 1px solid currentColor;
+  transform: rotate(45deg);
 }
 
 .hd-MobileMenu_Link,
@@ -150,7 +228,7 @@
 .hd-MobileMenu_Back,
 .hd-MobileMenu_ParentLink,
 .hd-MobileMenu_Actions a {
-  color: var(--mobile-menu-text, #000);
+  color: #000;
 }
 
 .hd-MobileMenu_Link:hover,
@@ -162,7 +240,9 @@
   text-underline-offset: 3px;
 }
 
-.hd-MobileMenu_Link.is-open { color: var(--mobile-menu-active, var(--mobile-menu-text, #000)); }
+.hd-MobileMenu_Link.is-open {
+  color: #000;
+}
 
 .hd-MobileMenu_Submenu {
   width: 100%;
@@ -183,7 +263,7 @@
 
 .hd-MobileMenu_ActiveTitle {
   margin: 0 0 40px;
-  color: var(--mobile-menu-active, var(--mobile-menu-text, #000));
+  color: #000;
   font: inherit;
   text-decoration: underline;
   text-underline-offset: 3px;
@@ -358,6 +438,7 @@
   z-index: 1;
   display: grid;
   flex: 0 0 55px;
+  height: 55px;
   grid-template-columns: 1fr 1fr;
   border-top: 1px solid #000;
   background: #fff;
@@ -385,13 +466,13 @@
 
   .hd-MobileMenu_Submenu-detail .mm-Preview[data-size="medium"][data-orientation="landscape"] {
     --mobile-preview-width: 387px;
-    --mobile-preview-ratio: 32 / 43;
+    --mobile-preview-ratio: 82 / 57;
     --mobile-copy-width: 387px;
   }
 
   .hd-MobileMenu_Submenu-detail .mm-Preview[data-size="medium"][data-orientation="portrait"] {
     --mobile-preview-width: 387px;
-    --mobile-preview-ratio: 82 / 57;
+    --mobile-preview-ratio: 32 / 43;
     --mobile-copy-width: 387px;
   }
 
@@ -417,13 +498,13 @@
 @media (max-width: 589px) {
   .hd-MobileMenu_Submenu-detail .mm-Preview[data-size="medium"][data-orientation="landscape"] {
     --mobile-preview-width: 298px;
-    --mobile-preview-ratio: 38 / 51;
+    --mobile-preview-ratio: 131 / 91;
     --mobile-copy-width: 298px;
   }
 
   .hd-MobileMenu_Submenu-detail .mm-Preview[data-size="medium"][data-orientation="portrait"] {
     --mobile-preview-width: 298px;
-    --mobile-preview-ratio: 131 / 91;
+    --mobile-preview-ratio: 38 / 51;
     --mobile-copy-width: 298px;
   }
 

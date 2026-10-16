@@ -93,8 +93,48 @@
               {%- endif -%}
             </li>
           {%- endfor -%}
-          {%- if mobile_section.settings.show_help_box and mobile_section.settings.help_label != blank -%}
-            <li class="hd-MobileMenu_Item"><button type="button" class="hd-MobileMenu_Link" data-help-box-open aria-controls="HelpBox" aria-expanded="false" aria-haspopup="dialog">{{ mobile_section.settings.help_label | escape }}</button></li>
+          {%- if shop.customer_accounts_enabled -%}
+            <li class="hd-MobileMenu_Item hd-MobileMenu_Item-account">
+              <a class="hd-MobileMenu_Link" href="{{ routes.account_url }}" {% if request.page_type contains 'customers' %}aria-current="page"{% endif %}>
+                {{ 'layout.header.account' | t }}
+              </a>
+            </li>
+          {%- endif -%}
+          {%- assign mobile_need_help_menu = linklists[mobile_section.settings.mobile_need_help_menu] -%}
+          {%- assign mobile_need_help_links = mobile_need_help_menu.links -%}
+          {%- if mobile_need_help_links != blank -%}
+            <li class="hd-MobileMenu_Item hd-MobileMenu_Item-help">
+              <section class="hd-MobileMenu_Help" aria-labelledby="MobileMenu-{{ mobile_section.id }}-help-title">
+                <h2 id="MobileMenu-{{ mobile_section.id }}-help-title" class="hd-MobileMenu_HelpTitle">{{ mobile_need_help_menu.title | escape }}</h2>
+                <ul class="hd-MobileMenu_HelpFeatured">
+                  {%- for link in mobile_need_help_links limit: 2 -%}
+                    {%- liquid
+                      assign mobile_help_parts = link.title | replace: '<br />', '<br>' | replace: '<br/>', '<br>' | split: '<br>'
+                      assign mobile_help_title = mobile_help_parts[0] | strip
+                      assign mobile_help_description = mobile_help_parts[1] | strip
+                    -%}
+                    <li class="hd-MobileMenu_HelpItem">
+                      <a class="hd-MobileMenu_HelpLink hd-MobileMenu_HelpLink-featured" href="{{ link.url | escape }}">
+                        <span class="hd-MobileMenu_HelpCopy">
+                          <span class="hd-MobileMenu_HelpLabel">{{ mobile_help_title | escape }}</span>
+                          {%- if mobile_help_description != blank -%}<span class="hd-MobileMenu_HelpDescription">{{ mobile_help_description | escape }}</span>{%- endif -%}
+                        </span>
+                        <span class="hd-MobileMenu_HelpArrow" aria-hidden="true"></span>
+                      </a>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+                {%- if mobile_need_help_links.size > 2 -%}
+                  <ul class="hd-MobileMenu_HelpLinks">
+                    {%- for link in mobile_need_help_links offset: 2 -%}
+                      <li class="hd-MobileMenu_HelpItem">
+                        <a class="hd-MobileMenu_HelpLink" href="{{ link.url | escape }}">{{ link.title | escape }}</a>
+                      </li>
+                    {%- endfor -%}
+                  </ul>
+                {%- endif -%}
+              </section>
+            </li>
           {%- endif -%}
         </ul>
       </nav>
