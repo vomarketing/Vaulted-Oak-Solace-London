@@ -10,11 +10,7 @@
   color: var(--color-black, #000000);
   box-sizing: border-box;
   position: relative;
-  z-index: 31;
-
-  body.is-contact-modal-open & {
-    z-index: 1;
-  }
+  z-index: 1;
 
   @media (min-width: 1201px) {
     padding-top: 0;
