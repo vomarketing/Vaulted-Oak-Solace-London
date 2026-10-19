@@ -149,7 +149,7 @@
             "answer_after_table": "",
             "link_text": "",
             "link_url": "",
-            "open_by_default": false
+            "open_by_default": true
           }
         }
       },
