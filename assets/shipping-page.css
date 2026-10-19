@@ -215,12 +215,16 @@
   .shipping-Page {
     min-height: max(700px, 100vh);
     overflow-x: clip;
-    z-index: 31;
+    z-index: 1;
 
     .pg-Page_Inner {
       max-width: 522px;
       margin: 0 auto;
       padding-top: 0;
+    }
+
+    &:has(.shipping-Page_Toc[aria-expanded="true"]) {
+      z-index: 31;
     }
   }
 
