@@ -17,7 +17,8 @@
         "contact_us": {
           "type": "contact_us",
           "settings": {
-            "intro": "<p>Our Customer Care team is available Monday – Friday, 9:00am – 5:00pm UK time, excluding UK bank holidays.</p><p>We aim to respond the same working day.</p>",
+            "title": "Contact",
+            "intro": "<p>Our Customer Care team is available Monday – Friday, 9:00am – 5:00pm UK time, excluding UK bank holidays.<br/>We aim to respond the same working day.</p>",
             "topics": "Order Enquiry\nReturns Enquiry\nShipping Information\nPress Enquiry\nOther",
             "success_message": "Thanks for contacting us. We'll get back to you as soon as possible."
           }
