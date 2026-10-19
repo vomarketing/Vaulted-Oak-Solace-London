@@ -1,14 +1,33 @@
 {{ 'footer-page.css' | asset_url | stylesheet_tag }}
+<style>
+  .faq-Page [data-el="accordion.body"],
+  .faq-Page .faq-Faqs_Body {
+    transition: none !important;
+    animation: none !important;
+  }
+  .faq-Page [data-el="accordion.item"][aria-expanded="false"] .faq-Faqs_Body {
+    display: none !important;
+    height: 0 !important;
+  }
+  .faq-Page [data-el="accordion.item"][aria-expanded="true"] .faq-Faqs_Body {
+    display: block !important;
+    height: auto !important;
+  }
+  .faq-Page [data-el="accordion.trigger"],
+  .faq-Page .faq-Faqs_Header {
+    cursor: pointer;
+    user-select: none;
+  }
+</style>
 <section class="faq-Page pg-Page lyt-Container">
   <div class="pg-Page_Inner">
     {%- render 'information-page-navigation', menu: section.settings.navigation_menu -%}
 
     <div
       class="faq-Faqs"
-      data-module="accordion"
-      data-module-lazy
+      data-module="custom-accordion"
       data-section-id="{{ section.id }}"
-      data-section-type="faqs"
+      data-section-type="custom-faqs"
       data-accordion-initial-state="{{ section.settings.initial_state }}"
       data-accordion-open-one-at-a-time="{{ section.settings.show_one_at_a_time }}"
     >
@@ -60,6 +79,7 @@
 </section>
 
 {%- render 'structured-data-faq', blocks: section.blocks -%}
+<script src="{{ 'custom-faqs-accordion.js' | asset_url }}" defer="defer"></script>
 
 {% schema %}
 {

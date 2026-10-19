@@ -131,6 +131,28 @@
   font-weight: var(--shipping-answer-bold-weight, 500);
 }
 
+.shipping-Page_Answer a,
+.shipping-Page_Answer a:visited,
+.shipping-Page_Answer a:hover,
+.shipping-Page_Answer a:focus {
+  color: inherit;
+  font: inherit;
+  font-weight: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.shipping-Page_Answer a,
+.shipping-Page_Answer a:visited,
+.shipping-Page_Answer a:hover,
+.shipping-Page_Answer a:focus {
+  color: inherit;
+  font: inherit;
+  font-weight: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
 .shipping-Page_TableWrap {
   max-width: 100%;
   overflow-x: auto;
