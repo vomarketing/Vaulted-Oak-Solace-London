@@ -136,9 +136,9 @@
           "type": "shipping_item",
           "settings": {
             "category": "Customer Services",
-            "question": "Delivery information",
+            "question": "Customer Services",
             "answer_font_weight": "500",
-            "answer_before_table": "<p>lorem ipsum dolor sit amet consectetur adipiscing elit velit labore dolore nihil odio anim est nam quidem similique mollit nostrud praesentium mollit ut aut qui corrupti commodo molestias quas minim illum officia et harum nulla possimus quis optio praesentium est sit do fuga lorem et id in irure est accusamus</p>",
+            "answer_before_table": "<p>Our Customer Care team is based in the United Kingdom.&nbsp;<br/><br/>For further help or enquiries, please contact us at&nbsp;help@solacelondon.com.&nbsp;<br/><br/>We are available Monday to Friday, 9:00am–5:00pm UK time, excluding UK bank holidays, and aim to respond within 2 working days.<br/><br/>Nothing in this policy affects your statutory rights.&nbsp;</p>",
             "show_rates_table": false,
             "table_heading_destination": "Destination",
             "table_heading_delivery": "Delivery Time",
