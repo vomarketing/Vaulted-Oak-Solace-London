@@ -5,18 +5,6 @@
   line-height: 1.5;
 }
 
-.shipping-Page_TocTrigger {
-  position: relative;
-  display: none;
-}
-
-.shipping-Page_TocTriggerText {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: 20px;
-}
-
 .shipping-Page_TocPanel ul {
   margin: 0;
   padding: 0;
@@ -44,6 +32,18 @@
 
 .shipping-Page_Group {
   scroll-margin-top: 32px;
+}
+
+.shipping-Page_Group > summary {
+  list-style: none;
+}
+
+.shipping-Page_Group > summary::-webkit-details-marker {
+  display: none;
+}
+
+.shipping-Page_Group > summary .shipping-Page_AccordionIcon {
+  display: none;
 }
 
 .shipping-Page_Group + .shipping-Page_Group {
@@ -142,17 +142,6 @@
   text-underline-offset: 2px;
 }
 
-.shipping-Page_Answer a,
-.shipping-Page_Answer a:visited,
-.shipping-Page_Answer a:hover,
-.shipping-Page_Answer a:focus {
-  color: inherit;
-  font: inherit;
-  font-weight: inherit;
-  text-decoration: underline;
-  text-underline-offset: 2px;
-}
-
 .shipping-Page_TableWrap {
   max-width: 100%;
   overflow-x: auto;
@@ -215,126 +204,59 @@
   .shipping-Page {
     min-height: max(700px, 100vh);
     overflow-x: clip;
-    z-index: 1;
 
     .pg-Page_Inner {
       max-width: 522px;
       margin: 0 auto;
       padding-top: 0;
     }
-
-    &:has(.shipping-Page_Toc[aria-expanded="true"]) {
-      z-index: 31;
-    }
   }
 
   .shipping-Page_Toc {
-    position: relative;
-    z-index: 20;
-    margin-top: 30px;
-  }
-
-  .shipping-Page_TocTrigger {
-    display: flex;
-    width: 100%;
-    align-items: center;
-    justify-content: space-between;
-    padding: 15px 0;
-    border-bottom: 1px solid currentColor;
-    color: inherit;
-    background: #fff;
-    font: inherit;
-    text-align: left;
-    cursor: pointer;
-  }
-
-  .shipping-Page_TocIcon {
-    position: absolute;
-    right: 5px;
-    bottom: 18px;
-    width: 8px;
-    height: 8px;
-    border-right: 1px solid currentColor;
-    border-bottom: 1px solid currentColor;
-    transform: rotate(45deg) translateY(-2px);
-    transition: transform 180ms ease;
-  }
-
-  .shipping-Page_Toc[aria-expanded="true"] .shipping-Page_TocIcon {
-    transform: rotate(225deg) translate(-2px, -1px);
-  }
-
-  .shipping-Page_TocPanel {
-    position: fixed;
-    z-index: 1001;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    max-height: 70vh;
-    overflow-y: auto;
-    padding: 24px 20px calc(24px + env(safe-area-inset-bottom));
-    background: #fff;
-    transform: translateY(100%);
-    visibility: hidden;
-    transition: transform 250ms ease, visibility 250ms ease;
-  }
-
-  .shipping-Page_TocPanel ul {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 24px;
-  }
-
-  .shipping-Page_TocPanel li + li {
-    margin-top: 0;
-  }
-
-  .shipping-Page_TocPanel a {
-    text-align: center;
-  }
-
-  .shipping-Page_TocOverlay {
-    position: fixed;
-    z-index: 1000;
-    inset: 0;
-    background: rgb(0 0 0 / 60%);
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 250ms ease, visibility 250ms ease;
-  }
-
-  .shipping-Page_Toc[aria-expanded="true"] .shipping-Page_TocPanel {
-    transform: translateY(0);
-    visibility: visible;
-  }
-
-  .shipping-Page_Toc[aria-expanded="true"] .shipping-Page_TocOverlay {
-    opacity: 1;
-    visibility: visible;
+    display: none;
   }
 
   .shipping-Page_Content {
     width: 100%;
-    margin: 60px auto 0;
+    margin: 0 auto;
+  }
+
+  .shipping-Page_Group {
+    border: 0;
   }
 
   .shipping-Page_Group + .shipping-Page_Group {
-    margin-top: 40px;
+    margin-top: 10px;
+  }
+
+  .shipping-Page_Group > summary {
+    display: flex;
+    min-height: 32px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    margin: 0;
+    cursor: pointer;
+    font-weight: 500;
+  }
+
+  .shipping-Page_Group > summary .shipping-Page_AccordionIcon {
+    display: inline-flex;
+  }
+
+  .shipping-Page_Group[open] > summary .shipping-Page_AccordionIcon {
+    transform: rotate(180deg);
+  }
+
+  .shipping-Page_Items {
+    padding-top: 10px;
+    padding-bottom: 8px;
   }
 }
 
 @media (max-width: 640px) {
   .shipping-Page {
     min-height: 0;
-  }
-
-  .shipping-Page_Toc {
-    margin-top: -16px;
-  }
-
-  .shipping-Page_TocTrigger {
-    padding-top: 0;
   }
 
   .shipping-Page_RatesTable {

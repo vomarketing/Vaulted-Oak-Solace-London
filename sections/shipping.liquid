@@ -2,7 +2,10 @@
 {{ 'shipping-page.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'custom-shipping.js' | asset_url }}" defer="defer"></script>
 
-<section class="shipping-Page pg-Page lyt-Container js-shipping-page">
+<section
+  class="shipping-Page pg-Page lyt-Container js-shipping-page"
+  data-open-first-parent="{{ section.settings.open_first_category_mobile }}"
+>
   <div class="pg-Page_Inner">
     {%- render 'information-page-navigation', menu: section.settings.navigation_menu -%}
 
@@ -90,12 +93,17 @@
 						  {%- assign is_active_category = true -%}
 					  {%- endif -%}
 
-					  <section
+					  <details
 						  class="shipping-Page_Group"
 						  data-shipping-panel="{{ category_handle }}"
-						  {% unless is_active_category %}hidden{% endunless %}
+						  {% if is_active_category %}open{% else %}hidden{% endif %}
 					  >
-						  <h2 class="shipping-Page_GroupTitle text-reg-14">{{ category | escape }}</h2>
+						  <summary class="shipping-Page_GroupTitle text-reg-14">
+							  <span role="heading" aria-level="2">{{ category | escape }}</span>
+							  <span class="shipping-Page_AccordionIcon" aria-hidden="true">
+								  {%- render 'bao-icon-arrow-down' -%}
+							  </span>
+						  </summary>
 
 						  <div class="shipping-Page_Items">
 							  {%- for item in section.blocks -%}
@@ -156,7 +164,7 @@
 								  {%- endif -%}
 							  {%- endfor -%}
 						  </div>
-					  </section>
+					  </details>
 
 				  {%- assign seen_categories = seen_categories | append: category_handle | append: '|' -%}
 				  {%- endunless -%}
@@ -180,6 +188,12 @@
       "id": "toc_label",
       "label": "Mobile table of contents label",
       "default": "Frequent Questions"
+    },
+    {
+      "type": "checkbox",
+      "id": "open_first_category_mobile",
+      "label": "Open first main accordion on mobile/tablet",
+      "default": true
     }
   ],
   "blocks": [
