@@ -12,6 +12,13 @@
     "main": {
       "type": "shipping",
       "blocks": {
+        "shipping_richtext_Wh7c7V": {
+          "type": "shipping_richtext",
+          "settings": {
+            "category": "Shipping Charges",
+            "content": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est</p>"
+          }
+        },
         "shipping_item_k6EhGY": {
           "type": "shipping_item",
           "settings": {
@@ -154,6 +161,7 @@
         }
       },
       "block_order": [
+        "shipping_richtext_Wh7c7V",
         "shipping_item_k6EhGY",
         "shipping_item_mn8DgR",
         "shipping_item_F9yJKr",
@@ -164,7 +172,7 @@
       ],
       "settings": {
         "navigation_menu": "page-menu",
-        "toc_label": "Frequent questions"
+        "open_first_category_mobile": true
       }
     }
   },
