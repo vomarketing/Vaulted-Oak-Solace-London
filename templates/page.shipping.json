@@ -139,24 +139,11 @@
             "open_by_default": true
           }
         },
-        "shipping_item_crkwfA": {
-          "type": "shipping_item",
+        "shipping_richtext_T8BUEh": {
+          "type": "shipping_richtext",
           "settings": {
             "category": "Customer Services",
-            "question": "Customer Services",
-            "answer_font_weight": "500",
-            "answer_before_table": "<p>Our Customer Care team is based in the United Kingdom.&nbsp;<br/><br/>For further help or enquiries, please contact us at&nbsp;help@solacelondon.com.&nbsp;<br/><br/>We are available Monday to Friday, 9:00am–5:00pm UK time, excluding UK bank holidays, and aim to respond within 2 working days.<br/><br/>Nothing in this policy affects your statutory rights.&nbsp;</p>",
-            "show_rates_table": false,
-            "table_heading_destination": "Destination",
-            "table_heading_delivery": "Delivery Time",
-            "table_heading_cost": "Cost",
-            "table_destinations": "UK\nEurope\nRest of the World*",
-            "table_delivery_times": "Next working day\n1 - 3 working days\n3 - 5 working days",
-            "table_costs": "£10\n£15\n£25",
-            "answer_after_table": "",
-            "link_text": "",
-            "link_url": "",
-            "open_by_default": true
+            "content": "<p>Our Customer Care team is based in the United Kingdom.&nbsp;<br/><br/>For further help or enquiries, please contact us at&nbsp;help@solacelondon.com.&nbsp;<br/><br/>We are available Monday to Friday, 9:00am–5:00pm UK time, excluding UK bank holidays, and aim to respond within 2 working days.<br/><br/>Nothing in this policy affects your statutory rights.&nbsp;</p>"
           }
         }
       },
@@ -168,7 +155,7 @@
         "shipping_item_Qhj96F",
         "shipping_item_VkXxng",
         "shipping_item_mtcPT6",
-        "shipping_item_crkwfA"
+        "shipping_richtext_T8BUEh"
       ],
       "settings": {
         "navigation_menu": "page-menu",
