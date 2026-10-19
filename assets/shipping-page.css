@@ -127,6 +127,16 @@
   color: #000;
   font-size: 12px;
   line-height: 18px;
+
+  p {
+    margin-top: 0;
+    font-size: 12px;
+    line-height: 18px;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
 }
 
 .shipping-Page_RichText > :first-child {
