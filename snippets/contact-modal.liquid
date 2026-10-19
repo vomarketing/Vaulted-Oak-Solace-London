@@ -22,6 +22,7 @@
   assign last_name_placeholder = 'pages.contact.last_name' | t
   assign email_placeholder = 'pages.contact.email' | t
   assign phone_placeholder = 'pages.contact.phone' | t
+  assign order_number = 'pages.contact.order_number' | t
   assign topic_placeholder = 'pages.contact.topic' | t
 
   assign topics_raw = b_settings.topics
@@ -144,6 +145,19 @@
               autocomplete="tel"
               inputmode="tel"
               value="{{ form.phone }}"
+            >
+          </div>
+
+          <div class="contact-modal__field contact-modal__field--half">
+            <label for="ContactModalOrderNumber" class="util-ScreenReaderOnly visually-hidden">
+              {{ order_number }}
+            </label>
+            <input
+              type="text"
+              id="ContactModalOrderNumber"
+              name="contact[order_number]"
+              class="contact-modal__input text-reg-12"
+              placeholder="{{ order_number }}"
             >
           </div>
 

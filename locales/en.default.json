@@ -109,12 +109,13 @@
     },
     "contact": {
       "title": "Get in touch",
-      "first_name": "First name",
-      "last_name": "Last name",
-      "email": "Email",
-      "topic": "Choose a topic",
+      "first_name": "First name*",
+      "last_name": "Last name*",
+      "email": "Email*",
+      "order_number": "Order Number",
+      "topic": "Topic*",
       "phone": "Phone Number",
-      "message": "Message",
+      "message": "Message*",
       "submit": "Submit",
       "validation": "Thanks for contacting us. We'll get back to you as soon as possible."
     },

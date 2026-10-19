@@ -16,7 +16,7 @@
   pointer-events: none;
   opacity: 0;
   transition: opacity var(--transition-base, 0.3s ease),
-              visibility var(--transition-base, 0.3s ease);
+    visibility var(--transition-base, 0.3s ease);
 
   @media (min-width: 1024px) {
     align-items: stretch;
@@ -287,10 +287,16 @@
 .contact-modal__select-wrapper {
   position: relative;
   width: 100%;
+  height: 100%;
 }
 
 .contact-modal__select {
   cursor: pointer;
+  height: 100%;
+
+  &:has(option[value=""]:checked) {
+    opacity: 0.5;
+  }
 }
 
 .contact-modal__select-icon {
@@ -370,8 +376,8 @@
   border-radius: 0;
   cursor: pointer;
   transition: background-color var(--transition-base, 0.25s ease),
-              color var(--transition-base, 0.25s ease),
-              border-color var(--transition-base, 0.25s ease);
+    color var(--transition-base, 0.25s ease),
+    border-color var(--transition-base, 0.25s ease);
   touch-action: manipulation;
 
   &:hover {
@@ -457,6 +463,7 @@ body.is-contact-modal-open {
    Accessibility (ADA / WCAG 2.2 AA)
    -------------------------------------------------------------------------- */
 .contact-modal {
+
   .visually-hidden,
   .util-ScreenReaderOnly {
     position: absolute !important;
@@ -472,6 +479,7 @@ body.is-contact-modal-open {
 }
 
 @media (prefers-reduced-motion: reduce) {
+
   .contact-modal,
   .contact-modal__overlay,
   .contact-modal__container,
@@ -490,6 +498,7 @@ body.is-contact-modal-open {
 }
 
 @media (forced-colors: active) {
+
   .contact-modal__close:focus-visible,
   .contact-modal__input:focus-visible,
   .contact-modal__select:focus-visible,
