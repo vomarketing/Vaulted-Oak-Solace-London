@@ -10,6 +10,8 @@
     const categoryButtons = section.querySelectorAll('[data-shipping-category]');
     const panels = section.querySelectorAll('[data-shipping-panel]');
     const selectedLabel = section.querySelector('[data-shipping-selected-label]');
+    let activeCategory = section.querySelector('[data-shipping-category].is-active')?.dataset.shippingCategory;
+    const openFirstParent = section.dataset.openFirstParent !== 'false';
 
     if (!toc || !trigger || !overlay) return;
 
@@ -17,6 +19,39 @@
       toc.setAttribute('aria-expanded', String(open));
       trigger.setAttribute('aria-expanded', String(open));
     };
+
+    const mobileLayout = window.matchMedia('(max-width: 1279px)');
+
+    const syncLayout = () => {
+      setTocOpen(false);
+
+      panels.forEach((panel) => {
+        if (mobileLayout.matches) {
+          panel.hidden = false;
+          panel.open = false;
+        } else {
+          panel.hidden = panel.dataset.shippingPanel !== activeCategory;
+          panel.open = true;
+        }
+      });
+
+      if (mobileLayout.matches && openFirstParent) {
+        const firstPanel = panels[0];
+
+        if (firstPanel) firstPanel.open = true;
+      }
+    };
+
+    panels.forEach((panel) => {
+      const summary = panel.querySelector(':scope > summary');
+
+      summary.addEventListener('click', (event) => {
+        if (!mobileLayout.matches) event.preventDefault();
+      });
+    });
+
+    syncLayout();
+    mobileLayout.addEventListener('change', syncLayout);
 
     trigger.addEventListener('click', () => {
       setTocOpen(toc.getAttribute('aria-expanded') !== 'true');
@@ -28,8 +63,11 @@
 
     categoryButtons.forEach((button) => {
       button.addEventListener('click', () => {
+        if (mobileLayout.matches) return;
+
         const selectedCategory = button.dataset.shippingCategory;
         const selectedText = button.textContent.trim();
+        activeCategory = selectedCategory;
 
         if (selectedLabel) {
           selectedLabel.textContent = selectedText;
