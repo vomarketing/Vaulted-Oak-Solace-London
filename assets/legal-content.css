@@ -12,6 +12,10 @@
   position: relative;
   z-index: 31;
 
+  body.is-contact-modal-open & {
+    z-index: 1;
+  }
+
   @media (min-width: 1201px) {
     padding-top: 0;
     padding-bottom: 180px;
@@ -49,8 +53,6 @@
   flex-wrap: nowrap;
   gap: 0 20px;
   margin: 0 auto;
-  padding-left: 20px;
-  padding-right: 20px;
   overflow-x: auto;
   overflow-y: hidden;
   -webkit-overflow-scrolling: touch;
