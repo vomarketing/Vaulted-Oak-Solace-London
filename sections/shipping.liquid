@@ -12,38 +12,10 @@
 	  {%- assign seen_categories = '|' -%}
 	  {%- assign first_category_handle = '' -%}
 
-	  <div class="shipping-Page_Toc" data-shipping-toc aria-expanded="false">
-		  {%- assign initial_category_label = '' -%}
-		  {%- for block in section.blocks -%}
-			  {%- assign initial_category_label = block.settings.category | strip -%}
-			  {%- if initial_category_label != blank -%}
-				  {%- break -%}
-			  {%- endif -%}
-		  {%- endfor -%}
-
-		  <button
-			  class="shipping-Page_TocTrigger"
-			  type="button"
-			  aria-expanded="false"
-			  aria-controls="shipping-toc-panel-{{ section.id }}"
-			  data-shipping-toc-trigger
-		  >
-			  <span class="shipping-Page_TocTriggerText">
-			    <span class="shipping-Page_TocLabel">Frequent Questions</span>
-			    <span class="shipping-Page_TocSelected" data-shipping-selected-label>
-			      {{ initial_category_label | escape }}
-			    </span>
-			  </span>
-			  <span class="shipping-Page_TocIcon" aria-hidden="true"></span>
-		  </button>
-
-		  <div class="shipping-Page_TocOverlay" data-shipping-toc-overlay></div>
-
+	  <div class="shipping-Page_Toc">
 		  <nav
 			  class="shipping-Page_TocPanel"
-			  id="shipping-toc-panel-{{ section.id }}"
-			  aria-label="{{ section.settings.toc_label | escape }}"
-			  data-shipping-toc-panel
+			  aria-label="Shipping topics"
 		  >
 			  <ul>
 				  {%- assign seen_categories = '|' -%}
@@ -110,6 +82,13 @@
 								  {%- assign item_category = item.settings.category | strip -%}
 
 								  {%- if item_category == category -%}
+					  {%- if item.type == 'shipping_richtext' -%}
+						  {%- if item.settings.content != blank -%}
+							  <div class="shipping-Page_RichText rte-RichText" {{ item.shopify_attributes }}>
+								  {{ item.settings.content }}
+							  </div>
+						  {%- endif -%}
+					  {%- else -%}
 									  <details
 										  class="shipping-Page_Item"
 										  {% if item.settings.open_by_default %}open{% endif %}
@@ -161,6 +140,7 @@
 											  {{ item.settings.answer_after_table }}
 										  </div>
 									  </details>
+					  {%- endif -%}
 								  {%- endif -%}
 							  {%- endfor -%}
 						  </div>
@@ -182,12 +162,6 @@
       "type": "link_list",
       "id": "navigation_menu",
       "label": "Information navigation"
-    },
-    {
-      "type": "text",
-      "id": "toc_label",
-      "label": "Mobile table of contents label",
-      "default": "Frequent Questions"
     },
     {
       "type": "checkbox",
@@ -296,6 +270,23 @@
           "id": "open_by_default",
           "label": "Open by default",
           "default": false
+        }
+      ]
+    },
+    {
+      "type": "shipping_richtext",
+      "name": "Rich text content",
+      "settings": [
+        {
+          "type": "text",
+          "id": "category",
+          "label": "Main accordion title (must match an existing title)",
+          "default": "Shipping Charges"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content"
         }
       ]
     }
