@@ -220,12 +220,6 @@
 .contact-modal__field {
   position: relative;
   width: 100%;
-
-  &.contact-modal__field--message {
-    @media (min-width: 1600px) {
-      width: calc(50% - 15px);
-    }
-  }
 }
 
 .contact-modal__field--half {
