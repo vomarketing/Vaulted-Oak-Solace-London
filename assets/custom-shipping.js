@@ -4,27 +4,14 @@
   if (!sections.length) return;
 
   sections.forEach((section) => {
-    const toc = section.querySelector('[data-shipping-toc]');
-    const trigger = section.querySelector('[data-shipping-toc-trigger]');
-    const overlay = section.querySelector('[data-shipping-toc-overlay]');
     const categoryButtons = section.querySelectorAll('[data-shipping-category]');
     const panels = section.querySelectorAll('[data-shipping-panel]');
-    const selectedLabel = section.querySelector('[data-shipping-selected-label]');
     let activeCategory = section.querySelector('[data-shipping-category].is-active')?.dataset.shippingCategory;
     const openFirstParent = section.dataset.openFirstParent !== 'false';
-
-    if (!toc || !trigger || !overlay) return;
-
-    const setTocOpen = (open) => {
-      toc.setAttribute('aria-expanded', String(open));
-      trigger.setAttribute('aria-expanded', String(open));
-    };
 
     const mobileLayout = window.matchMedia('(max-width: 1279px)');
 
     const syncLayout = () => {
-      setTocOpen(false);
-
       panels.forEach((panel) => {
         if (mobileLayout.matches) {
           panel.hidden = false;
@@ -53,25 +40,12 @@
     syncLayout();
     mobileLayout.addEventListener('change', syncLayout);
 
-    trigger.addEventListener('click', () => {
-      setTocOpen(toc.getAttribute('aria-expanded') !== 'true');
-    });
-
-    overlay.addEventListener('click', () => {
-      setTocOpen(false);
-    });
-
     categoryButtons.forEach((button) => {
       button.addEventListener('click', () => {
         if (mobileLayout.matches) return;
 
         const selectedCategory = button.dataset.shippingCategory;
-        const selectedText = button.textContent.trim();
         activeCategory = selectedCategory;
-
-        if (selectedLabel) {
-          selectedLabel.textContent = selectedText;
-        }
 
         categoryButtons.forEach((categoryButton) => {
           const isActive = categoryButton === button;
@@ -88,15 +62,7 @@
         panels.forEach((panel) => {
           panel.hidden = panel.dataset.shippingPanel !== selectedCategory;
         });
-
-        setTocOpen(false);
       });
-    });
-
-    document.addEventListener('keydown', (event) => {
-      if (event.key === 'Escape') {
-        setTocOpen(false);
-      }
     });
   });
 })();
