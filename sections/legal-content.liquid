@@ -90,7 +90,7 @@
                     {%- endif -%}
                     <li class="legal-content__toc-item" role="presentation">
                       <a
-                        href="#section-{{ anchor_id }}"
+                        href="#"
                         id="tab-{{ anchor_id }}"
                         role="tab"
                         aria-controls="section-{{ anchor_id }}"
@@ -187,8 +187,6 @@
                   class="legal-content__item{% if forloop.first %} is-active{% endif %}"
                   data-legal-section
                   data-anchor-id="section-{{ anchor_id }}"
-                  {% unless forloop.first %}hidden{% endunless %}
-                  {{ block.shopify_attributes }}
                 >
                   {%- if block.settings.title != blank -%}
                     <h2 id="heading-{{ anchor_id }}" class="legal-content__heading text-med-12">

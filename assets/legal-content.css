@@ -461,22 +461,21 @@
 }
 
 /* In sidebar mode: only active section is visible */
-.legal-content--sidebar .legal-content__item:not(.is-active) {
-  display: none !important;
+.legal-content--sidebar .legal-content__item {
+  display: block;
+  opacity: 0;
+  visibility: hidden;
+  max-height: 0;
+  overflow: hidden;
+  pointer-events: none;
 }
 
 .legal-content--sidebar .legal-content__item.is-active {
-  display: block;
-  animation: legalContentFadeIn 0.25s ease-in-out;
-}
-
-@keyframes legalContentFadeIn {
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
+  opacity: 1;
+  visibility: visible;
+  max-height: none;
+  pointer-events: auto;
+  overflow: visible;
 }
 
 /* --------------------------------------------------------------------------
@@ -485,7 +484,6 @@
 .legal-content__full-body {
   width: 100%;
   margin: 30px auto 0;
-  padding: 0 20px;
 
   @media (min-width: 768px) {
     max-width: 522px;

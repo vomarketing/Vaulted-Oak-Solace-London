@@ -131,9 +131,10 @@ if (!customElements.get('legal-content')) {
             if (!link || !this.contains(link)) return;
 
             event.preventDefault();
+            event.stopPropagation();
             const targetId = link.getAttribute('data-target') || (link.getAttribute('href') || '').replace(/^#/, '');
             if (targetId) {
-              this.activateSection(targetId);
+              this.activateSection(targetId, { fromDropdown: false, updateHash: false });
             }
           },
           { signal }
@@ -186,7 +187,7 @@ if (!customElements.get('legal-content')) {
                 nextLink.focus();
                 const targetId = nextLink.getAttribute('data-target') || (nextLink.getAttribute('href') || '').replace(/^#/, '');
                 if (targetId) {
-                  this.activateSection(targetId);
+                  this.activateSection(targetId, { fromDropdown: false, updateHash: false });
                 }
               }
             },
@@ -277,20 +278,10 @@ if (!customElements.get('legal-content')) {
       this.sections.forEach((section) => {
         if (!section) return;
         const isMatch = section === targetSection;
-
-        if (isMatch) {
-          section.classList.add(LegalContent.classes.active);
-          section.removeAttribute('hidden');
-        } else {
-          section.classList.remove(LegalContent.classes.active);
-          section.setAttribute('hidden', '');
-        }
+        section.classList.toggle(LegalContent.classes.active, isMatch);
+        section.hidden = !isMatch;
+        section.setAttribute('aria-hidden', String(!isMatch));
       });
-
-      if (this.mobileSidebarSelected && targetSection) {
-        const heading = targetSection.querySelector('.legal-content__heading, h2, h3, [role="heading"]');
-        if (heading) this.mobileSidebarSelected.textContent = heading.textContent.trim();
-      }
 
       if (this.mobileSidebarLinks && this.mobileSidebarLinks.length > 0) {
         this.mobileSidebarLinks.forEach((link) => {
@@ -302,6 +293,13 @@ if (!customElements.get('legal-content')) {
             link.removeAttribute('aria-current');
           }
         });
+      }
+
+      if (this.mobileSidebarSelected) {
+        const selectedLabel = targetSection?.querySelector('h2')?.textContent || targetSection?.getAttribute('data-anchor-id') || '';
+        if (selectedLabel) {
+          this.mobileSidebarSelected.textContent = selectedLabel.trim();
+        }
       }
 
       if (this.tocLinks && this.tocLinks.length > 0) {
