@@ -85,6 +85,10 @@
   {{ 'custom-header.css' | inline_asset_content }}
 </style>
 <script src="{{ 'custom-header.js' | asset_url }}" defer="defer"></script>
+{{ 'custom-mega-menu.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'custom-mega-menu.js' | asset_url }}" defer="defer"></script>
+{{ 'custom-mobile-menu.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'custom-mobile-menu.js' | asset_url }}" defer="defer"></script>
 
 {%- capture initial_pdp_header_mode -%}
   {%- if template.name == 'product' -%}
@@ -112,20 +116,44 @@
         <nav class="hd-Nav">
           <ul class="hd-Nav_Items" data-el="header.items">
             {%- for link in linklists[section.settings.left_navigation].links -%}
+              {%- liquid
+                assign mega_block = nil
+                assign menu_title = link.title | strip | downcase
+                for block in section.blocks
+                  assign block_title = block.settings.menu_item_title | strip | downcase
+                  if block.type == 'mega_menu' and block_title == menu_title and block.settings.menu_content != blank
+                    assign mega_block = block
+                    break
+                  endif
+                endfor
+              -%}
               <li
                 class="hd-Nav_Item"
-                data-el="header.item"
-                data-has-children="{%- if link.links.size > 0 -%}true{%- else -%}false{%- endif -%}"
+                {% if mega_block %}
+                  data-mega-item
+                {% else %}
+                  data-el="header.item"
+                {% endif %}
+                data-has-children="{%- if mega_block == nil and link.links.size > 0 -%}true{%- else -%}false{%- endif -%}"
               >
-                <a
-                  class="hd-Nav_Link"
-                  href="{{ link.url }}"
-                  {% if link.active %} aria-current="page"{% endif %}
-                >
-                  {{ link.title }}
-                </a>
+                {%- if mega_block -%}
+                  <button type="button" class="hd-Nav_Link mm-Trigger"
+                          data-mega-trigger="MegaMenu-{{ section.id }}-{{ mega_block.id }}"
+                          aria-controls="MegaMenu-{{ section.id }}-{{ mega_block.id }}"
+                          aria-expanded="false" aria-haspopup="dialog">
+                    {{ link.title | escape }}
+                  </button>
+                {%- else -%}
+                  <a
+                    class="hd-Nav_Link"
+                    href="{{ link.url }}"
+                    {% if link.active %} aria-current="page"{% endif %}
+                  >
+                    {{ link.title }}
+                  </a>
+                {%- endif -%}
 
-                {%- if link.links.size > 0 -%}
+                {%- if mega_block == nil and link.links.size > 0 -%}
                   <div class="hd-Nav_Dropdown">
                     <ul class="hd-Nav_Children">
                       {%- for child_link in link.links -%}
@@ -158,7 +186,10 @@
               <button
                 type="button"
                 class="mb-MenuTrigger"
-                data-module-drawers-trigger="mobile-menu"
+                data-mobile-menu-toggle
+                aria-expanded="false"
+                aria-controls="MobileMenu-{{ section.id }}"
+                aria-label="Open menu"
               >
                 <span class="mb-MenuTrigger_Line mb-MenuTrigger_Line-top"></span>
                 <span class="mb-MenuTrigger_Line mb-MenuTrigger_Line-middle"></span>
@@ -189,7 +220,6 @@
 
       <a class="hd-Header_Logo" href="{{ routes.root_url }}">
         {%- render 'bao-logo' -%}
-      
       </a>
 
       <div class="hd-Header_Nav hd-Header_Nav-right">
@@ -218,6 +248,20 @@
                 </a>
               </li>
             {%- endfor -%}
+            {%- if section.settings.show_help_box and section.settings.help_label != blank -%}
+              <li class="hd-Nav_Item">
+                <button
+                  type="button"
+                  class="hd-Nav_Link"
+                  data-help-box-open
+                  aria-controls="HelpBox"
+                  aria-expanded="false"
+                  aria-haspopup="dialog"
+                >
+                  {{ section.settings.help_label }}
+                </button>
+              </li>
+            {%- endif -%}
 
             {%- if shop.customer_accounts_enabled -%}
               <li class="hd-Nav_Item">
@@ -235,12 +279,13 @@
               <a
                 class="hd-Nav_Cart"
                 href="{{ routes.cart_url }}"
-                {% unless page.request_type == 'cart' %} data-module-drawers-trigger="cart"{% endunless %}
+                data-cart-empty="{% if cart.item_count == 0 %}true{% else %}false{% endif %}"
+                {% unless request.page_type == 'cart' %} data-module-drawers-trigger="cart"{% endunless %}
               >
                 <span class="util-ScreenReaderOnly">
                   {{ 'layout.header.cart' | t }}
                 </span>
-
+                {%- render 'bao-icon-cart-new' -%}
                 <span class="hd-Nav_CartCount" data-push-cart-count>{{ cart.item_count }}</span>
               </a>
             </li>
@@ -267,12 +312,13 @@
               <a
                 class="hd-MobileNav_Cart"
                 href="{{ routes.cart_url }}"
-                {% unless page.request_type == 'cart' %} data-module-drawers-trigger="cart"{% endunless %}
+                data-cart-empty="{% if cart.item_count == 0 %}true{% else %}false{% endif %}"
+                {% unless request.page_type == 'cart' %} data-module-drawers-trigger="cart"{% endunless %}
               >
                 <span class="util-ScreenReaderOnly">
                   {{ 'layout.header.cart' | t }}
                 </span>
-
+                {%- render 'bao-icon-cart-new' -%}
                 <span
                   class="hd-MobileNav_CartCount"
                   data-push-cart-count
@@ -294,7 +340,18 @@
       <div class="hd-Header_Backdrop" data-el="header.backdrop"></div>
     </div>
   </div>
+  {%- for block in section.blocks -%}
+    {%- if block.type == 'mega_menu' and block.settings.menu_content != blank -%}
+      {% render 'mega-menu-panel', block: block, section_id: section.id %}
+    {%- endif -%}
+  {%- endfor -%}
+
+  {%- render 'mobile-menu', section: section -%}
 </header>
+
+{%- if section.settings.show_help_box -%}
+  {%- render 'help-box', help: section.settings -%}
+{%- endif -%}
 
  {% comment %} <div class="hd-AnimatedHeader" style="display: none;">
   <div class="hd-AnimatedHeader_Logo">
@@ -317,6 +374,7 @@
     }
 
     function closeMenu() {
+      if (header.hasAttribute('data-mega-open')) return;
       clearTimeout(hideTimer);
 
       items.forEach(function (i) {
@@ -347,6 +405,7 @@
       var dropdown = item.querySelector('.hd-Nav_Dropdown');
 
       function openMenu() {
+        if (header.hasAttribute('data-mega-open')) return;
         clearTimeout(hideTimer);
 
         items.forEach(function (i) {
@@ -403,6 +462,71 @@
       "type": "link_list",
       "id": "right_navigation",
       "label": "Right navigation"
+    },
+    {
+      "type": "link_list",
+      "id": "mobile_need_help_menu",
+      "label": "Mobile help menu"
+    },
+    {
+      "type": "header",
+      "content": "Help box"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_help_box",
+      "label": "Show help box",
+      "default": true,
+      "info": "Shows the Help button and the contact panel."
+    },
+    {
+      "type": "text",
+      "id": "help_label",
+      "label": "Help label",
+      "default": "Help"
+    },
+    {
+      "type": "text",
+      "id": "help_mobile_label",
+      "label": "Mobile button label",
+      "default": "Contact Us"
+    },
+    {
+      "type": "text",
+      "id": "help_title",
+      "label": "Panel heading",
+      "default": "Help"
+    },
+    {
+      "type": "text",
+      "id": "help_contact_label",
+      "label": "Contact label",
+      "default": "Contact us"
+    },
+    {
+      "type": "text",
+      "id": "help_contact_email",
+      "label": "Contact email",
+      "info": "Shown under the contact label. Leave blank to hide."
+    },
+    {
+      "type": "url",
+      "id": "help_contact_link",
+      "label": "Contact link",
+      "info": "Select the contact page to open the contact form. Leave blank to email the address above."
+    },
+    {
+      "type": "checkbox",
+      "id": "help_contact_modal",
+      "label": "Open contact form modal",
+      "default": true,
+      "info": "Opens the footer contact form modal instead of following the contact link."
+    },
+    {
+      "type": "link_list",
+      "id": "help_menu",
+      "label": "Help menu",
+      "info": "Links shown in the contact panel, such as Shipping, Returns and FAQs."
     },
     {
       "type": "header",
@@ -477,6 +601,26 @@
       "id": "enable_sticky_header",
       "label": "Enable sticky header",
       "default": true
+    }
+  ],
+  "blocks": [
+    {
+      "type": "mega_menu",
+      "name": "Mega menu",
+      "settings": [
+        {
+          "type": "text",
+          "id": "menu_item_title",
+          "label": "Main menu item title",
+          "info": "Enter the exact title from Left navigation, for example Shop or New In."
+        },
+        {
+          "type": "metaobject",
+          "id": "menu_content",
+          "label": "Mega menu content",
+          "metaobject_type": "mega_menu"
+        }
+      ]
     }
   ]
 }

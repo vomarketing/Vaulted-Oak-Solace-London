@@ -31,7 +31,7 @@
       "title": "Search for products on our site",
       "results_for": "Search results for \"{{ terms }}\"",
       "placeholder": "Search our store",
-      "submit": "Search",
+      "submit": "Submit",
       "heading": {
         "one": "Search result",
         "other": "Search results"
@@ -68,7 +68,13 @@
     "footer": {
       "social_platform": "{{ name }} on {{ platform }}",
       "copyright": "© {{ year }}",
-      "payment_methods": "Payment methods accepted"
+      "payment_methods": "Payment methods accepted",
+      "navigation_primary": "Customer service",
+      "navigation_secondary": "Legal",
+      "newsletter_email": "Email Address",
+      "newsletter_submit": "Submit",
+      "newsletter_success": "Thank you for subscribing.",
+      "newsletter_error": "Something went wrong. Please try again."
     },
     "header": {
       "menu": "Menu",
