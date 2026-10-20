@@ -68,7 +68,7 @@
         return;
       }
 
-      if (target.closest('[data-module-drawers-trigger],[data-help-box-open]')) this.close(false);
+      if (target.closest('[data-module-drawers-trigger],[data-help-box-open],[data-contact-modal-trigger],a[href*="#contactUSModal"]')) this.close(false);
     }
 
     open() {
