@@ -57,7 +57,10 @@
 
   &.hd-Header-dropdownActive,
   &.hd-Header-searchActive {
-    --Header_TextColor: var(--color-black);
+    --Header_TextColor: var(--color-black, #000000) !important;
+    --Color_Primary: var(--color-black, #000000) !important;
+    --Header_CountTextColor: var(--color-white, #ffffff) !important;
+    background-color: var(--color-white, #ffffff) !important;
   }
 
   .hd-Nav_ChildLink {
