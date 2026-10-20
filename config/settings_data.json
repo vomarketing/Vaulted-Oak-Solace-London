@@ -75,6 +75,28 @@
         "type": "shopify://apps/klaviyo-email-marketing-sms/blocks/klaviyo-onsite-embed/2632fe16-c075-4321-a88b-50b567f42507",
         "disabled": false,
         "settings": {}
+      },
+      "6403324215520875301": {
+        "type": "shopify://apps/mst-wishlist-prime/blocks/v3-app-embed/7f9269b0-1b45-4d0c-8479-faf04f05d8ac",
+        "disabled": true,
+        "settings": {
+          "multi_language": false,
+          "drawer_title": "My Wishlist",
+          "share_page_title": "Wishlist",
+          "login_msg": "Wishlist is not saved permanently yet. Please <a class=\"link-text\" href=\"/account/login\">log in</a> or <a class=\"link-text\" href=\"/account/register\">Create Account</a> to save it.",
+          "empty_msg": "<h4>Your wishlist is empty!</h4> \r\n<p>Explore more and shortlist some items</p>",
+          "enable_drawer": true,
+          "multi_category": true,
+          "open_drawer_on": "1",
+          "float_icon": true,
+          "heart_icon_color": "#000000",
+          "iwish_count_color": "#FFFFFF",
+          "icon_position": "middle-left",
+          "custom_icon": "",
+          "variant_selector": "[name=id]",
+          "option_selector": "",
+          "custom_settings": "{\"show_price_on_login\": \"false\", \"show_vendor\": \"false\", \"cart_counter\": \".cart-count-bubble span:first-of-type\", \"custom_filters\": \"facet-filters-form, .facet-filters__sort\", \"custom_delay\": \"500\", \"remove_all_wishlist\": \"false\",\"hide_cart_btn\": \"false\"}"
+        }
       }
     }
   }
