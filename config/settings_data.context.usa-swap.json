@@ -12,6 +12,6 @@
     "market": "usa-swap"
   },
   "current": {
-    "mbg_note_included": "Prices now include import duties, tariffs and taxes. No additional charges will apply upon delivery"
+    "mbg_delivery_summary": "<p>Orders are shipped from the UK via FedEx.&nbsp;</p><p>Order by 2:30pm UK time for same-day dispatch.</p><p>Full-price items may be returned within 14 days of receipt.</p>"
   }
 }
