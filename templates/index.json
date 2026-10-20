@@ -124,6 +124,37 @@
         "cta_uppercase": false
       }
     },
+    "hero_fullscreen_e7nAPg": {
+      "type": "hero-fullscreen",
+      "name": "Hero Fullscreen",
+      "settings": {
+        "media_type": "video",
+        "enable_custom_mobile_height": false,
+        "custom_mobile_height": 667,
+        "video_desktop": "shopify://files/videos/SOLACE 1 (FINAL MASTER).mp4",
+        "video_mobile": "shopify://files/videos/SOLACE 1 (FINAL MASTER).mp4",
+        "video_url_desktop": "",
+        "video_url_mobile": "",
+        "video_autoplay": true,
+        "show_video_controls": true,
+        "video_controls_content_layout": "above",
+        "show_overlay": true,
+        "overlay_opacity": 40,
+        "overlay_color": "#000000",
+        "header_contrast_mode": "light",
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "content_vertical_alignment": "bottom",
+        "heading": "Resort 2027",
+        "heading_font_size": "text-reg-14",
+        "heading_uppercase": false,
+        "description": "",
+        "cta_text": "Shop Collection",
+        "cta_link": "",
+        "cta_font_size": "text-reg-14",
+        "cta_uppercase": false
+      }
+    },
     "featured_image_bdxxic": {
       "type": "featured-image",
       "name": "Featured Image",
@@ -277,6 +308,7 @@
     "hero_fullscreen_8gXhRJ",
     "two_ups_media_HyFTNx",
     "hero_fullscreen_hGpWfC",
+    "hero_fullscreen_e7nAPg",
     "featured_image_bdxxic",
     "hero_fullscreen_PPmfBH",
     "rich_text_QkDcqw",
