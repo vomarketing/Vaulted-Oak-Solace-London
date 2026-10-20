@@ -13,7 +13,8 @@ if (!customElements.get('two-ups-media')) {
       slide: '.js-two-ups-slide',
       video: 'video',
       parentSlide: '.fullpage-slide, .shopify-section',
-      header: '.js-header'
+      header: '.js-header',
+      fullpageBody: '[data-fullpage-scroll]:not([data-pdp-scroll="normal"])'
     };
 
     static classes = {
@@ -49,7 +50,11 @@ if (!customElements.get('two-ups-media')) {
 
     connectedCallback() {
       const mobileLayout = this.getAttribute('data-mobile-layout') || 'stacked';
-      if (mobileLayout !== 'slider') return;
+      // Full width stacks two full-screen images; that only overflows a
+      // full-page slide, so normal-scroll pages keep the stack.
+      const usesSlider = mobileLayout === 'slider'
+        || (mobileLayout === 'full-width' && document.body.matches(TwoUpsMedia.selectors.fullpageBody));
+      if (!usesSlider) return;
 
       this.swiperEl = this.querySelector(TwoUpsMedia.selectors.swiper);
       if (!this.swiperEl) return;

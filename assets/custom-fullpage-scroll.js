@@ -9,7 +9,12 @@ if (!window.FullpageScrollController) {
       mobileBreakpoint: 900,
       animationDuration: 650,
       desktopWheelThreshold: 55,
-      mobileSwipeThreshold: 40
+      mobileSwipeThreshold: 40,
+      footerRevealCooldown: 750,
+      footerToggleCooldown: 300,
+      footerWheelMinDelta: 15,
+      wheelGestureGap: 150,
+      wheelGestureDeltaJump: 4
     };
 
     static selectors = {
@@ -22,6 +27,7 @@ if (!window.FullpageScrollController) {
       pdpGallery: '.js-pdp-gallery-column',
       pdpContent: '.js-pdp-content-column',
       footerSection: '.shopify-section--footer, .js-section-footer',
+      footer: '.js-section-footer',
       videos: 'video',
       ignoreScrollElements: '.drawer, .js-pdp-zoom-modal, .drw-Drawers, .js-cart-drawer'
     };
@@ -38,7 +44,8 @@ if (!window.FullpageScrollController) {
       editorialActive: 'is-editorial-active',
       pdpTransitioning: 'is-pdp-transitioning',
       pdpPinned: 'is-pdp-pinned',
-      isLastSlide: 'is-last-slide'
+      isLastSlide: 'is-last-slide',
+      footerRevealed: 'is-footer-revealed'
     };
 
     static events = {
@@ -46,6 +53,7 @@ if (!window.FullpageScrollController) {
       fromEditorial: 'pdp:transition:from-editorial',
       sheetBottomOverscroll: 'pdp:sheet:bottom-overscroll',
       slideChange: 'fullpage:slideChange',
+      footerChange: 'fullpage:footerChange',
       ready: 'fullpage:ready',
       prevSlide: 'fullpage:prevSlide',
       nextSlide: 'fullpage:nextSlide',
@@ -99,6 +107,13 @@ if (!window.FullpageScrollController) {
       this.state = FullpageScrollController.states.PDP_IDLE;
       this.wheelDeltaAccumulator = 0;
       this.wheelTimeout = null;
+      this.isFooterRevealed = false;
+      this.lastFooterToggleTime = 0;
+      this.lastWheel = null;
+      this.lastFooterActionDirection = 1;
+      this.isSwiperInputLocked = false;
+      this.isChildLocked = false;
+      this.footerUnlockTimer = null;
 
       if (this.canActivate()) {
         this.init();
@@ -144,6 +159,7 @@ if (!window.FullpageScrollController) {
       }
 
       this.bindNavigationEvents();
+      this.bindFooterRevealEvents();
       this.bindThemeEditorEvents();
     }
 
@@ -151,6 +167,10 @@ if (!window.FullpageScrollController) {
       const { signal } = this.abortController;
 
       document.addEventListener(this.events.prevSlide, () => {
+        if (this.isFooterRevealed) {
+          this.setFooterRevealed(false);
+          return;
+        }
         if (this.swiper) {
           this.swiper.slidePrev();
         }
@@ -163,6 +183,7 @@ if (!window.FullpageScrollController) {
       }, { signal });
 
       document.addEventListener(this.events.lock, () => {
+        this.isChildLocked = true;
         if (this.swiper) {
           this.swiper.allowTouchMove = false;
           if (this.swiper.mousewheel && typeof this.swiper.mousewheel.disable === 'function') {
@@ -172,7 +193,8 @@ if (!window.FullpageScrollController) {
       }, { signal });
 
       document.addEventListener(this.events.unlock, () => {
-        if (this.swiper) {
+        this.isChildLocked = false;
+        if (this.swiper && !this.isSwiperInputLocked) {
           this.swiper.allowTouchMove = true;
           if (this.swiper.mousewheel && typeof this.swiper.mousewheel.enable === 'function') {
             this.swiper.mousewheel.enable();
@@ -531,8 +553,8 @@ if (!window.FullpageScrollController) {
           if (isMobile) return;
 
           // Absorb momentum to prevent skipping the first slide and exiting prematurely
-          if (this.swiper && this.swiper.activeIndex === 0 && e.deltaY < 0) {
-            const timeSinceSlideChange = Date.now() - (this.lastSlideChangeTime || 0);
+          if (this.swiper && this.swiper.activeIndex === 0 && e.deltaY < 0 && !this.isFooterRevealed) {
+            const timeSinceSlideChange = Date.now() - Math.max(this.lastSlideChangeTime || 0, this.lastFooterToggleTime);
 
             // Block exit for 800ms after arriving at slide 0 to absorb Mac trackpad momentum
             if (timeSinceSlideChange > 800) {
@@ -588,6 +610,167 @@ if (!window.FullpageScrollController) {
       window.addEventListener('wheel', handleWheel, { passive: false, signal });
     }
 
+    /**
+     * From the footer breakpoint up the footer is a step of its own after the last
+     * slide: the slide first lands full screen, the next scroll down pushes it up
+     * by the footer height, and scrolling up hides the footer before leaving it.
+     */
+    bindFooterRevealEvents() {
+      const { signal } = this.abortController;
+
+      // Capture phase so this runs before Swiper's own wheel listener on the container.
+      window.addEventListener('wheel', (e) => {
+        if (Math.abs(e.deltaY) <= Math.abs(e.deltaX)) return;
+        if (e.target.closest?.(this.selectors.ignoreScrollElements)) return;
+
+        const now = Date.now();
+        const delta = Math.abs(e.deltaY);
+        const direction = Math.sign(e.deltaY);
+        const prev = this.lastWheel;
+        this.lastWheel = { time: now, delta, direction };
+
+        // Same heuristic as Swiper's mousewheel module: trackpad momentum arrives
+        // as a stream of shrinking deltas, while a new swipe reverses direction,
+        // speeds up, or follows a pause.
+        const isNewGesture = !prev
+          || direction !== prev.direction
+          || delta > prev.delta + this.config.wheelGestureDeltaJump
+          || now - prev.time > this.config.wheelGestureGap;
+
+        if (
+          isNewGesture
+          && this.isSwiperInputLocked
+          && !this.isFooterRevealed
+          && now - this.lastFooterToggleTime > this.config.wheelGestureGap
+        ) {
+          this.setSwiperInputEnabled(true);
+        }
+
+        if (this.isFooterRevealed || this.isSwiperInputLocked) e.stopPropagation();
+
+        const toggleDirection = this.isFooterRevealed ? -1 : 1;
+        if (direction !== toggleDirection || delta < this.config.footerWheelMinDelta) return;
+        if (!this.canToggleFooter()) return;
+
+        // Momentum always follows the last move, so scrolling against it is a
+        // deliberate swipe even mid-stream; scrolling with it must be a new gesture.
+        const isReversal = direction !== this.lastFooterActionDirection;
+        if (isNewGesture || isReversal) {
+          this.setFooterRevealed(!this.isFooterRevealed);
+          e.stopPropagation();
+        }
+      }, { passive: true, capture: true, signal });
+
+      let touchStartY = 0;
+      let touchStartX = 0;
+
+      window.addEventListener('touchstart', (e) => {
+        const touch = e.touches?.[0];
+        if (!touch) return;
+        touchStartY = touch.clientY;
+        touchStartX = touch.clientX;
+      }, { passive: true, signal });
+
+      window.addEventListener('touchend', (e) => {
+        const touch = e.changedTouches?.[0];
+        if (!touch || !this.canToggleFooter()) return;
+        if (e.target.closest?.(this.selectors.ignoreScrollElements)) return;
+
+        const diffY = touchStartY - touch.clientY;
+        const diffX = Math.abs(touchStartX - touch.clientX);
+        if (Math.abs(diffY) < this.config.mobileSwipeThreshold || diffX > Math.abs(diffY)) return;
+
+        if (this.isFooterRevealed ? diffY < 0 : diffY > 0) {
+          this.setFooterRevealed(!this.isFooterRevealed);
+        }
+      }, { passive: true, signal });
+
+      document.addEventListener('keydown', (e) => {
+        if (!this.canToggleFooter()) return;
+        if (e.target.closest?.('input, textarea, select, [contenteditable]')) return;
+
+        const keys = this.isFooterRevealed ? ['ArrowUp', 'PageUp'] : ['ArrowDown', 'PageDown'];
+        if (keys.includes(e.key)) {
+          this.setFooterRevealed(!this.isFooterRevealed);
+        }
+      }, { signal });
+    }
+
+    hasFooterStep() {
+      return window.innerWidth >= this.footerBreakpoint && !!document.querySelector(this.selectors.footer);
+    }
+
+    isOnLastSlide(swiperInstance = this.swiper) {
+      const total = swiperInstance?.slides?.length || 0;
+      if (!total) return false;
+      if (this.isProductPage && !document.body.classList.contains(this.classes.editorialActive)) return false;
+      return swiperInstance.activeIndex === total - 1;
+    }
+
+    /**
+     * Below the footer breakpoint the footer is the last slide itself.
+     *
+     * @param {object} [swiperInstance]
+     * @returns {boolean}
+     */
+    isFooterVisible(swiperInstance = this.swiper) {
+      if (window.innerWidth >= this.footerBreakpoint) return this.isFooterRevealed;
+      return this.isOnLastSlide(swiperInstance);
+    }
+
+    canToggleFooter() {
+      if (this.isChildLocked || !this.hasFooterStep() || !this.isOnLastSlide()) return false;
+      const now = Date.now();
+      return now - (this.lastSlideChangeTime || 0) > this.config.footerRevealCooldown
+        && now - this.lastFooterToggleTime > this.config.footerToggleCooldown;
+    }
+
+    setFooterRevealed(isRevealed) {
+      if (this.isFooterRevealed === isRevealed) return;
+      this.isFooterRevealed = isRevealed;
+      this.lastFooterToggleTime = Date.now();
+      this.lastFooterActionDirection = isRevealed ? 1 : -1;
+      document.body.classList.toggle(this.classes.footerRevealed, isRevealed);
+
+      clearTimeout(this.footerUnlockTimer);
+      if (isRevealed) {
+        this.setSwiperInputEnabled(false);
+      } else {
+        this.scheduleSwiperInputUnlock();
+      }
+
+      document.dispatchEvent(new CustomEvent(this.events.footerChange, {
+        detail: { isVisible: this.isFooterVisible() }
+      }));
+    }
+
+    setSwiperInputEnabled(isEnabled) {
+      clearTimeout(this.footerUnlockTimer);
+      this.isSwiperInputLocked = !isEnabled;
+      if (!this.swiper || (isEnabled && this.isChildLocked)) return;
+      const method = isEnabled ? 'enable' : 'disable';
+      this.swiper.allowTouchMove = isEnabled;
+      if (typeof this.swiper.mousewheel?.[method] === 'function') this.swiper.mousewheel[method]();
+      if (typeof this.swiper.keyboard?.[method] === 'function') this.swiper.keyboard[method]();
+    }
+
+    /**
+     * Momentum from the gesture that hid the footer must not reach Swiper, or it
+     * would carry straight on to the previous slide. The wheel listener unlocks
+     * early as soon as a new gesture starts; this covers the momentum running out.
+     */
+    scheduleSwiperInputUnlock() {
+      this.footerUnlockTimer = setTimeout(() => {
+        if (this.isFooterRevealed) return;
+        const sinceLastWheel = Date.now() - (this.lastWheel?.time || 0);
+        if (sinceLastWheel < this.config.wheelGestureGap) {
+          this.scheduleSwiperInputUnlock();
+          return;
+        }
+        this.setSwiperInputEnabled(true);
+      }, this.config.wheelGestureGap);
+    }
+
     updateLastSlide(swiperInstance) {
       const slides = swiperInstance?.slides ? Array.from(swiperInstance.slides) : (this.slides ? Array.from(this.slides) : []);
       if (!slides.length) return;
@@ -601,6 +784,10 @@ if (!window.FullpageScrollController) {
 
     handleSlideChange(swiperInstance) {
       this.lastSlideChangeTime = Date.now();
+      this.lastFooterActionDirection = swiperInstance.activeIndex < (swiperInstance.previousIndex ?? 0) ? -1 : 1;
+      if (this.isFooterRevealed && !this.isOnLastSlide(swiperInstance)) {
+        this.setFooterRevealed(false);
+      }
       const activeSlide = swiperInstance.slides[swiperInstance.activeIndex];
       if (!activeSlide) return;
 
@@ -614,7 +801,11 @@ if (!window.FullpageScrollController) {
         isLastSlide = false;
       }
       document.dispatchEvent(new CustomEvent('fullpage:slideChange', {
-        detail: { isLastSlide, activeIndex: swiperInstance.activeIndex }
+        detail: {
+          isLastSlide,
+          isFooterVisible: this.isFooterVisible(swiperInstance),
+          activeIndex: swiperInstance.activeIndex
+        }
       }));
     }
 
@@ -733,7 +924,16 @@ if (!window.FullpageScrollController) {
 
     destroy() {
       window._swiperIsTransitioning = false;
-      document.body.classList.remove(this.classes.editorialActive, this.classes.pdpTransitioning, this.classes.pdpPinned);
+      clearTimeout(this.footerUnlockTimer);
+      this.isFooterRevealed = false;
+      this.isSwiperInputLocked = false;
+      this.isChildLocked = false;
+      document.body.classList.remove(
+        this.classes.editorialActive,
+        this.classes.pdpTransitioning,
+        this.classes.pdpPinned,
+        this.classes.footerRevealed
+      );
       this.state = FullpageScrollController.states.PDP_IDLE;
       if (this.pdpSection) {
         this.pdpSection.removeAttribute('aria-hidden');
