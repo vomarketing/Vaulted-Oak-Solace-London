@@ -1,12 +1,22 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
 {
   "sections": {
     "main": {
       "type": "404-header",
       "settings": {
-        "title": "404 Error",
+        "title": "404 ERROR",
         "text": "The page you're looking for can't be found",
         "link": "/",
-        "link_text": "Back to Home"
+        "link_text": "Continue Shopping",
+        "collection": ""
       }
     }
   },
