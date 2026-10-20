@@ -11,5 +11,7 @@
   "context": {
     "market": "usa-swap"
   },
-  "current": {}
+  "current": {
+    "mbg_note_included": "Prices now include import duties, tariffs and taxes. No additional charges will apply upon delivery"
+  }
 }
