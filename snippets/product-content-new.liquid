@@ -40,6 +40,7 @@
   <button type="button" class="pdp-sheet-handle js-pdp-sheet-handle" aria-hidden="true"></button>
 
   <div class="pdp-content__wrapper">
+    {%- if section.settings.show_breadcrumbs -%}
     <nav class="pdp-breadcrumb" aria-label="Breadcrumb">
       <ol class="pdp-breadcrumb__list">
         <li class="pdp-breadcrumb__item">
@@ -55,6 +56,7 @@
         </li>
       </ol>
     </nav>
+    {%- endif -%}
 
     <div class="pdp-content__top">
       {%- assign product_form_id = 'product-form-' | append: section.id -%}
