@@ -11,5 +11,8 @@
   "context": {
     "market": "united-states-and-canada"
   },
-  "current": {}
+  "current": {
+    "mbg_note_included": "Prices now include customs duties, import fees and taxes. No additional charges will be incurred upon delivery.",
+    "mbg_note_default": ""
+  }
 }
