@@ -59,6 +59,7 @@
       {{ 'custom-global.css' | inline_asset_content }}
       {{ 'hero-fullscreen.css' | inline_asset_content }}
     </style>
+    {{ 'custom-mini-bag.css' | asset_url | stylesheet_tag }}
 
     {% comment %}
       Adobe Fonts kit (futura-pt only) is not used above the fold, so it must
@@ -80,6 +81,7 @@
 
     <script src="{{ 'custom-theme.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'custom-fullpage-scroll.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'custom-mini-bag.js' | asset_url }}" defer="defer"></script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer="defer"></script>
     {% comment %}
       Swiper CSS is preloaded and applied on arrival instead of blocking render.
