@@ -54,7 +54,7 @@
         "left_navigation": "desktop-left",
         "right_navigation": "desktop-right",
         "mobile_need_help_menu": "need-help",
-        "show_help_box": true,
+        "show_help_box": false,
         "help_label": "Help",
         "help_mobile_label": "Contact Us",
         "help_title": "Help",
