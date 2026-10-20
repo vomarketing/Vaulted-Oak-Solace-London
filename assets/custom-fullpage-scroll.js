@@ -862,6 +862,7 @@ if (!window.FullpageScrollController) {
     }
 
     dispatchReadyEvent(swiperInstance) {
+      this.isReady = true;
       document.dispatchEvent(new CustomEvent('fullpage:ready', {
         detail: { instance: this, swiper: swiperInstance }
       }));

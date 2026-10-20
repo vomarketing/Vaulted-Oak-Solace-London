@@ -75,6 +75,9 @@
     <link rel="stylesheet" href="https://use.typekit.net/ojr8oqr.css" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="https://use.typekit.net/ojr8oqr.css"></noscript>
 
+    {% comment %} CookieYes {% endcomment %}
+    {{ 'custom-cookieyes.css' | asset_url | stylesheet_tag }}
+
     {%- render 'head-script' -%}
 
     {%- render 'typekit' -%}
