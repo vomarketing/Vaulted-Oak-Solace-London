@@ -1,4 +1,4 @@
-{%- render 'section-product' with product, section -%}
+{%- render 'section-product' with product -%}
 
 {%- if product.metafields.Detail.Recommended_Products != blank -%}
   <section class="sec-Section sec-Section-flushUntilMd">
@@ -143,3 +143,13 @@ if (typeof(BIS) !== 'undefined') {
 }
 {% endschema %}
 
+{% comment %}
+
+This file has been rewritten to preserve the original behavior.
+
+---
+Changes:
+- from: "{%- render 'section-product' with product, section -%}"
+  to: "{%- render 'section-product' with product -%}"
+  position: 0..45
+{% endcomment %}

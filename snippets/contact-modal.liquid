@@ -1,0 +1,236 @@
+{%- doc -%}
+  Contact Form Drawer/Modal Web Component (<contact-modal>)
+  Provides native Shopify contact form inside a slide-over drawer on desktop
+  and bottom-to-top sheet modal on mobile.
+  Supports manual population via block settings.
+
+  @param {object} [block] - Shopify block object with custom settings
+{%- enddoc -%}
+
+{{ 'contact-modal.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'contact-modal.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign b_settings = block.settings
+
+  assign modal_title = b_settings.title
+  assign close_text = 'general.accessibility.close' | t
+
+  assign intro_text = b_settings.intro
+
+  assign first_name_placeholder = 'pages.contact.first_name' | t
+  assign last_name_placeholder = 'pages.contact.last_name' | t
+  assign email_placeholder = 'pages.contact.email' | t
+  assign phone_placeholder = 'pages.contact.phone' | t
+  assign order_number = 'pages.contact.order_number' | t
+  assign topic_placeholder = 'pages.contact.topic' | t
+
+  assign topics_raw = b_settings.topics
+  if topics_raw != blank
+    assign topics_array = topics_raw | newline_to_br | split: '<br />'
+  endif
+
+  assign message_placeholder = 'pages.contact.message' | t
+  assign submit_text ='pages.contact.submit' | t
+  assign success_message = b_settings.success_message
+
+  assign should_open_modal = false
+  if form.posted_successfully? or form.errors
+    assign should_open_modal = true
+  endif
+-%}
+
+<contact-modal
+  id="contactUSModal"
+  class="contact-modal{% if should_open_modal %} is-open{% endif %}"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="ContactModalTitle"
+  aria-hidden="{% if should_open_modal %}false{% else %}true{% endif %}"
+  {% unless should_open_modal %}hidden{% endunless %}
+  {% if should_open_modal %}data-open-on-load="true"{% endif %}
+  {% if block %} {{ block.shopify_attributes }}{% endif %}
+>
+  <div class="contact-modal__overlay" data-contact-modal-close aria-hidden="true" tabindex="-1"></div>
+
+  <div class="contact-modal__container" role="document">
+    <header class="contact-modal__header">
+      <h2 id="ContactModalTitle" class="contact-modal__title text-reg-12">
+        {{ modal_title }}
+      </h2>
+
+      <button
+        type="button"
+        class="contact-modal__close text-reg-12"
+        data-contact-modal-close
+        aria-label="{{ close_text }}"
+      >
+        {{ close_text }}
+      </button>
+    </header>
+
+    <div class="contact-modal__content">
+      {%- if intro_text != blank -%}
+        <div class="contact-modal__intro text-reg-12">
+          {{ intro_text }}
+        </div>
+      {%- endif -%}
+
+      {%- form 'contact', id: 'ContactModalForm', class: 'contact-modal__form', aria-describedby: 'ContactModalStatus' -%}
+        <div class="contact-modal__grid">
+          <div class="contact-modal__field contact-modal__field--half">
+            <label for="ContactModalFirstName" class="util-ScreenReaderOnly visually-hidden">
+              {{ first_name_placeholder }}
+            </label>
+            <input
+              type="text"
+              id="ContactModalFirstName"
+              name="contact[first_name]"
+              class="contact-modal__input text-reg-12"
+              placeholder="{{ first_name_placeholder }}"
+              autocomplete="given-name"
+              value="{{ form.first_name }}"
+              required
+              aria-required="true"
+            >
+          </div>
+
+          <div class="contact-modal__field contact-modal__field--half">
+            <label for="ContactModalLastName" class="util-ScreenReaderOnly visually-hidden">
+              {{ last_name_placeholder }}
+            </label>
+            <input
+              type="text"
+              id="ContactModalLastName"
+              name="contact[last_name]"
+              class="contact-modal__input text-reg-12"
+              placeholder="{{ last_name_placeholder }}"
+              autocomplete="family-name"
+              value="{{ form.last_name }}"
+              required
+              aria-required="true"
+            >
+          </div>
+
+          <div class="contact-modal__field contact-modal__field--half">
+            <label for="ContactModalEmail" class="util-ScreenReaderOnly visually-hidden">
+              {{ email_placeholder }}
+            </label>
+            <input
+              type="email"
+              id="ContactModalEmail"
+              name="contact[email]"
+              class="contact-modal__input text-reg-12"
+              placeholder="{{ email_placeholder }}"
+              autocomplete="email"
+              inputmode="email"
+              spellcheck="false"
+              autocapitalize="off"
+              value="{{ form.email }}"
+              required
+              aria-required="true"
+            >
+          </div>
+
+          <div class="contact-modal__field contact-modal__field--half">
+            <label for="ContactModalPhone" class="util-ScreenReaderOnly visually-hidden">
+              {{ phone_placeholder }}
+            </label>
+            <input
+              type="tel"
+              id="ContactModalPhone"
+              name="contact[phone]"
+              class="contact-modal__input text-reg-12"
+              placeholder="{{ phone_placeholder }}"
+              autocomplete="tel"
+              inputmode="tel"
+              value="{{ form.phone }}"
+            >
+          </div>
+
+          <div class="contact-modal__field contact-modal__field--half">
+            <label for="ContactModalOrderNumber" class="util-ScreenReaderOnly visually-hidden">
+              {{ order_number }}
+            </label>
+            <input
+              type="text"
+              id="ContactModalOrderNumber"
+              name="contact[order_number]"
+              class="contact-modal__input text-reg-12"
+              placeholder="{{ order_number }}"
+            >
+          </div>
+
+          <div class="contact-modal__field contact-modal__field--half contact-modal__field--select">
+            <label for="ContactModalTopic" class="util-ScreenReaderOnly visually-hidden">
+              {{ topic_placeholder }}
+            </label>
+            <div class="contact-modal__select-wrapper">
+              <select
+                id="ContactModalTopic"
+                name="contact[topic]"
+                class="contact-modal__select text-reg-12"
+                aria-label="{{ topic_placeholder }}"
+              >
+                <option value="" disabled selected>{{ topic_placeholder }}</option>
+                {%- for topic_item in topics_array -%}
+                  {%- assign topic_clean = topic_item | strip -%}
+                  {%- if topic_clean != blank -%}
+                    <option value="{{ topic_clean | escape }}">{{ topic_clean }}</option>
+                  {%- endif -%}
+                {%- endfor -%}
+              </select>
+              <span class="contact-modal__select-icon" aria-hidden="true">
+                <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg" focusable="false" aria-hidden="true">
+                  <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </span>
+            </div>
+          </div>
+
+          <div class="contact-modal__field contact-modal__field--full contact-modal__field--message">
+            <label for="ContactModalMessage" class="util-ScreenReaderOnly visually-hidden">
+              {{ message_placeholder }}
+            </label>
+            <textarea
+              id="ContactModalMessage"
+              name="contact[body]"
+              rows="6"
+              class="contact-modal__textarea text-reg-12"
+              placeholder="{{ message_placeholder }}"
+              required
+              aria-required="true"
+            >{{- form.body -}}</textarea>
+          </div>
+
+          <div class="contact-modal__field contact-modal__field--full contact-modal__field--actions">
+            <button type="submit" id="ContactModalSubmit" class="contact-modal__submit text-reg-12">
+              <span class="contact-modal__submit-text">{{ submit_text }}</span>
+              <span class="contact-modal__spinner" aria-hidden="true" hidden></span>
+            </button>
+          </div>
+        </div>
+
+        <div
+          id="ContactModalStatus"
+          class="contact-modal__status text-reg-12"
+          role="status"
+          aria-live="polite"
+          tabindex="-1"
+        >
+          {%- if form.errors -%}
+            <div class="contact-modal__error" role="alert">
+              {{ form.errors | default_errors }}
+            </div>
+          {%- endif -%}
+
+          {%- if form.posted_successfully? -%}
+            <div class="contact-modal__success" role="status">
+              {{ success_message }}
+            </div>
+          {%- endif -%}
+        </div>
+      {%- endform -%}
+    </div>
+  </div>
+</contact-modal>

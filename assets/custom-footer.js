@@ -55,10 +55,7 @@ if (!window.FooterRevealController) {
       }
 
       if (window.fullpageScrollInstance?.swiper) {
-        const sw = window.fullpageScrollInstance.swiper;
-        const total = sw.slides ? sw.slides.length : 0;
-        const isLastSlide = total > 0 && sw.activeIndex === total - 1;
-        this.setVisible(isLastSlide);
+        this.setVisible(window.fullpageScrollInstance.isFooterVisible());
         return;
       }
 
@@ -75,10 +72,7 @@ if (!window.FooterRevealController) {
 
         if (window.fullpageScrollInstance?.swiper) {
           clearInterval(timer);
-          const sw = window.fullpageScrollInstance.swiper;
-          const total = sw.slides ? sw.slides.length : 0;
-          const isLastSlide = total > 0 && sw.activeIndex === total - 1;
-          this.setVisible(isLastSlide);
+          this.setVisible(window.fullpageScrollInstance.isFooterVisible());
         } else if (attempts >= maxAttempts) {
           clearInterval(timer);
         }
@@ -96,8 +90,11 @@ if (!window.FooterRevealController) {
     checkVisibility() {
       if (!this.footer) return;
 
-      // On fullpage swiper pages where swiper is active, visibility is driven by fullpage:slideChange events
-      if (document.body.hasAttribute('data-fullpage-scroll') && window.fullpageScrollInstance?.swiper) return;
+      // On fullpage pages, wait for fullpage:ready; once swiper is active, visibility is driven by fullpage:slideChange events
+      if (document.body.hasAttribute('data-fullpage-scroll')) {
+        const fullpage = window.fullpageScrollInstance;
+        if (!fullpage?.isReady || fullpage.swiper) return;
+      }
 
       if (this.mainContent) {
         const rect = this.mainContent.getBoundingClientRect();
@@ -125,18 +122,24 @@ if (!window.FooterRevealController) {
       }, { passive: true, signal });
 
       document.addEventListener('fullpage:slideChange', (e) => {
-        if (e.detail && typeof e.detail.isLastSlide === 'boolean') {
-          this.setVisible(e.detail.isLastSlide);
+        if (typeof e.detail?.isFooterVisible === 'boolean') {
+          this.setVisible(e.detail.isFooterVisible);
+        }
+      }, { signal });
+
+      document.addEventListener('fullpage:footerChange', (e) => {
+        if (typeof e.detail?.isVisible === 'boolean') {
+          this.setVisible(e.detail.isVisible);
         }
       }, { signal });
 
       document.addEventListener('fullpage:ready', (e) => {
         this.updateFooterHeight();
-        if (!e.detail?.swiper) return;
-        const sw = e.detail.swiper;
-        const total = sw.slides ? sw.slides.length : 0;
-        const isLastSlide = total > 0 && sw.activeIndex === total - 1;
-        this.setVisible(isLastSlide);
+        if (!e.detail?.swiper) {
+          this.checkVisibility();
+          return;
+        }
+        this.setVisible(e.detail.instance.isFooterVisible(e.detail.swiper));
       }, { signal });
 
       this.bindFooterInteraction(signal);
@@ -162,8 +165,11 @@ if (!window.FooterRevealController) {
       let touchStartY = 0;
       let isTouchDown = false;
 
+      // Where the footer is a step after the last slide, the fullpage controller handles wheel input.
       this.footer.addEventListener('wheel', (e) => {
+        if (window.fullpageScrollInstance?.hasFooterStep?.()) return;
         if (!this.footer.classList.contains(this.classes.isVisible)) return;
+        if (this.footer.scrollTop > 0) return;
         if (e.deltaY < -15) {
           if (e.cancelable) e.preventDefault();
           document.dispatchEvent(new CustomEvent('fullpage:prevSlide'));
@@ -180,6 +186,7 @@ if (!window.FooterRevealController) {
       this.footer.addEventListener('touchmove', (e) => {
         if (!isTouchDown || !e.touches || !e.touches.length) return;
         if (!this.footer.classList.contains(this.classes.isVisible)) return;
+        if (this.footer.scrollTop > 0) return;
 
         const currentY = e.touches[0].clientY;
         const diffY = touchStartY - currentY;
@@ -219,5 +226,181 @@ if (!window.FooterRevealController) {
     document.addEventListener('DOMContentLoaded', initFooterReveal);
   } else {
     initFooterReveal();
+  }
+}
+
+/**
+ * FooterNewsletterController
+ * Submits the footer newsletter form to a Klaviyo list via the Client Subscriptions API.
+ */
+if (!window.FooterNewsletterController) {
+  class FooterNewsletterController {
+    static selectors = {
+      newsletterForm: '[data-footer-newsletter-form]',
+      newsletterStatus: '[data-footer-newsletter-status]',
+      newsletterPopupOpen: '[data-newsletter-popup-open]',
+      newsletterPopup: '[data-newsletter-popup]',
+      newsletterPopupClose: '[data-newsletter-popup-close]'
+    };
+
+    constructor() {
+      this.selectors = FooterNewsletterController.selectors;
+      this.abortController = new AbortController();
+      this.activePopup = null;
+      this.previousFocus = null;
+
+      this.bindEvents();
+    }
+
+    closePopup() {
+      if (!this.activePopup) return;
+
+      this.activePopup.classList.remove('is-open');
+      this.activePopup.hidden = true;
+      this.activePopup.setAttribute('aria-hidden', 'true');
+      document.body.classList.remove('is-newsletter-popup-open');
+
+      const trigger = this.previousFocus;
+      this.activePopup = null;
+      this.previousFocus = null;
+
+      trigger?.focus();
+    }
+
+    bindEvents() {
+      const { signal } = this.abortController;
+
+      document.addEventListener('click', (e) => {
+        const openButton = e.target.closest(this.selectors.newsletterPopupOpen);
+
+        if (openButton) {
+          const popupId = openButton.getAttribute('aria-controls');
+          const popup = popupId ? document.getElementById(popupId) : null;
+
+          if (!popup) return;
+
+          this.previousFocus = openButton;
+          this.activePopup = popup;
+
+          popup.hidden = false;
+          popup.setAttribute('aria-hidden', 'false');
+          document.body.classList.add('is-newsletter-popup-open');
+
+          requestAnimationFrame(() => {
+            requestAnimationFrame(() => {
+              popup.classList.add('is-open');
+            });
+          });
+
+          popup.querySelector('.ft-NewsletterPopup_Dialog')?.focus();
+          return;
+        }
+
+        const closeButton = e.target.closest(this.selectors.newsletterPopupClose);
+
+        if (closeButton && this.activePopup?.contains(closeButton)) {
+          this.closePopup();
+        }
+      }, { signal });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape' && this.activePopup) {
+          this.closePopup();
+        }
+      }, { signal });
+
+      document.addEventListener('submit', (e) => {
+        const form = e.target.closest(this.selectors.newsletterForm);
+        if (!form) return;
+
+        e.preventDefault();
+        this.submitNewsletter(form);
+      }, { signal });
+    }
+
+    async submitNewsletter(form) {
+      const status = form.querySelector(this.selectors.newsletterStatus);
+      const submitButton = form.querySelector('[type="submit"]');
+      const { klaviyoCompanyId, klaviyoListId, klaviyoSource, country } = form.dataset;
+
+      const setStatus = (message) => {
+        if (status) status.textContent = message;
+      };
+
+      if (!klaviyoCompanyId || !klaviyoListId) {
+        console.warn('[Footer newsletter] Missing Klaviyo public key or list ID for this country.');
+        setStatus(status?.dataset.errorMessage);
+        return;
+      }
+
+      const properties = { newsletter_country: country };
+
+      if (form.hasAttribute('data-newsletter-popup-form')) {
+        const selectedInterest = form.querySelector(
+          'input[name="newsletter_interest"]:checked'
+        )?.value;
+
+        if (!selectedInterest) {
+          setStatus('Please select an interest.');
+          return;
+        }
+
+        properties.newsletter_interest = selectedInterest;
+      }
+
+      const payload = {
+        data: {
+          type: 'subscription',
+          attributes: {
+            custom_source: klaviyoSource,
+            profile: {
+              data: {
+                type: 'profile',
+                attributes: {
+                  email: form.elements.email.value.trim(),
+                  properties
+                }
+              }
+            }
+          },
+          relationships: {
+            list: { data: { type: 'list', id: klaviyoListId } }
+          }
+        }
+      };
+
+      if (submitButton) submitButton.disabled = true;
+
+      try {
+        const response = await fetch(
+          `https://a.klaviyo.com/client/subscriptions?company_id=${encodeURIComponent(klaviyoCompanyId)}`,
+          {
+            method: 'POST',
+            headers: {
+              accept: 'application/vnd.api+json',
+              'content-type': 'application/vnd.api+json',
+              revision: '2026-07-15'
+            },
+            body: JSON.stringify(payload)
+          }
+        );
+
+        if (!response.ok) throw new Error(`Klaviyo responded with ${response.status}`);
+
+        form.reset();
+        setStatus(status?.dataset.successMessage);
+      } catch (error) {
+        console.error('[Footer newsletter]', error);
+        setStatus(status?.dataset.errorMessage);
+      } finally {
+        if (submitButton) submitButton.disabled = false;
+      }
+    }
+  }
+
+  window.FooterNewsletterController = FooterNewsletterController;
+
+  if (!window.footerNewsletterInstance) {
+    window.footerNewsletterInstance = new FooterNewsletterController();
   }
 }

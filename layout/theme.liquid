@@ -3,9 +3,11 @@
   <head>
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
     <meta name="author" content="By Association Only" />
-    <link rel="preconnect" href="https://js.klevu.com">
+    {%- if settings.search_provider == 'klevu' -%}
+      <link rel="preconnect" href="https://js.klevu.com">
+    {%- endif -%}
     <link rel="preconnect" href="https://use.typekit.net" crossorigin>
     <link rel="preconnect" href="https://cdn.jsdelivr.net">
 
@@ -59,6 +61,10 @@
       {{ 'custom-global.css' | inline_asset_content }}
       {{ 'hero-fullscreen.css' | inline_asset_content }}
     </style>
+    {{ 'custom-mini-bag.css' | asset_url | stylesheet_tag }}
+    {%- if settings.wishlist_enable -%}
+      {{ 'custom-wishlist.css' | asset_url | stylesheet_tag }}
+    {%- endif -%}
 
     {% comment %}
       Adobe Fonts kit (futura-pt only) is not used above the fold, so it must
@@ -68,6 +74,9 @@
     {% endcomment %}
     <link rel="stylesheet" href="https://use.typekit.net/ojr8oqr.css" media="print" onload="this.media='all'">
     <noscript><link rel="stylesheet" href="https://use.typekit.net/ojr8oqr.css"></noscript>
+
+    {% comment %} CookieYes {% endcomment %}
+    {{ 'custom-cookieyes.css' | asset_url | stylesheet_tag }}
 
     {%- render 'head-script' -%}
 
@@ -80,6 +89,10 @@
 
     <script src="{{ 'custom-theme.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'custom-fullpage-scroll.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'custom-mini-bag.js' | asset_url }}" defer="defer"></script>
+    {%- if settings.wishlist_enable -%}
+      <script src="{{ 'custom-wishlist.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer="defer"></script>
     {% comment %}
       Swiper CSS is preloaded and applied on arrival instead of blocking render.
@@ -90,9 +103,16 @@
     <link rel="preload" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'">
     <noscript><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"></noscript>
 
+    {%- if settings.search_provider != 'klevu' -%}
+      {{ 'predictive-search.css' | asset_url | stylesheet_tag }}
+      <script src="{{ 'predictive-search.js' | asset_url }}" defer="defer"></script>
+    {%- endif -%}
+
     {{ content_for_header }}
 
-    {%- render 'klevu-head' -%}
+    {%- if settings.search_provider == 'klevu' -%}
+      {%- render 'klevu-head' -%}
+    {%- endif -%}
 
   </head>
 
@@ -101,11 +121,13 @@
 
     if template.name == 'index' or template.name == 'product'
       assign enable_fullpage_scroll = true
+    elsif template.name == 'page' and page.metafields.custom.enable_fullpage_scroll.value
+      assign enable_fullpage_scroll = true
     endif
   -%}
   <body
     id="{{ page_title | handle }}"
-    class="lyt-Site template-{{ template.name | handle }} thm-{{ settings.theme }} {% if settings.bar_enabled %}thm-AnnouncementBar{% endif %}"
+    class="lyt-Site template-{{ template.name | handle }}{% if template.suffix != blank %} template-{{ template.name | handle }}--{{ template.suffix | handle }}{% endif %} thm-{{ settings.theme }}{% if settings.bar_enabled %} thm-AnnouncementBar{% endif %}"
     {% if enable_fullpage_scroll %}data-fullpage-scroll{% endif %}
     {% if template.name == 'product' %}data-pdp-scroll="{{ settings.pdp_scroll_type }}"{% endif %}
   >
@@ -127,7 +149,11 @@
       {%- sections 'header-group' -%}
     </div>
 
-    <main role="main" id="MainContent">
+    <main
+      role="main"
+      id="MainContent"
+      class="main-content{% if template.suffix != blank %} main-content--{{ template.name | handle }}-{{ template.suffix | handle }}{% endif %}"
+    >
       {%- comment -%}
         The homepage sections carry only H2s, so give the page a hidden H1
         with the shop name to anchor the heading outline.
@@ -146,7 +172,9 @@
 
     {%- render 'drawers' -%}
 
-    {%- render 'klevu-foot' -%}
+    {%- if settings.search_provider == 'klevu' -%}
+      {%- render 'klevu-foot' -%}
+    {%- endif -%}
 
     {%- render 'back-in-stock-helper' -%}
 
