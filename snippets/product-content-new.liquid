@@ -29,12 +29,33 @@
   if section.settings.contact_page != blank
     assign has_contact = true
   endif
+
+  assign breadcrumb_collection = product.metafields.custom.primary_collection.value
+  if collection.handle != blank
+    assign breadcrumb_collection = collection
+  endif
 -%}
 
 <div class="pdp-content js-pdp-content">
   <button type="button" class="pdp-sheet-handle js-pdp-sheet-handle" aria-hidden="true"></button>
 
   <div class="pdp-content__wrapper">
+    <nav class="pdp-breadcrumb" aria-label="Breadcrumb">
+      <ol class="pdp-breadcrumb__list">
+        <li class="pdp-breadcrumb__item">
+          <a class="pdp-breadcrumb__link" href="{{ routes.root_url }}">{{ 'layout.breadcrumbs.home' | t | escape }}</a>
+        </li>
+        {%- if breadcrumb_collection != blank -%}
+          <li class="pdp-breadcrumb__item">
+            <a class="pdp-breadcrumb__link" href="{{ breadcrumb_collection.url }}">{{ breadcrumb_collection.title | escape }}</a>
+          </li>
+        {%- endif -%}
+        <li class="pdp-breadcrumb__item pdp-breadcrumb__item--current" aria-current="page">
+          {{ product.title | escape }}
+        </li>
+      </ol>
+    </nav>
+
     <div class="pdp-content__top">
       {%- assign product_form_id = 'product-form-' | append: section.id -%}
       {%- form 'product',

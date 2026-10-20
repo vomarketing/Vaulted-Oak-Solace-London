@@ -1,0 +1,336 @@
+{{- 'legal-content.css' | asset_url | stylesheet_tag -}}
+<script src="{{ 'legal-content.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+  assign layout_style = section.settings.layout_style | default: 'sidebar'
+  assign dropdown_label = section.settings.dropdown_label | default: 'Frequent Questions'
+  assign page_title = page.title | default: 'Terms & Conditions' | escape
+-%}
+
+<legal-content
+  class="legal-content lyt-Container legal-content--{{ layout_style }} text-reg-12"
+  data-section-id="{{ section.id }}"
+  data-layout="{{ layout_style }}"
+  data-mobile-sidebar-drawer="{{ section.settings.mobile_sidebar_drawer }}"
+  id="LegalContent-{{ section.id }}"
+>
+  <div class="legal-content__container">
+    {%- comment -%} Accessible visually hidden heading for screen readers {%- endcomment -%}
+    <h1 class="util-ScreenReaderOnly">{{ page_title }}</h1>
+
+    <div class="legal-content__nav">
+      {%- liquid
+        assign nav_menu = section.settings.navigation_menu
+        if nav_menu == blank
+          assign nav_menu = linklists[section.settings.navigation_menu]
+        endif
+        if nav_menu == blank
+          assign nav_menu = linklists['page-menu']
+        endif
+      -%}
+      {%- if nav_menu != blank -%}
+        {%- render 'information-page-navigation', menu: nav_menu -%}
+      {%- endif -%}
+    </div>
+
+    {%- if section.blocks and section.blocks.size > 0 -%}
+      {%- if layout_style == 'sidebar' -%}
+        {%- comment -%} Mobile & Tablet Dropdown Selector (Active Section Picker) {%- endcomment -%}
+        {%- assign initial_sidebar_label = '' -%}
+        {%- for block in section.blocks -%}
+          {%- assign initial_sidebar_label = block.settings.title | strip -%}
+          {%- if initial_sidebar_label != blank -%}
+            {%- break -%}
+          {%- endif -%}
+        {%- endfor -%}
+
+        <div class="legal-content__dropdown-wrapper">
+          <label
+            for="LegalSelect-{{ section.id }}"
+            class="legal-content__dropdown-label text-reg-12{% if dropdown_label == blank %} util-ScreenReaderOnly{% endif %}"
+          >
+            {{ dropdown_label | default: 'Select section' | escape }}
+          </label>
+
+          <div class="legal-content__select-box">
+            <select
+              id="LegalSelect-{{ section.id }}"
+              class="legal-content__select text-reg-12"
+              aria-label="{{ dropdown_label | default: 'Select section' | escape }}"
+            >
+              {%- for block in section.blocks -%}
+                {%- if block and block.settings and block.settings.title != blank -%}
+                  {%- assign anchor_id = block.settings.title | handleize | default: block.id -%}
+                  {%- if anchor_id == blank -%}
+                    {%- assign anchor_id = 'section-' | append: forloop.index -%}
+                  {%- endif -%}
+                  <option value="section-{{ anchor_id }}"{% if forloop.first %} selected{% endif %}>
+                    {{ block.settings.title | escape }}
+                  </option>
+                {%- endif -%}
+              {%- endfor -%}
+            </select>
+            <span class="legal-content__select-icon" aria-hidden="true">
+              <svg width="10" height="6" viewBox="0 0 10 6" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+          </div>
+        </div>
+
+        <div class="legal-content__layout">
+          <aside class="legal-content__sidebar" aria-label="Page sections">
+            <nav class="legal-content__toc" aria-label="Table of contents">
+              <ul class="legal-content__toc-list" role="tablist" aria-orientation="vertical">
+                {%- for block in section.blocks -%}
+                  {%- if block and block.settings and block.settings.title != blank -%}
+                    {%- assign anchor_id = block.settings.title | handleize | default: block.id -%}
+                    {%- if anchor_id == blank -%}
+                      {%- assign anchor_id = 'section-' | append: forloop.index -%}
+                    {%- endif -%}
+                    <li class="legal-content__toc-item" role="presentation">
+                      <a
+                        href="#"
+                        id="tab-{{ anchor_id }}"
+                        role="tab"
+                        aria-controls="section-{{ anchor_id }}"
+                        class="legal-content__toc-link text-reg-12{% if forloop.first %} is-active{% endif %}"
+                        data-target="section-{{ anchor_id }}"
+                        {% if forloop.first %}
+                          aria-selected="true"
+                          aria-current="true"
+                          tabindex="0"
+                        {% else %}
+                          aria-selected="false"
+                          tabindex="-1"
+                        {% endif %}
+                      >
+                        {{ block.settings.title | escape }}
+                      </a>
+                    </li>
+                  {%- endif -%}
+                {%- endfor -%}
+              </ul>
+            </nav>
+          </aside>
+
+          {%- if section.settings.mobile_sidebar_drawer -%}
+            <div class="legal-content__mobile-sidebar" data-legal-mobile-sidebar aria-expanded="false">
+              <button
+                class="legal-content__mobile-sidebar-trigger"
+                type="button"
+                aria-expanded="false"
+                aria-controls="LegalSidebarNav-{{ section.id }}"
+                data-legal-mobile-sidebar-trigger
+              >
+                <span class="legal-content__mobile-sidebar-trigger-text">
+                  <span class="legal-content__mobile-sidebar-label">{{ dropdown_label | escape }}</span>
+                  <span class="legal-content__mobile-sidebar-selected" data-legal-mobile-sidebar-selected>
+                    {{ initial_sidebar_label | escape }}
+                  </span>
+                </span>
+                <span class="legal-content__mobile-sidebar-icon" aria-hidden="true"></span>
+              </button>
+
+              <button
+                class="legal-content__mobile-sidebar-overlay"
+                type="button"
+                aria-label="Close section navigation"
+                tabindex="-1"
+                data-legal-mobile-sidebar-overlay
+              ></button>
+
+              <nav
+                class="legal-content__mobile-sidebar-panel"
+                id="LegalSidebarNav-{{ section.id }}"
+                aria-label="Page sections"
+                data-legal-mobile-sidebar-panel
+              >
+                <ul>
+                  {%- for block in section.blocks -%}
+                    {%- assign sidebar_title = block.settings.title | strip -%}
+                    {%- if sidebar_title != blank -%}
+                      {%- assign anchor_id = sidebar_title | handleize | default: block.id -%}
+                      {%- if anchor_id == blank -%}
+                        {%- assign anchor_id = 'section-' | append: forloop.index -%}
+                      {%- endif -%}
+                      <li>
+                        <button
+                          class="legal-content__mobile-sidebar-link{% if sidebar_title == initial_sidebar_label %} is-active{% endif %}"
+                          type="button"
+                          data-legal-mobile-sidebar-link
+                          data-target="section-{{ anchor_id }}"
+                          {% if sidebar_title == initial_sidebar_label %}aria-current="true"{% endif %}
+                        >
+                          {{ block.settings.title | escape }}
+                        </button>
+                      </li>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </ul>
+              </nav>
+            </div>
+          {%- endif -%}
+
+          <div class="legal-content__body">
+            {%- for block in section.blocks -%}
+              {%- if block and block.settings -%}
+                {%- assign anchor_id = block.settings.title | handleize | default: block.id -%}
+                {%- if anchor_id == blank -%}
+                  {%- assign anchor_id = 'section-' | append: forloop.index -%}
+                {%- endif -%}
+                <section
+                  id="section-{{ anchor_id }}"
+                  role="tabpanel"
+                  aria-labelledby="tab-{{ anchor_id }}"
+                  tabindex="0"
+                  class="legal-content__item{% if forloop.first %} is-active{% endif %}"
+                  data-legal-section
+                  data-anchor-id="section-{{ anchor_id }}"
+                >
+                  {%- if block.settings.title != blank -%}
+                    <h2 id="heading-{{ anchor_id }}" class="legal-content__heading text-med-12">
+                      {{ block.settings.title | escape }}
+                    </h2>
+                  {%- endif -%}
+
+                  {%- if block.settings.text != blank -%}
+                    <div class="legal-content__text rte-RichText text-reg-12">
+                      {{ block.settings.text }}
+                    </div>
+                  {%- endif -%}
+                </section>
+              {%- endif -%}
+            {%- endfor -%}
+          </div>
+        </div>
+
+      {%- else -%}
+        {%- comment -%} Full Content Layout (Stacked without Sidebar) {%- endcomment -%}
+        <div class="legal-content__full-body">
+          {%- for block in section.blocks -%}
+            {%- if block and block.settings -%}
+              {%- assign anchor_id = block.settings.title | handleize | default: block.id -%}
+              {%- if anchor_id == blank -%}
+                {%- assign anchor_id = 'section-' | append: forloop.index -%}
+              {%- endif -%}
+              <section
+                id="section-{{ anchor_id }}"
+                class="legal-content__item is-active"
+                data-legal-section
+                data-anchor-id="section-{{ anchor_id }}"
+                aria-labelledby="heading-{{ anchor_id }}"
+                {{ block.shopify_attributes }}
+              >
+                {%- if block.settings.title != blank -%}
+                  <h2 id="heading-{{ anchor_id }}" class="legal-content__heading text-med-12">
+                    {{ block.settings.title | escape }}
+                  </h2>
+                {%- endif -%}
+
+                {%- if block.settings.text != blank -%}
+                  <div class="legal-content__text rte-RichText text-reg-12">
+                    {{ block.settings.text }}
+                  </div>
+                {%- endif -%}
+              </section>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
+
+    {%- elsif page and page.content != blank -%}
+      <div class="legal-content__fallback rte-RichText text-reg-12">
+        {{ page.content }}
+      </div>
+    {%- endif -%}
+  </div>
+</legal-content>
+
+{% schema %}
+{
+  "name": "Legal content",
+  "tag": "section",
+  "class": "section-legal-content",
+  "settings": [
+    {
+      "type": "select",
+      "id": "layout_style",
+      "label": "Layout style",
+      "options": [
+        {
+          "value": "sidebar",
+          "label": "Sidebar & Dropdown navigation"
+        },
+        {
+          "value": "full_content",
+          "label": "Full content (Stacked)"
+        }
+      ],
+      "default": "sidebar"
+    },
+    {
+      "type": "text",
+      "id": "dropdown_label",
+      "label": "Dropdown label (Mobile & Tablet)",
+      "default": "Frequent Questions",
+      "info": "Displayed above the dropdown navigation on mobile and tablet screens"
+    },
+    {
+      "type": "checkbox",
+      "id": "mobile_sidebar_drawer",
+      "label": "Use mobile sidebar navigation drawer",
+      "default": false
+    },
+    {
+      "type": "link_list",
+      "id": "navigation_menu",
+      "label": "Information navigation"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "section",
+      "name": "Legal section",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Introduction"
+        },
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Text"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Legal content",
+      "blocks": [
+        {
+          "type": "section",
+          "settings": {
+            "title": "Introduction"
+          }
+        },
+        {
+          "type": "section",
+          "settings": {
+            "title": "Access To The Website"
+          }
+        },
+        {
+          "type": "section",
+          "settings": {
+            "title": "Information On The Website"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

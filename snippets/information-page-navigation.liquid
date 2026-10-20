@@ -1,0 +1,28 @@
+{%- assign navigation_menu = menu -%}
+
+{%- if navigation_menu == blank -%}
+	{%- assign navigation_menu = section.settings.navigation_menu -%}
+{%- endif -%}
+
+{%- if navigation_menu != blank -%}
+	<nav class="info-Page_Navigation" aria-label="Information pages">
+		{%- for link in navigation_menu.links -%}
+			{%- assign is_contact_modal = false -%}
+			{%- if link.url contains '#contactUSModal' or link.url contains '#contact-modal' or link.url contains '#contactUsModal' -%}
+				{%- assign is_contact_modal = true -%}
+			{%- endif -%}
+			<a
+				class="info-Page_NavigationLink text-reg-12{% if link.active %} is-active{% endif %}"
+				href="{{ link.url }}"
+				{% if is_contact_modal %}
+					data-contact-modal-trigger
+					aria-haspopup="dialog"
+					aria-controls="contactUSModal"
+				{% endif %}
+				{% if link.active %}aria-current="page"{% endif %}
+			>
+				{{ link.title | escape }}
+			</a>
+		{%- endfor -%}
+	</nav>
+{%- endif -%}
