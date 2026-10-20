@@ -26,10 +26,15 @@
     endif
   endif
 
+  # Full-page scroll slides are always one screen tall, so the custom height only
+  # applies on pages that scroll normally.
   assign enable_custom_mobile_height = false
   assign custom_mobile_height = section.settings.custom_mobile_height | default: 667 | at_least: 1
   if is_video == false and section.settings.enable_custom_mobile_height
     assign enable_custom_mobile_height = true
+  endif
+  if page.metafields.custom.enable_fullpage_scroll.value
+    assign enable_custom_mobile_height = false
   endif
 
   assign has_controls = false
@@ -243,7 +248,7 @@
       "type": "checkbox",
       "id": "enable_custom_mobile_height",
       "label": "Use custom mobile height",
-      "info": "Applies at 768px and below for image media only.",
+      "info": "Applies at 768px and below for image media only. Ignored on pages with full-page scroll enabled, where the image is always full screen.",
       "default": false,
       "visible_if": "{{ section.settings.media_type == 'image' }}"
     },
