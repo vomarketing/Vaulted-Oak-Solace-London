@@ -439,6 +439,24 @@
   transform: translateX(-50%);
 }
 
+/* On full-page scroll pages each full-width image is its own mobile slide;
+   selector matches TwoUpsMedia.selectors.fullpageBody in two-ups-media.js. */
+@media (max-width: 900px) {
+  [data-fullpage-scroll]:not([data-pdp-scroll="normal"]) {
+    .two-ups-media--full-width,
+    .two-ups-media--full-width .two-ups-media__swiper {
+      height: var(--two-ups-media-viewport-height);
+      min-height: var(--two-ups-media-viewport-height);
+      overflow: hidden;
+    }
+
+    .two-ups-media--full-width .two-ups-media__inner {
+      display: block;
+      height: var(--two-ups-media-viewport-height);
+    }
+  }
+}
+
 @media (min-width: 901px) {
   .two-ups-media--full-width,
   .two-ups-media--full-width .two-ups-media__swiper,

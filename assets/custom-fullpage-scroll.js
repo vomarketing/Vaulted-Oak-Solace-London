@@ -112,6 +112,7 @@ if (!window.FullpageScrollController) {
       this.lastWheel = null;
       this.lastFooterActionDirection = 1;
       this.isSwiperInputLocked = false;
+      this.isChildLocked = false;
       this.footerUnlockTimer = null;
 
       if (this.canActivate()) {
@@ -182,6 +183,7 @@ if (!window.FullpageScrollController) {
       }, { signal });
 
       document.addEventListener(this.events.lock, () => {
+        this.isChildLocked = true;
         if (this.swiper) {
           this.swiper.allowTouchMove = false;
           if (this.swiper.mousewheel && typeof this.swiper.mousewheel.disable === 'function') {
@@ -191,6 +193,7 @@ if (!window.FullpageScrollController) {
       }, { signal });
 
       document.addEventListener(this.events.unlock, () => {
+        this.isChildLocked = false;
         if (this.swiper && !this.isSwiperInputLocked) {
           this.swiper.allowTouchMove = true;
           if (this.swiper.mousewheel && typeof this.swiper.mousewheel.enable === 'function') {
@@ -643,6 +646,8 @@ if (!window.FullpageScrollController) {
           this.setSwiperInputEnabled(true);
         }
 
+        if (this.isFooterRevealed || this.isSwiperInputLocked) e.stopPropagation();
+
         const toggleDirection = this.isFooterRevealed ? -1 : 1;
         if (direction !== toggleDirection || delta < this.config.footerWheelMinDelta) return;
         if (!this.canToggleFooter()) return;
@@ -652,6 +657,7 @@ if (!window.FullpageScrollController) {
         const isReversal = direction !== this.lastFooterActionDirection;
         if (isNewGesture || isReversal) {
           this.setFooterRevealed(!this.isFooterRevealed);
+          e.stopPropagation();
         }
       }, { passive: true, capture: true, signal });
 
@@ -713,7 +719,7 @@ if (!window.FullpageScrollController) {
     }
 
     canToggleFooter() {
-      if (!this.hasFooterStep() || !this.isOnLastSlide()) return false;
+      if (this.isChildLocked || !this.hasFooterStep() || !this.isOnLastSlide()) return false;
       const now = Date.now();
       return now - (this.lastSlideChangeTime || 0) > this.config.footerRevealCooldown
         && now - this.lastFooterToggleTime > this.config.footerToggleCooldown;
@@ -741,7 +747,7 @@ if (!window.FullpageScrollController) {
     setSwiperInputEnabled(isEnabled) {
       clearTimeout(this.footerUnlockTimer);
       this.isSwiperInputLocked = !isEnabled;
-      if (!this.swiper) return;
+      if (!this.swiper || (isEnabled && this.isChildLocked)) return;
       const method = isEnabled ? 'enable' : 'disable';
       this.swiper.allowTouchMove = isEnabled;
       if (typeof this.swiper.mousewheel?.[method] === 'function') this.swiper.mousewheel[method]();
@@ -921,6 +927,7 @@ if (!window.FullpageScrollController) {
       clearTimeout(this.footerUnlockTimer);
       this.isFooterRevealed = false;
       this.isSwiperInputLocked = false;
+      this.isChildLocked = false;
       document.body.classList.remove(
         this.classes.editorialActive,
         this.classes.pdpTransitioning,
