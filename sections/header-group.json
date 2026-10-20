@@ -27,10 +27,28 @@
             "menu_item_title": "Shop",
             "menu_content": ""
           }
+        },
+        "mega_menu_pTbcz9": {
+          "type": "mega_menu",
+          "disabled": true,
+          "settings": {
+            "menu_item_title": "Dresses",
+            "menu_content": ""
+          }
+        },
+        "mega_menu_6tMrfh": {
+          "type": "mega_menu",
+          "disabled": true,
+          "settings": {
+            "menu_item_title": "Bridal",
+            "menu_content": ""
+          }
         }
       },
       "block_order": [
-        "mega_menu_yzciaX"
+        "mega_menu_yzciaX",
+        "mega_menu_pTbcz9",
+        "mega_menu_6tMrfh"
       ],
       "settings": {
         "left_navigation": "desktop-left",
