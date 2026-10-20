@@ -53,7 +53,7 @@
       "settings": {
         "left_navigation": "desktop-left",
         "right_navigation": "desktop-right",
-        "mobile_need_help_menu": "need-helps",
+        "mobile_need_help_menu": "need-help",
         "show_help_box": true,
         "help_label": "Help",
         "help_mobile_label": "Contact Us",
