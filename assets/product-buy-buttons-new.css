@@ -566,9 +566,12 @@ product-buy-buttons,
     }
   }
 
-  &.iwishAdded,
-  &:hover {
-    .pdp-cta-wishlist__icon path {
+  &[aria-pressed="true"] .pdp-cta-wishlist__icon path {
+    fill: var(--Color_Brand, #000000);
+  }
+
+  @media (hover: hover) {
+    &:hover .pdp-cta-wishlist__icon path {
       fill: var(--Color_Brand, #000000);
     }
   }

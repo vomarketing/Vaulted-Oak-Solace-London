@@ -1,115 +1,177 @@
-<section class="crt-Cart lyt-Container" data-module="cart">
-    <div class="crt-Cart_Inner">
+<style>
+  {{ 'custom-cart.css' | inline_asset_content }}
+</style>
+<script src="{{ 'custom-cart.js' | asset_url }}" defer="defer"></script>
 
-        {%- if cart.item_count == 0 -%}
+{%- liquid
+  assign has_final_sale = false
+  for item in cart.items
+    if item.variant.compare_at_price != blank
+      if item.variant.compare_at_price > item.variant.price
+        assign has_final_sale = true
+        break
+      endif
+    endif
+  endfor
 
-            <div class="crt-Cart_Empty">
-                <h1 class="crt-Cart_Title fz-25_33">{{ 'cart.general.title' | t }}</h1>
+  assign show_duties = false
+  if localization.market.metafields.custom.show_duties_and_taxes.value == true
+    assign show_duties = true
+  endif
 
-                <p class="crt-Cart_Text">{{ 'cart.general.text' | t }}</p>
-            </div>
+  assign duties_note = settings.mbg_note_default
+  if show_duties
+    assign duties_note = settings.mbg_note_included
+  endif
+-%}
 
-        {%- else -%}
+<section
+  class="bag-Page{% if cart.item_count == 0 %} bag-Page-empty{% endif %}"
+  data-bag
+  data-section-id="{{ section.id }}"
+  data-cart-count="{{ cart.item_count }}"
+  data-error-message="{{ 'cart.bag.error' | t | escape }}"
+>
+  {%- if cart.item_count == 0 -%}
+    <div class="bag-Page_Empty">
+      <h1 class="bag-Page_Title">{{ 'cart.bag.title' | t: count: cart.item_count }}</h1>
 
-            <div class="crt-Cart_Body">
-                <div class="crt-Cart_Main">
-                    <div class="crt-Cart_Products">
-
-                        <header class="crt-Cart_Header">
-                            <h2 class="crt-Cart_Title fz-25_33">
-                                {{ 'cart.products.title' | t }} (<span data-el="cart.count">{{ cart.item_count }}</span>)
-                            </h2>
-                        </header>
-
-                        <div class="crt-Products">
-                            <div class="crt-Products_Items" data-el="cart.itemsContainer">
-                                {%- for item in cart.items -%}
-                                    {%- render 'cart-line-item', line_item: item -%}
-                                {%- endfor -%}
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="crt-Cart_Summary" data-el="cart.summaryContainer">
-                    <div class="crt-Summary">
-                        <header class="crt-Summary_Header">
-                            <h2 class="crt-Summary_Title fz-25_33">{{ 'cart.summary.continue_to_checkout' | t }}</h2>
-                        </header>
-
-                        <div class="crt-Summary_Body">
-                            {% comment %} <p class="crt-Summary_Text crt-Summary_Text-opacity">{{ 'cart.summary.text' | t }}</p> {% endcomment %}
-
-                            <div class="crt-Summary_Row">
-                                <p class="crt-Summary_Label">{{ 'cart.summary.subtotal' | t }}:</p>
-                                <p class="crt-Summary_Value">{{ cart.total_price | money }}</p>
-                            </div>
-
-                            {%- if cart.total_discounts > 0 -%}
-                                <div class="crt-Summary_Row">
-                                    <p class="crt-Summary_Label">{{ 'cart.summary.discount' | t }}:</p>
-                                    <p class="crt-Summary_Value">{{ cart.total_discounts | money }}</p>
-                                </div>
-                            {%- endif -%}
-
-                            <div class="crt-Summary_Row">
-                                <p class="crt-Summary_Label">{{ 'cart.summary.delivery' | t }}:</p>
-                                <p class="crt-Summary_Value crt-Summary_Value-opacity">
-                                    {{ 'cart.summary.calculated_at_checkout' | t }}
-                                </p>
-                            </div>
-
-                            <form class="crt-Summary_Form" action="/cart" method="post" novalidate>
-                                <button class="crt-Summary_Button" type="submit" name="checkout">
-                                    {{ 'cart.summary.checkout_securely' | t }}
-                                </button>
-                            </form>
-
-                            <div class="crt-Summary_Secure">
-                                <p class="crt-Summary_Text">
-                                    {{ 'cart.summary.secure_payment_methods' | t }}
-                                </p>
-
-                                <div class="crt-Summary_Items">
-                                    <div class="crt-Summary_Item">
-                                        {%- render 'bao-icon-visa-clr' -%}
-                                    </div>
-
-                                    <div class="crt-Summary_Item">
-                                        {%- render 'bao-icon-master-clr' -%}
-                                    </div>
-
-                                    <div class="crt-Summary_Item">
-                                        {%- render 'bao-icon-american_express-clr' -%}
-                                    </div>
-
-                                    <div class="crt-Summary_Item">
-                                        {%- render 'bao-icon-paypal-clr' -%}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <footer class="crt-Cart_Footer fz-12_12">
-                <a
-                        class="crt-Cart_Link crt-Cart_Link-continue"
-                        href="{{ routes.collections_url }}"
-                >
-                    {%- render 'bao-chevron-left' -%}
-                    {{ 'cart.general.continue_shopping' | t }}
-                </a>
-            </footer>
-        {%- endif -%}
+      {%- render 'cart-empty-content' -%}
     </div>
+
+    <dialog class="bag-Info" id="BagInfo" aria-labelledby="BagInfoTitle" data-bag-info>
+      <header class="bag-Info_Header">
+        <h2 class="bag-Info_Title" id="BagInfoTitle">{{ 'cart.bag.shipping_returns' | t }}</h2>
+        <button class="bag-Info_Close" type="button" data-bag-info-close>{{ 'cart.bag.close' | t }}</button>
+      </header>
+
+      <div class="bag-Info_Body">
+        {%- render 'shipping-returns-content' -%}
+      </div>
+    </dialog>
+  {%- else -%}
+    <div class="bag-Page_Inner">
+      <div class="bag-Page_Main">
+        <h1 class="bag-Page_Title">{{ 'cart.bag.title' | t: count: cart.item_count }}</h1>
+
+        {%- if has_final_sale -%}
+          <p class="bag-Page_Notice">
+            {{- settings.mbg_final_sale_message | default: 'All online archive sale items are final sale. No returns or exchanges.' | escape -}}
+          </p>
+        {%- endif -%}
+
+        <div class="bag-Page_Items">
+          {%- for item in cart.items -%}
+            {%- render 'bag-line-item', line_item: item -%}
+          {%- endfor -%}
+        </div>
+      </div>
+
+      <aside class="bag-Page_Aside">
+        <div class="bag-Summary">
+          <dl class="bag-Summary_Rows">
+            {%- if cart.requires_shipping -%}
+              <div class="bag-Summary_Row">
+                <dt>{{ 'cart.bag.shipping' | t }}</dt>
+                <dd>{{ 'cart.bag.shipping_calculated' | t }}</dd>
+              </div>
+            {%- endif -%}
+
+            {%- if show_duties -%}
+              <div class="bag-Summary_Row">
+                <dt>{{ 'cart.bag.duties' | t }}</dt>
+                <dd>{{ 'cart.bag.duties_included' | t }}</dd>
+              </div>
+            {%- endif -%}
+
+            {%- for discount in cart.cart_level_discount_applications -%}
+              <div class="bag-Summary_Row">
+                <dt>{{ discount.title | escape }}</dt>
+                <dd>−{{ discount.total_allocated_amount | money }}</dd>
+              </div>
+            {%- endfor -%}
+
+            <div class="bag-Summary_Row">
+              <dt>{{ 'cart.bag.subtotal' | t }}</dt>
+              <dd>{{ cart.total_price | money }}</dd>
+            </div>
+          </dl>
+
+          <form class="bag-Summary_Form" action="{{ routes.cart_url }}" method="post" novalidate>
+            <button class="bag-Summary_Checkout" type="submit" name="checkout">
+              {{- 'cart.bag.checkout' | t -}}
+            </button>
+          </form>
+
+          {%- if duties_note != blank -%}
+            <p class="bag-Summary_Note">{{ duties_note | escape | newline_to_br }}</p>
+          {%- endif -%}
+        </div>
+
+        {%- if section.blocks.size > 0 -%}
+          <div class="bag-Page_Accordions">
+            {%- for block in section.blocks -%}
+              <details class="bag-Accordion" name="bag-accordion" data-bag-accordion {{ block.shopify_attributes }}>
+                <summary class="bag-Accordion_Summary">
+                  <span class="bag-Accordion_Title">{{ block.settings.title }}</span>
+                  {%- render 'icons', icon: 'arrow-down', class: 'bag-Accordion_Icon' -%}
+                </summary>
+
+                <div class="bag-Accordion_Content">
+                  {%- if block.settings.content != blank -%}
+                    <div class="bag-Accordion_Text">{{ block.settings.content }}</div>
+                  {%- endif -%}
+
+                  {%- if block.settings.show_payment_icons and shop.enabled_payment_types.size > 0 -%}
+                    <ul class="bag-Accordion_Payments">
+                      {%- for type in shop.enabled_payment_types -%}
+                        <li class="bag-Accordion_Payment">{{ type | payment_type_svg_tag }}</li>
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
+                </div>
+              </details>
+            {%- endfor -%}
+          </div>
+        {%- endif -%}
+      </aside>
+    </div>
+  {%- endif -%}
 </section>
 
 {% schema %}
 {
   "name": "Main cart",
-  "settings": []
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "The final sale message and the note below the checkout button are shared with the mini bag, managed in Theme settings > Cart."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "accordion",
+      "name": "Accordion",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Title",
+          "default": "Need Help?"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Content"
+        },
+        {
+          "type": "checkbox",
+          "id": "show_payment_icons",
+          "label": "Show payment icons",
+          "default": false
+        }
+      ]
+    }
+  ]
 }
 {% endschema %}
-

@@ -31,7 +31,7 @@
       "title": "Search for products on our site",
       "results_for": "Search results for \"{{ terms }}\"",
       "placeholder": "Search our store",
-      "submit": "Search",
+      "submit": "Submit",
       "heading": {
         "one": "Search result",
         "other": "Search results"
@@ -41,11 +41,19 @@
         "other": "{{ count }} results for \"{{ terms }}\""
       },
       "no_results_html": "Please try a different search term or go back to the <a href=\"/\">homepage</a>.",
+      "no_results_title": "No Results Found",
+      "continue_shopping": "Explore Collections",
+      "all_results": "All Results",
       "results": "Results",
       "view_all": "View All",
       "reset": "Reset",
       "refine": "Refine",
       "no_results": "No results found for",
+      "input_placeholder": "Search",
+      "submit_label": "Submit",
+      "suggested_terms": "Suggested Terms",
+      "searching_for": "Searching For:",
+      "view_all_results": "View all results",
       "popular_searches": "Popular Searches",
       "filter_by": "Filter By",
       "categories": "Categories",
@@ -68,13 +76,20 @@
     "footer": {
       "social_platform": "{{ name }} on {{ platform }}",
       "copyright": "© {{ year }}",
-      "payment_methods": "Payment methods accepted"
+      "payment_methods": "Payment methods accepted",
+      "navigation_primary": "Customer service",
+      "navigation_secondary": "Legal",
+      "newsletter_email": "Email Address",
+      "newsletter_submit": "Submit",
+      "newsletter_success": "Thank you for subscribing.",
+      "newsletter_error": "Something went wrong. Please try again."
     },
     "header": {
       "menu": "Menu",
       "search": "Search",
       "account": "Account",
-      "cart": "Cart"
+      "cart": "Cart",
+      "bag": "Bag"
     },
     "navigation": {
       "close_menu": "Close"
@@ -103,12 +118,13 @@
     },
     "contact": {
       "title": "Get in touch",
-      "first_name": "First name",
-      "last_name": "Last name",
-      "email": "Email",
-      "topic": "Choose a topic",
+      "first_name": "First name*",
+      "last_name": "Last name*",
+      "email": "Email*",
+      "order_number": "Order Number",
+      "topic": "Topic*",
       "phone": "Phone Number",
-      "message": "Message",
+      "message": "Message*",
       "submit": "Submit",
       "validation": "Thanks for contacting us. We'll get back to you as soon as possible."
     },
@@ -152,6 +168,27 @@
       "link_text": "Continue shopping",
       "link_url": "/collections",
       "continue_shopping": "Continue Shopping"
+    },
+    "bag": {
+      "title": "Bag ({{ count }})",
+      "empty": "Your bag is empty.",
+      "edit": "Edit",
+      "change_option": "Change {{ option }}",
+      "remove": "Remove",
+      "decrease_quantity": "Decrease quantity of {{ title }}",
+      "increase_quantity": "Increase quantity of {{ title }}",
+      "error": "Something went wrong. Please try again.",
+      "shipping": "Shipping",
+      "shipping_calculated": "Calculated at checkout",
+      "duties": "Duties and Taxes",
+      "duties_included": "Included",
+      "subtotal": "Estimated Total",
+      "checkout": "Checkout",
+      "more_information": "More Information",
+      "need_help": "Need help?",
+      "email": "Email",
+      "shipping_returns": "Shipping & Returns",
+      "close": "Close"
     },
     "drawer": {
       "title": "Cart",
@@ -199,7 +236,10 @@
       "shop_now": "Shop now",
       "filter": "Filter",
       "filter_title": "Filter By",
-      "filter_close": "Close"
+      "filter_close": "Close",
+      "filter_and_sort": "Filter & Sort",
+      "read_more" : "Read More",
+      "read_less" : "Read Less"
     },
     "per_page": {
       "title": "Per page"
@@ -207,13 +247,17 @@
     "sorting": {
       "title": "Sort by",
       "featured": "Featured",
+      "relevance": "Relevance",
       "best_selling": "Best Selling",
       "az": "Alphabetically, A-Z",
       "za": "Alphabetically, Z-A",
       "price_ascending": "Price, low to high",
       "price_descending": "Price, high to low",
       "date_descending": "Date, new to old",
-      "date_ascending": "Date, old to new"
+      "date_ascending": "Date, old to new",
+      "new_in": "New In",
+      "ascending_price": "Ascending Price",
+      "descending_price": "Descending Price"
     }
   },
   "customer": {
@@ -379,16 +423,18 @@
     }
   },
   "wishlist": {
-    "your_wishlist": "Your Wishlist",
-    "wishlist_drawer_title": "Wishlist",
-    "temporarilly_saved_html": "Wishlist is not saved permanently yet. Please {{ login }} or {{ register }}",
     "add_to_wishlist": "Add to Wishlist",
     "added_to_wishlist": "Wishlist",
     "remove_from_wishlist": "Remove",
-    "removed_from_wishlist": "Removed",
-    "login_message": "Please enter your email and password below to access your wishlist",
-    "loading": "Loading",
-    "empty": "Your Wishlist is empty."
+    "saved": "Saved",
+    "saved_products": "Saved Products",
+    "drawer_label": "Bag and saved items",
+    "empty": "There are no saved items.",
+    "select_size": "Select size",
+    "select_size_heading": "Select {{ option }}",
+    "size_label": "{{ option }}: {{ size }}",
+    "save_item": "Save {{ title }}",
+    "remove_item": "Remove {{ title }} from saved items"
   },
   "gift_card": {
     "general": {
