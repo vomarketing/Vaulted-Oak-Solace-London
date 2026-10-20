@@ -36,16 +36,21 @@
     align-items: center;
     gap: 10px;
     z-index: 4;
+    box-sizing: border-box;
     width: 100%;
+    max-width: calc(305px + 80px);
     margin: 0 auto;
     padding: 40px;
     text-align: center;
     color: var(--hero-content-text-color, var(--color-white, #ffffff));
 
-    @media (min-width: 1440px) {
-      max-width: 710px;
-      padding-right: 0;
-      padding-left: 0;
+    /* Copy widths match the Rich Text section (305 / 589 / 710px). */
+    @media (min-width: 768px) {
+      max-width: calc(589px + 80px);
+    }
+
+    @media (min-width: 901px) {
+      max-width: calc(710px + 80px);
     }
   }
 
