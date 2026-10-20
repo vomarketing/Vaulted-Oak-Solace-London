@@ -7,13 +7,6 @@
   justify-content: center;
   background-color: var(--rich-text-background-color, #ffffff);
   color: var(--rich-text-text-color, #000000);
-
-  /* The footer overlays the bottom of the last fullpage slide on desktop. */
-  @media (min-width: 768px) {
-    .is-last-slide & {
-      --rich-text-viewport-height: calc(100dvh - var(--footer-height, 0px));
-    }
-  }
 }
 
 .rich-text__inner {
