@@ -9,6 +9,9 @@
     const content = drawer.querySelector('[data-mini-content]');
     const info = drawer.querySelector('[data-mini-information]');
     const title = drawer.querySelector('#MiniBagTitle');
+    const tabList = drawer.querySelector('[data-mini-tabs]');
+    const tabs = [...drawer.querySelectorAll('[data-mini-tab]')];
+    const panels = [...drawer.querySelectorAll('[data-mini-panel]')];
     const error = drawer.querySelector('[data-mini-error]');
     const live = drawer.querySelector('[data-mini-live]');
     let busy = false, opened = false, returnFocus = null, focusAfter = null;
@@ -22,25 +25,29 @@
     };
     function setInfo(value) {
       info.hidden = !value; content.hidden = value;
-      if (value) {
-        title.textContent = 'Shipping & Returns';
-        title.classList.add('MiniBagTitle--shipping');
-      } else {
-        sync();
-        if (title.classList.contains('MiniBagTitle--shipping')) {
-          title.classList.remove('MiniBagTitle--shipping');
-        }
-      }
+      tabList.hidden = value; title.hidden = !value;
+      if (!value) sync();
       if (isOpen()) drawer.querySelector('[data-mini-close]').focus({preventScroll:true});
+    }
+    function setTab(name, focus = false) {
+      const tab = tabs.find(el => el.dataset.miniTab === name) || tabs[0];
+      if (!info.hidden) setInfo(false);
+      tabs.forEach(el => {
+        const selected = el === tab;
+        el.setAttribute('aria-selected', String(selected));
+        el.tabIndex = selected ? 0 : -1;
+      });
+      panels.forEach(panel => { panel.hidden = panel.dataset.miniPanel !== tab.dataset.miniTab; });
+      drawer.dataset.tab = tab.dataset.miniTab;
+      if (focus) tab.focus({preventScroll:true});
+      document.dispatchEvent(new CustomEvent('mini-bag:tab', {detail:{tab:tab.dataset.miniTab}}));
     }
     function sync() {
       const state = content.querySelector('[data-mini-state]');
       if (!state) return;
       const count = Number(state.dataset.count);
       drawer.dataset.empty = String(count === 0);
-      if (info.hidden) {
-        title.textContent = `Bag (${count})`;
-      }
+      drawer.querySelectorAll('[data-mini-count]').forEach(el => { el.textContent = count; });
       document.querySelectorAll('[data-push-cart-count]').forEach(el => { el.textContent = count; });
       document.querySelectorAll('.hd-Nav_Cart,.hd-MobileNav_Cart').forEach(el => { el.dataset.cartEmpty = String(count === 0); });
       live.textContent = `Bag updated. ${count} item${count === 1 ? '' : 's'}.`;
@@ -71,7 +78,7 @@
       if (!render(html)) throw new Error('Unable to refresh your bag.');
     }
     async function mutate(endpoint, body, form) {
-      if (busy) return;
+      if (busy) return false;
       ++refreshSequence; setBusy(true); showError('');
       const submitButtons = form ? [...form.querySelectorAll('[type="submit"]')].map(el => [el,el.disabled]) : [];
       submitButtons.forEach(([el]) => { el.disabled = true; });
@@ -93,21 +100,42 @@
           returnFocus = form?.querySelector('[type="submit"]') || document.activeElement;
           const mega = document.querySelector('[data-mega-trigger][aria-expanded="true"]');
           if (mega) mega.click();
+          setTab('bag');
           if (window.drawers) window.drawers.activeDrawerKey = 'cart';
           else location.assign(`${root}cart`);
+          document.dispatchEvent(new CustomEvent('mini-bag:added', {detail:{form}}));
         }
         document.dispatchEvent(new CustomEvent('mini-bag:updated', {detail:{source:'mini-bag'}}));
+        return true;
       } catch (err) {
         // Never retry a cart mutation automatically: the server may have applied it.
         try { await readFresh(); } catch (_) { /* Keep the last known view. */ }
         const message = applied ? 'Your bag was updated, but the display could not refresh. Open View your cart to check it before adding again.' : (err.message || 'Unable to update your bag. Open your cart to check it before trying again.');
         if (!isOpen() && window.drawers) window.drawers.activeDrawerKey = 'cart';
         showError(message);
+        return applied;
       } finally {
         setBusy(false); focusAfter = null;
         submitButtons.forEach(([el,disabled]) => { if (el.isConnected) el.disabled = disabled; });
       }
     }
+    window.SLMiniBag = window.SLMiniBag || {};
+    window.SLMiniBag.removeItem = async key => {
+      if (!key) return false;
+      const removed = await mutate('change',{id:key,quantity:0});
+      if (removed) return true;
+
+      // A failed response can arrive after Shopify applied the mutation.
+      // Verify the cart before the wishlist caller rolls back its save.
+      try {
+        const response = await fetch(`${root}cart.js`, {credentials:'same-origin',cache:'no-store'});
+        if (!response.ok) return false;
+        const cart = await response.json();
+        return !cart.items.some(item => item.key === key);
+      } catch (_) {
+        return false;
+      }
+    };
     document.addEventListener('submit', event => {
       const form = event.target;
       if (!(form instanceof HTMLFormElement) || !form.matches('[data-push-cart-form]')) return;
@@ -126,6 +154,7 @@
         else if (window.drawers) window.drawers.activeDrawerKey = '';
         return;
       }
+      if (button.matches('[data-mini-tab]')) { setTab(button.dataset.miniTab); return; }
       if (button.matches('[data-mini-info]')) { setInfo(true); return; }
       if (button.matches('[data-mini-tooltip-toggle]')) {
         const tooltip = drawer.querySelector('[data-mini-tooltip]');
@@ -142,7 +171,10 @@
     });
     document.addEventListener('click', event => {
       const trigger = event.target.closest('[data-module-drawers-trigger="cart"]');
-      if (trigger) returnFocus = trigger;
+      if (trigger) {
+        returnFocus = trigger;
+        setTab(trigger.dataset.miniTabTarget || 'bag');
+      }
       const tooltip = drawer.querySelector('[data-mini-tooltip]');
       if (tooltip && !event.target.closest('.mbg-Shipping')) {
         tooltip.hidden = true; drawer.querySelector('[data-mini-tooltip-toggle]')?.setAttribute('aria-expanded','false');
@@ -171,8 +203,9 @@
         if (!returnFocus || !returnFocus.isConnected) returnFocus = document.activeElement;
         isolate(true); drawer.querySelector('[data-mini-close]').focus({preventScroll:true});
         if (!busy) readFresh().catch(() => showError('Unable to refresh your bag. Please open View your cart.'));
+        document.dispatchEvent(new CustomEvent('mini-bag:tab', {detail:{tab:drawer.dataset.tab}}));
       } else {
-        isolate(false); info.hidden = true; content.hidden = false; sync();
+        isolate(false); info.hidden = true; content.hidden = false; tabList.hidden = false; title.hidden = true; sync();
         if (!window.drawers?.activeDrawerKey && returnFocus?.isConnected) returnFocus.focus({preventScroll:true});
       }
     }
@@ -184,6 +217,11 @@
         if (tooltip) { tooltip.hidden = true; const toggle=drawer.querySelector('[data-mini-tooltip-toggle]');toggle.setAttribute('aria-expanded','false');toggle.focus(); }
         else if (!info.hidden) setInfo(false);
         else if (window.drawers) window.drawers.activeDrawerKey = '';
+      }
+      if ((event.key === 'ArrowLeft' || event.key === 'ArrowRight') && tabs.includes(event.target)) {
+        event.preventDefault();
+        const next = tabs[(tabs.indexOf(event.target) + (event.key === 'ArrowRight' ? 1 : -1) + tabs.length) % tabs.length];
+        setTab(next.dataset.miniTab, true);
       }
       if (event.key === 'Tab') {
         const focusable = [...drawer.querySelectorAll('a[href],button:not([disabled]),input:not([disabled]),[tabindex="0"]')].filter(el => el.getClientRects().length && !el.closest('[hidden],[inert]'));

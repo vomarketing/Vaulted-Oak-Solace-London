@@ -8,7 +8,7 @@
   display:flex;
   flex-direction:column;
   inset:0 0 0 auto;
-  width:40vw;
+  width:39.58vw;
   max-width:none;
   padding:0;
   background:#fff;
@@ -69,19 +69,26 @@
   gap:20px;
 }
 
-.mbg-Drawer .mbg-Header h2 {
-  text-decoration:underline;
-  text-underline-offset:3px;
+.mbg-Drawer .mbg-Tabs{
+  display:flex;
+  align-items:center;
+  gap:30px;
 }
 
-.mbg-Drawer .mbg-Header h2.MiniBagTitle--shipping {
-  text-decoration: none;
+.mbg-Drawer .mbg-Tab{
+  white-space:nowrap;
+}
+
+.mbg-Drawer .mbg-Tab[aria-selected=true]{
+  text-decoration:underline;
+  text-underline-offset:3px;
 }
 
 .mbg-Drawer .mbg-Header button{
   min-height:24px;
 }
 
+.mbg-Drawer .mbg-Panel,
 .mbg-Drawer .mbg-Content,.mbg-Drawer .mbg-State{
   display:flex;
   flex-direction:column;
@@ -194,9 +201,20 @@
   grid-row:2;
   justify-self:end;
   display: flex;
-  gap: 10px;
+  align-items: center;
+  gap: 20px;
   min-height:28px;
   margin-bottom: -10px;
+}
+
+.mbg-Drawer .mbg-Remove,
+.mbg-Drawer .mbg-Wishlist{
+  min-height:28px;
+}
+
+.mbg-Drawer .mbg-Wishlist{
+  display:flex;
+  align-items:center;
 }
 
 .mbg-Drawer .mbg-Footer{
@@ -321,16 +339,9 @@
   margin-top: 10px;
 }
 
-@media(min-width:1201px) {
+@media(min-width:1600px) {
   .mbg-Drawer.drw-Drawer {
-    min-width: 774px;
-  }
-}
-
-@media(min-width:1440px) {
-  .mbg-Drawer.drw-Drawer {
-    max-width: 570px;
-    min-width: unset;
+    width: 40.3125vw;
   }
 }
 
@@ -341,13 +352,13 @@
     transform:translateY(105%)
   }
 
- .mbg-Drawer.drw-Drawer-active{
-   transform:none;
- }
+  .mbg-Drawer.drw-Drawer-active{
+    transform:none;
+  }
 
- .mbg-Drawer.drw-Drawer[data-empty=true]{
-   top:max(var(--mbg-header-height,52px),36dvh);
- }
+  .mbg-Drawer.drw-Drawer[data-empty=true]:not([data-saved-empty=false]){
+    top:max(var(--mbg-header-height,52px),36dvh);
+  }
 
   .mbg-Drawer .mbg-Header{
     border-bottom:1px solid rgba(0, 0, 0, 0.2);
@@ -409,7 +420,7 @@
 }
 
 @media(max-height:550px){
-  .mbg-Drawer.drw-Drawer[data-empty=true]{
+  .mbg-Drawer.drw-Drawer[data-empty=true]:not([data-saved-empty=false]){
     top:var(--mbg-header-height,52px);
   }
 

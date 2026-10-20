@@ -1,10 +1,51 @@
-<div id="MiniBag" class="drw-Drawer drw-Drawer-fromRight mbg-Drawer" data-module-drawers-drawer="cart" data-mini-bag data-root-url="{{ routes.root_url }}" role="dialog" aria-modal="true" aria-labelledby="MiniBagTitle" aria-hidden="true" tabindex="-1">
+<div id="MiniBag" class="drw-Drawer drw-Drawer-fromRight mbg-Drawer" data-module-drawers-drawer="cart" data-mini-bag data-root-url="{{ routes.root_url }}" data-tab="bag" role="dialog" aria-modal="true" aria-label="{{ 'wishlist.drawer_label' | t | escape }}" aria-hidden="true" tabindex="-1">
   <header class="mbg-Header">
-    <h2 id="MiniBagTitle">Bag (<span data-mini-count>{{ cart.item_count }}</span>)</h2>
+    <div class="mbg-Tabs" role="tablist" data-mini-tabs>
+      <button type="button" class="mbg-Tab" id="MiniBagTabBag" role="tab" aria-selected="true" aria-controls="MiniBagPanelBag" data-mini-tab="bag">Bag (<span data-mini-count>{{ cart.item_count }}</span>)</button>
+      {%- if settings.wishlist_enable -%}
+        <button type="button" class="mbg-Tab" id="MiniBagTabSaved" role="tab" aria-selected="false" aria-controls="MiniBagPanelSaved" tabindex="-1" data-mini-tab="saved">{{ 'wishlist.saved' | t }} (<wishlist-count>0</wishlist-count>)</button>
+      {%- endif -%}
+    </div>
+    <h2 id="MiniBagTitle" class="mbg-Title" hidden>Shipping & Returns</h2>
     <button type="button" data-mini-close>Close</button>
   </header>
   <p class="mbg-Error" data-mini-error role="alert" hidden></p>
   <div class="mbg-Live" aria-live="polite" data-mini-live></div>
-  <div class="mbg-Content" data-mini-content>{% render 'mini-bag-content' %}</div>
-  <div class="mbg-Information" data-mini-information hidden>{% render 'shipping-returns-content' %}</div>
+  <div class="mbg-Panel" id="MiniBagPanelBag" role="tabpanel" aria-labelledby="MiniBagTabBag" data-mini-panel="bag">
+    <div class="mbg-Content" data-mini-content>{% render 'mini-bag-content' %}</div>
+    <div class="mbg-Information" data-mini-information hidden>{% render 'shipping-returns-content' %}</div>
+  </div>
+  {%- if settings.wishlist_enable -%}
+    <wishlist-panel class="mbg-Panel wsl-Panel" id="MiniBagPanelSaved" role="tabpanel" aria-labelledby="MiniBagTabSaved" hidden data-mini-panel="saved">
+      <div class="wsl-Scroll">
+        <div class="wsl-Empty" data-wishlist-empty>
+          <p>{{ 'wishlist.empty' | t }}</p>
+          {%- assign empty_menu = linklists[settings.wishlist_empty_menu] -%}
+          {%- if empty_menu.links.size > 0 -%}
+            <ul class="wsl-Empty_Links">
+              {%- for link in empty_menu.links -%}
+                <li><a href="{{ link.url }}">{{ link.title | escape }}</a></li>
+              {%- endfor -%}
+            </ul>
+          {%- endif -%}
+        </div>
+        <div class="wsl-List" data-wishlist-list></div>
+      </div>
+      <template data-wishlist-skeleton>
+        <div class="wsl-Item wsl-Skeleton" aria-hidden="true">
+          <span class="wsl-Item_Image wsl-Skeleton_Block"></span>
+          <span class="wsl-Item_Details">
+            <span class="wsl-Skeleton_Group">
+              <span class="wsl-Skeleton_Block wsl-Skeleton_Line"></span>
+              <span class="wsl-Skeleton_Block wsl-Skeleton_Line wsl-Skeleton_Line-short"></span>
+            </span>
+            <span class="wsl-Skeleton_Block wsl-Skeleton_Button"></span>
+          </span>
+          <span class="wsl-Item_Aside">
+            <span class="wsl-Skeleton_Block wsl-Skeleton_Line wsl-Skeleton_Line-price"></span>
+          </span>
+        </div>
+      </template>
+    </wishlist-panel>
+  {%- endif -%}
 </div>
