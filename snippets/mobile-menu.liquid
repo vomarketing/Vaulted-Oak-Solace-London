@@ -112,9 +112,21 @@
                       assign mobile_help_parts = link.title | replace: '<br />', '<br>' | replace: '<br/>', '<br>' | split: '<br>'
                       assign mobile_help_title = mobile_help_parts[0] | strip
                       assign mobile_help_description = mobile_help_parts[1] | strip
+                      assign is_contact_modal = false
+                      if link.url contains 'mailto:' or link.url contains '#contactUSModal' or link.url contains '#contact-modal' or link.url contains '#contactUsModal'
+                        assign is_contact_modal = true
+                      endif
                     -%}
                     <li class="hd-MobileMenu_HelpItem">
-                      <a class="hd-MobileMenu_HelpLink hd-MobileMenu_HelpLink-featured" href="{{ link.url | escape }}">
+                      <a
+                        class="hd-MobileMenu_HelpLink hd-MobileMenu_HelpLink-featured"
+                        href="{{ link.url | escape }}"
+                        {% if is_contact_modal %}
+                          data-contact-modal-trigger
+                          aria-haspopup="dialog"
+                          aria-controls="contactUSModal"
+                        {% endif %}
+                      >
                         <span class="hd-MobileMenu_HelpCopy">
                           <span class="hd-MobileMenu_HelpLabel">{{ mobile_help_title | escape }}</span>
                           {%- if mobile_help_description != blank -%}<span class="hd-MobileMenu_HelpDescription">{{ mobile_help_description | escape }}</span>{%- endif -%}
