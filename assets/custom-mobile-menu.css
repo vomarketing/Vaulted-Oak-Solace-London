@@ -262,7 +262,7 @@
 }
 
 .hd-MobileMenu_ActiveTitle {
-  margin: 0 0 40px;
+  margin: 0;
   color: #000;
   font: inherit;
   text-decoration: underline;
@@ -492,6 +492,11 @@
     --mobile-preview-width: 387px;
     --mobile-preview-ratio: 1;
     --mobile-copy-width: 387px;
+  }
+
+  .hd-MobileMenu_ImageWrap {
+    max-height: 400px;
+    width: auto;
   }
 }
 
