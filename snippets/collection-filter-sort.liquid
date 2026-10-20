@@ -1,0 +1,32 @@
+{%- assign active_filter_count = 0 -%}
+{%- if section.settings.use_search_and_discovery_filters -%}
+  {%- for filter in collection.filters -%}
+    {%- assign active_filter_count = active_filter_count | plus: filter.active_values.size -%}
+  {%- endfor -%}
+{%- else -%}
+  {%- for current_tag in current_tags -%}
+    {%- assign current_tag_key = current_tag | split: ':' | first | handleize -%}
+    {%- for block in section.blocks -%}
+      {%- if block.type == 'filter' and block.settings.filter_key != blank -%}
+        {%- assign block_tag_key = 'filter-' | append: block.settings.filter_key | handleize -%}
+        {%- if current_tag_key == block_tag_key -%}
+          {%- assign active_filter_count = active_filter_count | plus: 1 -%}
+          {%- break -%}
+        {%- endif -%}
+      {%- endif -%}
+    {%- endfor -%}
+  {%- endfor -%}
+{%- endif -%}
+
+{%- if section.settings.enable_sorting and collection.sort_by != blank and collection.sort_by != collection.default_sort_by -%}
+  {%- assign active_filter_count = active_filter_count | plus: 1 -%}
+{%- endif -%}
+
+<button
+  class="collection-header__filter-sort collection-header__filter-sort--{{ placement | default: 'desktop' }}"
+  type="button"
+  data-module-drawers-trigger="clc-filters"
+>
+  <span>{{ 'collections.general.filter_and_sort' | t }}{% if active_filter_count > 0 %} ({{ active_filter_count }}){% endif %}</span>
+  <span class="collection-header__filter-sort-icon" aria-hidden="true">+</span>
+</button>

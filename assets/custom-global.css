@@ -330,4 +330,8 @@ body.is-pdp-transitioning {
     font-family: var(--font-family-primary);
     font-weight: var(--font-weight-regular);
   }
+
+  .prd-Card_Text {
+    text-transform: capitalize;
+  }
 }

@@ -1,0 +1,148 @@
+{%- comment -%}
+  Render the Search & Discovery filters for a collection or search results.
+{%- endcomment -%}
+{{ 'collection-filters-v2.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'collection-filter-app.js' | asset_url }}" defer></script>
+
+{%- liquid
+  if context == 'search'
+    assign filter_source = search
+    assign form_action = routes.search_url
+    assign drawer_id = 'search-filters'
+    assign results_count = search.results_count
+    assign sort_keys = 'relevance,price-ascending,price-descending' | split: ','
+  else
+    assign filter_source = collection
+    assign form_action = collection.url
+    assign drawer_id = 'clc-filters'
+    assign results_count = collection.products_count
+    assign sort_keys = 'manual,created-descending,price-ascending,price-descending' | split: ','
+  endif
+
+  assign current_sort = filter_source.sort_by | default: filter_source.default_sort_by
+  assign default_sort = filter_source.default_sort_by | default: 'relevance'
+  assign id_prefix = context | default: 'collection' | append: '-filter-app-' | append: section.id
+  assign has_open_group = false
+  assign has_active_filters = false
+-%}
+
+<div class="collection-filter-app collection-filter-v2" data-collection-filter-app>
+  <form class="collection-filter-v2__form" action="{{ form_action }}" method="get" data-collection-filter-app-form data-section-id="{{ section.id }}" data-default-sort="{{ default_sort | escape }}">
+    {%- if context == 'search' -%}
+      <input type="hidden" name="q" value="{{ search.terms | escape }}">
+      <input type="hidden" name="type" value="product">
+    {%- endif -%}
+
+    <div class="collection-filter-v2__header">
+      <h2 class="collection-filter-v2__title">{{ 'collections.general.filter_and_sort' | t }}</h2>
+      <button class="collection-filter-v2__close" type="button" data-module-drawers-close="{{ drawer_id }}">
+        {{ 'collections.general.filter_close' | t }}
+      </button>
+    </div>
+
+    <div class="collection-filter-v2__body">
+      <div class="collection-filter-v2__groups">
+        {%- for filter in filter_source.filters -%}
+          {%- assign filter_label_head = filter.label | slice: 0 -%}
+          {%- if filter_label_head == '_' -%}
+            {%- for filter_value in filter.active_values -%}
+              <input type="hidden" name="{{ filter_value.param_name | escape }}" value="{{ filter_value.value | escape }}">
+            {%- endfor -%}
+          {%- elsif filter.type == 'list' or filter.type == 'boolean' -%}
+            {%- if filter.active_values.size > 0 -%}
+              {%- assign has_active_filters = true -%}
+            {%- endif -%}
+            {%- assign group_is_open = false -%}
+            {%- if filter.active_values.size > 0 and has_open_group == false -%}
+              {%- assign group_is_open = true -%}
+              {%- assign has_open_group = true -%}
+            {%- endif -%}
+            <details class="collection-filter-v2__group{% if filter.active_values.size > 0 %} has-selection{% endif %}" {% if group_is_open %}open{% endif %}>
+              <summary class="collection-filter-v2__summary">
+                <span class="collection-filter-v2__summary-label">{{ filter.label | escape }}
+                  <span class="collection-filter-v2__selected-check" aria-hidden="true">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="10" height="7" viewBox="0 0 10 7" fill="none">
+                      <path d="M2.98967 6.61917L0 3.64617L0.612667 3.01667L2.98967 5.39367L8.4 0L9.01267 0.612834L2.98967 6.61917Z" fill="black"/>
+                    </svg>
+                  </span>
+                </span>
+                <span class="collection-filter-v2__toggle" aria-hidden="true"></span>
+              </summary>
+
+              <div class="collection-filter-v2__panel">
+                <ul class="collection-filter-v2__options{% if filter.values.size > 10 %} collection-filter-v2__options--multi-column{% endif %}">
+                  {%- for filter_value in filter.values -%}
+                    {%- assign option_id = id_prefix | append: '-' | append: filter.param_name | handleize | append: '-' | append: forloop.index -%}
+                    <li class="collection-filter-v2__option">
+                      <label class="collection-filter-v2__choice" for="{{ option_id }}">
+                        <input
+                          class="collection-filter-v2__input"
+                          id="{{ option_id }}"
+                          type="checkbox"
+                          name="{{ filter_value.param_name | escape }}"
+                          value="{{ filter_value.value | escape }}"
+                          {% if filter_value.active %}checked{% endif %}
+                        >
+                        <span class="collection-filter-v2__indicator" aria-hidden="true"></span>
+                        <span class="collection-filter-v2__choice-label">{{ filter_value.label | escape }}</span>
+                      </label>
+                    </li>
+                  {%- endfor -%}
+                </ul>
+              </div>
+            </details>
+          {%- endif -%}
+        {%- endfor -%}
+      </div>
+
+      {%- if section.settings.enable_sorting -%}
+        <details class="collection-filter-v2__group collection-filter-v2__group--sort{% if filter_source.sort_by != blank and filter_source.sort_by != default_sort %} has-selection{% endif %}" {% unless has_open_group %}open{% endunless %}>
+          <summary class="collection-filter-v2__summary">
+            <span class="collection-filter-v2__summary-label">Sort By
+              <span class="collection-filter-v2__selected-check" aria-hidden="true">
+                <svg xmlns="http://www.w3.org/2000/svg" width="10" height="7" viewBox="0 0 10 7" fill="none">
+                  <path d="M2.98967 6.61917L0 3.64617L0.612667 3.01667L2.98967 5.39367L8.4 0L9.01267 0.612834L2.98967 6.61917Z" fill="black"/>
+                </svg>
+              </span>
+            </span>
+            <span class="collection-filter-v2__toggle" aria-hidden="true"></span>
+          </summary>
+          <div class="collection-filter-v2__panel">
+            <ul class="collection-filter-v2__options">
+              {%- for sort_key in sort_keys -%}
+                {%- capture sort_label -%}
+                  {%- case sort_key -%}
+                    {%- when 'manual' -%}{{ 'collections.sorting.featured' | t }}
+                    {%- when 'relevance' -%}{{ 'collections.sorting.relevance' | t }}
+                    {%- when 'created-descending' -%}{{ 'collections.sorting.new_in' | t }}
+                    {%- when 'price-ascending' -%}{{ 'collections.sorting.ascending_price' | t }}
+                    {%- when 'price-descending' -%}{{ 'collections.sorting.descending_price' | t }}
+                  {%- endcase -%}
+                {%- endcapture -%}
+                <li class="collection-filter-v2__option">
+                  <label class="collection-filter-v2__choice" for="{{ id_prefix }}-sort-{{ sort_key }}">
+                    <input class="collection-filter-v2__input" id="{{ id_prefix }}-sort-{{ sort_key }}" type="radio" name="sort_by" value="{{ sort_key }}" {% if current_sort == sort_key %}checked{% endif %}>
+                    <span class="collection-filter-v2__indicator" aria-hidden="true"></span>
+                    <span class="collection-filter-v2__choice-label">{{ sort_label | strip }}</span>
+                  </label>
+                </li>
+              {%- endfor -%}
+            </ul>
+          </div>
+        </details>
+      {%- elsif filter_source.sort_by != blank -%}
+        <input type="hidden" name="sort_by" value="{{ filter_source.sort_by | escape }}">
+      {%- endif -%}
+    </div>
+
+    <div class="collection-filter-v2__footer">
+      {%- if filter_source.sort_by != blank and filter_source.sort_by != default_sort -%}
+        {%- assign has_active_filters = true -%}
+      {%- endif -%}
+      <button class="collection-filter-v2__clear" type="button" data-collection-filter-clear{% unless has_active_filters %} hidden{% endunless %}>Clear all</button>
+      <button class="collection-filter-v2__submit" type="submit" data-collection-filter-app-submit>
+        Show <span data-collection-filter-app-result-count>{{ results_count }}</span> Items
+      </button>
+    </div>
+  </form>
+</div>
