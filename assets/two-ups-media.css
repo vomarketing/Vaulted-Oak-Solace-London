@@ -55,13 +55,6 @@
     --two-ups-media-pad-top-design: clamp(40px, 12dvh, 164px);
     --two-ups-media-pad-bottom: clamp(28px, 7dvh, 100px);
   }
-
-  /* The footer overlays the bottom of the last fullpage slide on desktop. */
-  @media (min-width: 768px) {
-    .is-last-slide & {
-      --two-ups-media-viewport-height: calc(100dvh - var(--footer-height, 0px));
-    }
-  }
 }
 
 /* A fullpage slide is always one screen tall, so natural height and custom

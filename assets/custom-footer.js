@@ -55,10 +55,7 @@ if (!window.FooterRevealController) {
       }
 
       if (window.fullpageScrollInstance?.swiper) {
-        const sw = window.fullpageScrollInstance.swiper;
-        const total = sw.slides ? sw.slides.length : 0;
-        const isLastSlide = total > 0 && sw.activeIndex === total - 1;
-        this.setVisible(isLastSlide);
+        this.setVisible(window.fullpageScrollInstance.isFooterVisible());
         return;
       }
 
@@ -75,10 +72,7 @@ if (!window.FooterRevealController) {
 
         if (window.fullpageScrollInstance?.swiper) {
           clearInterval(timer);
-          const sw = window.fullpageScrollInstance.swiper;
-          const total = sw.slides ? sw.slides.length : 0;
-          const isLastSlide = total > 0 && sw.activeIndex === total - 1;
-          this.setVisible(isLastSlide);
+          this.setVisible(window.fullpageScrollInstance.isFooterVisible());
         } else if (attempts >= maxAttempts) {
           clearInterval(timer);
         }
@@ -128,8 +122,14 @@ if (!window.FooterRevealController) {
       }, { passive: true, signal });
 
       document.addEventListener('fullpage:slideChange', (e) => {
-        if (e.detail && typeof e.detail.isLastSlide === 'boolean') {
-          this.setVisible(e.detail.isLastSlide);
+        if (typeof e.detail?.isFooterVisible === 'boolean') {
+          this.setVisible(e.detail.isFooterVisible);
+        }
+      }, { signal });
+
+      document.addEventListener('fullpage:footerChange', (e) => {
+        if (typeof e.detail?.isVisible === 'boolean') {
+          this.setVisible(e.detail.isVisible);
         }
       }, { signal });
 
@@ -139,10 +139,7 @@ if (!window.FooterRevealController) {
           this.checkVisibility();
           return;
         }
-        const sw = e.detail.swiper;
-        const total = sw.slides ? sw.slides.length : 0;
-        const isLastSlide = total > 0 && sw.activeIndex === total - 1;
-        this.setVisible(isLastSlide);
+        this.setVisible(e.detail.instance.isFooterVisible(e.detail.swiper));
       }, { signal });
 
       this.bindFooterInteraction(signal);
@@ -168,7 +165,9 @@ if (!window.FooterRevealController) {
       let touchStartY = 0;
       let isTouchDown = false;
 
+      // Where the footer is a step after the last slide, the fullpage controller handles wheel input.
       this.footer.addEventListener('wheel', (e) => {
+        if (window.fullpageScrollInstance?.hasFooterStep?.()) return;
         if (!this.footer.classList.contains(this.classes.isVisible)) return;
         if (this.footer.scrollTop > 0) return;
         if (e.deltaY < -15) {
