@@ -108,6 +108,7 @@
   padding: var(--two-ups-media-pad-top) 80px var(--two-ups-media-pad-bottom);
   gap: var(--two-ups-media-gap);
   box-sizing: border-box;
+  transition: all .3s ease;
 
   @media (min-width: 768px) {
     max-width: 495px;
@@ -140,6 +141,7 @@
   width: 100%;
   max-width: var(--two-ups-media-max-width);
   min-height: 0;
+  transition: all .3s ease;
 
   @media (min-width: 901px) {
     height: 100%;
