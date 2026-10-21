@@ -50,6 +50,24 @@
   }
 </script>
 
+<script>
+(function () {
+  var isIOS =
+    /iPhone|iPad|iPod/.test(navigator.userAgent) ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1); // iPadOS
+
+  if (isIOS) {
+    var meta = document.querySelector('meta[name="viewport"]');
+    if (meta) {
+      meta.setAttribute(
+        'content',
+        'width=device-width, initial-scale=1, maximum-scale=1'
+      );
+    }
+  }
+})();
+</script>
+
 {%- render 'iwish_v2' with component, component: "head-script" -%}
 {% comment %}
 
