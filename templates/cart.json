@@ -16,7 +16,7 @@
           "type": "accordion",
           "settings": {
             "title": "Need Help?",
-            "content": "<p>Our customer care team is available Monday to Friday, UK business hours to help with any queries. <a href=\"#ContactUSModal\" title=\"#ContactUSModal\">Contact us</a></p>",
+            "content": "<p>Our customer care team is available Monday to Friday, UK business hours to help with any queries. <a href=\"#contactUSModal\" title=\"#contactUSModal\">Contact us</a></p>",
             "show_payment_icons": false
           }
         },
