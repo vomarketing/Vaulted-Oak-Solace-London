@@ -66,6 +66,12 @@
         "label": "Delivery information"
       },
       {
+        "type": "text",
+        "id": "mbg_information_title",
+        "label": "Information Title",
+        "default": "More information"
+      },
+      {
         "type": "richtext",
         "id": "mbg_delivery_summary",
         "label": "Tooltip and empty bag text",

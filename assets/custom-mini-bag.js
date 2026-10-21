@@ -147,6 +147,13 @@
       mutate('add',data,form);
     });
     drawer.addEventListener('click', event => {
+      const contactTrigger = event.target.closest('[data-contact-modal-trigger], a[href*="#contactUSModal"]');
+      if (contactTrigger) {
+        if (!info.hidden) setInfo(false);
+        if (window.drawers) window.drawers.activeDrawerKey = '';
+        else drawer.classList.remove('drw-Drawer-active');
+        return;
+      }
       const button = event.target.closest('button');
       if (!button) return;
       if (button.matches('[data-mini-close]')) {

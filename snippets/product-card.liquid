@@ -135,6 +135,25 @@
         -%}
       </{{ image_tag }}>
     {%- endif -%}
+
+    {%- if enable_card_swipe and product.images.size > 1 -%}
+      {%- liquid
+        assign card_image_file = card_image.src | split: '?' | first | split: '/' | last
+        assign hover_image_file = hover_image.src | split: '?' | first | split: '/' | last
+      -%}
+      {%- for image in product.images -%}
+        {%- assign image_file = image.src | split: '?' | first | split: '/' | last -%}
+        {%- if image_file != card_image_file and image_file != hover_image_file -%}
+          <a class="prd-Card_Image prd-Card_Image-swipeOnly" href="{{ product_card_url }}" aria-label="{{ product.title | escape }}" tabindex="-1">
+            {%- render 'responsive-image',
+              image: image,
+              width: 1600,
+              height: 2382
+            -%}
+          </a>
+        {%- endif -%}
+      {%- endfor -%}
+    {%- endif -%}
   </div>
 
   <div class="prd-Card_Bottom">
