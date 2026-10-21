@@ -374,6 +374,12 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
   }
 }
 
+.clc-List .prd-Card_Image-swipeOnly {
+  @media (min-width: 1025px) {
+    display: none;
+  }
+}
+
 .clc-List .prd-Card_Image-hoverImage {
   @media (max-width: 1024px) {
     position: relative;
