@@ -337,6 +337,7 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
     overflow-x: auto;
     overflow-y: hidden;
     scroll-snap-type: x mandatory;
+    overscroll-behavior-x: none;
     scrollbar-width: none;
     -webkit-overflow-scrolling: touch;
 
