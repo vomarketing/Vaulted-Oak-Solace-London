@@ -1,4 +1,5 @@
-body .cky-consent-container.cky-box-bottom-left {
+body .cky-consent-container.cky-box-bottom-left,
+body .cky-consent-container.cky-banner-bottom {
   left: 40px;
   bottom: 40px;
   width: 450px;
@@ -7,7 +8,7 @@ body .cky-consent-container.cky-box-bottom-left {
 }
 
 body .cky-consent-container .cky-consent-bar {
-  padding: 30px 20px;
+  padding: 30px 20px !important;
   border: 0;
   border-radius: 0;
   box-shadow: none;
@@ -29,10 +30,10 @@ body .cky-consent-container .cky-notice-des,
 body .cky-consent-container .cky-notice-des *,
 body .cky-consent-container .cky-notice-btn-wrapper .cky-btn {
   font-family: var(--font-family-primary, Inter), sans-serif;
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 20px;
-  letter-spacing: 0;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  line-height: 20px !important;
+  letter-spacing: 0 !important;
   color: #000000 !important;
 }
 
@@ -55,8 +56,10 @@ body .cky-consent-container .cky-notice-des a {
 body .cky-consent-container .cky-notice-btn-wrapper {
   flex-direction: row;
   flex-wrap: wrap;
+  justify-content: flex-start !important;
   gap: 8px 20px;
   margin-top: 35px;
+  margin-left: 0 !important;
   padding: 0;
 }
 
@@ -66,7 +69,7 @@ body .cky-consent-container .cky-notice-btn-wrapper .cky-btn {
   width: auto;
   min-height: 0;
   margin: 0;
-  padding: 0;
+  padding: 0 !important;
   border: 0 !important;
   border-radius: 0;
   background: transparent !important;
@@ -105,9 +108,9 @@ body .cky-preference-center .cky-preference-header {
 }
 
 body .cky-preference-center .cky-preference-header .cky-preference-title {
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 18px;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  line-height: 18px !important;
   color: #000000 !important;
 }
 
@@ -125,9 +128,9 @@ body .cky-preference-center .cky-preference-content-wrapper,
 body .cky-preference-center .cky-preference-content-wrapper *,
 body .cky-preference-center .cky-accordion-header-des,
 body .cky-preference-center .cky-accordion-header-des * {
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 20px;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  line-height: 20px !important;
   color: #000000 !important;
 }
 
@@ -144,8 +147,8 @@ body .cky-preference-center .cky-preference-content-wrapper p:last-child {
 }
 
 body .cky-preference-center .cky-preference-content-wrapper .cky-show-desc-btn {
-  font-size: 12px;
-  line-height: 20px;
+  font-size: 12px !important;
+  line-height: 20px !important;
   color: #000000 !important;
   text-decoration: underline !important;
   text-underline-offset: 3px;
@@ -165,16 +168,16 @@ body .cky-preference-center .cky-accordion .cky-accordion-chevron i::before {
 }
 
 body .cky-preference-center .cky-accordion-header .cky-accordion-btn {
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 18px;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  line-height: 18px !important;
   color: #000000 !important;
 }
 
 body .cky-preference-center .cky-accordion-header .cky-always-active {
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 18px;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  line-height: 18px !important;
   color: rgba(0, 0, 0, 0.5) !important;
 }
 
@@ -196,8 +199,8 @@ body .cky-preference-center .cky-audit-table {
 
 body .cky-preference-center .cky-audit-table .cky-cookie-des-table,
 body .cky-preference-center .cky-audit-table .cky-empty-cookies-text {
-  font-size: 12px;
-  line-height: 20px;
+  font-size: 12px !important;
+  line-height: 20px !important;
   padding: 15px;
 }
 
@@ -241,10 +244,10 @@ body .cky-preference-center .cky-prefrence-btn-wrapper .cky-btn {
   width: auto;
   min-height: 0;
   margin: 0;
-  padding: 0;
-  font-size: 12px;
-  font-weight: 400;
-  line-height: 20px;
+  padding: 0 !important;
+  font-size: 12px !important;
+  font-weight: 400 !important;
+  line-height: 20px !important;
   color: #000000 !important;
   border: 0 !important;
   border-radius: 0;
@@ -269,8 +272,16 @@ body .cky-preference-center .cky-btn-close:focus-visible {
   outline-offset: 2px;
 }
 
+body .cky-consent-container .cky-notice-group {
+  @media (min-width: 1024px) {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+}
+
 @media (max-width: 1023px) {
-  body .cky-consent-container.cky-box-bottom-left {
+  body .cky-consent-container.cky-box-bottom-left,
+  body .cky-consent-container.cky-banner-bottom {
     left: 0;
     right: 0;
     bottom: 0;
@@ -279,7 +290,7 @@ body .cky-preference-center .cky-btn-close:focus-visible {
   }
 
   body .cky-consent-container .cky-consent-bar {
-    padding: 26px 20px;
+    padding: 26px 20px !important;
   }
 
   body .cky-consent-container .cky-notice-btn-wrapper {
@@ -289,7 +300,7 @@ body .cky-preference-center .cky-btn-close:focus-visible {
 
 @media (max-width: 767px) {
   body .cky-consent-container .cky-consent-bar {
-    padding: 26px 20px 37px;
+    padding: 26px 20px 37px !important;
   }
 
   body .cky-consent-container .cky-notice-des {
