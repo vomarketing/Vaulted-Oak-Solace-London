@@ -1,11 +1,7 @@
 /**
  * ios-input-zoom-fix.js
- *
- * Prevents iOS Safari from auto-zooming when focusing inputs/selects
- * that have font-size < 16px.
- * Usage: Add class `js-no-ios-zoom` to any input, select, or textarea
- * that needs this fix. No JS changes required when adding new fields.
- *
+ * Temporarily locks viewport scale while a `.js-no-ios-zoom` field is
+ * touched/focused, then restores the original viewport.
  */
 (() => {
   const ua = navigator.userAgent;
@@ -15,29 +11,40 @@
   if (!isIOS) return;
 
   const SELECTOR = '.js-no-ios-zoom';
-  const VIEWPORT_NO_ZOOM = 'width=device-width, initial-scale=1, maximum-scale=1';
-  const VIEWPORT_DEFAULT = 'width=device-width, initial-scale=1';
-
-  const viewport = document.querySelector('meta[name="viewport"]');
+  let viewport = document.querySelector('meta[name="viewport"]');
   if (!viewport) return;
 
-  document.addEventListener(
-    'focusin',
-    (e) => {
-      if (e.target && e.target.matches(SELECTOR)) {
-        viewport.setAttribute('content', VIEWPORT_NO_ZOOM);
-      }
-    },
-    { passive: true }
-  );
+  const ORIGINAL = viewport.getAttribute('content') || 'width=device-width, initial-scale=1';
+  const LOCKED =
+    ORIGINAL.replace(/,?\s*(maximum-scale|user-scalable)\s*=\s*[^,]+/gi, '') +
+    ', maximum-scale=1';
 
-  document.addEventListener(
-    'focusout',
-    (e) => {
-      if (e.target && e.target.matches(SELECTOR)) {
-        viewport.setAttribute('content', VIEWPORT_DEFAULT);
-      }
-    },
-    { passive: true }
-  );
+  let restoreTimer = null;
+
+  const applyViewport = (content) => {
+    if (viewport.getAttribute('content') === content) return;
+    const meta = document.createElement('meta');
+    meta.name = 'viewport';
+    meta.content = content;
+    viewport.replaceWith(meta);
+    viewport = meta;
+  };
+
+  const lock = () => {
+    clearTimeout(restoreTimer);
+    applyViewport(LOCKED);
+  };
+
+  const unlockLater = () => {
+    clearTimeout(restoreTimer);
+    restoreTimer = setTimeout(() => applyViewport(ORIGINAL), 300);
+  };
+
+  const isTarget = (e) => e.target instanceof Element && e.target.closest(SELECTOR);
+
+  document.addEventListener('touchstart', (e) => isTarget(e) && lock(), { passive: true, capture: true });
+  document.addEventListener('pointerdown', (e) => isTarget(e) && lock(), { passive: true, capture: true });
+
+  document.addEventListener('focusin', (e) => isTarget(e) && lock(), { passive: true });
+  document.addEventListener('focusout', (e) => isTarget(e) && unlockLater(), { passive: true });
 })();
