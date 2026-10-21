@@ -457,7 +457,9 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
 
   .clc-List .prd-Card_OverlayContent {
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 4px;
     opacity: 0;
     transform: translateY(20px);
     transition: opacity 0.5s ease, transform 0.5s ease;
@@ -470,17 +472,20 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
 
   .clc-List .prd-Card_Options {
     display: flex;
-    flex: 1;
+    flex: none;
+    width: 100%;
     flex-wrap: wrap;
-    justify-content: space-between;
-    margin-right: -8px;
-    margin-left: -8px;
+    justify-content: flex-start;
+    margin: 0;
   }
 
-  @media (max-width: 767px) {
-    .clc-List .prd-Card_Text {
-      margin-right: 12px;
-    }
+  .clc-List .prd-Card_Text {
+    margin: 8px 0 0;
+    white-space: nowrap;
+  }
+
+  .clc-List .prd-Card_Button {
+    padding: 8px 16px 8px 0;
   }
 }
 
