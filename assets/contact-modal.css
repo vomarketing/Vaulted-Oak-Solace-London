@@ -369,14 +369,12 @@
   border: 1px solid var(--color-black, #000000);
   border-radius: 0;
   cursor: pointer;
-  transition: background-color var(--transition-base, 0.25s ease),
-    color var(--transition-base, 0.25s ease),
-    border-color var(--transition-base, 0.25s ease);
+  transition: opacity 0.2s ease-in-out;
   touch-action: manipulation;
 
   &:hover {
-    background-color: var(--color-black, #000000);
-    color: var(--color-white, #ffffff);
+    text-decoration: underline;
+    text-underline-offset: 2px;
   }
 
   &:focus-visible {
