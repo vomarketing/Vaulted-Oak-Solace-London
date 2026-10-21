@@ -344,11 +344,6 @@
 }
 
 @media (min-width: 902px) {
-  button.mm-Link {
-    padding: 0; border: 0; background: none; appearance: none;
-    font: inherit; text-align: inherit; cursor: pointer;
-  }
-
   .mm-ImageWrap,
   .mm-Copy {
     max-width: 100%;

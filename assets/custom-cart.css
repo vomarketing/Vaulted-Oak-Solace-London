@@ -757,7 +757,8 @@ html:has(.bag-Info[open]) {
 
   @media (hover: hover) {
     &:hover .bag-Accordion_Title {
-      opacity: 0.5;
+      text-decoration: underline;
+      text-underline-offset: 3px;
     }
   }
 }

@@ -242,13 +242,23 @@
   min-height:42px;
   margin-top:20px;
   font-weight: 500;
+
+  &:hover {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
 }
 
 .mbg-Drawer .mbg-ViewCart{
   display:block;
   text-align:center;
   text-decoration:underline;
-  margin: 20px 0;
+  margin: 20px 0 0;
+  transition: opacity .2s ease;
+
+  &:hover {
+    opacity: 0.5;
+  }
 }
 
 .mbg-Drawer .mbg-Note {
@@ -267,12 +277,14 @@
 .mbg-Drawer .mbg-InfoButton {
   display: flex;
   justify-content: center;
-  background: #000;
-  color: #fff;
-  border-radius: 50%;
+  align-items: center;
+  background: #fff;
+  color: #000;
+  border-radius: 100%;
   width: 16px;
   height: 16px;
   line-height: 16px;
+  border: 1px solid #000;
 }
 
 .mbg-Drawer .mbg-InfoButton svg {

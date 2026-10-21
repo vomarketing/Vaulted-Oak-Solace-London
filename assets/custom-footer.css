@@ -192,11 +192,7 @@
     margin-block: auto;
     text-align: left;
 
-    @media (min-width: 768px) and (max-width: 1200px) {
-      max-width: 387px;
-    }
-
-    @media (min-width: 1201px) {
+    @media (min-width: 768px) {
       display: grid;
       margin-block: 0;
       grid-template-columns: minmax(0, 630fr) minmax(0, 397fr) minmax(0, 391fr) minmax(min-content, 422fr);
@@ -204,6 +200,10 @@
       grid-template-areas:
         "about primary secondary newsletter"
         "meta . . copyright";
+      gap: 20px 40px;
+    }
+
+    @media (min-width: 1201px) {
       gap: 20px 10px;
     }
   }
@@ -528,7 +528,8 @@
 
 .ft-NewsletterPopup_Interests legend {
   width: 100%;
-  margin-bottom: 10px;
+  margin-bottom: 14px;
+  padding-left: 0;
 }
 
 .ft-NewsletterPopup_Interests label {
@@ -560,10 +561,6 @@
   outline-offset: 3px;
 }
 
-.ft-NewsletterPopup_Form .ft-Newsletter_Disclaimer p {
-  font-size: 12px;
-}
-
 body.is-newsletter-popup-open {
   overflow: hidden;
 }
@@ -571,6 +568,10 @@ body.is-newsletter-popup-open {
 @media (max-width: 1200px) {
   .ft-NewsletterPopup {
     padding: 40px;
+  }
+
+  .ft-NewsletterPopup_Content {
+    padding-bottom: 30px;
   }
 }
 
@@ -593,6 +594,16 @@ body.is-newsletter-popup-open {
     width: 100%;
     border-right: none;
     border-left: none;
+  }
+
+  .ft-NewsletterPopup_Interests {
+    margin-bottom: 40px;
+  }
+}
+
+@media (max-width: 767px) {
+  .ft-NewsletterPopup_Content {
+    padding-bottom: 20px;
   }
 }
 

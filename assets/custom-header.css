@@ -81,6 +81,7 @@
   }
 
   .hd-MobileNav_Cart {
+    top: 0;
     width: 16px;
     height: 16px;
     background-color: var(--Color_Primary);
@@ -140,6 +141,12 @@
 
   .hd-MobileNav_CartCount {
     color: var(--Header_CountTextColor);
+  }
+
+  &[data-header-mode="dark"] {
+    .hd-MobileNav_CartCount {
+      color: var(--Header_TextColor);
+    }
   }
 
   .hd-MobileNav_Cart {
@@ -339,10 +346,12 @@
 }
 
 .drw-Drawer.drw-Drawer-search {
+  max-width: 774px;
   background-color: #fff;
   color: #000;
 
   .drw-Drawer_Inner {
+    max-width: unset;
     margin: 0 auto;
     padding: 40px;
   }

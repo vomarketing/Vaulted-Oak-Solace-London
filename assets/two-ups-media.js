@@ -21,7 +21,8 @@ if (!customElements.get('two-ups-media')) {
       swiper: 'swiper',
       swiperWrapper: 'swiper-wrapper',
       slide: 'swiper-slide',
-      sliderActive: 'two-ups-media--slider'
+      sliderActive: 'two-ups-media--slider',
+      scrollDriven: 'two-ups-media--scroll-driven'
     };
 
     static events = {
@@ -46,6 +47,7 @@ if (!customElements.get('two-ups-media')) {
       this.wheelAccumulator = 0;
       this.wheelTimeout = null;
       this.lastTransitionTime = 0;
+      this.scrollFrame = null;
     }
 
     connectedCallback() {
@@ -71,6 +73,7 @@ if (!customElements.get('two-ups-media')) {
       }
       this._bindFullpageEvents();
       this._bindGestures();
+      this._bindPageScroll();
       this._syncInitialState();
     }
 
@@ -130,12 +133,9 @@ if (!customElements.get('two-ups-media')) {
         },
         nested: isFullpage,
         resistanceRatio: 0,
-        touchReleaseOnEdges: !isFullpage,
+        allowTouchMove: isFullpage,
         watchOverflow: true,
-        mousewheel: {
-          forceToAxis: true,
-          releaseOnEdges: !isFullpage
-        },
+        mousewheel: isFullpage ? { forceToAxis: true, releaseOnEdges: false } : false,
         a11y: {
           enabled: true,
           prevSlideMessage: 'Previous image',
@@ -164,12 +164,41 @@ if (!customElements.get('two-ups-media')) {
       if (this._isCurrentSectionActive()) {
         this._lockHP();
       }
+
+      if (!isFullpage) {
+        this.style.setProperty('--two-ups-media-slides', String(slides.length));
+        this.classList.add(TwoUpsMedia.classes.scrollDriven);
+        this._syncToPageScroll();
+      }
     }
 
     _destroySwiper() {
       if (!this.swiper) return;
       this.swiper.destroy(true, true);
       this.swiper = null;
+      this.classList.remove(TwoUpsMedia.classes.scrollDriven);
+      this.style.removeProperty('--two-ups-media-slides');
+    }
+
+    _bindPageScroll() {
+      if (this._isFullpagePage()) return;
+      window.addEventListener('scroll', () => {
+        if (this.scrollFrame) return;
+        this.scrollFrame = requestAnimationFrame(() => {
+          this.scrollFrame = null;
+          this._syncToPageScroll();
+        });
+      }, { passive: true, signal: this.abortController.signal });
+    }
+
+    _syncToPageScroll() {
+      if (!this.swiper || !this.classList.contains(TwoUpsMedia.classes.scrollDriven)) return;
+      const lastIndex = this.swiper.slides.length - 1;
+      const rect = this.getBoundingClientRect();
+      const scrollable = rect.height - window.innerHeight;
+      const progress = scrollable > 0 ? Math.min(Math.max(-rect.top / scrollable, 0), 1) : 0;
+      const index = Math.round(progress * lastIndex);
+      if (index !== this.swiper.activeIndex) this.swiper.slideTo(index);
     }
 
     _getMySectionIndex() {
@@ -252,6 +281,7 @@ if (!customElements.get('two-ups-media')) {
 
       this.swiperEl.addEventListener('wheel', (e) => {
         if (!this.mq?.matches || !this.swiper) return;
+        if (!this._isFullpagePage()) return;
         if (!this._isCurrentSectionActive()) return;
 
         if (Date.now() - this.lastTransitionTime < TwoUpsMedia.config.transitionCooldown) {
@@ -393,6 +423,7 @@ if (!customElements.get('two-ups-media')) {
     }
 
     disconnectedCallback() {
+      cancelAnimationFrame(this.scrollFrame);
       this._unlockHP();
       this.abortController?.abort();
       this._destroySwiper();
