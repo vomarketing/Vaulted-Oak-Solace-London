@@ -150,6 +150,10 @@ if (!customElements.get('contact-modal')) {
     open(triggerEl = null) {
       if (this.isOpen) return;
 
+      if (window.drawers && window.drawers.activeDrawerKey) {
+        window.drawers.activeDrawerKey = '';
+      }
+
       this.isOpen = true;
       this.previousFocusElement = triggerEl || (document.activeElement instanceof HTMLElement ? document.activeElement : null);
       if (this.previousFocusElement) {
@@ -196,7 +200,18 @@ if (!customElements.get('contact-modal')) {
       if (this.previousFocusElement && typeof this.previousFocusElement.focus === 'function') {
         try {
           this.previousFocusElement.setAttribute('aria-expanded', 'false');
-          this.previousFocusElement.focus();
+          const drawer = this.previousFocusElement.closest('[data-module-drawers-drawer]');
+          if (drawer && !drawer.classList.contains('drw-Drawer-active')) {
+            const drawerKey = drawer.getAttribute('data-module-drawers-drawer');
+            const drawerTrigger = document.querySelector(`[data-module-drawers-trigger="${drawerKey}"]`);
+            if (drawerTrigger && typeof drawerTrigger.focus === 'function') {
+              drawerTrigger.focus();
+            } else {
+              this.previousFocusElement.focus();
+            }
+          } else {
+            this.previousFocusElement.focus();
+          }
         } catch (_) {}
       }
       this.previousFocusElement = null;
