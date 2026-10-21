@@ -5,7 +5,7 @@
 if (!window.FullpageScrollController) {
   class FullpageScrollController {
     static config = {
-      footerBreakpoint: 1201,
+      footerBreakpoint: 768,
       mobileBreakpoint: 900,
       animationDuration: 650,
       desktopWheelThreshold: 55,
