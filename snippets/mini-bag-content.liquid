@@ -71,8 +71,6 @@
       {% endif %}
       {% for discount in cart.cart_level_discount_applications %}<div class="mbg-Row"><span>{{ discount.title | escape }}</span><span>−{{ discount.total_allocated_amount | money }}</span></div>{% endfor %}
       <div class="mbg-Row"><span>Subtotal</span><span>{{ cart.total_price | money }}</span></div>
-      <form action="{{ routes.cart_url }}" method="post"><button class="mbg-Checkout" type="submit" name="checkout">Checkout</button></form>
-      <a class="mbg-ViewCart" href="{{ routes.cart_url }}">View your bag</a>
       {%- liquid
         assign mbg_note = settings.mbg_note_default
 
@@ -82,8 +80,10 @@
       -%}
 
       {% if mbg_note != blank %}
-        <p class="mbg-Note">{{ mbg_note | escape | newline_to_br }}</p>
+        <p class="mbg-Row mbg-Note">{{ mbg_note | escape | newline_to_br }}</p>
       {% endif %}
+      <form action="{{ routes.cart_url }}" method="post"><button class="mbg-Checkout" type="submit" name="checkout">Checkout</button></form>
+      <a class="mbg-ViewCart" href="{{ routes.cart_url }}">View your bag</a>
     </footer>
   {% endif %}
 </div>
