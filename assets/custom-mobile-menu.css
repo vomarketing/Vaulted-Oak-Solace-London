@@ -131,6 +131,10 @@
   margin-top: 40px;
 }
 
+.mobile-menu__shop > .hd-MobileMenu_Links-nested:first-child {
+  margin-top: 0;
+}
+
 .hd-MobileMenu_Item {
   margin: 0;
   padding: 0;
