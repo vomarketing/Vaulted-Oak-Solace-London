@@ -257,6 +257,7 @@
   -webkit-appearance: none;
   appearance: none;
   transition: border-bottom-color var(--transition-fast, 0.2s ease);
+  padding-bottom:6px;
 
   &:focus {
     border-bottom: 1px solid var(--color-black, #000000);
@@ -305,6 +306,7 @@
   align-items: center;
   justify-content: center;
   color: var(--color-black, #000000);
+  padding-bottom:10px;
 
   svg {
     display: block;
