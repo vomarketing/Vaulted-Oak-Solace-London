@@ -81,6 +81,7 @@
   }
 
   .hd-MobileNav_Cart {
+    top: 0;
     width: 16px;
     height: 16px;
     background-color: var(--Color_Primary);
