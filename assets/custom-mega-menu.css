@@ -152,7 +152,7 @@
     overflow-x: hidden;
     overflow-y: auto;
     overscroll-behavior: contain;
-    padding: 110px 40px 40px;
+    padding: 0 40px 40px;
     animation:
       mm-content-in 360ms ease-out var(--mm-content-delay) both,
       mm-content-drop 560ms cubic-bezier(0.22, 1, 0.36, 1) var(--mm-content-delay) both;
