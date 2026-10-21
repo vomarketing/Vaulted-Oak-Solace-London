@@ -58,7 +58,7 @@
         "help_label": "Help",
         "help_mobile_label": "Contact Us",
         "help_title": "Help",
-        "help_contact_enable": true,
+        "help_contact_enable": false,
         "help_contact_label": "Contact us",
         "help_contact_email": "",
         "help_contact_link": "shopify://pages/contact",
