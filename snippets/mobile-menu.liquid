@@ -93,13 +93,6 @@
               {%- endif -%}
             </li>
           {%- endfor -%}
-          {%- if shop.customer_accounts_enabled -%}
-            <li class="hd-MobileMenu_Item hd-MobileMenu_Item-account">
-              <a class="hd-MobileMenu_Link" href="{{ routes.account_url }}" {% if request.page_type contains 'customers' %}aria-current="page"{% endif %}>
-                {{ 'layout.header.account' | t }}
-              </a>
-            </li>
-          {%- endif -%}
           {%- assign mobile_need_help_menu = linklists[mobile_section.settings.mobile_need_help_menu] -%}
           {%- assign mobile_need_help_links = mobile_need_help_menu.links -%}
           {%- if mobile_need_help_links != blank -%}
