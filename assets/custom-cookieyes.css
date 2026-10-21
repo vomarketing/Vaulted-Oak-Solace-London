@@ -27,6 +27,7 @@ body .cky-consent-container .cky-banner-btn-close {
 
 body .cky-consent-container .cky-notice-group,
 body .cky-consent-container .cky-notice-des,
+body .cky-consent-container .cky-notice-des p,
 body .cky-consent-container .cky-notice-des *,
 body .cky-consent-container .cky-notice-btn-wrapper .cky-btn {
   font-family: var(--font-family-primary, Inter), sans-serif;
@@ -45,11 +46,12 @@ body .cky-consent-container .cky-notice-des p {
   margin: 0;
 }
 
-body .cky-consent-container .cky-notice-des a {
+body .cky-consent-container .cky-notice-des a,
+body .cky-consent-container .cky-notice-des a:visited {
   padding: 0;
   border: 0 !important;
   background: transparent !important;
-  text-decoration: underline;
+  text-decoration: underline !important;
   text-underline-offset: 3px;
 }
 
@@ -74,6 +76,7 @@ body .cky-consent-container .cky-notice-btn-wrapper .cky-btn {
   border-radius: 0;
   background: transparent !important;
   text-align: left;
+  white-space: nowrap;
   text-decoration: underline !important;
   text-underline-offset: 2px;
 }
@@ -273,10 +276,9 @@ body .cky-preference-center .cky-btn-close:focus-visible {
 }
 
 body .cky-consent-container .cky-notice-group {
-  @media (min-width: 768px) {
-    flex-direction: column;
-    align-items: flex-start;
-  }
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0 !important;
 }
 
 @media (max-width: 1023px) {
@@ -300,7 +302,7 @@ body .cky-consent-container .cky-notice-group {
 
 @media (max-width: 767px) {
   body .cky-consent-container .cky-consent-bar {
-    padding: 26px 20px 37px !important;
+    padding: 30px 20px 40px !important;
   }
 
   body .cky-consent-container .cky-notice-des {
@@ -309,7 +311,7 @@ body .cky-consent-container .cky-notice-group {
   }
 
   body .cky-consent-container .cky-notice-btn-wrapper {
-    margin-top: 36px;
+    margin-top: 40px;
   }
 
   body .cky-preference-center .cky-preference-header {
