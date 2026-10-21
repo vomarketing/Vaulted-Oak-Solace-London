@@ -143,6 +143,12 @@
     color: var(--Header_CountTextColor);
   }
 
+  &[data-header-mode="dark"] {
+    .hd-MobileNav_CartCount {
+      color: var(--Header_TextColor);
+    }
+  }
+
   .hd-MobileNav_Cart {
     background-color: transparent;
     border-radius: 0;
