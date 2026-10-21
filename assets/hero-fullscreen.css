@@ -359,6 +359,7 @@
       left: 20px;
       right: 20px;
       bottom: 14px;
+      z-index: 7;
       width: auto;
       max-width: none;
       height: 28px;
