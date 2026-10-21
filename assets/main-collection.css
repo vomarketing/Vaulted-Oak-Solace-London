@@ -187,7 +187,7 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
   flex: none;
   font-family: var(--font-family-primary);
   font-size: var(--type-12-size);
-  font-weight: var(--font-weight-medium);
+  font-weight: var(--font-weight-regular);
   gap: 6px;
   line-height: 18px;
 }
