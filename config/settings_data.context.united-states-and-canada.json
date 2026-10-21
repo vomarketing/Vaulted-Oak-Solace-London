@@ -1,0 +1,18 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "context": {
+    "market": "united-states-and-canada"
+  },
+  "current": {
+    "mbg_note_included": "Prices now include customs duties, import fees and taxes. No additional charges will be incurred upon delivery.",
+    "mbg_note_default": ""
+  }
+}

@@ -192,11 +192,7 @@
     margin-block: auto;
     text-align: left;
 
-    @media (min-width: 768px) and (max-width: 1200px) {
-      max-width: 387px;
-    }
-
-    @media (min-width: 1201px) {
+    @media (min-width: 768px) {
       display: grid;
       margin-block: 0;
       grid-template-columns: minmax(0, 630fr) minmax(0, 397fr) minmax(0, 391fr) minmax(min-content, 422fr);
@@ -204,6 +200,10 @@
       grid-template-areas:
         "about primary secondary newsletter"
         "meta . . copyright";
+      gap: 20px 40px;
+    }
+
+    @media (min-width: 1201px) {
       gap: 20px 10px;
     }
   }

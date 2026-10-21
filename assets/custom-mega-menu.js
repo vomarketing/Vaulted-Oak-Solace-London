@@ -77,7 +77,7 @@
       // Restore the page before an existing search/cart drawer takes focus.
       if (e.target.closest('[data-module-drawers-trigger]')) this.close(false);
       const link = e.target.closest('[data-mega-detail]');
-      if (link && this.panel?.contains(link)) {
+      if (link && this.panel?.contains(link) && e.pointerType !== 'mouse' && link !== this.selectedLink) {
         e.preventDefault();
         e.stopImmediatePropagation();
         if (this.state !== 'closing') this.select(link, e.detail === 0);

@@ -93,13 +93,6 @@
               {%- endif -%}
             </li>
           {%- endfor -%}
-          {%- if shop.customer_accounts_enabled -%}
-            <li class="hd-MobileMenu_Item hd-MobileMenu_Item-account">
-              <a class="hd-MobileMenu_Link" href="{{ routes.account_url }}" {% if request.page_type contains 'customers' %}aria-current="page"{% endif %}>
-                {{ 'layout.header.account' | t }}
-              </a>
-            </li>
-          {%- endif -%}
           {%- assign mobile_need_help_menu = linklists[mobile_section.settings.mobile_need_help_menu] -%}
           {%- assign mobile_need_help_links = mobile_need_help_menu.links -%}
           {%- if mobile_need_help_links != blank -%}
@@ -109,7 +102,7 @@
                 <ul class="hd-MobileMenu_HelpFeatured">
                   {%- for link in mobile_need_help_links limit: 2 -%}
                     {%- liquid
-                      assign mobile_help_parts = link.title | replace: '<br />', '<br>' | replace: '<br/>', '<br>' | split: '<br>'
+                      assign mobile_help_parts = link.title | replace: 'Arrow_', '' | replace: '<br />', '<br>' | replace: '<br/>', '<br>' | split: '<br>'
                       assign mobile_help_title = mobile_help_parts[0] | strip
                       assign mobile_help_description = mobile_help_parts[1] | strip
                       assign is_contact_modal = false
@@ -131,7 +124,9 @@
                           <span class="hd-MobileMenu_HelpLabel">{{ mobile_help_title | escape }}</span>
                           {%- if mobile_help_description != blank -%}<span class="hd-MobileMenu_HelpDescription">{{ mobile_help_description | escape }}</span>{%- endif -%}
                         </span>
-                        <span class="hd-MobileMenu_HelpArrow" aria-hidden="true"></span>
+                        {%- if link.title contains 'Arrow_' -%}
+                          <span class="hd-MobileMenu_HelpArrow" aria-hidden="true"></span>
+                        {%- endif -%}
                       </a>
                     </li>
                   {%- endfor -%}

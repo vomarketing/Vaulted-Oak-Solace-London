@@ -9,31 +9,63 @@
  */
 {
   "sections": {
-    "hero_fullscreen_8gXhRJ": {
+    "hero_fullscreen_aigzqq": {
+      "type": "hero-fullscreen",
+      "name": "Hero Fullscreen",
+      "settings": {
+        "media_type": "video",
+        "enable_custom_mobile_height": false,
+        "custom_mobile_height": 667,
+        "video_desktop": "shopify://files/videos/290726 SOLACE RESORT 27 OCTOBER 02 DELANO WEB.mp4",
+        "video_url_desktop": "",
+        "video_url_mobile": "",
+        "video_autoplay": true,
+        "show_video_controls": true,
+        "video_controls_content_layout": "below",
+        "show_overlay": false,
+        "overlay_opacity": 40,
+        "overlay_color": "#000000",
+        "header_contrast_mode": "light",
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "content_vertical_alignment": "bottom",
+        "heading": "",
+        "heading_font_size": "text-reg-14",
+        "heading_uppercase": false,
+        "description": "",
+        "cta_text": "Resort 27 Collection",
+        "cta_link": "shopify://collections/resort-27",
+        "cta_font_size": "text-reg-14",
+        "cta_uppercase": false
+      }
+    },
+    "hero_fullscreen_k4QYGJ": {
       "type": "hero-fullscreen",
       "name": "Hero Fullscreen",
       "settings": {
         "media_type": "image",
-        "image_desktop": "shopify://shop_images/03a48d106dae488ca858875dcb4be083d9d6f13d.jpg",
-        "image_mobile": "shopify://shop_images/03a48d106dae488ca858875dcb4be083d9d6f13d.jpg",
+        "image_desktop": "shopify://shop_images/Artboard_1.jpg",
+        "image_mobile": "shopify://shop_images/Artboard_1-01.jpg",
         "enable_custom_mobile_height": false,
         "custom_mobile_height": 667,
-        "video_desktop": "shopify://files/videos/homepage3.mp4",
-        "video_mobile": "shopify://files/videos/story.mp4",
         "video_url_desktop": "",
         "video_url_mobile": "",
         "video_autoplay": true,
         "show_video_controls": false,
-        "show_overlay": true,
+        "video_controls_content_layout": "above",
+        "show_overlay": false,
         "overlay_opacity": 40,
         "overlay_color": "#000000",
         "header_contrast_mode": "light",
-        "text_color": "white",
-        "heading": "Resort 2027",
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "content_vertical_alignment": "bottom",
+        "heading": "Veronika Kunz photographed by Sarah Blais",
         "heading_font_size": "text-reg-14",
         "heading_uppercase": false,
+        "description": "",
         "cta_text": "Shop Collection",
-        "cta_link": "shopify://collections",
+        "cta_link": "shopify://collections/resort-27",
         "cta_font_size": "text-reg-14",
         "cta_uppercase": false
       }
@@ -45,28 +77,28 @@
           "type": "item",
           "settings": {
             "media_type": "image",
-            "desktop_image": "shopify://shop_images/Image_18.png",
-            "mobile_image": "shopify://shop_images/Image_18.png",
+            "desktop_image": "shopify://shop_images/Artboard_1-06.jpg",
             "desktop_video_url": "",
             "mobile_video_url": "",
-            "text": "The Delano",
+            "text": "The Barbeau",
             "sub_text": "",
             "text_font_size": "text-reg-14",
             "text_uppercase": false,
-            "link": "#"
+            "link": "shopify://products/the-barbeau-maxi-dress-in-black"
           }
         },
         "item_cjJJ49": {
           "type": "item",
           "settings": {
-            "media_type": "video",
+            "media_type": "image",
+            "desktop_image": "shopify://shop_images/Artboard_1-07.jpg",
             "desktop_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
             "mobile_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
             "text": "Shop Now",
             "sub_text": "",
             "text_font_size": "text-reg-14",
             "text_uppercase": false,
-            "link": "#"
+            "link": "shopify://products/the-barbeau-maxi-dress-in-black"
           }
         }
       },
@@ -77,7 +109,8 @@
       "name": "Two Ups Media",
       "settings": {
         "layout_width": "contained",
-        "color_scheme": "light",
+        "background_color": "#ffffff",
+        "text_color": "#000000",
         "header_contrast_mode": "dark",
         "mobile_layout": "slider",
         "disable_full_page": false,
@@ -89,55 +122,81 @@
         "custom_mobile_padding_bottom": 0
       }
     },
-    "hero_fullscreen_hGpWfC": {
+    "hero_fullscreen_8gXhRJ": {
       "type": "hero-fullscreen",
       "name": "Hero Fullscreen",
       "settings": {
-        "media_type": "video",
+        "media_type": "image",
+        "image_desktop": "shopify://shop_images/Artboard_1-02.jpg",
+        "image_mobile": "shopify://shop_images/Artboard_1-03.jpg",
         "enable_custom_mobile_height": false,
         "custom_mobile_height": 667,
-        "video_url_desktop": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
-        "video_url_mobile": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
+        "video_url_desktop": "",
+        "video_url_mobile": "",
         "video_autoplay": true,
-        "show_video_controls": true,
+        "show_video_controls": false,
+        "video_controls_content_layout": "above",
         "show_overlay": false,
         "overlay_opacity": 40,
         "overlay_color": "#000000",
         "header_contrast_mode": "light",
-        "text_color": "white",
-        "heading": "Resort 2027",
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "content_vertical_alignment": "bottom",
+        "heading": "Resort 27",
         "heading_font_size": "text-reg-14",
         "heading_uppercase": false,
+        "description": "",
         "cta_text": "Shop Collection",
-        "cta_link": "#",
+        "cta_link": "shopify://collections/resort-27",
         "cta_font_size": "text-reg-14",
         "cta_uppercase": false
       }
     },
-    "featured_image_bdxxic": {
-      "type": "featured-image",
-      "name": "Featured Image",
+    "two_ups_media_daMdzi": {
+      "type": "two-ups-media",
+      "blocks": {
+        "item_GLQ4Wk": {
+          "type": "item",
+          "settings": {
+            "media_type": "image",
+            "desktop_image": "shopify://shop_images/Artboard_1-08.jpg",
+            "desktop_video_url": "",
+            "mobile_video_url": "",
+            "text": "The Delano",
+            "sub_text": "",
+            "text_font_size": "text-reg-14",
+            "text_uppercase": false,
+            "link": "shopify://products/the-delano-maxi-dress-in-black"
+          }
+        },
+        "item_xbFHzD": {
+          "type": "item",
+          "settings": {
+            "media_type": "image",
+            "desktop_image": "shopify://shop_images/Artboard_1-09.jpg",
+            "desktop_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
+            "mobile_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
+            "text": "Shop Now",
+            "sub_text": "",
+            "text_font_size": "text-reg-14",
+            "text_uppercase": false,
+            "link": "shopify://products/the-delano-maxi-dress-in-black"
+          }
+        }
+      },
+      "block_order": [
+        "item_GLQ4Wk",
+        "item_xbFHzD"
+      ],
+      "name": "Two Ups Media",
       "settings": {
+        "layout_width": "contained",
+        "background_color": "#ffffff",
+        "text_color": "#000000",
         "header_contrast_mode": "dark",
-        "desktop_image": "shopify://shop_images/Image_25.png",
-        "mobile_image": "shopify://shop_images/Image_26.png",
-        "image_link": "",
-        "text_content": "",
-        "text_left": "The Annie",
-        "text_left_link": "#",
-        "text_left_font_size": "text-reg-14",
-        "text_left_uppercase": false,
-        "text_right": "Shop Now",
-        "text_right_link": "#",
-        "text_right_font_size": "text-reg-14",
-        "text_right_uppercase": false,
-        "enable_custom_size": false,
-        "custom_width": 529,
-        "custom_height": 750,
-        "enable_custom_mobile_image_spacing": false,
-        "custom_mobile_image_padding_top": 0,
-        "custom_mobile_image_padding_bottom": 0,
-        "disable_full_height": false,
+        "mobile_layout": "slider",
+        "disable_full_page": false,
         "enable_custom_spacing": false,
         "custom_padding_top": 0,
         "custom_padding_bottom": 0,
@@ -151,75 +210,112 @@
       "name": "Hero Fullscreen",
       "settings": {
         "media_type": "image",
-        "image_desktop": "shopify://shop_images/Module_5_d9f299ea-0297-409d-aa4d-c7e2c1ce2483.png",
-        "image_mobile": "shopify://shop_images/Module_5__1.png",
+        "image_desktop": "shopify://shop_images/Artboard_1-04.jpg",
+        "image_mobile": "shopify://shop_images/Artboard_1-05.jpg",
         "enable_custom_mobile_height": false,
         "custom_mobile_height": 667,
         "video_url_desktop": "",
         "video_url_mobile": "",
         "video_autoplay": true,
         "show_video_controls": false,
-        "show_overlay": true,
+        "video_controls_content_layout": "above",
+        "show_overlay": false,
         "overlay_opacity": 40,
         "overlay_color": "rgba(0,0,0,0)",
         "header_contrast_mode": "light",
-        "text_color": "white",
-        "heading": "Resort 2027",
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "content_vertical_alignment": "bottom",
+        "heading": "Resort 27",
         "heading_font_size": "text-reg-14",
         "heading_uppercase": false,
+        "description": "",
         "cta_text": "Shop Collection",
-        "cta_link": "#",
+        "cta_link": "shopify://collections/resort-27",
         "cta_font_size": "text-reg-14",
         "cta_uppercase": false
       }
     },
-    "rich_text_QkDcqw": {
-      "type": "rich-text",
-      "name": "Rich text",
+    "two_ups_media_qyGArL": {
+      "type": "two-ups-media",
+      "blocks": {
+        "item_e6PDEg": {
+          "type": "item",
+          "settings": {
+            "media_type": "image",
+            "desktop_image": "shopify://shop_images/Artboard_1-10.jpg",
+            "desktop_video_url": "",
+            "mobile_video_url": "",
+            "text": "The Dandridge",
+            "sub_text": "",
+            "text_font_size": "text-reg-14",
+            "text_uppercase": false,
+            "link": "shopify://products/the-dandridge-maxi-dress-in-black"
+          }
+        },
+        "item_ccjBN6": {
+          "type": "item",
+          "settings": {
+            "media_type": "image",
+            "desktop_image": "shopify://shop_images/Artboard_1-11.jpg",
+            "desktop_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
+            "mobile_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
+            "text": "Shop Now",
+            "sub_text": "",
+            "text_font_size": "text-reg-14",
+            "text_uppercase": false,
+            "link": "shopify://products/the-dandridge-maxi-dress-in-black"
+          }
+        }
+      },
+      "block_order": [
+        "item_e6PDEg",
+        "item_ccjBN6"
+      ],
+      "name": "Two Ups Media",
       "settings": {
+        "layout_width": "contained",
+        "background_color": "#ffffff",
+        "text_color": "#000000",
         "header_contrast_mode": "dark",
-        "disable_full_height": false,
+        "mobile_layout": "slider",
+        "disable_full_page": false,
         "enable_custom_spacing": false,
-        "custom_padding_top": 160,
-        "custom_padding_bottom": 160,
+        "custom_padding_top": 0,
+        "custom_padding_bottom": 0,
         "enable_custom_mobile_spacing": false,
-        "custom_mobile_padding_top": 160,
-        "custom_mobile_padding_bottom": 160,
-        "text": "<p>The resort 2027 collection lets fabrication and technique driving the design process, the pair describe their aesthetic as “Bold, confident, refined. Modern futurism balanced with timeless minimalism”. The result is a distinctly graphic collection defined by precision cuts, craftsmanship and a signature look of sophistication.</p>",
-        "text_font_size": "text-reg-14",
-        "text_uppercase": false,
-        "link_text": "Shop Collection",
-        "link": "#",
-        "link_font_size": "text-reg-14",
-        "link_uppercase": false,
-        "max_width_desktop": 910,
-        "max_width_tablet": 589,
-        "max_width_mobile": 305
+        "custom_mobile_padding_top": 0,
+        "custom_mobile_padding_bottom": 0
       }
     },
-    "hero_fullscreen_rzid96": {
+    "hero_fullscreen_fnD3ha": {
       "type": "hero-fullscreen",
       "name": "Hero Fullscreen",
       "settings": {
         "media_type": "image",
-        "image_desktop": "shopify://shop_images/Module_7.png",
-        "image_mobile": "shopify://shop_images/Module_7__1.png",
+        "image_desktop": "shopify://shop_images/The_Newman_Black_LB_1.jpg",
+        "image_mobile": "shopify://shop_images/The_Newman_HP-Mobile_2.jpg",
         "enable_custom_mobile_height": false,
         "custom_mobile_height": 667,
-        "video_url_desktop": "",
-        "video_url_mobile": "",
+        "video_desktop": "shopify://files/videos/290726 SOLACE RESORT 27 SEPTEMBER 02 WEB.mp4",
+        "video_url_desktop": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
+        "video_url_mobile": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
         "video_autoplay": true,
         "show_video_controls": false,
-        "show_overlay": true,
-        "overlay_opacity": 20,
+        "video_controls_content_layout": "above",
+        "show_overlay": false,
+        "overlay_opacity": 40,
         "overlay_color": "#000000",
         "header_contrast_mode": "light",
-        "text_color": "white",
-        "heading": "Resort 2027",
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "content_vertical_alignment": "bottom",
+        "heading": "Resort 27",
         "heading_font_size": "text-reg-14",
         "heading_uppercase": false,
+        "description": "",
         "cta_text": "Shop Collection",
-        "cta_link": "#",
+        "cta_link": "shopify://collections/resort-27",
         "cta_font_size": "text-reg-14",
         "cta_uppercase": false
       }
@@ -228,6 +324,8 @@
       "type": "rich-text",
       "name": "Rich text",
       "settings": {
+        "background_color": "#ffffff",
+        "text_color": "#000000",
         "header_contrast_mode": "dark",
         "disable_full_height": false,
         "enable_custom_spacing": false,
@@ -236,7 +334,7 @@
         "enable_custom_mobile_spacing": false,
         "custom_mobile_padding_top": 160,
         "custom_mobile_padding_bottom": 160,
-        "text": "<p>Solace London is a British womenswear brand founded by Laura Taylor and Ryan Holliday-Stevens in 2013. Longtime friends and collaborators, the duo share a dynamic background spanning design, production, retail, marketing and creative direction. Their combined sensibilities are visible in pieces that continuously blur the line between statement making and wearability.</p>",
+        "text": "<p>Solace London is a British womenswear brand founded by Laura Taylor and Ryan Holliday-Stevens in 2013. Longtime friends and collaborators, the duo share a dynamic background spanning design, production, retail, marketing and creative direction. Their combined sensibilities are visible in pieces that continuously blur the line between statement making and wearability</p>",
         "text_font_size": "text-reg-14",
         "text_uppercase": false,
         "link_text": "",
@@ -250,13 +348,14 @@
     }
   },
   "order": [
-    "hero_fullscreen_8gXhRJ",
+    "hero_fullscreen_aigzqq",
+    "hero_fullscreen_k4QYGJ",
     "two_ups_media_HyFTNx",
-    "hero_fullscreen_hGpWfC",
-    "featured_image_bdxxic",
+    "hero_fullscreen_8gXhRJ",
+    "two_ups_media_daMdzi",
     "hero_fullscreen_PPmfBH",
-    "rich_text_QkDcqw",
-    "hero_fullscreen_rzid96",
+    "two_ups_media_qyGArL",
+    "hero_fullscreen_fnD3ha",
     "rich_text_PG7mfm"
   ]
 }
