@@ -393,10 +393,16 @@
       }
 
       .hero-fullscreen__cta {
-        margin: 0;
+        margin: 4px 0 0;
+        padding-bottom: 4px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+
+        &:hover {
+          text-decoration: underline;
+          text-underline-offset: 4px;
+        }
       }
 
       .hero-fullscreen__description p {
