@@ -104,6 +104,7 @@
       ],
       "name": "Main Product (New)",
       "settings": {
+        "show_breadcrumbs": false,
         "stock_note": "<p>Only a few left in stock</p>",
         "stock_threshold": 3,
         "wishlist_enable": true,
@@ -121,15 +122,24 @@
         "measure_waist_body": "Measure around the narrowest part of the waist",
         "measure_hip_title": "Low Hip",
         "measure_hip_body": "With your feet together, measure around the fullest part of the hips",
-        "size_guide_contact_text": "<p>Questions about size, fit & fabric? <a href=\"/pages/contact\">Contact us</a><br/>Available UK business hours Monday - Friday, 9am - 5pm</p>",
-        "contact_page": "shopify://pages/contact"
+        "size_guide_contact_text": "<p>Questions about size, fit & fabric? <a href=\"#contactUSModal\" title=\"#contactUSModal\">Contact us</a><br/>Available UK business hours Monday - Friday, 9am - 5pm</p>",
+        "contact_page": "#contactUSModal"
       }
     },
     "rich_text_NHU7La": {
       "type": "rich-text",
       "name": "Rich text",
       "settings": {
+        "background_color": "#ffffff",
+        "text_color": "#000000",
         "header_contrast_mode": "dark",
+        "disable_full_height": false,
+        "enable_custom_spacing": false,
+        "custom_padding_top": 160,
+        "custom_padding_bottom": 160,
+        "enable_custom_mobile_spacing": false,
+        "custom_mobile_padding_top": 160,
+        "custom_mobile_padding_bottom": 160,
         "text": "{{ product.metafields.custom.richtext_content_1 | metafield_tag }}",
         "text_font_size": "text-reg-14",
         "text_uppercase": false,
@@ -199,7 +209,16 @@
       "type": "rich-text",
       "name": "Rich text",
       "settings": {
+        "background_color": "#ffffff",
+        "text_color": "#000000",
         "header_contrast_mode": "dark",
+        "disable_full_height": false,
+        "enable_custom_spacing": false,
+        "custom_padding_top": 160,
+        "custom_padding_bottom": 160,
+        "enable_custom_mobile_spacing": false,
+        "custom_mobile_padding_top": 160,
+        "custom_mobile_padding_bottom": 160,
         "text": "<p>Solace London is a British womenswear brand founded by Laura Taylor and Ryan Holliday-Stevens in 2013. Longtime friends and collaborators, the duo share a dynamic background spanning design, production, retail, marketing and creative direction. Their combined sensibilities are visible in pieces that continuously blur the line between statement making and wearability</p>",
         "text_font_size": "text-reg-14",
         "text_uppercase": false,
