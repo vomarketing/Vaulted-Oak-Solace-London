@@ -8,8 +8,10 @@
  *
  */
 (() => {
-  // Only apply on iOS Safari – other browsers handle font-size zoom correctly.
-  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent) && !window.MSStream;
+  const ua = navigator.userAgent;
+  const isIOS =
+    /iPad|iPhone|iPod/.test(ua) ||
+    ((/Macintosh/.test(ua) || navigator.platform === 'MacIntel') && navigator.maxTouchPoints > 1);
   if (!isIOS) return;
 
   const SELECTOR = '.js-no-ios-zoom';
