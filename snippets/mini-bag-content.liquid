@@ -18,7 +18,9 @@
         {% if settings.mbg_delivery_summary != blank %}
           <div>{{ settings.mbg_delivery_summary }}</div>
         {% endif %}
-        <button type="button" class="mbg-Link" data-mini-info>More information</button>
+        {%- if settings.mbg_information_title != blank -%}
+          <button type="button" class="mbg-Link" data-mini-info>{{ settings.mbg_information_title | escape }}</button>
+        {%- endif -%}
         {% if settings.mbg_help_text != blank or settings.mbg_email != blank %}
           <div class="mbg-Help">
             <p>Need help?</p>
