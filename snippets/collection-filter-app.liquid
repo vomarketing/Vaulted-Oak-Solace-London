@@ -24,6 +24,11 @@
   assign id_prefix = context | default: 'collection' | append: '-filter-app-' | append: section.id
   assign has_open_group = false
   assign has_active_filters = false
+  assign country_code = localization.country.iso_code | upcase
+  assign is_us_market = false
+  if country_code == 'US' or localization.market.handle == 'us' or request.locale.root_url contains 'en-us'
+    assign is_us_market = true
+  endif
 -%}
 
 <div class="collection-filter-app collection-filter-v2" data-collection-filter-app>
@@ -48,6 +53,13 @@
               <input type="hidden" name="{{ filter_value.param_name | escape }}" value="{{ filter_value.value | escape }}">
             {%- endfor -%}
           {%- elsif filter.type == 'list' or filter.type == 'boolean' -%}
+            {%- liquid
+              assign filter_label = filter.label
+              assign normalized_filter_label = filter_label | handleize
+              if is_us_market and normalized_filter_label == 'uk-size'
+                assign filter_label = 'US Size'
+              endif
+            -%}
             {%- if filter.active_values.size > 0 -%}
               {%- assign has_active_filters = true -%}
             {%- endif -%}
@@ -58,7 +70,7 @@
             {%- endif -%}
             <details class="collection-filter-v2__group{% if filter.active_values.size > 0 %} has-selection{% endif %}" {% if group_is_open %}open{% endif %}>
               <summary class="collection-filter-v2__summary">
-                <span class="collection-filter-v2__summary-label">{{ filter.label | escape }}
+                <span class="collection-filter-v2__summary-label">{{ filter_label | escape }}
                   <span class="collection-filter-v2__selected-check" aria-hidden="true">
                     <svg xmlns="http://www.w3.org/2000/svg" width="10" height="7" viewBox="0 0 10 7" fill="none">
                       <path d="M2.98967 6.61917L0 3.64617L0.612667 3.01667L2.98967 5.39367L8.4 0L9.01267 0.612834L2.98967 6.61917Z" fill="black"/>
