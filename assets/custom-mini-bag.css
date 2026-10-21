@@ -242,6 +242,11 @@
   min-height:42px;
   margin-top:20px;
   font-weight: 500;
+
+  &:hover {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
 }
 
 .mbg-Drawer .mbg-ViewCart{
