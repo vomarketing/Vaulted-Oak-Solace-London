@@ -32,7 +32,7 @@
             {% endif %}
 
             {% if settings.mbg_email != blank %}
-              <a class="mbg-Link" href="mailto:{{ settings.mbg_email | escape }}">Email</a>
+              <a class="mbg-Link" href="mailto:{{ settings.mbg_email | escape }}">{{ settings.mbg_contact_label | default: 'Contact us' | escape }}</a>
             {% endif %}
           </div>
         {% endif %}
