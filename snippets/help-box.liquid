@@ -53,7 +53,7 @@
       </header>
 
       <div class="hb-HelpBox_Body">
-        {%- if contact_url != blank -%}
+        {%- if contact_url != blank and help.help_contact_enable -%}
           <a
             class="hb-HelpBox_Email"
             href="{{ contact_url }}"
