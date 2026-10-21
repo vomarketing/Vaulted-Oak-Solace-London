@@ -43,6 +43,7 @@
                   {{ link.title | escape }}
                 </button>
                 <div id="{{ mobile_view_id }}" class="hd-MobileMenu_Submenu" data-mobile-menu-submenu hidden>
+                {%- endunless -%}
                   {%- for group in mobile_menu.groups.value -%}
                     {%- if group.items.value != blank -%}
                       <ul class="hd-MobileMenu_Links hd-MobileMenu_Links-nested">
@@ -80,6 +81,7 @@
                   {%- endfor -%}
                 {%- unless link == mobile_shop_link -%}
                 </div>
+                {%- endunless -%}
               {%- elsif link.links.size > 0 -%}
                 {%- unless link == mobile_shop_link -%}
                 <button type="button" class="hd-MobileMenu_Link" data-mobile-menu-toggle-submenu aria-controls="{{ mobile_view_id }}" aria-expanded="false">
