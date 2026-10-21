@@ -12,7 +12,7 @@
     "main": {
       "type": "main-collection",
       "blocks": {
-        "filter_cjJ6AV": {
+        "filter_9gPtBJ": {
           "type": "filter",
           "settings": {
             "title": "Style",
@@ -20,7 +20,7 @@
             "filter_key": "style"
           }
         },
-        "filter_FPMteC": {
+        "filter_zfy9E4": {
           "type": "filter",
           "settings": {
             "title": "Collection",
@@ -39,7 +39,7 @@
         "6882eabe-3290-426c-aab9-c0a075faad80": {
           "type": "filter",
           "settings": {
-            "title": "Color",
+            "title": "Colour",
             "filter_all_text": "All Colours",
             "filter_key": "colour"
           }
@@ -54,16 +54,18 @@
         }
       },
       "block_order": [
+        "filter_9gPtBJ",
+        "filter_zfy9E4",
         "dd79c211-c9f5-4aa9-9e3d-e7b8c5559d75",
-        "filter_cjJ6AV",
         "6882eabe-3290-426c-aab9-c0a075faad80",
-        "03c39387-fb78-4965-abf0-213f5e02f02d",
-        "filter_FPMteC"
+        "03c39387-fb78-4965-abf0-213f5e02f02d"
       ],
       "settings": {
-        "use_search_and_discovery_filters": false,
+        "products_per_page": 30,
+        "mobile_columns": "2",
+        "use_search_and_discovery_filters": true,
         "enable_sorting": true,
-        "enable_first_image_last_tag": false,
+        "enable_first_image_last_tag": true,
         "set_first_image_as_hover": true
       }
     }
