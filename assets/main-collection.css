@@ -438,8 +438,18 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
   }
 
   @container (min-width: 360px) {
+    .clc-List .prd-Card_Bottom {
+      padding-top: 8px;
+    }
+
+    .clc-List .prd-Card_Overlay {
+      top: 0;
+      align-self: center;
+    }
+
     .clc-List .prd-Card_OverlayContent {
       justify-content: space-between;
+      padding-top: 0;
     }
 
     .clc-List .prd-Card_OverlayContent .prd-Card_Text {
@@ -452,6 +462,15 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
 
     .clc-List .prd-Card_Button {
       padding-inline: 0;
+    }
+
+    .clc-List .prd-Card_Wishlist {
+      position: static;
+      grid-column: 1;
+      grid-row: 1;
+      align-self: center;
+      justify-self: end;
+      transform: none;
     }
   }
 }
