@@ -392,6 +392,56 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
   padding-top: 0 !important;
 }
 
+@media (min-width: 1025px) {
+  .clc-List .prd-Card {
+    container-type: inline-size;
+  }
+
+  .clc-List .prd-Card_OverlayContent {
+    flex-wrap: wrap;
+    column-gap: 20px;
+    padding-top: 8px;
+  }
+
+  .clc-List .prd-Card_OverlayContent .prd-Card_Text {
+    flex: 0 0 100%;
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  .clc-List .prd-Card_Options {
+    flex: 1 0 max-content;
+    flex-wrap: nowrap;
+    margin: 0;
+  }
+
+  .clc-List .prd-Card_Button {
+    white-space: nowrap;
+  }
+
+  .clc-List .prd-Card_Option:first-child .prd-Card_Button {
+    padding-left: 0;
+  }
+
+  @container (min-width: 360px) {
+    .clc-List .prd-Card_OverlayContent {
+      justify-content: space-between;
+    }
+
+    .clc-List .prd-Card_OverlayContent .prd-Card_Text {
+      flex-basis: auto;
+    }
+
+    .clc-List .prd-Card_Options {
+      display: contents;
+    }
+
+    .clc-List .prd-Card_Button {
+      padding-inline: 0;
+    }
+  }
+}
+
 @media (max-width: 1024px) {
   .prd-Card_OverlayContent {
     display: none;
