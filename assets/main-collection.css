@@ -400,7 +400,6 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
   .clc-List .prd-Card_OverlayContent {
     flex-wrap: wrap;
     column-gap: 20px;
-    padding-top: 8px;
   }
 
   .clc-List .prd-Card_OverlayContent .prd-Card_Text {
