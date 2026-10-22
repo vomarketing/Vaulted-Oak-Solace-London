@@ -23,7 +23,7 @@
     visibility: visible;
   }
 
-  @media (min-width: 1201px) {
+  @media (min-width: 768px) {
     top: auto;
     bottom: -100px;
     height: auto;
@@ -40,7 +40,7 @@
     }
   }
 
-  @media (max-width: 1200px) {
+  @media (max-width: 767px) {
     body[data-fullpage-scroll] & {
       z-index: 1;
       opacity: 1;

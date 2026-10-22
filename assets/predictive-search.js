@@ -114,6 +114,7 @@ if (!customElements.get('predictive-search')) {
       const headerEls = document.querySelectorAll('.hd-Header, .lyt-Header');
       headerEls.forEach((el) => el.classList.remove('hd-Header-searchActive'));
       document.body.classList.remove('has-search-active', 'has-horizontal-search-active');
+      this.handleBlur();
     }
 
     bindEvents() {
@@ -174,7 +175,10 @@ if (!customElements.get('predictive-search')) {
         if (isActive) {
           setTimeout(() => {
             if (this.input) {
-              this.input.focus();
+              const isMobileOrTouch = window.matchMedia('(max-width: 901px), (pointer: coarse)').matches;
+              if (!isMobileOrTouch) {
+                this.input.focus();
+              }
               const val = this.input.value.trim();
               this.currentQuery = val;
               if (val.length > 0) {
@@ -187,6 +191,7 @@ if (!customElements.get('predictive-search')) {
             }
           }, 150);
         } else {
+          this.handleBlur();
           this.resetTimer = setTimeout(() => {
             this.resetSearch();
             this.updateValueState(false);
