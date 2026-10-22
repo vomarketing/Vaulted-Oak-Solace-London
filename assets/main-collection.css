@@ -392,7 +392,17 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
   padding-top: 0 !important;
 }
 
-@media (min-width: 1025px) {
+@media (hover: hover) and (pointer: fine) {
+  .clc-List .prd-Card:hover .prd-Card_Overlay {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .clc-List .prd-Card:hover .prd-Card_Content {
+    opacity: 0;
+    visibility: hidden;
+  }
+
   .clc-List .prd-Card {
     container-type: inline-size;
   }
@@ -409,12 +419,17 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
   }
 
   .clc-List .prd-Card_Options {
-    flex: 1 0 max-content;
-    flex-wrap: nowrap;
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    flex: 1 1 100%;
+    width: 100%;
+    min-width: 0;
     margin: 0;
   }
 
   .clc-List .prd-Card_Button {
+    padding-inline: 0;
     white-space: nowrap;
   }
 
@@ -441,7 +456,7 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
   }
 }
 
-@media (max-width: 1024px) {
+@media (max-width: 1024px) and (hover: none), (max-width: 1024px) and (pointer: coarse) {
   .prd-Card_OverlayContent {
     display: none;
   }
