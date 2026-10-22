@@ -396,6 +396,31 @@
   }
 }
 
+
+:is(
+  .hd-Header.hd-Header-searchActive,
+  body:is(.has-search-active, .has-horizontal-search-active, [data-active-drawer-key="search"], [data-active-drawer-key="searchHorizontal"]) .hd-Header,
+  body:has(:is(.drw-Drawer-search, .drw-Drawer-searchHorizontal).drw-Drawer-active) .hd-Header
+) {
+  :is(.hd-Nav_Cart, .hd-MobileNav_Cart) {
+    color: var(--color-black, #000) !important;
+
+    svg {
+      color: var(--color-black, #000) !important;
+      fill: var(--color-black, #000) !important;
+    }
+
+    &[data-cart-empty="false"] {
+      background-color: var(--color-black, #000) !important;
+      color: var(--color-white, #fff) !important;
+    }
+  }
+
+  :is(.hd-Nav_CartCount, .hd-MobileNav_CartCount) {
+    color: var(--color-white, #fff) !important;
+  }
+}
+
 /* Search Drawer Active Header State */
 @media (max-width: 1200px) {
   body.has-search-active .lyt-Header,
