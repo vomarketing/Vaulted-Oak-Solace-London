@@ -61,7 +61,9 @@
     text-decoration: none;
     cursor: pointer;
 
-    &:hover {
+    &:hover,
+    &:focus-visible,
+    &:active {
       text-decoration: underline;
       text-underline-offset: 4px;
     }
@@ -393,10 +395,12 @@
       }
 
       .hero-fullscreen__cta {
-        margin: 0;
+        margin: 4px 0 0;
+        padding-bottom: 4px;
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+
       }
 
       .hero-fullscreen__description p {

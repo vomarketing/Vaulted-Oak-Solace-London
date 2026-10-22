@@ -61,7 +61,7 @@
         if (submenu && this.menu.contains(submenu)) {
           const currentView = this.viewStack[this.viewStack.length - 1]?.element;
           const isLevelTwoDetail = submenu.classList.contains('hd-MobileMenu_Submenu-detail')
-            && submenu.parentElement?.closest(submenuSelector) === currentView;
+            && (submenu.parentElement?.closest(submenuSelector) || this.rootView) === currentView;
           if (isLevelTwoDetail) this.setAccordionOpen(submenu, submenu.hidden || submenu.inert, submenuToggle);
           else this.setSubmenuOpen(submenu, submenu.hidden || submenu.inert, false, submenuToggle);
         }
