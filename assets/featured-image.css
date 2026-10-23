@@ -55,18 +55,10 @@
   @media (min-width: 768px) {
     --featured-image-ratio: 596 / 845;
     --featured-image-max-width: 596px;
-    --featured-image-pad-inline: 0;
+    --featured-image-pad-inline: 0px;
     --featured-image-text-gap: 16px;
     --featured-image-header-offset: 56px;
     --featured-image-pad-bottom: clamp(16px, 4dvh, 40px);
-  }
-
-  @media (min-width: 901px) {
-    --featured-image-ratio: 977 / 623;
-  }
-
-  @media (min-width: 910px) {
-    --featured-image-max-width: 1027px;
   }
 
   @media (min-width: 1200px) {
@@ -86,7 +78,6 @@
   }
 
   @media (min-width: 1600px) {
-    --featured-image-max-width: 1230px;
     --featured-image-pad-top-design: clamp(40px, 12dvh, 164px);
     --featured-image-pad-bottom: clamp(28px, 12dvh, 164px);
   }
@@ -270,6 +261,7 @@
   .featured-image--custom-size .featured-image__image {
     width: 100%;
     height: auto;
+    aspect-ratio: var(--featured-image-custom-ratio);
   }
 }
 

@@ -1,4 +1,6 @@
-{{ 'main-collection.css' | asset_url | stylesheet_tag }}
+{%- unless request.page_type == 'collection' -%}
+  {{ 'main-collection.css' | asset_url | stylesheet_tag }}
+{%- endunless -%}
 {{ 'collection-pagination.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'main-collection.js' | asset_url }}" defer="defer"></script>
 

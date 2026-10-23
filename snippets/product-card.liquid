@@ -177,12 +177,14 @@
 
         {%- if show_add_to_bag_button and has_size_option and option_key -%}
           <div class="prd-Card_Meta">
-            {%- assign option_name = size_option.name -%}
-            {%- assign downcased_option_name = option_name | downcase -%}
-            {%- if downcased_option_name contains 'size' -%}
-              {%- assign option_name = 'products.product.size' | t -%}
-            {%- endif -%}
-            {{ option_name }} {{ current_variant[option_key] }}
+            {%- liquid
+              assign option_size_label = size_option.name
+              assign country_code = localization.country.iso_code | upcase
+              if country_code == 'US' or localization.market.handle == 'us' or request.locale.root_url contains 'en-us'
+                assign option_size_label = option_size_label | replace: 'UK', 'US' | replace: 'Uk', 'US'
+              endif
+            -%}
+            {{ option_size_label }} {{ current_variant[option_key] }}
           </div>
         {%- else -%}
           <div class="prd-Card_Price">
