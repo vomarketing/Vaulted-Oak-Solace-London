@@ -151,7 +151,7 @@
 
 .hd-MobileMenu_HelpTitle {
   margin: 0 0 20px;
-  color: #000;
+  color: var(--mobile-menu-text, #000);
   font-family: Inter, sans-serif;
   font-size: 12px;
   font-style: normal;
@@ -179,7 +179,7 @@
 }
 
 .hd-MobileMenu_HelpLink {
-  color: #000;
+  color: var(--mobile-menu-text, #000);
   font: inherit;
   text-decoration: none;
 }
@@ -214,7 +214,7 @@
   padding: 0;
   border: 0;
   background: transparent;
-  color: #000;
+  color: var(--mobile-menu-text, #000);
   font-family: Inter, sans-serif;
   font-size: 12px;
   font-style: normal;
@@ -232,7 +232,7 @@
 .hd-MobileMenu_Back,
 .hd-MobileMenu_ParentLink,
 .hd-MobileMenu_Actions a {
-  color: #000;
+  color: var(--mobile-menu-text, #000);
 }
 
 .hd-MobileMenu_Link:hover,
@@ -267,7 +267,7 @@
 
 .hd-MobileMenu_ActiveTitle {
   margin: 0;
-  color: #000;
+  color: var(--mobile-menu-text, #000);
   font: inherit;
 }
 
@@ -442,9 +442,9 @@
   flex: 0 0 55px;
   height: 55px;
   grid-template-columns: 1fr 1fr;
-  border-top: 1px solid #000;
-  background: #fff;
-  color: #000;
+  border-top: 1px solid currentColor;
+  background: var(--mobile-menu-background, #fff);
+  color: var(--mobile-menu-text, #000);
 }
 
 .hd-MobileMenu_Footer > * {
