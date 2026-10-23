@@ -37,9 +37,6 @@
               endif
             -%}
             <li class="hd-MobileMenu_Item{% if link == mobile_shop_link %} mobile-menu__shop{% endif %}">
-              {%- if link == mobile_shop_link -%}
-                <p class="hd-MobileMenu_ActiveTitle">{{ link.title | escape }}</p>
-              {%- endif -%}
               {%- if mobile_mega_block -%}
                 {%- assign mobile_menu = mobile_mega_block.settings.menu_content -%}
                 {%- unless link == mobile_shop_link -%}

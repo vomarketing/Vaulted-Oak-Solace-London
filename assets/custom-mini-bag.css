@@ -252,12 +252,13 @@
 .mbg-Drawer .mbg-ViewCart{
   display:block;
   text-align:center;
-  text-decoration:underline;
   margin: 20px 0 0;
   transition: opacity .2s ease;
 
   &:hover {
     opacity: 0.5;
+    text-decoration: underline;
+    text-underline-offset: 4px;
   }
 }
 
