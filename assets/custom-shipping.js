@@ -37,6 +37,34 @@
       });
     });
 
+    const closeSiblings = (current, siblings) => {
+      if (current.open) return;
+
+      const summary = current.querySelector(':scope > summary');
+      const topBefore = summary.getBoundingClientRect().top;
+
+      siblings.forEach((sibling) => {
+        if (sibling !== current) sibling.open = false;
+      });
+
+      const shift = summary.getBoundingClientRect().top - topBefore;
+      if (shift) window.scrollBy(0, shift);
+    };
+
+    panels.forEach((panel) => {
+      panel.querySelector(':scope > summary').addEventListener('click', () => {
+        if (mobileLayout.matches) closeSiblings(panel, panels);
+      });
+
+      const items = panel.querySelectorAll('.shipping-Page_Item');
+
+      items.forEach((item) => {
+        item.querySelector(':scope > summary').addEventListener('click', () => {
+          closeSiblings(item, items);
+        });
+      });
+    });
+
     syncLayout();
     mobileLayout.addEventListener('change', syncLayout);
 
