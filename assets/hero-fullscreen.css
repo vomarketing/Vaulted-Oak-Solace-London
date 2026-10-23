@@ -161,6 +161,19 @@
     }
   }
 
+  @media (max-width: 1023px), (hover: none) {
+    &:not([data-controls-visible]):not(:has(:focus-visible)) .hero-fullscreen__controls {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    &[data-controls-visible] .hero-fullscreen__controls,
+    &:has(:focus-visible) .hero-fullscreen__controls {
+      opacity: 1;
+      pointer-events: auto;
+    }
+  }
+
   .hero-fullscreen__timeline {
     display: grid;
     grid-template-columns: 44px minmax(0, 1fr) 44px;

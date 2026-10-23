@@ -31,11 +31,12 @@
               endfor
               assign mobile_link_key = link.title | handleize
               assign mobile_view_id = 'MobileMenu-' | append: mobile_section.id | append: '-' | append: mobile_link_key
+              assign mobile_inline = false
+              if mobile_mega_block
+                assign mobile_inline = true
+              endif
             -%}
             <li class="hd-MobileMenu_Item{% if link == mobile_shop_link %} mobile-menu__shop{% endif %}">
-              {%- if link == mobile_shop_link -%}
-                <p class="hd-MobileMenu_ActiveTitle">{{ link.title | escape }}</p>
-              {%- endif -%}
               {%- if mobile_mega_block -%}
                 {%- assign mobile_menu = mobile_mega_block.settings.menu_content -%}
                 {%- unless link == mobile_shop_link -%}

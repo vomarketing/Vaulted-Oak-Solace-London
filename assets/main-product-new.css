@@ -775,12 +775,6 @@ body.is-size-guide-active {
   flex-shrink: 0;
   width: 59px;
   height: 80px;
-  opacity: 0.3;
-  transition: opacity 0.3s ease-in-out;
-
-  &:hover {
-    opacity: 1;
-  }
 
   .rsp-Image {
     width: 100%;
