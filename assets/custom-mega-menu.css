@@ -271,6 +271,12 @@
     overflow: hidden;
   }
 
+  .mm-ImageLink {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
   .mm-Image {
     display: block;
     width: 100%;
@@ -389,20 +395,20 @@
 }
 
 @keyframes mm-open {
-  from { 
-    clip-path: inset(0 0 100% 0); 
+  from {
+    clip-path: inset(0 0 100% 0);
   }
-  to { 
-    clip-path: inset(0); 
+  to {
+    clip-path: inset(0);
   }
 }
 
 @keyframes mm-close {
-  from { 
-    clip-path: var(--mm-close-from, inset(0)); 
+  from {
+    clip-path: var(--mm-close-from, inset(0));
   }
-  to { 
-    clip-path: inset(0 0 100% 0); 
+  to {
+    clip-path: inset(0 0 100% 0);
   }
 }
 
