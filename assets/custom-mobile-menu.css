@@ -42,7 +42,7 @@
   overflow: hidden;
   padding-top: var(--mobile-menu-header-height, 60px);
   background: var(--mobile-menu-background, #fff);
-  color: #000;
+  color: var(--mobile-menu-text, #000);
   font-family: Inter, sans-serif;
   font-size: 12px;
   font-style: normal;
