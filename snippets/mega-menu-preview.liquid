@@ -12,6 +12,8 @@
     assign image_class = 'mm-Image hd-MobileMenu_Image'
     assign image_sizes = '(min-width: 590px) 60vw, 100vw'
   endif
+
+  assign item_url = item.destination_url.value | default: item.campaign_url.value | default: ''
 -%}
 <figure class="mm-Preview{% if mobile_menu_preview %} hd-MobileMenu_Preview{% endif %}" data-mega-preview="{{ item_id }}"
         data-orientation="{{ orientation | escape }}" data-size="{{ size | escape }}"
@@ -42,10 +44,12 @@
   {%- endif -%}
   {%- if preview_image != blank -%}
     <div class="mm-ImageWrap{% if mobile_menu_preview %} hd-MobileMenu_ImageWrap{% endif %}">
+      {%- if item_url != blank -%}<a class="mm-ImageLink{% if mobile_menu_preview %} hd-MobileMenu_ImageLink{% endif %}" href="{{- item_url -}}" aria-label="{{- item.label.value | prepend: 'Go to ' -}}">{%- endif -%}
       {{ preview_image | image_url: width: 1600 | image_tag:
       class: image_class, loading: 'lazy', widths: '320, 480, 640, 800, 1200, 1600',
       sizes: image_sizes
       }}
+      {%- if item_url != blank -%}</a>{%- endif -%}
     </div>
   {%- endif -%}
   {%- unless mobile_menu_preview -%}
