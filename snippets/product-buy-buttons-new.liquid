@@ -48,7 +48,14 @@
               <div class="pdp-size-row__inner">
                 <div class="pdp-size-row__header">
                   <span class="pdp-size-row__label text-reg-14">
-                    {{ option.name }}
+                    {%- liquid
+                      assign option_size_label = option.name
+                      assign country_code = localization.country.iso_code | upcase
+                      if country_code == 'US' or localization.market.handle == 'us' or request.locale.root_url contains 'en-us'
+                        assign option_size_label = option_size_label | replace: 'UK', 'US' | replace: 'Uk', 'US'
+                      endif
+                    -%}
+                    {{ option_size_label }}
                   </span>
                 </div>
 

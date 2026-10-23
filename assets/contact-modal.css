@@ -451,6 +451,12 @@ body.is-contact-modal-open {
   touch-action: none;
 }
 
+body:not(.is-contact-modal-open) {
+  #shop-hcaptcha-badge-container {
+    display: none !important;
+  }
+}
+
 /* --------------------------------------------------------------------------
    Accessibility (ADA / WCAG 2.2 AA)
    -------------------------------------------------------------------------- */
