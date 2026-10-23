@@ -396,92 +396,7 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
     opacity: 1;
     transition: none;
   }
-}
 
-@media (hover: hover) and (pointer: fine) {
-  .clc-List .prd-Card:hover .prd-Card_Overlay {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  .clc-List .prd-Card:hover .prd-Card_Content {
-    opacity: 0;
-    visibility: hidden;
-  }
-
-  .clc-List .prd-Card {
-    container-type: inline-size;
-  }
-
-  .clc-List .prd-Card_OverlayContent {
-    flex-wrap: wrap;
-    column-gap: 20px;
-  }
-
-  .clc-List .prd-Card_OverlayContent .prd-Card_Text {
-    flex: 0 0 100%;
-    margin: 0;
-    white-space: nowrap;
-  }
-
-  .clc-List .prd-Card_Options {
-    display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: minmax(0, 1fr);
-    flex: 1 1 100%;
-    width: 100%;
-    min-width: 0;
-    margin: 0;
-  }
-
-  .clc-List .prd-Card_Button {
-    padding-inline: 0;
-    white-space: nowrap;
-  }
-
-  .clc-List .prd-Card_Option:first-child .prd-Card_Button {
-    padding-left: 0;
-  }
-
-  @container (min-width: 360px) {
-    .clc-List .prd-Card_Bottom {
-      padding-top: 8px;
-    }
-
-    .clc-List .prd-Card_Overlay {
-      top: 0;
-      align-self: center;
-    }
-
-    .clc-List .prd-Card_OverlayContent {
-      justify-content: space-between;
-      padding-top: 0;
-    }
-
-    .clc-List .prd-Card_OverlayContent .prd-Card_Text {
-      flex-basis: auto;
-    }
-
-    .clc-List .prd-Card_Options {
-      display: contents;
-    }
-
-    .clc-List .prd-Card_Button {
-      padding-inline: 0;
-    }
-
-    .clc-List .prd-Card_Wishlist {
-      position: static;
-      grid-column: 1;
-      grid-row: 1;
-      align-self: center;
-      justify-self: end;
-      transform: none;
-    }
-  }
-}
-
-@media (max-width: 1024px) and (hover: none), (max-width: 1024px) and (pointer: coarse) {
   .prd-Card_OverlayContent {
     display: none;
   }
@@ -573,6 +488,83 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
     padding: 8px 16px 8px 0;
   }
 }
+
+@media (hover: hover) and (pointer: fine) {
+  .clc-List .prd-Card {
+    container-type: inline-size;
+  }
+
+  .clc-List .prd-Card_OverlayContent {
+    flex-direction: row;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 4px 20px;
+    padding-top: 8px;
+  }
+
+  .clc-List .prd-Card_OverlayContent .prd-Card_Text {
+    flex: 0 0 100%;
+    margin: 0;
+    white-space: nowrap;
+  }
+
+  .clc-List .prd-Card_Options {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    flex: 1 1 100%;
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+  }
+
+  .clc-List .prd-Card_Button {
+    padding: 8px 0;
+    white-space: nowrap;
+  }
+
+  .clc-List .prd-Card_Option:first-child .prd-Card_Button {
+    padding-left: 0;
+  }
+
+  @container (min-width: 360px) {
+    .clc-List .prd-Card_Bottom {
+      padding-top: 8px;
+    }
+
+    .clc-List .prd-Card_Overlay {
+      top: 0;
+      align-self: center;
+    }
+
+    .clc-List .prd-Card_OverlayContent {
+      justify-content: space-between;
+      padding-top: 0;
+    }
+
+    .clc-List .prd-Card_OverlayContent .prd-Card_Text {
+      flex-basis: auto;
+    }
+
+    .clc-List .prd-Card_Options {
+      display: contents;
+    }
+
+    .clc-List .prd-Card_Button {
+      padding-inline: 0;
+    }
+
+    .clc-List .prd-Card_Wishlist {
+      position: static;
+      grid-column: 1;
+      grid-row: 1;
+      align-self: center;
+      justify-self: end;
+      transform: none;
+    }
+  }
+}
+
 
 .clc-List .prd-Card_Content {
   font-family: var(--font-family-primary);
