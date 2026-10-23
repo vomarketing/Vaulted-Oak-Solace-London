@@ -24,10 +24,18 @@
       {%- endif -%}
       <div class="mm-Actions hd-MobileMenu_Actions">
         {%- if item.destination_url.value != blank -%}
-          <a class="mm-Action" href="{{ item.destination_url.value | escape }}">Shop All<span class="mm-SrOnly hd-MobileMenu_SrOnly"> — {{ item.label.value | escape }}</span></a>
+          {%- assign destination_label = item.destination_label.value | default: 'Shop All' -%}
+          <a class="mm-Action" href="{{ item.destination_url.value | escape }}">
+            {{- destination_label -}}
+            <span class="mm-SrOnly hd-MobileMenu_SrOnly"> — {{ item.label.value | escape }}</span>
+          </a>
         {%- endif -%}
         {%- if item.campaign_url.value != blank -%}
-          <a class="mm-Action" href="{{ item.campaign_url.value | escape }}">Discover Campaign<span class="mm-SrOnly hd-MobileMenu_SrOnly"> — {{ item.label.value | escape }}</span></a>
+          {%- assign campaign_label = item.campaign_label.value | default: 'Discover Campaign' -%}
+          <a class="mm-Action" href="{{ item.campaign_url.value | escape }}">
+            {{- campaign_label -}}
+            <span class="mm-SrOnly hd-MobileMenu_SrOnly"> — {{ item.label.value | escape }}</span>
+          </a>
         {%- endif -%}
       </div>
     </figcaption>
@@ -48,10 +56,18 @@
       {%- endif -%}
       <div class="mm-Actions">
         {%- if item.destination_url.value != blank -%}
-          <a class="mm-Action" href="{{ item.destination_url.value | escape }}">Shop All<span class="mm-SrOnly"> — {{ item.label.value | escape }}</span></a>
+          {%- assign destination_label = item.destination_label.value | default: 'Shop All' -%}
+          <a class="mm-Action" href="{{ item.destination_url.value | escape }}">
+            {{- destination_label -}}
+            <span class="mm-SrOnly"> — {{ item.label.value | escape }}</span>
+          </a>
         {%- endif -%}
         {%- if item.campaign_url.value != blank -%}
-          <a class="mm-Action" href="{{ item.campaign_url.value | escape }}">Discover Campaign<span class="mm-SrOnly"> — {{ item.label.value | escape }}</span></a>
+          {%- assign campaign_label = item.campaign_label.value | default: 'Discover Campaign' -%}
+          <a class="mm-Action" href="{{ item.campaign_url.value | escape }}">
+            {{- campaign_label -}}
+            <span class="mm-SrOnly"> — {{ item.label.value | escape }}</span>
+          </a>
         {%- endif -%}
       </div>
     </figcaption>
