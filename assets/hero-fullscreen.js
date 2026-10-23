@@ -65,6 +65,7 @@ if (!customElements.get('hero-fullscreen')) {
 
       this.initPlaybackToggle();
       this.initCustomControls();
+      this.initControlsVisibility();
       this.initIntersection();
       this.updatePlayUI();
       this.updateMuteUI();
@@ -124,11 +125,37 @@ if (!customElements.get('hero-fullscreen')) {
       this.listen(this, 'keydown', (event) => this.handleKeyboard(event));
     }
 
-    listen(element, eventName, handler) {
+    initControlsVisibility() {
+      if (!this.showControls) return;
+
+      const mobile = matchMedia('(max-width: 1023px), (hover: none)');
+      const reveal = () => {
+        if (!mobile.matches) return;
+        const bounds = this.getBoundingClientRect();
+        if (bounds.bottom <= 0 || bounds.top >= window.innerHeight) return;
+
+        this.setAttribute('data-controls-visible', '');
+        clearTimeout(this.controlsHideTimer);
+        const hide = () => {
+          if (this.seeking) {
+            this.controlsHideTimer = setTimeout(hide, 3000);
+            return;
+          }
+          this.removeAttribute('data-controls-visible');
+        };
+        this.controlsHideTimer = setTimeout(hide, 3000);
+      };
+
+      this.listen(this, 'pointerdown', reveal, { passive: true });
+      this.listen(this, 'touchmove', reveal, { passive: true });
+      this.listen(document, 'scroll', reveal, { capture: true, passive: true });
+    }
+
+    listen(element, eventName, handler, options) {
       if (!element) return;
 
-      element.addEventListener(eventName, handler);
-      this.listeners.push({ element, eventName, handler });
+      element.addEventListener(eventName, handler, options);
+      this.listeners.push({ element, eventName, handler, options });
     }
 
     togglePlayback() {
@@ -269,13 +296,15 @@ if (!customElements.get('hero-fullscreen')) {
     }
 
     disconnectedCallback() {
+      clearTimeout(this.controlsHideTimer);
+      this.removeAttribute('data-controls-visible');
       if (this.observer) {
         this.observer.disconnect();
         this.observer = null;
       }
 
-      this.listeners.forEach(({ element, eventName, handler }) => {
-        element.removeEventListener(eventName, handler);
+      this.listeners.forEach(({ element, eventName, handler, options }) => {
+        element.removeEventListener(eventName, handler, options);
       });
       this.listeners = [];
 

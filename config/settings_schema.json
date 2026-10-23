@@ -2,7 +2,7 @@
   {
     "name": "theme_info",
     "theme_name": "Solace London by BAO",
-    "theme_version": "1.0.0",
+    "theme_version": "1.1.1",
     "theme_author": "By Association Only",
     "theme_documentation_url": "https://github.com/baoagency/solace-london",
     "theme_support_url": "https://github.com/baoagency/solace-london/issues",
@@ -81,6 +81,13 @@
         "type": "text",
         "id": "mbg_email",
         "label": "Customer service email"
+      },
+      {
+        "type": "text",
+        "id": "mbg_contact_label",
+        "label": "Mini bag contact link label",
+        "default": "Contact us",
+        "info": "Text for the customer service link under Need help? in the mini bag."
       },
       {
         "type": "textarea",

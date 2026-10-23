@@ -78,7 +78,6 @@
 .shipping-Page_AccordionIcon {
   display: inline-flex;
   flex: 0 0 auto;
-  transition: transform 180ms ease;
 }
 
 .shipping-Page_Item[open] .shipping-Page_AccordionIcon {

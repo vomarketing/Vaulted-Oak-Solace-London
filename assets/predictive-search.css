@@ -76,14 +76,14 @@ predictive-search {
     padding-top: 40px;
   }
 
-  @media (max-width: 1200px) {
+  @media (max-width: 901px) {
     .drw-Drawer_Inner {
       padding: 0 20px;
       box-sizing: border-box;
     }
   }
 
-  @media (min-width: 768px) and (max-width: 1200px) {
+  @media (min-width: 768px) and (max-width: 901px) {
     .drw-Drawer_Inner,
     .pred-Horizontal_Inner {
       width: 100%;
@@ -99,7 +99,7 @@ predictive-search {
     }
   }
 
-  @media (min-width: 1201px) {
+  @media (min-width: 902px) {
     padding-top: 40px;
 
     /* Desktop Horizontal Drawer */
@@ -230,7 +230,11 @@ predictive-search {
   }
 }
 
-@media (min-width: 1201px) {
+@media (min-width: 902px) {
+  .drw-Drawers:has(.drw-Drawer-searchVertical.drw-Drawer-active) {
+    z-index: 103;
+  }
+
   .drw-Drawers .drw-Drawers_Backdrop {
     transition: opacity 0.3s ease 0.15s, visibility 0.3s ease 0.15s, background-color 0s linear 0.45s;
   }
@@ -303,7 +307,7 @@ predictive-search {
     }
   }
 
-  @media (max-width: 1200px) {
+  @media (max-width: 901px) {
     display: none !important;
   }
 }
@@ -342,7 +346,7 @@ predictive-search {
     height: 14px;
   }
 
-  @media (max-width: 1200px) {
+  @media (max-width: 901px) {
     display: none !important;
   }
 }
@@ -551,7 +555,7 @@ predictive-search {
   }
 }
 
-@media (min-width: 768px) and (max-width: 1200px) {
+@media (min-width: 768px) and (max-width: 901px) {
   .pred-Search {
     .pred-Search_FormWrapper {
       display: flex;
@@ -586,7 +590,7 @@ predictive-search {
   }
 }
 
-@media (min-width: 1201px) {
+@media (min-width: 902px) {
   .pred-Search {
     .pred-Search_Suggested .pred-Search_Heading {
       margin-bottom: 20px;

@@ -122,7 +122,8 @@
   &[data-header-mode="dark"] {
     .hd-Nav_Cart[data-cart-empty="false"],
     .hd-MobileNav_Cart[data-cart-empty="false"] {
-      .template-index & {
+      .template-index &,
+      .template-product & {
         background-color: var(--color-black);
       }
     }
@@ -145,7 +146,9 @@
 
   &[data-header-mode="dark"] {
     .hd-MobileNav_CartCount {
-      color: var(--Header_TextColor);
+      @media (min-with: 902px) {
+        color: var(--Header_TextColor);
+      }
     }
   }
 
@@ -266,6 +269,10 @@
       }
     }
   }
+}
+
+.hd-MobileNav_Item-search {
+  transform: none;
 }
 
 .hd-Header_NavBackdrop {
@@ -393,8 +400,50 @@
   }
 }
 
+
+@media (max-width: 901px) {
+  .drw-Drawer.drw-Drawer-search {
+    width: 100%;
+    max-width: 100%;
+    box-sizing: border-box;
+
+    .drw-Drawer_Inner,
+    .pred-Horizontal_Inner {
+      width: 100%;
+      max-width: 522px;
+      margin: 0 auto;
+      padding: 40px 20px;
+      box-sizing: border-box;
+    }
+  }
+}
+
+:is(
+  .hd-Header.hd-Header-searchActive,
+  body:is(.has-search-active, .has-horizontal-search-active, [data-active-drawer-key="search"], [data-active-drawer-key="searchHorizontal"]) .hd-Header,
+  body:has(:is(.drw-Drawer-search, .drw-Drawer-searchHorizontal).drw-Drawer-active) .hd-Header
+) {
+  :is(.hd-Nav_Cart, .hd-MobileNav_Cart) {
+    color: var(--color-black, #000) !important;
+
+    svg {
+      color: var(--color-black, #000) !important;
+      fill: var(--color-black, #000) !important;
+    }
+
+    &[data-cart-empty="false"] {
+      background-color: var(--color-black, #000) !important;
+      color: var(--color-white, #fff) !important;
+    }
+  }
+
+  :is(.hd-Nav_CartCount, .hd-MobileNav_CartCount) {
+    color: var(--color-white, #fff) !important;
+  }
+}
+
 /* Search Drawer Active Header State */
-@media (max-width: 1200px) {
+@media (max-width: 901px) {
   body.has-search-active .lyt-Header,
   body.has-search-active .hd-Header,
   body[data-active-drawer-key="search"] .lyt-Header,
@@ -432,12 +481,12 @@
   body[data-active-drawer-key="search"] .hd-MobileNav_Icon-close,
   body:has(.drw-Drawer-search.drw-Drawer-active) .hd-MobileNav_Icon-close {
     display: block !important;
-    width: 14px;
-    height: 14px;
+    width: 16px;
+    height: 15px;
   }
 }
 
-@media (min-width: 1201px) {
+@media (min-width: 902px) {
   .lyt-Header:has(.hd-Header-searchActive),
   .lyt-Header.hd-Header-searchActive,
   body.has-horizontal-search-active .lyt-Header,

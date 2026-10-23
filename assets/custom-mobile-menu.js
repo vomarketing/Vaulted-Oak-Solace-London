@@ -73,6 +73,10 @@
 
     open() {
       if (!this.media.matches) return;
+      if (document.querySelector('.drw-Drawer-search.drw-Drawer-active')) {
+        if (window.drawers) window.drawers.activeDrawerKey = '';
+        else document.querySelector('.drw-Drawer-search.drw-Drawer-active [data-module-drawers-close]')?.click();
+      }
       this.returnFocus = this.toggle;
       this.previousHeaderMode = this.header.getAttribute('data-header-mode');
       this.savedMenuColors = colorProperties.map((property) => [

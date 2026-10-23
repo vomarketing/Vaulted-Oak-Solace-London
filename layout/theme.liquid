@@ -52,6 +52,9 @@
     {%- render 'variables' -%}
     {%- render 'style-tags', layout: 'theme' -%}
     {%- render 'typography' -%}
+    {%- if request.page_type == 'collection' -%}
+      {{ 'main-collection.css' | asset_url | stylesheet_tag }}
+    {%- endif -%}
     {% comment %}
       Inlined: small above-the-fold CSS, avoids two render-blocking requests.
       hero-fullscreen.css lives here rather than in its section because the
@@ -88,6 +91,7 @@
     {%- render 'script-tags', layout: 'theme' -%}
 
     <script src="{{ 'custom-theme.js' | asset_url }}" defer="defer"></script>
+    <script src="{{ 'ios-input-zoom-fix.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'custom-fullpage-scroll.js' | asset_url }}" defer="defer"></script>
     <script src="{{ 'custom-mini-bag.js' | asset_url }}" defer="defer"></script>
     {%- if settings.wishlist_enable -%}
