@@ -6,6 +6,14 @@
   assign alignment = item.copy_alignment.value | default: 'left'
   assign spacing = item.copy_spacing.value | default: 'normal'
   assign preview_image = item.preview_image.value
+  assign show_destination_cta = false
+  if item.destination_url.value != blank and item.hide_destination_cta.value != true
+    assign show_destination_cta = true
+  endif
+  assign show_campaign_cta = false
+  if item.campaign_url.value != blank and item.hide_campaign_cta.value != true
+    assign show_campaign_cta = true
+  endif
   assign image_class = 'mm-Image'
   assign image_sizes = '(min-width: 1201px) 40vw, 100vw'
   if mobile_menu_preview
@@ -24,15 +32,16 @@
       {%- if item.preview_copy.value != blank -%}
         <div class="mm-Description hd-MobileMenu_Description">{{ item.preview_copy.value | escape | newline_to_br }}</div>
       {%- endif -%}
+      {%- if show_destination_cta or show_campaign_cta -%}
       <div class="mm-Actions hd-MobileMenu_Actions">
-        {%- if item.destination_url.value != blank -%}
+        {%- if show_destination_cta -%}
           {%- assign destination_label = item.destination_label.value | default: 'Shop All' -%}
           <a class="mm-Action" href="{{ item.destination_url.value | escape }}">
             {{- destination_label -}}
             <span class="mm-SrOnly hd-MobileMenu_SrOnly"> — {{ item.label.value | escape }}</span>
           </a>
         {%- endif -%}
-        {%- if item.campaign_url.value != blank -%}
+        {%- if show_campaign_cta -%}
           {%- assign campaign_label = item.campaign_label.value | default: 'Discover Campaign' -%}
           <a class="mm-Action" href="{{ item.campaign_url.value | escape }}">
             {{- campaign_label -}}
@@ -40,6 +49,7 @@
           </a>
         {%- endif -%}
       </div>
+      {%- endif -%}
     </figcaption>
   {%- endif -%}
   {%- if preview_image != blank -%}
@@ -58,15 +68,16 @@
       {%- if item.preview_copy.value != blank -%}
         <div class="mm-Description">{{ item.preview_copy.value | escape | newline_to_br }}</div>
       {%- endif -%}
+      {%- if show_destination_cta or show_campaign_cta -%}
       <div class="mm-Actions">
-        {%- if item.destination_url.value != blank -%}
+        {%- if show_destination_cta -%}
           {%- assign destination_label = item.destination_label.value | default: 'Shop All' -%}
           <a class="mm-Action" href="{{ item.destination_url.value | escape }}">
             {{- destination_label -}}
             <span class="mm-SrOnly"> — {{ item.label.value | escape }}</span>
           </a>
         {%- endif -%}
-        {%- if item.campaign_url.value != blank -%}
+        {%- if show_campaign_cta -%}
           {%- assign campaign_label = item.campaign_label.value | default: 'Discover Campaign' -%}
           <a class="mm-Action" href="{{ item.campaign_url.value | escape }}">
             {{- campaign_label -}}
@@ -74,6 +85,7 @@
           </a>
         {%- endif -%}
       </div>
+      {%- endif -%}
     </figcaption>
   {%- endif -%}
   {%- endunless -%}
