@@ -83,8 +83,8 @@
 .hd-Header[data-mobile-menu-open] .hd-MobileNav_Icon,
 .hd-Header[data-mobile-menu-open] .hd-MobileNav_Cart,
 .hd-Header[data-mobile-menu-open] .mb-MenuTrigger {
-  color: #000 !important;
-  fill: #000 !important;
+  color: var(--mobile-menu-text, #000) !important;
+  fill: var(--mobile-menu-text, #000) !important;
 }
 
 .hd-MobileMenu_Scroll {
@@ -245,7 +245,7 @@
 }
 
 .hd-MobileMenu_Link.is-open {
-  color: #000;
+  color: var(--mobile-menu-active, #000);
 }
 
 .hd-MobileMenu_Submenu {
