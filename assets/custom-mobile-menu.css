@@ -42,7 +42,7 @@
   overflow: hidden;
   padding-top: var(--mobile-menu-header-height, 60px);
   background: var(--mobile-menu-background, #fff);
-  color: #000;
+  color: var(--mobile-menu-text, #000);
   font-family: Inter, sans-serif;
   font-size: 12px;
   font-style: normal;
@@ -83,8 +83,8 @@
 .hd-Header[data-mobile-menu-open] .hd-MobileNav_Icon,
 .hd-Header[data-mobile-menu-open] .hd-MobileNav_Cart,
 .hd-Header[data-mobile-menu-open] .mb-MenuTrigger {
-  color: #000 !important;
-  fill: #000 !important;
+  color: var(--mobile-menu-text, #000) !important;
+  fill: var(--mobile-menu-text, #000) !important;
 }
 
 .hd-MobileMenu_Scroll {
@@ -151,7 +151,7 @@
 
 .hd-MobileMenu_HelpTitle {
   margin: 0 0 20px;
-  color: #000;
+  color: var(--mobile-menu-text, #000);
   font-family: Inter, sans-serif;
   font-size: 12px;
   font-style: normal;
@@ -179,7 +179,7 @@
 }
 
 .hd-MobileMenu_HelpLink {
-  color: #000;
+  color: var(--mobile-menu-text, #000);
   font: inherit;
   text-decoration: none;
 }
@@ -214,7 +214,7 @@
   padding: 0;
   border: 0;
   background: transparent;
-  color: #000;
+  color: var(--mobile-menu-text, #000);
   font-family: Inter, sans-serif;
   font-size: 12px;
   font-style: normal;
@@ -232,7 +232,7 @@
 .hd-MobileMenu_Back,
 .hd-MobileMenu_ParentLink,
 .hd-MobileMenu_Actions a {
-  color: #000;
+  color: var(--mobile-menu-text, #000);
 }
 
 .hd-MobileMenu_Link:hover,
@@ -245,7 +245,7 @@
 }
 
 .hd-MobileMenu_Link.is-open {
-  color: #000;
+  color: var(--mobile-menu-active, #000);
 }
 
 .hd-MobileMenu_Submenu {
@@ -267,7 +267,7 @@
 
 .hd-MobileMenu_ActiveTitle {
   margin: 0;
-  color: #000;
+  color: var(--mobile-menu-text, #000);
   font: inherit;
 }
 
@@ -345,6 +345,12 @@
   aspect-ratio: var(--mobile-preview-ratio);
   overflow: hidden;
   margin: 20px 0;
+}
+
+.hd-MobileMenu_ImageLink {
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
 .hd-MobileMenu_Image {
@@ -442,9 +448,9 @@
   flex: 0 0 55px;
   height: 55px;
   grid-template-columns: 1fr 1fr;
-  border-top: 1px solid #000;
-  background: #fff;
-  color: #000;
+  border-top: 1px solid currentColor;
+  background: var(--mobile-menu-background, #fff);
+  color: var(--mobile-menu-text, #000);
 }
 
 .hd-MobileMenu_Footer > * {

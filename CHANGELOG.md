@@ -1,6 +1,17 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## v1.1.3 - 2026-10-23
+
+### Changed
+
+- SL-98 Added fields into mega menu item metaobject to hide cta
+- SL-97 Fix mobile menu link color
+- SL-97 Update menu color based on mega menu item
+- SL-99 Update clickable image for mega menu item
+- SL-98 Update dynamic label for destination and campaign link
+- SL-97 Update color for menu text dynamically
+
 ## v1.1.2 - 2026-10-22
 
 ### Changed
