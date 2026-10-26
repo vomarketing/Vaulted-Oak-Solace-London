@@ -535,6 +535,7 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
     .clc-List .prd-Card_Overlay {
       top: 0;
       align-self: center;
+      margin-block: -8px;
     }
 
     .clc-List .prd-Card_OverlayContent {
