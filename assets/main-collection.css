@@ -15,7 +15,7 @@ body.template-collection.util-Drawer-active .hd-Header_Logo {
   flex-direction: column;
   justify-content: center;
   min-height: 18px;
-  margin-top: 50px;
+  margin-top: 8px;
   margin-bottom: 50px;
   background-color: transparent;
   transition: top 0.3s cubic-bezier(0.22, 1, 0.36, 1), min-height 0.3s cubic-bezier(0.22, 1, 0.36, 1);
