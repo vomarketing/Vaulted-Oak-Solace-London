@@ -121,6 +121,10 @@
   }
 }
 
+.shipping-Page_Answer--inline {
+  margin-top: 0;
+}
+
 .shipping-Page_RichText {
   margin: 0 0 16px;
   color: #000;
