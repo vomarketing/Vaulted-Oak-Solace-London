@@ -54,7 +54,10 @@
                           {%- liquid
                             assign show_mobile_item = false
                             assign mobile_image_orientation = item.image_orientation.value | default: 'portrait'
-                            assign mobile_image_size = item.image_size.value | default: 'medium'
+                            assign mobile_image_size = item.image_size.value | default: 'medium' | downcase
+                            if mobile_image_size == 'xl'
+                              assign mobile_image_size = 'large'
+                            endif
                             assign mobile_copy_placement = item.copy_placement.value | default: 'below'
                             assign mobile_copy_alignment = item.copy_alignment.value | default: 'left'
                             assign mobile_copy_spacing = item.copy_spacing.value | default: 'normal'

@@ -252,6 +252,14 @@
     --preview-ratio: 738 / 512;
   }
 
+  .mm-Preview[data-orientation="landscape"][data-size="xl"] {
+    --preview-width: min(
+      clamp(738px, calc(100vw * 1057 / 1920), 1057px),
+      calc(100vw - max(280px, calc(100vw * 513 / 1920)) - 40px - var(--mm-scrollbar-gap, 0px))
+    );
+    --preview-ratio: 1057 / 722;
+  }
+
   .mm-Preview[data-orientation="square"] {
     --preview-width: 422px;
     --preview-ratio: 1;
