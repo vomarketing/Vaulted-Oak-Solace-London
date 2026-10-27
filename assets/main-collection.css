@@ -160,6 +160,18 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
   @media (max-width: 500px) {
     max-width: 322px;
   }
+
+  p,
+  span,
+  div,
+  li,
+  a,
+  ol {
+    font-family: var(--font-family-primary);
+    font-size: var(--type-12-size);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--type-12-line-height);
+  }
 }
 
 .collection-header__description-full p {
