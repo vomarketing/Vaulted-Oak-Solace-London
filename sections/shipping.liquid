@@ -88,6 +88,14 @@
 								  {{ item.settings.content }}
 							  </div>
 						  {%- endif -%}
+					  {%- elsif item.settings.show_as_accordion == false -%}
+						  <div
+							  class="shipping-Page_Answer shipping-Page_Answer--inline rte-RichText"
+							  style="--shipping-answer-bold-weight: {{ item.settings.answer_font_weight | default: '500' }};"
+							  {{ item.shopify_attributes }}
+						  >
+							  {%- render 'shipping-answer-content', item: item -%}
+						  </div>
 					  {%- else -%}
 									  <details
 										  class="shipping-Page_Item"
@@ -102,42 +110,7 @@
 										  </summary>
 
 										  <div class="shipping-Page_Answer rte-RichText" style="--shipping-answer-bold-weight: {{ item.settings.answer_font_weight | default: '500' }};">
-											  {{ item.settings.answer_before_table }}
-
-											  {%- if item.settings.show_rates_table -%}
-												  {%- assign destinations = item.settings.table_destinations | newline_to_br | split: '<br />' -%}
-												  {%- assign delivery_times = item.settings.table_delivery_times | newline_to_br | split: '<br />' -%}
-												  {%- assign costs = item.settings.table_costs | newline_to_br | split: '<br />' -%}
-
-												  <div class="shipping-Page_TableWrap">
-													  <table class="shipping-Page_RatesTable">
-														  <thead>
-														  <tr>
-															  <th scope="col">{{ item.settings.table_heading_destination | escape }}</th>
-															  <th scope="col">{{ item.settings.table_heading_delivery | escape }}</th>
-															  <th scope="col">{{ item.settings.table_heading_cost | escape }}</th>
-														  </tr>
-														  </thead>
-														  <tbody>
-														  {%- for destination in destinations -%}
-															  {%- assign row_index = forloop.index0 -%}
-															  {%- assign delivery_time = delivery_times[row_index] | strip -%}
-															  {%- assign cost = costs[row_index] | strip -%}
-
-															  {%- if destination != blank -%}
-																  <tr>
-																	  <td>{{ destination | strip | escape }}</td>
-																	  <td>{{ delivery_time | escape }}</td>
-																	  <td>{{ cost | escape }}</td>
-																  </tr>
-															  {%- endif -%}
-														  {%- endfor -%}
-														  </tbody>
-													  </table>
-												  </div>
-											  {%- endif -%}
-
-											  {{ item.settings.answer_after_table }}
+											  {%- render 'shipping-answer-content', item: item -%}
 										  </div>
 									  </details>
 					  {%- endif -%}
@@ -182,9 +155,17 @@
           "default": "Shipping Charges"
         },
         {
+          "type": "checkbox",
+          "id": "show_as_accordion",
+          "label": "Display as sub-accordion",
+          "info": "Untick to show the content and table directly inside the main accordion.",
+          "default": true
+        },
+        {
           "type": "text",
           "id": "question",
           "label": "Accordion title",
+          "info": "Only used when displayed as a sub-accordion.",
           "default": "Delivery information"
         },
         {
@@ -268,7 +249,7 @@
         {
           "type": "checkbox",
           "id": "open_by_default",
-          "label": "Open by default",
+          "label": "Open sub-accordion by default",
           "default": false
         }
       ]
