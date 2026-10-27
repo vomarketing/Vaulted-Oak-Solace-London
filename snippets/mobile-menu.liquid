@@ -119,81 +119,13 @@
               {%- endif -%}
             </li>
           {%- endfor -%}
-          {%- assign mobile_need_help_menu = linklists[mobile_section.settings.mobile_need_help_menu] -%}
-          {%- assign mobile_need_help_links = mobile_need_help_menu.links -%}
-          {%- liquid
-            assign visible_help_links_count = 0
-            if mobile_section.settings.show_help_box and mobile_need_help_links != blank
-              for link in mobile_need_help_links
-                assign is_contact_check = false
-                if link.url contains 'mailto:' or link.url contains '#contactUSModal' or link.url contains '#contact-modal' or link.url contains '#contactUsModal' or link.url contains '/pages/contact' or link.url == mobile_section.settings.help_contact_link
-                  assign is_contact_check = true
-                endif
-                if is_contact_check and mobile_section.settings.help_contact_enable == false
-                  continue
-                endif
-                assign visible_help_links_count = visible_help_links_count | plus: 1
-              endfor
-            endif
-          -%}
-          {%- if visible_help_links_count > 0 -%}
+          {%- assign mobile_help_heading_id = 'MobileMenu-' | append: mobile_section.id | append: '-help-title' -%}
+          {%- capture mobile_help_markup -%}
+            {%- render 'nav-help-menu', section: mobile_section, class_prefix: 'hd-MobileMenu_', heading_id: mobile_help_heading_id -%}
+          {%- endcapture -%}
+          {%- if mobile_help_markup != blank -%}
             <li class="hd-MobileMenu_Item hd-MobileMenu_Item-help">
-              <section class="hd-MobileMenu_Help" aria-labelledby="MobileMenu-{{ mobile_section.id }}-help-title">
-                <h2 id="MobileMenu-{{ mobile_section.id }}-help-title" class="hd-MobileMenu_HelpTitle">{{ mobile_need_help_menu.title | escape }}</h2>
-                <ul class="hd-MobileMenu_HelpFeatured">
-                  {%- for link in mobile_need_help_links limit: 2 -%}
-                    {%- liquid
-                      assign mobile_help_parts = link.title | replace: 'Arrow_', '' | replace: '<br />', '<br>' | replace: '<br/>', '<br>' | split: '<br>'
-                      assign mobile_help_title = mobile_help_parts[0] | strip
-                      assign mobile_help_description = mobile_help_parts[1] | strip
-                      assign is_contact_modal = false
-                      if link.url contains 'mailto:' or link.url contains '#contactUSModal' or link.url contains '#contact-modal' or link.url contains '#contactUsModal' or link.url contains '/pages/contact' or link.url == mobile_section.settings.help_contact_link
-                        assign is_contact_modal = true
-                      endif
-                    -%}
-                    {%- if is_contact_modal and mobile_section.settings.help_contact_enable == false -%}
-                      {%- continue -%}
-                    {%- endif -%}
-                    <li class="hd-MobileMenu_HelpItem">
-                      <a
-                        class="hd-MobileMenu_HelpLink hd-MobileMenu_HelpLink-featured"
-                        href="{{ link.url | escape }}"
-                        {% if is_contact_modal %}
-                          data-contact-modal-trigger
-                          aria-haspopup="dialog"
-                          aria-controls="contactUSModal"
-                        {% endif %}
-                      >
-                        <span class="hd-MobileMenu_HelpCopy">
-                          <span class="hd-MobileMenu_HelpLabel">{{ mobile_help_title | escape }}</span>
-                          {%- if mobile_help_description != blank -%}<span class="hd-MobileMenu_HelpDescription">{{ mobile_help_description | escape }}</span>{%- endif -%}
-                        </span>
-                        {%- if link.title contains 'Arrow_' -%}
-                          <span class="hd-MobileMenu_HelpArrow" aria-hidden="true"></span>
-                        {%- endif -%}
-                      </a>
-                    </li>
-                  {%- endfor -%}
-                </ul>
-                {%- if mobile_need_help_links.size > 2 -%}
-                  <ul class="hd-MobileMenu_HelpLinks">
-                    {%- for link in mobile_need_help_links offset: 2 -%}
-                      {%- liquid
-                        assign is_contact_modal_offset = false
-                        if link.url contains 'mailto:' or link.url contains '#contactUSModal' or link.url contains '#contact-modal' or link.url contains '#contactUsModal' or link.url contains '/pages/contact' or link.url == mobile_section.settings.help_contact_link
-                          assign is_contact_modal_offset = true
-                        endif
-                      -%}
-                      {%- if is_contact_modal_offset and mobile_section.settings.help_contact_enable == false -%}
-                        {%- continue -%}
-                      {%- endif -%}
-                      <li class="hd-MobileMenu_HelpItem">
-                        <a class="hd-MobileMenu_HelpLink" href="{{ link.url | escape }}">{{ link.title | escape }}</a>
-                      </li>
-                    {%- endfor -%}
-                  </ul>
-                {%- endif -%}
-              </section>
+              {{ mobile_help_markup }}
             </li>
           {%- endif -%}
         </ul>

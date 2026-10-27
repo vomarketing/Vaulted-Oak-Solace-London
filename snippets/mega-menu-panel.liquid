@@ -41,6 +41,10 @@
           {%- endif -%}
         {%- endfor -%}
       </nav>
+      {%- if section.settings.show_desktop_help_menu -%}
+        {%- assign help_heading_id = panel_id | append: '-help-title' -%}
+        {%- render 'nav-help-menu', section: section, class_prefix: 'mm-', heading_id: help_heading_id -%}
+      {%- endif -%}
       <div class="mm-Previews">
         {%- for group in menu.groups.value -%}
           {%- assign group_index = forloop.index -%}

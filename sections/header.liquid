@@ -361,7 +361,7 @@
   </div>
   {%- for block in section.blocks -%}
     {%- if block.type == 'mega_menu' and block.settings.menu_content != blank -%}
-      {% render 'mega-menu-panel', block: block, section_id: section.id %}
+      {% render 'mega-menu-panel', block: block, section_id: section.id, section: section %}
     {%- endif -%}
   {%- endfor -%}
 
@@ -489,6 +489,13 @@
       "info": "Links shown under Need help in the mobile navigation drawer when Help box is enabled."
     },
     {
+      "type": "checkbox",
+      "id": "show_desktop_help_menu",
+      "label": "Show help menu on desktop",
+      "default": false,
+      "info": "Also shows the Mobile help menu links at the bottom of the desktop mega menu. Requires Show help box."
+    },
+    {
       "type": "header",
       "content": "Help box"
     },
@@ -497,7 +504,7 @@
       "id": "show_help_box",
       "label": "Show help box",
       "default": true,
-      "info": "Master toggle for the Help feature. When disabled, hides Help on desktop, the Help slide-out panel, the floating mobile button, and the mobile Need Help menu."
+      "info": "Master toggle for the Help feature. When disabled, hides Help on desktop, the Help slide-out panel, the floating mobile button, and the Need Help menu on mobile and desktop."
     },
     {
       "type": "text",

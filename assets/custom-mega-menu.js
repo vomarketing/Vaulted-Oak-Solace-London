@@ -74,8 +74,8 @@
         this.close();
         return;
       }
-      // Restore the page before an existing search/cart drawer takes focus.
-      if (e.target.closest('[data-module-drawers-trigger]')) this.close(false);
+      // Restore the page before an existing drawer or modal takes focus.
+      if (e.target.closest('[data-module-drawers-trigger],[data-help-box-open],[data-contact-modal-trigger],a[href*="#contactUSModal"]')) this.close(false);
       const link = e.target.closest('[data-mega-detail]');
       if (link && this.panel?.contains(link) && e.pointerType !== 'mouse' && link !== this.selectedLink) {
         e.preventDefault();
