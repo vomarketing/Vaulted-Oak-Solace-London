@@ -11,12 +11,22 @@
   assign alignment = item.copy_alignment.value | default: 'left'
   assign spacing = item.copy_spacing.value | default: 'normal'
   assign preview_image = item.preview_image.value
+  assign mobile_cta_placement = item.mobile_cta_placement.value | default: 'above'
+  assign hide_dest_field = item.hide_destination_cta.value
+  assign hide_camp_field = item.hide_campaign_cta.value
+
+  if mobile_menu_preview
+    assign hide_dest_field = item.hide_destination_cta_mobile.value
+    assign hide_camp_field = item.hide_campaign_cta_mobile.value
+  endif
+
   assign show_destination_cta = false
-  if item.destination_url.value != blank and item.hide_destination_cta.value != true
+  assign show_campaign_cta = false
+
+  if item.destination_url.value != blank and hide_dest_field != true
     assign show_destination_cta = true
   endif
-  assign show_campaign_cta = false
-  if item.campaign_url.value != blank and item.hide_campaign_cta.value != true
+  if item.campaign_url.value != blank and hide_camp_field != true
     assign show_campaign_cta = true
   endif
   assign image_class = 'mm-Image'
@@ -34,31 +44,38 @@
 <figure class="mm-Preview{% if mobile_menu_preview %} hd-MobileMenu_Preview{% endif %}" data-mega-preview="{{ item_id }}"
         data-orientation="{{ orientation | escape }}" data-size="{{ size | escape }}"
         data-placement="{{ placement | escape }}" data-alignment="{{ alignment | escape }}"
-        data-spacing="{{ spacing | escape }}"{% unless mobile_menu_preview %} aria-hidden="true" inert{% endunless %}>
+        data-spacing="{{ spacing | escape }}"{% if mobile_menu_preview %} data-mobile-cta-placement="{{ mobile_cta_placement | escape }}"{% endif %}{% unless mobile_menu_preview %} aria-hidden="true" inert{% endunless %}>
   {%- if mobile_menu_preview and item.enable_detail.value == true -%}
-    <figcaption id="{{ item_id }}-copy" class="mm-Copy hd-MobileMenu_Copy">
-      {%- if item.preview_copy.value != blank -%}
-        <div class="mm-Description hd-MobileMenu_Description">{{ item.preview_copy.value | escape | newline_to_br }}</div>
-      {%- endif -%}
-      {%- if show_destination_cta or show_campaign_cta -%}
-      <div class="mm-Actions hd-MobileMenu_Actions">
-        {%- if show_destination_cta -%}
-          {%- assign destination_label = item.destination_label.value | default: 'Shop All' -%}
-          <a class="mm-Action" href="{{ item.destination_url.value | escape }}">
-            {{- destination_label -}}
-            <span class="mm-SrOnly hd-MobileMenu_SrOnly"> — {{ item.label.value | escape }}</span>
-          </a>
+    {%- if show_destination_cta or show_campaign_cta -%}
+      {%- capture mobile_actions -%}
+        <div class="mm-Actions hd-MobileMenu_Actions{% if mobile_cta_placement == 'below' %} hd-MobileMenu_Actions--below{% endif %}">
+          {%- if show_destination_cta -%}
+            {%- assign destination_label = item.destination_label.value | default: 'Shop All' -%}
+            <a class="mm-Action" href="{{ item.destination_url.value | escape }}">
+              {{- destination_label -}}
+              <span class="mm-SrOnly hd-MobileMenu_SrOnly"> — {{ item.label.value | escape }}</span>
+            </a>
+          {%- endif -%}
+          {%- if show_campaign_cta -%}
+            {%- assign campaign_label = item.campaign_label.value | default: 'Discover Campaign' -%}
+            <a class="mm-Action" href="{{ item.campaign_url.value | escape }}">
+              {{- campaign_label -}}
+              <span class="mm-SrOnly hd-MobileMenu_SrOnly"> — {{ item.label.value | escape }}</span>
+            </a>
+          {%- endif -%}
+        </div>
+      {%- endcapture -%}
+    {%- endif -%}
+    {%- if item.preview_copy.value != blank or mobile_cta_placement != 'below' and mobile_actions != blank -%}
+      <figcaption id="{{ item_id }}-copy" class="mm-Copy hd-MobileMenu_Copy">
+        {%- if item.preview_copy.value != blank -%}
+          <div class="mm-Description hd-MobileMenu_Description">{{ item.preview_copy.value | escape | newline_to_br }}</div>
         {%- endif -%}
-        {%- if show_campaign_cta -%}
-          {%- assign campaign_label = item.campaign_label.value | default: 'Discover Campaign' -%}
-          <a class="mm-Action" href="{{ item.campaign_url.value | escape }}">
-            {{- campaign_label -}}
-            <span class="mm-SrOnly hd-MobileMenu_SrOnly"> — {{ item.label.value | escape }}</span>
-          </a>
+        {%- if mobile_cta_placement != 'below' -%}
+          {{ mobile_actions }}
         {%- endif -%}
-      </div>
-      {%- endif -%}
-    </figcaption>
+      </figcaption>
+    {%- endif -%}
   {%- endif -%}
   {%- if preview_image != blank -%}
     <div class="mm-ImageWrap{% if mobile_menu_preview %} hd-MobileMenu_ImageWrap{% endif %}">
@@ -69,6 +86,9 @@
       }}
       {%- if item_url != blank -%}</a>{%- endif -%}
     </div>
+  {%- endif -%}
+  {%- if mobile_menu_preview and item.enable_detail.value == true and mobile_cta_placement == 'below' -%}
+    {{ mobile_actions }}
   {%- endif -%}
   {%- unless mobile_menu_preview -%}
   {%- if item.enable_detail.value == true -%}
