@@ -31,11 +31,11 @@
         "background_color": "#000000",
         "text_color": "#ffffff",
         "content_vertical_alignment": "bottom",
-        "heading": "Resort 2027",
+        "heading": "Spring/Summer 27",
         "heading_font_size": "text-reg-14",
         "heading_uppercase": false,
         "description": "",
-        "cta_text": "Shop Collection",
+        "cta_text": "Shop The Collection",
         "cta_link": "shopify://collections",
         "cta_font_size": "text-reg-14",
         "cta_uppercase": false
