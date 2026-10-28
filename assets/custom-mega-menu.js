@@ -261,6 +261,7 @@
 
       this.state = 'closing';
       panel.dataset.state = 'closing';
+      this.header.setAttribute('data-mega-closing', '');
 
       let timer;
 
@@ -311,6 +312,7 @@
       oldTrigger?.setAttribute('aria-expanded', 'false');
       this.header.removeAttribute('data-mega-open');
       this.header.removeAttribute('data-mega-opening');
+      this.header.removeAttribute('data-mega-closing');
       for (const [name, value] of this.savedAttributes) {
         if (value === null) this.header.removeAttribute(name); else this.header.setAttribute(name, value);
       }
