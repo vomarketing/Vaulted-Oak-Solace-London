@@ -41,6 +41,38 @@
         "cta_uppercase": false
       }
     },
+    "hero_fullscreen_f4qGYd": {
+      "type": "hero-fullscreen",
+      "name": "Hero Fullscreen",
+      "settings": {
+        "media_type": "image",
+        "image_desktop": "shopify://shop_images/Screenshot_2026-10-28_at_11.31.29.png",
+        "enable_custom_mobile_height": false,
+        "custom_mobile_height": 667,
+        "video_desktop": "shopify://files/videos/homepage3.mp4",
+        "video_mobile": "shopify://files/videos/story.mp4",
+        "video_url_desktop": "",
+        "video_url_mobile": "",
+        "video_autoplay": true,
+        "show_video_controls": false,
+        "video_controls_content_layout": "above",
+        "show_overlay": true,
+        "overlay_opacity": 40,
+        "overlay_color": "#000000",
+        "header_contrast_mode": "light",
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "content_vertical_alignment": "bottom",
+        "heading": "Spring/Summer 27",
+        "heading_font_size": "text-reg-14",
+        "heading_uppercase": false,
+        "description": "",
+        "cta_text": "Shop The Collection",
+        "cta_link": "shopify://collections",
+        "cta_font_size": "text-reg-14",
+        "cta_uppercase": false
+      }
+    },
     "two_ups_media_HyFTNx": {
       "type": "two-ups-media",
       "blocks": {
@@ -305,6 +337,7 @@
   },
   "order": [
     "hero_fullscreen_8gXhRJ",
+    "hero_fullscreen_f4qGYd",
     "two_ups_media_HyFTNx",
     "hero_fullscreen_hGpWfC",
     "hero_fullscreen_e7nAPg",
