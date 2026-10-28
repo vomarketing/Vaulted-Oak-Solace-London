@@ -73,58 +73,6 @@
         "cta_uppercase": false
       }
     },
-    "two_ups_media_HyFTNx": {
-      "type": "two-ups-media",
-      "blocks": {
-        "item_TX7wpi": {
-          "type": "item",
-          "settings": {
-            "media_type": "image",
-            "desktop_image": "shopify://shop_images/Image_18.png",
-            "mobile_image": "shopify://shop_images/Image_18.png",
-            "desktop_video_url": "",
-            "mobile_video_url": "",
-            "text": "The Delano",
-            "sub_text": "",
-            "text_font_size": "text-reg-14",
-            "text_uppercase": false,
-            "link": "#"
-          }
-        },
-        "item_cjJJ49": {
-          "type": "item",
-          "settings": {
-            "media_type": "video",
-            "desktop_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
-            "mobile_video_url": "https://player.vimeo.com/progressive_redirect/playback/797567455/rendition/1080p/file.mp4?loc=external&signature=c770bcd9440792d63cc10555fd18d1445dca0465fe0f2b723eea75b3b6a2a8f2",
-            "text": "Shop Now",
-            "sub_text": "",
-            "text_font_size": "text-reg-14",
-            "text_uppercase": false,
-            "link": "#"
-          }
-        }
-      },
-      "block_order": [
-        "item_TX7wpi",
-        "item_cjJJ49"
-      ],
-      "name": "Two Ups Media",
-      "settings": {
-        "layout_width": "contained",
-        "background_color": "#ffffff",
-        "text_color": "#000000",
-        "header_contrast_mode": "dark",
-        "mobile_layout": "slider",
-        "disable_full_page": false,
-        "enable_custom_spacing": false,
-        "custom_padding_top": 0,
-        "custom_padding_bottom": 0,
-        "enable_custom_mobile_spacing": false,
-        "custom_mobile_padding_top": 0,
-        "custom_mobile_padding_bottom": 0
-      }
-    },
     "hero_fullscreen_hGpWfC": {
       "type": "hero-fullscreen",
       "name": "Hero Fullscreen",
@@ -153,71 +101,6 @@
         "cta_link": "#",
         "cta_font_size": "text-reg-14",
         "cta_uppercase": false
-      }
-    },
-    "hero_fullscreen_e7nAPg": {
-      "type": "hero-fullscreen",
-      "name": "Hero Fullscreen",
-      "settings": {
-        "media_type": "video",
-        "enable_custom_mobile_height": false,
-        "custom_mobile_height": 667,
-        "video_desktop": "shopify://files/videos/SOLACE 1 (FINAL MASTER).mp4",
-        "video_mobile": "shopify://files/videos/SOLACE 1 (FINAL MASTER).mp4",
-        "video_url_desktop": "",
-        "video_url_mobile": "",
-        "video_autoplay": true,
-        "show_video_controls": true,
-        "video_controls_content_layout": "above",
-        "show_overlay": true,
-        "overlay_opacity": 40,
-        "overlay_color": "#000000",
-        "header_contrast_mode": "light",
-        "background_color": "#000000",
-        "text_color": "#ffffff",
-        "content_vertical_alignment": "bottom",
-        "heading": "Resort 2027",
-        "heading_font_size": "text-reg-14",
-        "heading_uppercase": false,
-        "description": "",
-        "cta_text": "Shop Collection",
-        "cta_link": "",
-        "cta_font_size": "text-reg-14",
-        "cta_uppercase": false
-      }
-    },
-    "featured_image_bdxxic": {
-      "type": "featured-image",
-      "name": "Featured Image",
-      "settings": {
-        "background_color": "#ffffff",
-        "text_color": "#000000",
-        "header_contrast_mode": "dark",
-        "desktop_image": "shopify://shop_images/Image_25.png",
-        "mobile_image": "shopify://shop_images/Image_26.png",
-        "image_link": "",
-        "text_content": "",
-        "text_left": "The Annie",
-        "text_left_link": "#",
-        "text_left_font_size": "text-reg-14",
-        "text_left_uppercase": false,
-        "text_right": "Shop Now",
-        "text_right_link": "#",
-        "text_right_font_size": "text-reg-14",
-        "text_right_uppercase": false,
-        "enable_custom_size": false,
-        "custom_width": 529,
-        "custom_height": 750,
-        "enable_custom_mobile_image_spacing": false,
-        "custom_mobile_image_padding_top": 0,
-        "custom_mobile_image_padding_bottom": 0,
-        "disable_full_height": false,
-        "enable_custom_spacing": false,
-        "custom_padding_top": 0,
-        "custom_padding_bottom": 0,
-        "enable_custom_mobile_spacing": false,
-        "custom_mobile_padding_top": 0,
-        "custom_mobile_padding_bottom": 0
       }
     },
     "hero_fullscreen_PPmfBH": {
@@ -277,37 +160,6 @@
         "max_width_mobile": 305
       }
     },
-    "hero_fullscreen_rzid96": {
-      "type": "hero-fullscreen",
-      "name": "Hero Fullscreen",
-      "settings": {
-        "media_type": "image",
-        "image_desktop": "shopify://shop_images/Module_7.png",
-        "image_mobile": "shopify://shop_images/Module_7__1.png",
-        "enable_custom_mobile_height": false,
-        "custom_mobile_height": 667,
-        "video_url_desktop": "",
-        "video_url_mobile": "",
-        "video_autoplay": true,
-        "show_video_controls": false,
-        "video_controls_content_layout": "above",
-        "show_overlay": true,
-        "overlay_opacity": 20,
-        "overlay_color": "#000000",
-        "header_contrast_mode": "light",
-        "background_color": "#000000",
-        "text_color": "#ffffff",
-        "content_vertical_alignment": "bottom",
-        "heading": "Resort 2027",
-        "heading_font_size": "text-reg-14",
-        "heading_uppercase": false,
-        "description": "",
-        "cta_text": "Shop Collection",
-        "cta_link": "#",
-        "cta_font_size": "text-reg-14",
-        "cta_uppercase": false
-      }
-    },
     "rich_text_PG7mfm": {
       "type": "rich-text",
       "name": "Rich text",
@@ -338,13 +190,9 @@
   "order": [
     "hero_fullscreen_8gXhRJ",
     "hero_fullscreen_f4qGYd",
-    "two_ups_media_HyFTNx",
     "hero_fullscreen_hGpWfC",
-    "hero_fullscreen_e7nAPg",
-    "featured_image_bdxxic",
     "hero_fullscreen_PPmfBH",
     "rich_text_QkDcqw",
-    "hero_fullscreen_rzid96",
     "rich_text_PG7mfm"
   ]
 }
