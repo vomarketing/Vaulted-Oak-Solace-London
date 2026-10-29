@@ -14,7 +14,7 @@
       "name": "Hero Fullscreen",
       "settings": {
         "media_type": "image",
-        "image_desktop": "shopify://shop_images/Screenshot_2026-10-29_at_12.19.43.png",
+        "image_desktop": "shopify://shop_images/Screenshot_2026-10-29_at_12.28.46.png",
         "enable_custom_mobile_height": false,
         "custom_mobile_height": 667,
         "video_desktop": "shopify://files/videos/homepage3.mp4",
@@ -78,7 +78,7 @@
       "name": "Hero Fullscreen",
       "settings": {
         "media_type": "image",
-        "image_desktop": "shopify://shop_images/Screenshot_2026-10-28_at_13.01.36.png",
+        "image_desktop": "shopify://shop_images/Screenshot_2026-10-29_at_12.36.23.png",
         "enable_custom_mobile_height": false,
         "custom_mobile_height": 667,
         "video_desktop": "shopify://files/videos/SOLACE 1 (FINAL MASTER).mp4",
@@ -219,42 +219,11 @@
         "max_width_tablet": 589,
         "max_width_mobile": 305
       }
-    },
-    "hero_fullscreen_m3CeQj": {
-      "type": "hero-fullscreen",
-      "name": "Hero Fullscreen",
-      "settings": {
-        "media_type": "image",
-        "image_desktop": "shopify://shop_images/Screenshot_2026-10-29_at_12.28.46.png",
-        "enable_custom_mobile_height": false,
-        "custom_mobile_height": 667,
-        "video_url_desktop": "",
-        "video_url_mobile": "",
-        "video_autoplay": true,
-        "show_video_controls": false,
-        "video_controls_content_layout": "above",
-        "show_overlay": true,
-        "overlay_opacity": 40,
-        "overlay_color": "#000000",
-        "header_contrast_mode": "light",
-        "background_color": "#000000",
-        "text_color": "#ffffff",
-        "content_vertical_alignment": "bottom",
-        "heading": "Resort 2027",
-        "heading_font_size": "text-reg-14",
-        "heading_uppercase": false,
-        "description": "",
-        "cta_text": "Shop Collection",
-        "cta_link": "",
-        "cta_font_size": "text-reg-14",
-        "cta_uppercase": false
-      }
     }
   },
   "order": [
     "hero_fullscreen_8gXhRJ",
     "hero_fullscreen_f4qGYd",
-    "hero_fullscreen_m3CeQj",
     "hero_fullscreen_hGpWfC",
     "hero_fullscreen_LEQiD3",
     "hero_fullscreen_PPmfBH",
