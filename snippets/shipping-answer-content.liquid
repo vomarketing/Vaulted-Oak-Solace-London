@@ -1,0 +1,43 @@
+{%- comment -%}
+  Renders the body of a shipping_item block: content before table, optional rates table, content after table.
+
+  Accepts:
+  - item: {Object} shipping_item block
+{%- endcomment -%}
+
+{{ item.settings.answer_before_table }}
+
+{%- if item.settings.show_rates_table -%}
+  {%- assign destinations = item.settings.table_destinations | newline_to_br | split: '<br />' -%}
+  {%- assign delivery_times = item.settings.table_delivery_times | newline_to_br | split: '<br />' -%}
+  {%- assign costs = item.settings.table_costs | newline_to_br | split: '<br />' -%}
+
+  <div class="shipping-Page_TableWrap">
+    <table class="shipping-Page_RatesTable">
+      <thead>
+        <tr>
+          <th scope="col">{{ item.settings.table_heading_destination | escape }}</th>
+          <th scope="col">{{ item.settings.table_heading_delivery | escape }}</th>
+          <th scope="col">{{ item.settings.table_heading_cost | escape }}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {%- for destination in destinations -%}
+          {%- assign row_index = forloop.index0 -%}
+          {%- assign delivery_time = delivery_times[row_index] | strip -%}
+          {%- assign cost = costs[row_index] | strip -%}
+
+          {%- if destination != blank -%}
+            <tr>
+              <td>{{ destination | strip | escape }}</td>
+              <td>{{ delivery_time | escape }}</td>
+              <td>{{ cost | escape }}</td>
+            </tr>
+          {%- endif -%}
+        {%- endfor -%}
+      </tbody>
+    </table>
+  </div>
+{%- endif -%}
+
+{{ item.settings.answer_after_table }}

@@ -32,7 +32,7 @@
           "type": "description",
           "settings": {
             "content": "{{ product.description }}",
-            "font_size": "text-reg-14",
+            "font_size": "text-reg-12",
             "uppercase": false
           }
         },
@@ -46,9 +46,8 @@
         },
         "duties_taxes_d76MTJ": {
           "type": "duties_taxes",
-          "disabled": true,
           "settings": {
-            "text": "<em><strong>Prices now include import duties. No additional charges upon delivery</strong></em>",
+            "text": "Prices at checkout now include all duties and taxes. No additional charges upon delivery",
             "font_size": "text-reg-14",
             "uppercase": false,
             "enable_responsive": true,
@@ -62,25 +61,25 @@
             "fabric_care": "{{ product.metafields.custom.fabric_care | metafield_tag }}",
             "size_fit": "{{ product.metafields.custom.size_fit | metafield_tag }}",
             "size_fit_info": "For more information, see our",
-            "shipping_returns": "{{ product.metafields.custom.shipping_returns | metafield_tag }}"
+            "shipping_returns": "<p><strong>Delivery</strong></p><p>3–5 working days — $35</p><p>Orders are shipped from the UK via FedEx on a fully tracked service. Order by 2:30pm UK time, Monday–Friday, for same-day dispatch</p><p><strong>Returns</strong></p><p>Full-price items may be returned within 14 days of receipt. A $35 return shipping fee will be deducted from your refund</p><p>For full details, see <a href=\"/pages/shipping-returns\" title=\"Shipping & Returns\">Shipping & Returns</a>.</p>"
           }
         },
-        "duties_taxes_KWFFHd": {
+        "duties_taxes_tKmUTf": {
           "type": "duties_taxes",
-          "disabled": true,
           "settings": {
-            "text": "<em><strong>Prices now include import duties and fees. No additional charges upon delivery</strong></em>",
+            "text": "Prices at checkout now include all duties and taxes. No additional charges upon delivery.",
             "font_size": "text-reg-14",
             "uppercase": false,
             "enable_responsive": true,
             "responsive_target": "mobile"
           }
         },
-        "question_notes_K6GTGn": {
+        "question_notes_EMKQEF": {
           "type": "question_notes",
+          "disabled": true,
           "settings": {
             "question": "Questions about size, fit or fabric?",
-            "enable_responsive": true,
+            "enable_responsive": false,
             "responsive_target": "mobile"
           }
         },
@@ -98,23 +97,21 @@
         "buy_buttons_VGTxwz",
         "duties_taxes_d76MTJ",
         "tab_content_jWBbB7",
-        "duties_taxes_KWFFHd",
-        "question_notes_K6GTGn",
+        "duties_taxes_tKmUTf",
+        "question_notes_EMKQEF",
         "colorways_UnqVeT"
       ],
       "name": "Main Product (New)",
       "settings": {
-        "show_breadcrumbs": false,
         "stock_note": "<p>Only a few left in stock</p>",
-        "stock_threshold": 3,
         "wishlist_enable": true,
         "enable_sticky_atc_mobile": true,
-        "size_guide": "",
-        "size_guide_fit_title": "Fit",
+        "size_guide": "solace-standard-dress-guide",
+        "size_guide_fit_title": "Fit Details",
         "size_converter_title": "Size Guide",
         "size_converter_body": "<p>Find your closest size by comparing your body measurements with the size guide below. If you're between sizes, choose according to your preferred fit</p>",
         "how_to_measure_title": "How To Measure",
-        "how_to_measure_body": "<p>Find your closest size by comparing your body measurements with the size guide below. If you're between sizes, choose according to your preferred fit</p>",
+        "how_to_measure_body": "<p>Measure directly against the body without pulling the tape tight. Compare your measurements with the size chart above</p>",
         "measure_diagram_image": "shopify://shop_images/Illustration_1.png",
         "measure_bust_title": "Bust",
         "measure_bust_body": "Measure around the fullest part of the bust, keeping the tape level",
@@ -122,24 +119,15 @@
         "measure_waist_body": "Measure around the narrowest part of the waist",
         "measure_hip_title": "Low Hip",
         "measure_hip_body": "With your feet together, measure around the fullest part of the hips",
-        "size_guide_contact_text": "<p>Questions about size, fit & fabric? <a href=\"#contactUSModal\" title=\"#contactUSModal\">Contact us</a><br/>Available UK business hours Monday - Friday, 9am - 5pm</p>",
-        "contact_page": "#contactUSModal"
+        "size_guide_contact_text": "<p>Questions about size, fit & fabric? <a href=\"/pages/contact\">Contact us</a><br/>Available UK business hours Monday - Friday, 9am - 5pm</p>",
+        "contact_page": "shopify://pages/contact"
       }
     },
     "rich_text_NHU7La": {
       "type": "rich-text",
       "name": "Rich text",
       "settings": {
-        "background_color": "#ffffff",
-        "text_color": "#000000",
         "header_contrast_mode": "dark",
-        "disable_full_height": false,
-        "enable_custom_spacing": false,
-        "custom_padding_top": 160,
-        "custom_padding_bottom": 160,
-        "enable_custom_mobile_spacing": false,
-        "custom_mobile_padding_top": 160,
-        "custom_mobile_padding_bottom": 160,
         "text": "{{ product.metafields.custom.richtext_content_1 | metafield_tag }}",
         "text_font_size": "text-reg-14",
         "text_uppercase": false,
@@ -200,7 +188,7 @@
       "type": "related-products",
       "name": "Related Products",
       "settings": {
-        "title": "Shop The Collection",
+        "title": "Shop Resort 2027",
         "products": "{{ product.metafields.custom.recommended_products.value }}",
         "header_contrast_mode": "dark"
       }
@@ -209,16 +197,7 @@
       "type": "rich-text",
       "name": "Rich text",
       "settings": {
-        "background_color": "#ffffff",
-        "text_color": "#000000",
         "header_contrast_mode": "dark",
-        "disable_full_height": false,
-        "enable_custom_spacing": false,
-        "custom_padding_top": 160,
-        "custom_padding_bottom": 160,
-        "enable_custom_mobile_spacing": false,
-        "custom_mobile_padding_top": 160,
-        "custom_mobile_padding_bottom": 160,
         "text": "<p>Solace London is a British womenswear brand founded by Laura Taylor and Ryan Holliday-Stevens in 2013. Longtime friends and collaborators, the duo share a dynamic background spanning design, production, retail, marketing and creative direction. Their combined sensibilities are visible in pieces that continuously blur the line between statement making and wearability</p>",
         "text_font_size": "text-reg-14",
         "text_uppercase": false,

@@ -12,12 +12,11 @@
     "main": {
       "type": "main-search",
       "settings": {
-        "products_per_page": 30,
-        "mobile_columns": "2",
+        "products_per_page": 16,
         "enable_sorting": true,
         "enable_first_image_last_tag": false,
-        "set_first_image_as_hover": true,
-        "suggested_terms_limit": 3
+        "set_first_image_as_hover": false,
+        "suggested_terms_limit": 4
       }
     }
   },

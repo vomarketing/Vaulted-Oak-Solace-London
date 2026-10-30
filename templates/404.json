@@ -12,10 +12,10 @@
     "main": {
       "type": "404-header",
       "settings": {
-        "title": "Page not found",
-        "text": "Sorry, we couldn't find what you were looking for",
-        "link": "https://www.solacelondon.com",
-        "link_text": "Continue Shopping"
+        "title": "404 Error",
+        "text": "The page you're looking for can't be found",
+        "link": "/",
+        "link_text": "Back to Home"
       }
     }
   },

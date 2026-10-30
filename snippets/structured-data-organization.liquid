@@ -50,6 +50,12 @@
     assign same_as_string = same_as_string | append: '|' | append: settings.social_vimeo_link
   endif
   assign same_as = same_as_string | remove_first: '|' | split: '|'
+
+  assign phone_check = shop.phone | replace: '0', '' | replace: ' ', '' | replace: '-', '' | replace: '+', '' | replace: '(', '' | replace: ')', '' | replace: '.', ''
+  assign has_valid_phone = false
+  if shop.phone != blank and phone_check != blank
+    assign has_valid_phone = true
+  endif
 -%}
 
 <script type="application/ld+json">
@@ -65,15 +71,15 @@
   {%- if same_as_string != blank -%},
   "sameAs": {{ same_as | json }}
   {%- endif -%}
-  {%- if shop.email != blank or shop.phone != blank -%},
+  {%- if shop.email != blank or has_valid_phone -%},
   "contactPoint": {
     "@type": "ContactPoint",
     "contactType": "customer service"
     {%- if shop.email != blank -%},
     "email": {{ shop.email | json }}
     {%- endif -%}
-    {%- if shop.phone != blank -%},
-    "telephone": {{ shop.phone | json }}
+    {%- if has_valid_phone -%},
+    "telephone": {{ shop.phone | strip | json }}
     {%- endif -%}
   }
   {%- endif -%}

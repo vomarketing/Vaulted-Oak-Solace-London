@@ -15,7 +15,7 @@ body.template-collection.util-Drawer-active .hd-Header_Logo {
   flex-direction: column;
   justify-content: center;
   min-height: 18px;
-  margin-top: 50px;
+  margin-top: 8px;
   margin-bottom: 50px;
   background-color: transparent;
   transition: top 0.3s cubic-bezier(0.22, 1, 0.36, 1), min-height 0.3s cubic-bezier(0.22, 1, 0.36, 1);
@@ -137,11 +137,6 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
   margin: 0;
 }
 
-.collection-header__product-count {
-  display: inline-block;
-  margin-left: 2px;
-}
-
 .collection-header__description-preview,
 .collection-header__description-full {
   max-width: 570px;
@@ -159,6 +154,18 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
 
   @media (max-width: 500px) {
     max-width: 322px;
+  }
+
+  p,
+  span,
+  div,
+  li,
+  a,
+  ol {
+    font-family: var(--font-family-primary);
+    font-size: var(--type-12-size);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--type-12-line-height);
   }
 }
 
@@ -445,6 +452,11 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
     opacity: 1;
   }
 
+  .clc-List .prd-Card_Content,
+  .clc-List .prd-Card_Overlay {
+    transition: none;
+  }
+
   .clc-List .prd-Card:hover .prd-Card_Content {
     opacity: 0;
     visibility: hidden;
@@ -460,14 +472,9 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
     flex-direction: column;
     align-items: flex-start;
     gap: 4px;
-    opacity: 0;
-    transform: translateY(20px);
-    transition: opacity 0.5s ease, transform 0.5s ease;
-  }
-
-  .clc-List .prd-Card:hover .prd-Card_OverlayContent {
     opacity: 1;
     transform: none;
+    transition: none;
   }
 
   .clc-List .prd-Card_Options {
@@ -535,6 +542,7 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
     .clc-List .prd-Card_Overlay {
       top: 0;
       align-self: center;
+      margin-block: -8px;
     }
 
     .clc-List .prd-Card_OverlayContent {

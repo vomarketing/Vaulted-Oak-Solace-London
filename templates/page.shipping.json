@@ -11,7 +11,154 @@
   "sections": {
     "main": {
       "type": "shipping",
-      "settings": {}
+      "blocks": {
+        "shipping_item_k6EhGY": {
+          "type": "shipping_item",
+          "settings": {
+            "category": "Shipping Charges",
+            "show_as_accordion": false,
+            "question": "Shipping Charges",
+            "answer_font_weight": "500",
+            "answer_before_table": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br/><br/><a href=\"#\" title=\"#\">This is a link</a><br/><br/>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ulla.</p>",
+            "show_rates_table": true,
+            "table_heading_destination": "Destination",
+            "table_heading_delivery": "Delivery Time",
+            "table_heading_cost": "Cost",
+            "table_destinations": "UK\nEurope\nRest of the World*",
+            "table_delivery_times": "Next working day\n1 - 3 working days\n3 - 5 working days",
+            "table_costs": "£10\n£15\n£25",
+            "answer_after_table": "",
+            "link_text": "",
+            "link_url": "",
+            "open_by_default": true
+          }
+        },
+        "shipping_item_mn8DgR": {
+          "type": "shipping_item",
+          "settings": {
+            "category": "Shipping Charges",
+            "show_as_accordion": true,
+            "question": "Delivery information",
+            "answer_font_weight": "500",
+            "answer_before_table": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br/><br/><a href=\"#\" title=\"#\">This is a link</a><br/><br/>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ulla.</p>",
+            "show_rates_table": false,
+            "table_heading_destination": "Destination",
+            "table_heading_delivery": "Delivery Time",
+            "table_heading_cost": "Cost",
+            "table_destinations": "UK\nEurope\nRest of the World*",
+            "table_delivery_times": "Next working day\n1 - 3 working days\n3 - 5 working days",
+            "table_costs": "£10\n£15\n£25",
+            "answer_after_table": "",
+            "link_text": "",
+            "link_url": "",
+            "open_by_default": false
+          }
+        },
+        "shipping_item_F9yJKr": {
+          "type": "shipping_item",
+          "settings": {
+            "category": "Shipping Charges",
+            "show_as_accordion": true,
+            "question": "Lorem ipsum",
+            "answer_font_weight": "500",
+            "answer_before_table": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br/><br/><a href=\"#\" title=\"#\">This is a link</a><br/><br/>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ulla.</p>",
+            "show_rates_table": false,
+            "table_heading_destination": "Destination",
+            "table_heading_delivery": "Delivery Time",
+            "table_heading_cost": "Cost",
+            "table_destinations": "UK\nEurope\nRest of the World*",
+            "table_delivery_times": "Next working day\n1 - 3 working days\n3 - 5 working days",
+            "table_costs": "£10\n£15\n£25",
+            "answer_after_table": "",
+            "link_text": "",
+            "link_url": "",
+            "open_by_default": false
+          }
+        },
+        "shipping_item_Qhj96F": {
+          "type": "shipping_item",
+          "settings": {
+            "category": "Tracking Your Order",
+            "show_as_accordion": true,
+            "question": "Tracking Your Order",
+            "answer_font_weight": "500",
+            "answer_before_table": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br/><br/><a href=\"#\" title=\"#\">This is a link</a><br/><br/>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ulla.</p>",
+            "show_rates_table": false,
+            "table_heading_destination": "Destination",
+            "table_heading_delivery": "Delivery Time",
+            "table_heading_cost": "Cost",
+            "table_destinations": "UK\nEurope\nRest of the World*",
+            "table_delivery_times": "Next working day\n1 - 3 working days\n3 - 5 working days",
+            "table_costs": "£10\n£15\n£25",
+            "answer_after_table": "",
+            "link_text": "",
+            "link_url": "",
+            "open_by_default": true
+          }
+        },
+        "shipping_item_VkXxng": {
+          "type": "shipping_item",
+          "settings": {
+            "category": "Duties & Taxes",
+            "show_as_accordion": true,
+            "question": "Delivery information",
+            "answer_font_weight": "500",
+            "answer_before_table": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br/><br/><a href=\"#\" title=\"#\">This is a link</a><br/><br/>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ulla.</p>",
+            "show_rates_table": false,
+            "table_heading_destination": "Destination",
+            "table_heading_delivery": "Delivery Time",
+            "table_heading_cost": "Cost",
+            "table_destinations": "UK\nEurope\nRest of the World*",
+            "table_delivery_times": "Next working day\n1 - 3 working days\n3 - 5 working days",
+            "table_costs": "£10\n£15\n£25",
+            "answer_after_table": "",
+            "link_text": "",
+            "link_url": "",
+            "open_by_default": true
+          }
+        },
+        "shipping_item_mtcPT6": {
+          "type": "shipping_item",
+          "settings": {
+            "category": "Refused Deliveries",
+            "show_as_accordion": true,
+            "question": "Delivery information",
+            "answer_font_weight": "500",
+            "answer_before_table": "<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.<br/><br/><a href=\"#\" title=\"#\">This is a link</a><br/><br/>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ulla.</p>",
+            "show_rates_table": false,
+            "table_heading_destination": "Destination",
+            "table_heading_delivery": "Delivery Time",
+            "table_heading_cost": "Cost",
+            "table_destinations": "UK\nEurope\nRest of the World*",
+            "table_delivery_times": "Next working day\n1 - 3 working days\n3 - 5 working days",
+            "table_costs": "£10\n£15\n£25",
+            "answer_after_table": "",
+            "link_text": "",
+            "link_url": "",
+            "open_by_default": true
+          }
+        },
+        "shipping_richtext_T8BUEh": {
+          "type": "shipping_richtext",
+          "settings": {
+            "category": "Customer Services",
+            "content": "<p>Our Customer Care team is based in the United Kingdom.&nbsp;<br/><br/>For further help or enquiries, please contact us at&nbsp;help@solacelondon.com.&nbsp;<br/><br/>We are available Monday to Friday, 9:00am–5:00pm UK time, excluding UK bank holidays, and aim to respond within 2 working days.<br/><br/>Nothing in this policy affects your statutory rights.&nbsp;</p>"
+          }
+        }
+      },
+      "block_order": [
+        "shipping_item_k6EhGY",
+        "shipping_item_mn8DgR",
+        "shipping_item_F9yJKr",
+        "shipping_item_Qhj96F",
+        "shipping_item_VkXxng",
+        "shipping_item_mtcPT6",
+        "shipping_richtext_T8BUEh"
+      ],
+      "settings": {
+        "navigation_menu": "page-menu",
+        "open_first_category_mobile": true
+      }
     }
   },
   "order": [

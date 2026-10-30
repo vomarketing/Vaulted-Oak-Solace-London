@@ -6,7 +6,8 @@
     faqStyle.setAttribute('data-faq-accordion-override', 'true');
     faqStyle.textContent = `
       .faq-Page [data-el="accordion.body"],
-      .faq-Page .faq-Faqs_Body {
+      .faq-Page .faq-Faqs_Body,
+      .faq-Page .faq-Faqs_Icon {
         transition: none !important;
         animation: none !important;
       }
