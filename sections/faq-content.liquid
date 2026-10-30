@@ -1,0 +1,244 @@
+{{ 'footer-page.css' | asset_url | stylesheet_tag }}
+{{ 'faq-content.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'faq-content.js' | asset_url }}" defer="defer"></script>
+
+{%- liquid
+	assign categories = section.blocks | where: 'type', 'category'
+	assign first_category = categories | first
+	assign heading = section.settings.heading | default: 'Frequently Asked Questions'
+	assign dropdown_label = section.settings.dropdown_label | default: 'Frequent Questions'
+
+	assign nav_menu = section.settings.navigation_menu
+	if nav_menu == blank
+	assign nav_menu = linklists['page-menu']
+	endif
+-%}
+
+<faq-content
+	id="FaqContent-{{ section.id }}"
+	class="faq-content lyt-Container text-reg-12"
+>
+	{%- if nav_menu != blank -%}
+		<div class="faq-content__nav">
+			{% render 'information-page-navigation', menu: nav_menu %}
+		</div>
+	{%- endif -%}
+
+	<div class="faq-content__container">
+		<h1 class="faq-content__title text-reg-12">
+			{{ heading | escape }}
+		</h1>
+
+		{%- if categories.size > 0 -%}
+			<div class="faq-content__dropdown">
+				<label
+					for="FaqSelect-{{ section.id }}"
+					class="faq-content__dropdown-label"
+				>
+					{{ dropdown_label | escape }}
+				</label>
+
+				<div class="faq-content__select-wrapper">
+					<select
+						id="FaqSelect-{{ section.id }}"
+						class="faq-content__select"
+						data-faq-select
+					>
+						{%- for category in categories -%}
+							<option
+								value="{{ category.id }}"
+								{% if forloop.first %}selected{% endif %}
+							>
+								{{ category.settings.title | escape }}
+							</option>
+						{%- endfor -%}
+					</select>
+
+					<svg
+						class="faq-content__select-icon"
+						width="12"
+						height="7"
+						viewBox="0 0 12 7"
+						fill="none"
+						aria-hidden="true"
+					>
+						<path
+							d="M1 1L6 6L11 1"
+							stroke="currentColor"
+							stroke-width="1.2"
+						/>
+					</svg>
+				</div>
+			</div>
+
+			<div class="faq-content__layout">
+				<aside class="faq-content__sidebar">
+					<nav aria-label="FAQ categories">
+						<ul class="faq-content__category-list">
+							{%- for category in categories -%}
+								<li>
+									<button
+										type="button"
+										class="faq-content__category-button{% if forloop.first %} is-active{% endif %}"
+										data-faq-category="{{ category.id }}"
+										aria-controls="FaqPanel-{{ section.id }}-{{ category.id }}"
+										{% if forloop.first %}aria-current="true"{% endif %}
+									>
+										{{ category.settings.title | escape }}
+									</button>
+								</li>
+							{%- endfor -%}
+						</ul>
+					</nav>
+				</aside>
+
+				<div class="faq-content__body">
+					{%- for category in categories -%}
+						<section
+							id="FaqPanel-{{ section.id }}-{{ category.id }}"
+							class="faq-content__panel"
+							data-faq-panel="{{ category.id }}"
+							aria-labelledby="FaqHeading-{{ section.id }}-{{ category.id }}"
+							{% unless category.id == first_category.id %}hidden{% endunless %}
+							{{ category.shopify_attributes }}
+						>
+							<h2
+								id="FaqHeading-{{ section.id }}-{{ category.id }}"
+								class="faq-content__category-title text-med-12"
+							>
+								{{ category.settings.title | escape }}
+							</h2>
+
+							{%- assign current_category_id = '' -%}
+
+							{%- for block in section.blocks -%}
+								{%- if block.type == 'category' -%}
+									{%- assign current_category_id = block.id -%}
+									{%- elsif block.type == 'question' and current_category_id == category.id -%}
+									<details
+										class="faq-content__question"
+										data-faq-question
+										{{ block.shopify_attributes }}
+									>
+										<summary class="faq-content__summary">
+											<span>{{ block.settings.title | escape }}</span>
+											<span class="faq-content__question-icon" aria-hidden="true">
+			                  {%- render 'bao-icon-arrow-down' -%}
+			                </span>
+										</summary>
+
+										<div class="faq-content__answer text-reg-12">
+											{{ block.settings.answer }}
+										</div>
+									</details>
+								{%- endif -%}
+							{%- endfor -%}
+						</section>
+					{%- endfor -%}
+				</div>
+			</div>
+			{%- elsif request.design_mode -%}
+			<p>Add a Category block, then add Question blocks below it.</p>
+		{%- endif -%}
+	</div>
+</faq-content>
+
+{% schema %}
+{
+  "name": "FAQs",
+  "tag": "section",
+  "class": "section-faq-content",
+  "max_blocks": 50,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Frequently Asked Questions"
+    },
+    {
+      "type": "text",
+      "id": "dropdown_label",
+      "label": "Mobile and tablet dropdown label",
+      "default": "Frequent Questions"
+    },
+    {
+      "type": "link_list",
+      "id": "navigation_menu",
+      "label": "Information navigation"
+    },
+    {
+      "type": "paragraph",
+      "content": "Add a Category block followed by its Question blocks. Each question belongs to the nearest category above it. Move the category and its questions together when reordering."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Category",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Category name",
+          "default": "Orders"
+        }
+      ]
+    },
+    {
+      "type": "question",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Question",
+          "default": "How do I make a purchase?"
+        },
+        {
+          "type": "richtext",
+          "id": "answer",
+          "label": "Answer"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "FAQs",
+      "blocks": [
+        {
+          "type": "category",
+          "settings": {
+            "title": "Orders"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "title": "How do I make a purchase on solacelondon.com?"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "title": "Can I purchase as a guest?"
+          }
+        },
+        {
+          "type": "category",
+          "settings": {
+            "title": "Shipping"
+          }
+        },
+        {
+          "type": "question",
+          "settings": {
+            "title": "How can I track my order?"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
