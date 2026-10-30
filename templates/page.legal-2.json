@@ -51,6 +51,40 @@
             "title": "How can I track my order?",
             "answer": "<p>Add the approved answer here.</p>"
           }
+        },
+        "question_twiFFf": {
+          "type": "question",
+          "settings": {
+            "title": "Do you offer express delivery?",
+            "answer": "<p>Our standard delivery service is express, but we do not offer 24hr delivery. You can check the estimated delivery for your country or region <a href=\"https://www.loewe.com/usa/en/sr\" target=\"_self\">here</a>. Please note that any orders placed after 13:00 CET (GMT +1) on Friday and during Saturday and Sunday will be dispatched on the following Monday. Spanish national holidays, and local public holidays, may cause delays in deliveries. Deliveries are made between 08.00-19.00 and could require a signature to ensure safe delivery of your order.</p>"
+          }
+        },
+        "question_bde7fz": {
+          "type": "question",
+          "settings": {
+            "title": "What are your delivery charges?",
+            "answer": "<p>All online orders are delivered free of charge.</p>"
+          }
+        },
+        "category_WCfhWA": {
+          "type": "category",
+          "settings": {
+            "title": "Return & Exchange"
+          }
+        },
+        "question_WeQxxB": {
+          "type": "question",
+          "settings": {
+            "title": "How can I return my online order?",
+            "answer": "<p>Simply go to <a href=\"https://www.loewe.com/usa/en/login\" target=\"_self\">My Account</a> on loewe.com or click <a href=\"https://www.loewe.com/usa/en/loginReturn\" target=\"_self\">here</a>. You will be able to download the returns label and select a courier collection as well as receiving a confirmation email with the instructions on how to prepare the package. Once your return arrives at one of our warehouses and has been inspected, we'll initiate your refund.</p>"
+          }
+        },
+        "question_pi4THD": {
+          "type": "question",
+          "settings": {
+            "title": "Are there any restrictions on returns?",
+            "answer": "<p>Unique items, created specifically for you, can only be returned if there is a manufacturing defect. In the case of perfumes, the items must be returned in their original packaging, perfectly sealed and intact to ensure proper hygienic conditions. Depreciation could also be considered in this case. Returns are only possible from the same country of delivery.</p>"
+          }
         }
       },
       "block_order": [
@@ -59,7 +93,12 @@
         "guest_checkout",
         "payment_methods",
         "shipping",
-        "track_order"
+        "track_order",
+        "question_twiFFf",
+        "question_bde7fz",
+        "category_WCfhWA",
+        "question_WeQxxB",
+        "question_pi4THD"
       ],
       "settings": {
         "heading": "Frequently Asked Questions",
