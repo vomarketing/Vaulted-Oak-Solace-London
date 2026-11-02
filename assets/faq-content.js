@@ -13,77 +13,21 @@ if (!customElements.get('faq-content')) {
 
           if (!summary) return;
 
-          let animation = null;
-          let targetOpen = details.open;
-
-          const resetAnimation = () => {
-            if (!animation) return;
-
-            animation.onfinish = null;
-            animation.cancel();
-            animation = null;
-
-            details.classList.remove('is-animating');
-          };
-
           summary.addEventListener(
             'click',
             (event) => {
               event.preventDefault();
 
-              const startHeight = details.getBoundingClientRect().height;
+              const shouldOpen = !details.open;
 
-              targetOpen = animation ? !targetOpen : !details.open;
-
-              if (targetOpen) {
-                this.querySelectorAll('[data-faq-question][open]').forEach((other) => {
-                  if (other === details) return;
-
-                  const otherSummary = other.querySelector('summary');
-
-                  if (otherSummary) {
-                    otherSummary.click();
-                  }
-                });
+              if (shouldOpen) {
+                this.closeOtherQuestions(details);
               }
 
-              resetAnimation();
-
-              if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-                details.open = targetOpen;
-                return;
-              }
-
-              // Measure the natural height of the requested state.
-              details.open = targetOpen;
-
-              const endHeight = details.getBoundingClientRect().height;
-
-              // Keep the answer rendered while animating in either direction.
-              details.open = true;
-              details.classList.add('is-animating');
-
-              animation = details.animate(
-                [
-                  { height: `${startHeight}px` },
-                  { height: `${endHeight}px` }
-                ],
-                {
-                  duration: 300,
-                  easing: 'cubic-bezier(0.22, 1, 0.36, 1)',
-                  fill: 'both'
-                }
-              );
-
-              animation.onfinish = () => {
-                details.open = targetOpen;
-                resetAnimation();
-              };
+              details.open = shouldOpen;
             },
             { signal }
           );
-
-          signal.addEventListener('abort', resetAnimation, { once: true });
         });
 
         this.categoryButtons = Array.from(
@@ -124,6 +68,7 @@ if (!customElements.get('faq-content')) {
             const question = event.target.closest('[data-faq-question]');
 
             if (question) {
+              this.closeOtherQuestions(question);
               question.open = true;
             }
           },
@@ -133,6 +78,14 @@ if (!customElements.get('faq-content')) {
 
       disconnectedCallback() {
         this.abortController?.abort();
+      }
+
+      closeOtherQuestions(currentQuestion) {
+        this.querySelectorAll('[data-faq-question][open]').forEach((question) => {
+          if (question !== currentQuestion) {
+            question.open = false;
+          }
+        });
       }
 
       activateCategory(categoryId) {
