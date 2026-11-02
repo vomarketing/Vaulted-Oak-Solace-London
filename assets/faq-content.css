@@ -7,7 +7,6 @@
     width: 16px;
     height: 16px;
     pointer-events: none;
-    transition: transform 0.3s ease-in-out;
   }
 
   .faq-content__question-icon svg {
@@ -181,10 +180,6 @@
   .faq-content__layout {
     display: block;
   }
-}
-
-.faq-content__question.is-animating {
-  overflow: hidden;
 }
 
 @media (max-width: 640px) {
