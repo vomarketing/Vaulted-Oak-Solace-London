@@ -1,7 +1,8 @@
 {{ 'footer-page.css' | asset_url | stylesheet_tag }}
 <style>
   .faq-Page [data-el="accordion.body"],
-  .faq-Page .faq-Faqs_Body {
+  .faq-Page .faq-Faqs_Body,
+  .faq-Page .faq-Faqs_Icon {
     transition: none !important;
     animation: none !important;
   }
@@ -114,7 +115,7 @@
       "type": "checkbox",
       "id": "show_one_at_a_time",
       "label": "Should opening an accordion close all of the others?",
-      "default": false
+      "default": true
     }
   ],
   "blocks": [

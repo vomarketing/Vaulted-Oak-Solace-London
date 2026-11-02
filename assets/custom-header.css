@@ -342,6 +342,11 @@
     [data-mega-open] & {
       opacity: 0;
     }
+
+    [data-mega-open][data-mega-closing] & {
+      opacity: 1;
+      transition: opacity 300ms ease 150ms;
+    }
   }
 }
 

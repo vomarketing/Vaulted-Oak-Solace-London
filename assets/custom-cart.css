@@ -770,7 +770,6 @@ html:has(.bag-Info[open]) {
 .bag-Accordion_Icon {
   flex-shrink: 0;
   display: block;
-  transition: transform 0.2s ease;
 
   .bag-Accordion[open] & {
     transform: rotate(180deg);

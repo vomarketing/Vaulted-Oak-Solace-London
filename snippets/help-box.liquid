@@ -15,16 +15,18 @@
 <script src="{{ 'help-box.js' | asset_url }}" defer="defer"></script>
 
 <help-box>
-  <button
-    type="button"
-    class="hb-HelpBox_Launcher"
-    data-help-box-open
-    aria-controls="HelpBox"
-    aria-expanded="false"
-    aria-haspopup="dialog"
-  >
-    {{ help.help_mobile_label | default: 'Contact Us' }}
-  </button>
+  {%- if help.help_contact_enable -%}
+    <button
+      type="button"
+      class="hb-HelpBox_Launcher"
+      data-help-box-open
+      aria-controls="HelpBox"
+      aria-expanded="false"
+      aria-haspopup="dialog"
+    >
+      {{ help.help_mobile_label | default: 'Contact Us' }}
+    </button>
+  {%- endif -%}
 
   <div
     class="hb-HelpBox"

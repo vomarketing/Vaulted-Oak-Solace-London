@@ -14,9 +14,155 @@
       "settings": {
         "navigation": "page-menu"
       }
+    },
+    "shipping_bJpUGb": {
+      "type": "shipping",
+      "blocks": {
+        "shipping_richtext_MJ4VYq": {
+          "type": "shipping_richtext",
+          "settings": {
+            "category": "Shipping Charges",
+            "content": "<p>asdasda</p>"
+          }
+        },
+        "shipping_item_xgBc7K": {
+          "type": "shipping_item",
+          "settings": {
+            "category": "Shipping Charges",
+            "question": "Shipping Charges",
+            "answer_font_weight": "500",
+            "answer_before_table": "",
+            "show_rates_table": true,
+            "table_heading_destination": "Destination",
+            "table_heading_delivery": "Delivery Time",
+            "table_heading_cost": "Cost",
+            "table_destinations": "UK\nEurope\nRest of the World*",
+            "table_delivery_times": "Next working day\n1 - 3 working days\n3 - 5 working days",
+            "table_costs": "£10\n£15\n£25",
+            "answer_after_table": "",
+            "link_text": "",
+            "link_url": "",
+            "open_by_default": true
+          }
+        },
+        "shipping_item_PHd9Ar": {
+          "type": "shipping_item",
+          "settings": {
+            "category": "Tracking Your Order",
+            "question": "How can I track my order?",
+            "answer_font_weight": "500",
+            "answer_before_table": "<p>asdsadsadsad</p>",
+            "show_rates_table": false,
+            "table_heading_destination": "Destination",
+            "table_heading_delivery": "Delivery Time",
+            "table_heading_cost": "Cost",
+            "table_destinations": "UK\nEurope\nRest of the World*",
+            "table_delivery_times": "Next working day\n1 - 3 working days\n3 - 5 working days",
+            "table_costs": "£10\n£15\n£25",
+            "answer_after_table": "",
+            "link_text": "",
+            "link_url": "",
+            "open_by_default": false
+          }
+        },
+        "shipping_item_Qdw9QD": {
+          "type": "shipping_item",
+          "settings": {
+            "category": "Duties & Taxes",
+            "question": "Will I need to pay duties or taxes?",
+            "answer_font_weight": "500",
+            "answer_before_table": "",
+            "show_rates_table": false,
+            "table_heading_destination": "Destination",
+            "table_heading_delivery": "Delivery Time",
+            "table_heading_cost": "Cost",
+            "table_destinations": "UK\nEurope\nRest of the World*",
+            "table_delivery_times": "Next working day\n1 - 3 working days\n3 - 5 working days",
+            "table_costs": "£10\n£15\n£25",
+            "answer_after_table": "",
+            "link_text": "",
+            "link_url": "",
+            "open_by_default": false
+          }
+        },
+        "shipping_item_zw7YP7": {
+          "type": "shipping_item",
+          "settings": {
+            "category": "Refused Deliveries",
+            "question": "What happens if I refuse delivery?",
+            "answer_font_weight": "500",
+            "answer_before_table": "",
+            "show_rates_table": false,
+            "table_heading_destination": "Destination",
+            "table_heading_delivery": "Delivery Time",
+            "table_heading_cost": "Cost",
+            "table_destinations": "UK\nEurope\nRest of the World*",
+            "table_delivery_times": "Next working day\n1 - 3 working days\n3 - 5 working days",
+            "table_costs": "£10\n£15\n£25",
+            "answer_after_table": "",
+            "link_text": "",
+            "link_url": "",
+            "open_by_default": false
+          }
+        }
+      },
+      "block_order": [
+        "shipping_richtext_MJ4VYq",
+        "shipping_item_xgBc7K",
+        "shipping_item_PHd9Ar",
+        "shipping_item_Qdw9QD",
+        "shipping_item_zw7YP7"
+      ],
+      "disabled": true,
+      "name": "Shipping",
+      "settings": {
+        "navigation_menu": "page-menu",
+        "open_first_category_mobile": true
+      }
+    },
+    "legal_content_Mm8QEW": {
+      "type": "legal-content",
+      "blocks": {
+        "section_jxHWVF": {
+          "type": "section",
+          "settings": {
+            "title": "Orders",
+            "text": "<p>How do I make a purchase on solacelondon.com?</p>"
+          }
+        },
+        "section_kYEkhb": {
+          "type": "section",
+          "settings": {
+            "title": "Access To The Website",
+            "text": ""
+          }
+        },
+        "section_DH6LRg": {
+          "type": "section",
+          "settings": {
+            "title": "Information On The Website",
+            "text": ""
+          }
+        }
+      },
+      "block_order": [
+        "section_jxHWVF",
+        "section_kYEkhb",
+        "section_DH6LRg"
+      ],
+      "disabled": true,
+      "name": "Legal content",
+      "settings": {
+        "layout_style": "full_content",
+        "dropdown_label": "Frequently Asked Questions",
+        "mobile_sidebar_drawer": true,
+        "navigation_menu": "page-menu"
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "shipping_bJpUGb",
+    "legal_content_Mm8QEW"
   ]
 }

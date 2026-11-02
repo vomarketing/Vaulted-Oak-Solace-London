@@ -74,8 +74,8 @@
         this.close();
         return;
       }
-      // Restore the page before an existing search/cart drawer takes focus.
-      if (e.target.closest('[data-module-drawers-trigger]')) this.close(false);
+      // Restore the page before an existing drawer or modal takes focus.
+      if (e.target.closest('[data-module-drawers-trigger],[data-help-box-open],[data-contact-modal-trigger],a[href*="#contactUSModal"]')) this.close(false);
       const link = e.target.closest('[data-mega-detail]');
       if (link && this.panel?.contains(link) && e.pointerType !== 'mouse' && link !== this.selectedLink) {
         e.preventDefault();
@@ -261,6 +261,7 @@
 
       this.state = 'closing';
       panel.dataset.state = 'closing';
+      this.header.setAttribute('data-mega-closing', '');
 
       let timer;
 
@@ -311,6 +312,7 @@
       oldTrigger?.setAttribute('aria-expanded', 'false');
       this.header.removeAttribute('data-mega-open');
       this.header.removeAttribute('data-mega-opening');
+      this.header.removeAttribute('data-mega-closing');
       for (const [name, value] of this.savedAttributes) {
         if (value === null) this.header.removeAttribute(name); else this.header.setAttribute(name, value);
       }

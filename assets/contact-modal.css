@@ -347,7 +347,6 @@
 
   &:focus {
     border-color: var(--color-black, #000000);
-    box-shadow: 0 0 0 1px var(--color-black, #000000);
   }
 
   &:focus-visible {
@@ -475,6 +474,27 @@ body:not(.is-contact-modal-open) {
     clip: rect(0, 0, 0, 0) !important;
     white-space: nowrap !important;
     border: 0 !important;
+  }
+}
+
+.contact-modal__disclaimer {
+  margin-top: 12px;
+
+  p {
+    font-family: var(--font-family-primary) !important;
+    font-size: var(--type-12-size);
+    font-weight: var(--font-weight-regular);
+    line-height: var(--type-12-line-height);
+  }
+
+  a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: opacity 0.2s ease-in-out;
+
+    &:hover {
+      opacity: 0.5;
+    }
   }
 }
 
