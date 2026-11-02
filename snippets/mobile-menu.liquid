@@ -118,7 +118,9 @@
           {%- endfor -%}
           {%- assign mobile_help_heading_id = 'MobileMenu-' | append: mobile_section.id | append: '-help-title' -%}
           {%- capture mobile_help_markup -%}
-            {%- render 'nav-help-menu', section: mobile_section, class_prefix: 'hd-MobileMenu_', heading_id: mobile_help_heading_id -%}
+            {%- if mobile_section.settings.show_help_box -%}
+              {%- render 'nav-help-menu', section: mobile_section, class_prefix: 'hd-MobileMenu_', heading_id: mobile_help_heading_id -%}
+            {%- endif -%}
           {%- endcapture -%}
           {%- if mobile_help_markup != blank -%}
             <li class="hd-MobileMenu_Item hd-MobileMenu_Item-help">
