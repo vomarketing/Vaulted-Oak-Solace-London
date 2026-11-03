@@ -1,0 +1,59 @@
+{%- comment -%}
+  Renders the Need help menu used in the mobile drawer and desktop mega menu.
+  Accepts:
+  - section: header section
+  - class_prefix: BEM block, including separator, e.g. 'hd-MobileMenu_' or 'mm-'
+  - heading_id: unique id for the heading
+  Outputs nothing when the menu has no links. Visibility toggles are checked by the caller.
+{%- endcomment -%}
+{%- liquid
+  assign help_menu = linklists[section.settings.mobile_need_help_menu]
+  assign help_links = help_menu.links
+  assign contact_link = section.settings.help_contact_link
+-%}
+{%- if help_links.size > 0 -%}
+  <section class="{{ class_prefix }}Help" aria-labelledby="{{ heading_id }}">
+    <h2 id="{{ heading_id }}" class="{{ class_prefix }}HelpTitle">{{ help_menu.title | escape }}</h2>
+    <ul class="{{ class_prefix }}HelpFeatured">
+      {%- for link in help_links limit: 2 -%}
+        {%- liquid
+          assign help_parts = link.title | replace: 'Arrow_', '' | replace: '<br />', '<br>' | replace: '<br/>', '<br>' | split: '<br>'
+          assign help_title = help_parts[0] | strip
+          assign help_description = help_parts[1] | strip
+          assign is_contact = false
+          if link.url contains 'mailto:' or link.url contains '#contactUSModal' or link.url contains '#contact-modal' or link.url contains '#contactUsModal' or link.url contains '/pages/contact' or link.url == contact_link
+            assign is_contact = true
+          endif
+        -%}
+        <li class="{{ class_prefix }}HelpItem">
+          <a
+            class="{{ class_prefix }}HelpLink {{ class_prefix }}HelpLink-featured"
+            href="{{ link.url | escape }}"
+            {% if is_contact %}
+              data-contact-modal-trigger
+              aria-haspopup="dialog"
+              aria-controls="contactUSModal"
+            {% endif %}
+          >
+            <span class="{{ class_prefix }}HelpCopy">
+              <span class="{{ class_prefix }}HelpLabel">{{ help_title | escape }}</span>
+              {%- if help_description != blank -%}<span class="{{ class_prefix }}HelpDescription">{{ help_description | escape }}</span>{%- endif -%}
+            </span>
+            {%- if link.title contains 'Arrow_' -%}
+              <span class="{{ class_prefix }}HelpArrow" aria-hidden="true"></span>
+            {%- endif -%}
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+    {%- if help_links.size > 2 -%}
+      <ul class="{{ class_prefix }}HelpLinks">
+        {%- for link in help_links offset: 2 -%}
+          <li class="{{ class_prefix }}HelpItem">
+            <a class="{{ class_prefix }}HelpLink" href="{{ link.url | escape }}">{{ link.title | escape }}</a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- endif -%}
+  </section>
+{%- endif -%}

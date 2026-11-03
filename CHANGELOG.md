@@ -1,6 +1,30 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## v1.1.5 - 2026-11-02
+
+### Changed
+
+- SL-103 Decouple contact button toggle from help panel and help menus
+- SL-103 Add desktop toggle for help menu in mega menu
+- SL-103 Update help box and contact button toggle logic across desktop and mobile
+- SL-105 Add option to show shipping content without sub-accordion
+- SL-104 Fixbug font of collection description
+- SL-104 Reduce spacing of header & collection/search header in desktop
+- SL-101 Fix small issues underline
+- SL-101 Remove animate fade of "View your bag"
+- SL-100 Align plp card size label market check with other size labels
+- SL-100 Remove fade-up animation on plp card size hover
+- SL-100 Fix position text hover on plp card
+- SL-99 Add XL landscape image size to mega menu preview
+- SL-102 Replace hCaptcha badge with text disclaimer
+- SL-96 Remove product count in header collection
+- SL-106 Update animation to match simple page
+- SL-106 Update FAQ on Legal 2
+- SL-81 Fix style issues page legal
+- SL-81 Fix help box button overlapping legal mobile sidebar
+- SL-81 Update accordions to close others and remove arrow animation
+
 ## v1.1.4 - 2026-11-02
 
 ### Changed
