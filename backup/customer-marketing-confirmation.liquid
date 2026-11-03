@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Thank you for your subscription!</title>
+  <style type="text/css">
+    /* Reset styles */
+    body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+    table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+    img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; display: block; }
+    body { height: 100% !important; margin: 0 !important; padding: 0 !important; width: 100% !important; background-color: #ffffff; color: #000000; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+
+    /* Layout Responsive */
+    .email-container { max-width: 600px; margin: 0 auto; padding: 20px; }
+    .logo { text-align: center; padding: 30px 0; }
+    .logo img { max-width: 220px; margin: 0 auto; }
+    .hero-image { width: 100%; }
+    .hero-image img { width: 100%; height: auto; display: block; }
+    .content-block { text-align: left; margin: 50px 0; padding: 0; font-size: 12px; line-height: 1.5; color: #000000; }
+    .content-block h2 { font-size: 14px; font-weight: 600; text-transform: uppercase; letter-spacing: 1px; margin-bottom: 12px; }
+
+    /* 2 Column Image Grid */
+    .grid-container { width: 100%; margin: 50px 0; table-layout: fixed; padding: 0; }
+    .grid-col a { width: 100%; height: auto; display: block; }
+    .grid-col a span { display: block; text-align: center; font-size: 12px; line-height: 1.5; padding: 20px 0 24px; }
+    .grid-col img { width: 100%; height: auto; display: block; }
+
+    /* Footer */
+    .footer { padding: 0; margin: 50px 0; }
+
+    @media (max-width: 480px) {
+      .content-block { margin: 40px 0 !important; padding: 0 20px !important; }
+      .grid-container { margin: 40px 0 !important; padding: 0 20px !important; }
+      .footer { margin: 40px 0 !important; padding: 0 20px !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="email-container">
+
+    <!-- 1. Header / Logo -->
+    <div class="logo">
+      <a href="{{ shop.url }}">
+        {% if shop.email_logo_url %}
+          <img src="{{ shop.email_logo_url }}" alt="{{ shop.name }}" width="{{ shop.email_logo_width }}">
+        {% else %}
+          <h1 style="font-size: 24px; font-weight: 300; letter-spacing: 4px; text-transform: uppercase; margin: 0; color: #000;">{{ shop.name }}</h1>
+        {% endif %}
+      </a>
+    </div>
+
+    <!-- 2. Hero Banner Image -->
+    <div class="hero-image">
+      <img src="https://cdn.shopify.com/s/files/1/0501/5722/4124/files/RS27_Campaign_Look_09_0622_R3.png?v=1791792549" alt="Solace London Editorial">
+    </div>
+
+    <!-- 3. Text Content -->
+    <div class="content-block">
+      <p>Welcome to SOLACE.</p>
+      <p>Solace London is a British womenswear brand founded by Laura Taylor and Ryan Holliday-Stevens in 2013. Longtime friends and collaborators, the duo share a dynamic background spanning design, production, retail, marketing and creative direction. Their combined sensibilities are visible in pieces that continuously blur the line between statement making and wearability.</p>
+    </div>
+
+    <!-- 4. Two-Column Gallery Grid -->
+    <table class="grid-container" border="0" cellpadding="0" cellspacing="0" role="presentation">
+      <tr>
+        <td style="padding-right:10px;" class="grid-col">
+          <a href="https://www.solacelondon.com/collections/dresses">
+            <img src="https://cdn.shopify.com/s/files/1/0501/5722/4124/files/RS27_Campaign_Look_09_0622_R3_01.png?v=1791792438" alt="Lookbook 1">
+            <span>Dresses</span>
+          </a>
+        </td>
+        <td style="padding-left:10px;" class="grid-col">
+          <a href="https://www.solacelondon.com/collections/bridal">
+            <img src="https://cdn.shopify.com/s/files/1/0501/5722/4124/files/RS27_Campaign_Look_09_0622_R3_02.png?v=1791792436" alt="Lookbook 2">
+            <span>Bridal</span>
+          </a>
+        </td>
+      </tr>
+    </table>
+
+    <!-- Footer Section -->
+    <div class="footer">
+      <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 12px; color: #000000; line-height: 1.5; table-layout: fixed;">
+        <tr>
+          <td align="left" style="padding-bottom: 30px;">
+            <a href="https://www.solacelondon.com/collections/new-arrivals" style="color: #000000; text-decoration: none; margin-right: 20px;">New in</a>
+            <a href="https://www.solacelondon.com/collections/icons" style="color: #000000; text-decoration: none;">Icons</a>
+          </td>
+          <td align="right" style="padding-bottom: 30px;">
+            <a href="https://www.instagram.com/solacelondon" style="color: #000000; text-decoration: none;">Instagram</a>
+          </td>
+        </tr>
+
+        <tr>
+          <td colspan="2" style="padding-bottom: 30px;">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+              <tr>
+                <td style="border-top: 1px solid #000; font-size: 1px; line-height: 1px;">&nbsp;</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr>
+          <td align="left" style="vertical-align: top;">
+            <a href="https://www.solacelondon.com/pages/contact" style="color: #000000; text-decoration: none; display: block; margin-bottom: 5px;">Contact us</a>
+            <a href="https://www.solacelondon.com/pages/shipping-returns" style="color: #000000; text-decoration: none; display: block;">Shipping & Returns</a>
+          </td>
+          <td align="right" style="vertical-align: top;">
+            <a href="{{ unsubscribe_url }}" style="color: #000000; text-decoration: none; display: block; margin-bottom: 5px;">Unsubscribe</a>
+            <span style="color: #000000; display: block;">Solace London, 21 Club Row, London, E2 7EY</span>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</body>
+</html>

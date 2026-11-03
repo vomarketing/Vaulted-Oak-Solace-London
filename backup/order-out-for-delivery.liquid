@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Welcome to SOLACE</title>
+  <style type="text/css">
+    /* Reset styles */
+    body, table, td, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+    table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; }
+    img { -ms-interpolation-mode: bicubic; border: 0; height: auto; line-height: 100%; outline: none; text-decoration: none; display: block; }
+    body { height: 100% !important; margin: 0 !important; padding: 0 !important; width: 100% !important; background-color: #ffffff; color: #000000; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+
+    /* Layout Responsive */
+    .email-container { max-width: 600px; margin: 0 auto; padding: 20px; }
+    .logo { text-align: center; margin: 50px 0; }
+    .logo img { max-width: 220px; margin: 0 auto; }
+    .content-blocks { text-align: left; margin: 50px 0; padding: 0; font-size: 12px; line-height: 1.5; color: #000000; }
+    .content-blocks > div { margin: 30px 0; }
+    .content-blocks > div > table { border-collapse: collapse; border: 0; }
+    .button { display: block; padding: 16px; font-size:12px; line-height: 1.5; border:1px solid #000000; text-align: center; cursor: pointer; }
+
+    .order-details { width: 100%; table-layout: fixed; }
+
+    .order-items { width: 100%; table-layout: fixed; }
+    .order-items td { padding-bottom: 10px; }
+    .order-item-image { width: 110px; }
+    .order-item-title { vertical-align: top; padding: 0 10px; text-transform: capitalize; }
+    .order-item-price { width: 93px; vertical-align: top; text-align: right; }
+
+    .subtotal-details { width: 100%; table-layout: fixed; }
+    .subtotal-details th,
+    .subtotal-details td { padding-bottom: 5px; }
+    .subtotal-details th { font-size: 12px; line-height: 1.5; text-align: left; font-weight: normal; }
+    .subtotal-details td { font-size: 12px; line-height: 1.5; text-align: right; }
+
+    /* Footer */
+    .footer { padding: 0; margin: 50px 0; }
+
+    @media (max-width: 480px) {
+      .logo { text-align: center; margin: 40px 0; }
+      .content-block { margin: 40px 0 !important; }
+      .order-item-price { width: auto !important; }
+      .button-block { margin: 40px 0 !important; }
+      .table-stack-mobile td { display: block!important; }
+      .col-stack-spacer { padding-top: 30px !important; }
+      .footer { margin: 40px 0 !important; }
+    }
+  </style>
+</head>
+<body>
+  <div class="email-container">
+
+    <!-- 1. Header / Logo -->
+    <div class="logo">
+      <a href="{{ shop.url }}">
+        {% if shop.email_logo_url %}
+          <img src="{{ shop.email_logo_url }}" alt="{{ shop.name }}" width="{{ shop.email_logo_width }}">
+        {% else %}
+          <h1 style="font-size: 24px; font-weight: 300; letter-spacing: 4px; text-transform: uppercase; margin: 0; color: #000;">{{ shop.name }}</h1>
+        {% endif %}
+      </a>
+    </div>
+
+    <!-- 2. Main Blocks -->
+    <div class="content-blocks">
+      <!-- Lead text -->
+      <div>
+        <p>Thank you for your order!</p>
+        <p>your order has been delivered.</p>
+        <p>if you have any issues with your delivery or have any customer service related questions, contact us below.</p>
+      </div>
+      <!-- Tracking Link -->
+      <div>
+        <a class="button" href="mailto:{{ shop.email }}">Contact Customer Care</a>
+      </div>
+      <!-- Separator -->
+      <div>
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td style="border-top:1px solid #000000; font-size:0; line-height:0; height:1px;">&nbsp;</td>
+          </tr>
+        </table>
+      </div>
+      <!-- Order Details -->
+      <div>
+        <p>Order Number: {{ order_name }}</p>
+        <table class="order-details table-stack-mobile">
+          <tr>
+            <td>
+              Billing Address<br>
+              {{ billing_address.name }}<br>
+              {{ billing_address.address1 }}<br>
+              {% if billing_address.address2 != blank %}{{ billing_address.address2 }}<br>{% endif %}
+              {{ billing_address.zip }} {{ billing_address.city }}, {{ billing_address.province_code }}<br>
+              {{ billing_address.country }}<br>
+              {% if billing_address.phone != blank %}{{ billing_address.phone }}{% endif %}
+            </td>
+            <td class="col-stack-spacer">
+              Shipping Address<br>
+              {{ shipping_address.name }}<br>
+              {{ shipping_address.address1 }}<br>
+              {% if shipping_address.address2 != blank %}{{ shipping_address.address2 }}<br>{% endif %}
+              {{ shipping_address.zip }} {{ shipping_address.city }}, {{ shipping_address.province_code }}<br>
+              {{ shipping_address.country }}<br>
+              {% if shipping_address.phone != blank %}{{ shipping_address.phone }}{% endif %}
+            </td>
+          </tr>
+          <tr>
+            <td style="padding-top: 30px;">Date Placed<br>{{ order.created_at | date: "%d.%m.%y" }}</td>
+            <td style="padding-top: 30px;">
+              {%- if fulfillment.tracking_company -%}
+                Shipping Method<br>{{ fulfillment.tracking_company }}
+              {%- endif -%}
+            </td>
+          </tr>
+        </table>
+      </div>
+      <!-- Separator -->
+      <div>
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td style="border-top:1px solid #000000; font-size:0; line-height:0; height:1px;">&nbsp;</td>
+          </tr>
+        </table>
+      </div>
+      <!-- Order Items -->
+      <div>
+        <p style="margin:0;text-transform:uppercase;margin-bottom:30px;">In This Order</p>
+        <table class="order-items">
+          {% for line in fulfillment.fulfillment_line_items %}
+            <tr>
+              <td class="order-item-image">
+                <img src="{{ line.line_item | img_url: '110x147', crop: 'center' }}" width="110" height="147" class=""/>
+              </td>
+              <td class="order-item-title">
+                <span>{{ line.line_item.product.title }}</span>
+                <br>
+                {% for option in line.line_item.options_with_values %}
+                  {% if option.name == 'Size' %}
+                    <span>Size: {{ option.value }}</span>
+                  {% endif %}
+                {% endfor %}
+              </td>
+              <td class="order-item-price">{{ line.line_item.final_line_price | money }}</td>
+            </tr>
+          {% endfor %}
+        </table>
+      </div>
+      <!-- Separator -->
+      <div>
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+          <tr>
+            <td style="border-top:1px solid #000000; font-size:0; line-height:0; height:1px;">&nbsp;</td>
+          </tr>
+        </table>
+      </div>
+      <!-- Subtotal Details -->
+      <div>
+        <table class="subtotal-details">
+          <tr>
+            <th>Subtotal</th>
+            <td>{{ subtotal_price | money }}</td>
+          </tr>
+          <tr>
+            <th>Shipping</th>
+            <td>{{ shipping_price | money }}</td>
+          </tr>
+          <tr>
+            <th>Taxes</th>
+            <td>{{ tax_price | money }}</td>
+          </tr>
+          <tr>
+            <th>Order Total</th>
+            <td>{{ total_price | money }}</td>
+          </tr>
+        </table>
+      </div>
+      <!-- Customer care link -->
+      <div>
+        <a class="button" href="mailto:{{ shop.email }}">Contact Customer Care</a>
+      </div>
+      <!-- Return link -->
+      <div>
+        <a style="text-decoration:underline;text-underline-offset:2px;" href="{{ order_status_url }}">Request a return</a>
+      </div>
+    </div>
+
+    <!-- Footer Section -->
+    <div class="footer">
+      <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation" style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; font-size: 12px; color: #000000; line-height: 1.5; table-layout: fixed;">
+        <tr>
+          <td align="left" style="padding-bottom: 30px;">
+            <a href="https://www.solacelondon.com/collections/new-arrivals" style="color: #000000; text-decoration: none; margin-right: 20px;">New in</a>
+            <a href="https://www.solacelondon.com/collections/icons" style="color: #000000; text-decoration: none;">Icons</a>
+          </td>
+          <td align="right" style="padding-bottom: 30px;">
+            <a href="https://www.instagram.com/solacelondon" style="color: #000000; text-decoration: none;">Instagram</a>
+          </td>
+        </tr>
+
+        <tr>
+          <td colspan="2" style="padding-bottom: 30px;">
+            <table width="100%" border="0" cellpadding="0" cellspacing="0" role="presentation">
+              <tr>
+                <td style="border-top: 1px solid #000; font-size: 1px; line-height: 1px;">&nbsp;</td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+
+        <tr>
+          <td align="left" style="vertical-align: top;">
+            <a href="https://www.solacelondon.com/pages/contact" style="color: #000000; text-decoration: none; display: block; margin-bottom: 5px;">Contact us</a>
+            <a href="https://www.solacelondon.com/pages/shipping-returns" style="color: #000000; text-decoration: none; display: block;">Shipping & Returns</a>
+          </td>
+          <td align="right" style="vertical-align: top;">
+            <a href="{{ unsubscribe_url }}" style="color: #000000; text-decoration: none; display: block; margin-bottom: 5px;">Unsubscribe</a>
+            <span style="color: #000000; display: block;">Solace London, 21 Club Row, London, E2 7EY</span>
+          </td>
+        </tr>
+      </table>
+    </div>
+  </div>
+</body>
+</html>
