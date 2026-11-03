@@ -14,6 +14,102 @@
       "name": "Hero Fullscreen",
       "settings": {
         "media_type": "image",
+        "image_desktop": "shopify://shop_images/Screenshot_2026-10-28_at_11.08.24_copy.png",
+        "enable_custom_mobile_height": false,
+        "custom_mobile_height": 667,
+        "video_desktop": "shopify://files/videos/homepage3.mp4",
+        "video_mobile": "shopify://files/videos/story.mp4",
+        "video_url_desktop": "",
+        "video_url_mobile": "",
+        "video_autoplay": true,
+        "show_video_controls": false,
+        "video_controls_content_layout": "above",
+        "show_overlay": false,
+        "overlay_opacity": 40,
+        "overlay_color": "#000000",
+        "header_contrast_mode": "light",
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "content_vertical_alignment": "bottom",
+        "heading": "Spring/Summer 27",
+        "heading_font_size": "text-reg-14",
+        "heading_uppercase": false,
+        "description": "",
+        "cta_text": "Shop The Collection",
+        "cta_link": "shopify://collections",
+        "cta_font_size": "text-reg-14",
+        "cta_uppercase": false
+      }
+    },
+    "hero_fullscreen_Fjizj7": {
+      "type": "hero-fullscreen",
+      "name": "Hero Fullscreen",
+      "settings": {
+        "media_type": "image",
+        "image_desktop": "shopify://shop_images/Screenshot_2026-10-28_at_13.01.36.png",
+        "enable_custom_mobile_height": false,
+        "custom_mobile_height": 667,
+        "video_desktop": "shopify://files/videos/homepage3.mp4",
+        "video_mobile": "shopify://files/videos/story.mp4",
+        "video_url_desktop": "",
+        "video_url_mobile": "",
+        "video_autoplay": true,
+        "show_video_controls": false,
+        "video_controls_content_layout": "above",
+        "show_overlay": false,
+        "overlay_opacity": 40,
+        "overlay_color": "#000000",
+        "header_contrast_mode": "light",
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "content_vertical_alignment": "bottom",
+        "heading": "Spring/Summer 27",
+        "heading_font_size": "text-reg-14",
+        "heading_uppercase": false,
+        "description": "",
+        "cta_text": "Shop The Collection",
+        "cta_link": "shopify://collections",
+        "cta_font_size": "text-reg-14",
+        "cta_uppercase": false
+      }
+    },
+    "hero_fullscreen_ENiR9R": {
+      "type": "hero-fullscreen",
+      "name": "Hero Fullscreen",
+      "settings": {
+        "media_type": "image",
+        "image_desktop": "shopify://shop_images/Screenshot_2026-10-28_at_11.31.29.png",
+        "enable_custom_mobile_height": false,
+        "custom_mobile_height": 667,
+        "video_desktop": "shopify://files/videos/homepage3.mp4",
+        "video_mobile": "shopify://files/videos/story.mp4",
+        "video_url_desktop": "",
+        "video_url_mobile": "",
+        "video_autoplay": true,
+        "show_video_controls": false,
+        "video_controls_content_layout": "above",
+        "show_overlay": false,
+        "overlay_opacity": 40,
+        "overlay_color": "#000000",
+        "header_contrast_mode": "light",
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "content_vertical_alignment": "bottom",
+        "heading": "Spring/Summer 27",
+        "heading_font_size": "text-reg-14",
+        "heading_uppercase": false,
+        "description": "",
+        "cta_text": "Shop The Collection",
+        "cta_link": "shopify://collections",
+        "cta_font_size": "text-reg-14",
+        "cta_uppercase": false
+      }
+    },
+    "hero_fullscreen_jfkma7": {
+      "type": "hero-fullscreen",
+      "name": "Hero Fullscreen",
+      "settings": {
+        "media_type": "image",
         "image_desktop": "shopify://shop_images/Screenshot_2026-10-29_at_12.28.46.png",
         "enable_custom_mobile_height": false,
         "custom_mobile_height": 667,
@@ -24,7 +120,7 @@
         "video_autoplay": true,
         "show_video_controls": false,
         "video_controls_content_layout": "above",
-        "show_overlay": true,
+        "show_overlay": false,
         "overlay_opacity": 40,
         "overlay_color": "#000000",
         "header_contrast_mode": "light",
@@ -56,7 +152,7 @@
         "video_autoplay": true,
         "show_video_controls": false,
         "video_controls_content_layout": "above",
-        "show_overlay": true,
+        "show_overlay": false,
         "overlay_opacity": 40,
         "overlay_color": "#000000",
         "header_contrast_mode": "light",
@@ -104,6 +200,58 @@
         "cta_uppercase": false
       }
     },
+    "two_ups_media_LwAjLx": {
+      "type": "two-ups-media",
+      "blocks": {
+        "item_LbyUUF": {
+          "type": "item",
+          "settings": {
+            "media_type": "image",
+            "desktop_image": "shopify://shop_images/Screenshot_2026-11-03_at_13.59.31.png",
+            "desktop_video_url": "",
+            "mobile_video_url": "",
+            "text": "The Delano",
+            "sub_text": "",
+            "text_font_size": "text-reg-14",
+            "text_uppercase": false,
+            "link": ""
+          }
+        },
+        "item_iwK6Lt": {
+          "type": "item",
+          "settings": {
+            "media_type": "image",
+            "desktop_image": "shopify://shop_images/Screenshot_2026-11-03_at_13.59.24.png",
+            "desktop_video_url": "",
+            "mobile_video_url": "",
+            "text": "Shop Now",
+            "sub_text": "",
+            "text_font_size": "text-reg-14",
+            "text_uppercase": false,
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "item_LbyUUF",
+        "item_iwK6Lt"
+      ],
+      "name": "Two Ups Media",
+      "settings": {
+        "layout_width": "contained",
+        "background_color": "#ffffff",
+        "text_color": "#000000",
+        "header_contrast_mode": "dark",
+        "mobile_layout": "slider",
+        "disable_full_page": false,
+        "enable_custom_spacing": false,
+        "custom_padding_top": 0,
+        "custom_padding_bottom": 0,
+        "enable_custom_mobile_spacing": false,
+        "custom_mobile_padding_top": 0,
+        "custom_mobile_padding_bottom": 0
+      }
+    },
     "hero_fullscreen_LEQiD3": {
       "type": "hero-fullscreen",
       "name": "Hero Fullscreen",
@@ -135,24 +283,23 @@
         "cta_uppercase": false
       }
     },
-    "hero_fullscreen_PPmfBH": {
+    "hero_fullscreen_NxN3PK": {
       "type": "hero-fullscreen",
-      "disabled": true,
       "name": "Hero Fullscreen",
       "settings": {
         "media_type": "image",
-        "image_desktop": "shopify://shop_images/Module_5_d9f299ea-0297-409d-aa4d-c7e2c1ce2483.png",
-        "image_mobile": "shopify://shop_images/Module_5__1.png",
+        "image_desktop": "shopify://shop_images/Screenshot_2026-11-03_at_13.56.34.png",
         "enable_custom_mobile_height": false,
         "custom_mobile_height": 667,
+        "video_desktop": "shopify://files/videos/SOLACE 1 (FINAL MASTER).mp4",
         "video_url_desktop": "",
         "video_url_mobile": "",
         "video_autoplay": true,
-        "show_video_controls": false,
-        "video_controls_content_layout": "above",
-        "show_overlay": true,
+        "show_video_controls": true,
+        "video_controls_content_layout": "below",
+        "show_overlay": false,
         "overlay_opacity": 40,
-        "overlay_color": "rgba(0,0,0,0)",
+        "overlay_color": "#000000",
         "header_contrast_mode": "light",
         "background_color": "#000000",
         "text_color": "#ffffff",
@@ -161,7 +308,38 @@
         "heading_font_size": "text-reg-14",
         "heading_uppercase": false,
         "description": "",
-        "cta_text": "Shop Collection",
+        "cta_text": "Shop Now",
+        "cta_link": "#",
+        "cta_font_size": "text-reg-14",
+        "cta_uppercase": false
+      }
+    },
+    "hero_fullscreen_PyAB3K": {
+      "type": "hero-fullscreen",
+      "name": "Hero Fullscreen",
+      "settings": {
+        "media_type": "image",
+        "image_desktop": "shopify://shop_images/Screenshot_2026-11-03_at_14.01.16.png",
+        "enable_custom_mobile_height": false,
+        "custom_mobile_height": 667,
+        "video_desktop": "shopify://files/videos/SOLACE 1 (FINAL MASTER).mp4",
+        "video_url_desktop": "",
+        "video_url_mobile": "",
+        "video_autoplay": true,
+        "show_video_controls": true,
+        "video_controls_content_layout": "below",
+        "show_overlay": false,
+        "overlay_opacity": 40,
+        "overlay_color": "#000000",
+        "header_contrast_mode": "light",
+        "background_color": "#000000",
+        "text_color": "#ffffff",
+        "content_vertical_alignment": "bottom",
+        "heading": "Resort 2027",
+        "heading_font_size": "text-reg-14",
+        "heading_uppercase": false,
+        "description": "",
+        "cta_text": "Shop Now",
         "cta_link": "#",
         "cta_font_size": "text-reg-14",
         "cta_uppercase": false
@@ -192,42 +370,19 @@
         "max_width_tablet": 589,
         "max_width_mobile": 305
       }
-    },
-    "rich_text_PG7mfm": {
-      "type": "rich-text",
-      "disabled": true,
-      "name": "Rich text",
-      "settings": {
-        "background_color": "#ffffff",
-        "text_color": "#000000",
-        "header_contrast_mode": "dark",
-        "disable_full_height": false,
-        "enable_custom_spacing": false,
-        "custom_padding_top": 160,
-        "custom_padding_bottom": 160,
-        "enable_custom_mobile_spacing": false,
-        "custom_mobile_padding_top": 160,
-        "custom_mobile_padding_bottom": 160,
-        "text": "<p>Solace London is a British womenswear brand founded by Laura Taylor and Ryan Holliday-Stevens in 2013. Longtime friends and collaborators, the duo share a dynamic background spanning design, production, retail, marketing and creative direction. Their combined sensibilities are visible in pieces that continuously blur the line between statement making and wearability.</p>",
-        "text_font_size": "text-reg-14",
-        "text_uppercase": false,
-        "link_text": "",
-        "link": "",
-        "link_font_size": "text-reg-14",
-        "link_uppercase": false,
-        "max_width_desktop": 910,
-        "max_width_tablet": 589,
-        "max_width_mobile": 305
-      }
     }
   },
   "order": [
     "hero_fullscreen_8gXhRJ",
+    "hero_fullscreen_Fjizj7",
+    "hero_fullscreen_ENiR9R",
+    "hero_fullscreen_jfkma7",
     "hero_fullscreen_f4qGYd",
     "hero_fullscreen_hGpWfC",
+    "two_ups_media_LwAjLx",
     "hero_fullscreen_LEQiD3",
-    "hero_fullscreen_PPmfBH",
-    "rich_text_QkDcqw",
-    "rich_text_PG7mfm"
+    "hero_fullscreen_NxN3PK",
+    "hero_fullscreen_PyAB3K",
+    "rich_text_QkDcqw"
   ]
 }
