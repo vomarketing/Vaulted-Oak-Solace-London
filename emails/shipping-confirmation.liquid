@@ -34,9 +34,9 @@
 {% endif %}
 
 {% if fulfillment.item_count == item_count %}
-  {% capture items_title %}In this order{% endcapture %}
+  {% capture items_title %}IN THIS ORDER{% endcapture %}
 {% else %}
-  {% capture items_title %}In this shipment{% endcapture %}
+  {% capture items_title %}IN THIS SHIPMENT{% endcapture %}
 {% endif %}
 
 {% comment %}Buttons{% endcomment %}
@@ -193,7 +193,7 @@
               <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="{{ text_style }}">
                 <tr>
                   <td width="53%" valign="top" style="width: 53%; vertical-align: top; padding: 29px 0 18px;">
-                    <span style="text-transform: uppercase;">Order number: {{ order_name | remove: '#' }}</span>
+                    <span style="text-transform: uppercase;">ORDER NUMBER: {{ order_name | remove: '#' }}</span>
                     {% if po_number %}<br>PO number: #{{ po_number }}{% endif %}
                   </td>
                   <td width="47%" valign="top" align="right" style="width: 47%; vertical-align: top; padding: 29px 0 18px; text-align: right;">
@@ -205,14 +205,14 @@
                 <tr>
                   <td class="stack stack-gap address" width="53%" valign="top" style="width: 53%; vertical-align: top; padding-bottom: 30px;">
                     {% if billing_address %}
-                      Billing Address<br>
+                      BILLING ADDRESS<br>
                       {{ billing_address | format_address | remove: '<p>' | remove: '</p>' }}
                       {% if billing_address.phone != blank %}<br>{{ billing_address.phone }}{% endif %}
                     {% endif %}
                   </td>
                   <td class="stack address" width="47%" valign="top" style="width: 47%; vertical-align: top; padding-bottom: 30px;">
                     {% if shipping_address %}
-                      Shipping Address<br>
+                      SHIPPING ADDRESS<br>
                       {{ shipping_address | format_address | remove: '<p>' | remove: '</p>' }}
                       {% if shipping_address.phone != blank %}<br>{{ shipping_address.phone }}{% endif %}
                     {% endif %}
@@ -220,12 +220,12 @@
                 </tr>
                 <tr>
                   <td class="stack stack-gap" width="53%" valign="top" style="width: 53%; vertical-align: top; padding-bottom: 30px;">
-                    Date Placed<br>
+                    DATE PLACED<br>
                     {{ created_at | date: "%d.%m.%y" }}
                   </td>
                   <td class="stack" width="47%" valign="top" style="width: 47%; vertical-align: top; padding-bottom: 30px;">
                     {% if shipping_method %}
-                      Shipping Method<br>
+                      SHIPPING METHOD<br>
                       {{ shipping_method.title }}
                     {% endif %}
                   </td>
@@ -233,7 +233,7 @@
                 {% if fulfillment.tracking_numbers.size > 0 %}
                   <tr>
                     <td colspan="2" valign="top" style="vertical-align: top; padding-bottom: 30px;">
-                      {% if fulfillment.tracking_numbers.size == 1 %}Tracking Number{% else %}Tracking Numbers{% endif %}<br>
+                      {% if fulfillment.tracking_numbers.size == 1 %}TRACKING NUMBER{% else %}TRACKING NUMBERS{% endif %}<br>
                       {% if fulfillment.tracking_numbers.size == 1 %}
                         {% if fulfillment.tracking_company %}{{ fulfillment.tracking_company }}: {% endif %}
                         {% if fulfillment.tracking_url %}
@@ -453,7 +453,7 @@
                 {% endif %}
 
                 <tr>
-                  <td align="left" style="padding-bottom: 30px;">Order Total</td>
+                  <td align="left" style="padding-bottom: 30px;">Total</td>
                   <td align="right" style="padding-bottom: 30px; text-align: right;">{{ total_price | money }}</td>
                 </tr>
               </table>

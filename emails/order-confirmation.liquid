@@ -157,7 +157,7 @@
               <!-- ORDER / CUSTOMER INFORMATION -->
               <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="{{ text_style }}">
                 <tr>
-                  <td width="53%" valign="top" style="width: 53%; vertical-align: top; padding: 29px 0 18px; text-transform: uppercase;">Order number: {{ order_name | remove: '#' }}</td>
+                  <td width="53%" valign="top" style="width: 53%; vertical-align: top; padding: 29px 0 18px; text-transform: uppercase;">ORDER NUMBER: {{ order_name | remove: '#' }}</td>
                   <td width="47%" valign="top" align="right" style="width: 47%; vertical-align: top; padding: 29px 0 18px; text-align: right;">
                     {% if order_status_url %}
                       <a href="{{ order_status_url }}" target="_blank" style="color: {{ global_font_colour }}; text-decoration: underline;">{{ order_link_text }}</a>
@@ -167,14 +167,14 @@
                 <tr>
                   <td class="stack stack-gap address" width="53%" valign="top" style="width: 53%; vertical-align: top; padding-bottom: 30px;">
                     {% if billing_address %}
-                      Billing Address<br>
+                      BILLING ADDRESS<br>
                       {{ billing_address | format_address | remove: '<p>' | remove: '</p>' }}
                       {% if billing_address.phone != blank %}<br>{{ billing_address.phone }}{% endif %}
                     {% endif %}
                   </td>
                   <td class="stack address" width="47%" valign="top" style="width: 47%; vertical-align: top; padding-bottom: 30px;">
                     {% if requires_shipping and shipping_address %}
-                      Shipping Address<br>
+                      SHIPPING ADDRESS<br>
                       {{ shipping_address | format_address | remove: '<p>' | remove: '</p>' }}
                       {% if shipping_address.phone != blank %}<br>{{ shipping_address.phone }}{% endif %}
                     {% endif %}
@@ -182,12 +182,12 @@
                 </tr>
                 <tr>
                   <td class="stack stack-gap" width="53%" valign="top" style="width: 53%; vertical-align: top; padding-bottom: 30px;">
-                    Date Placed<br>
+                    DATE PLACED<br>
                     {{ created_at | date: "%d.%m.%y" }}
                   </td>
                   <td class="stack" width="47%" valign="top" style="width: 47%; vertical-align: top; padding-bottom: 30px;">
                     {% if requires_shipping and shipping_method %}
-                      Shipping Method<br>
+                      SHIPPING METHOD<br>
                       {{ shipping_method.title }}
                     {% endif %}
                   </td>
@@ -212,7 +212,7 @@
               <!-- ORDER SUMMARY -->
               <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="{{ text_style }}">
                 <tr>
-                  <td style="padding: 29px 0 30px; text-transform: uppercase;">In this order</td>
+                  <td style="padding: 29px 0 30px; text-transform: uppercase;">IN THIS ORDER</td>
                 </tr>
                 {% for line in subtotal_line_items %}
                   {% if line.product.title %}
@@ -221,11 +221,6 @@
                     {% assign line_title = line.title %}
                   {% endif %}
                   {% assign line_variant = line.variant.title %}
-                  {% assign line_image_url = line.image | img_url: 'large' %}
-                  {% assign line_image_protocol = line_image_url | slice: 0, 2 %}
-                  {% if line_image_protocol == '//' %}
-                    {% assign line_image_url = line_image_url | prepend: 'https:' %}
-                  {% endif %}
                   {% if line.url != blank %}
                     {% assign line_url = shop.url | append: line.url %}
                   {% else %}
@@ -238,7 +233,7 @@
                           {% if line.image %}
                             <td class="product-image" width="110" valign="top" bgcolor="{{ global_image_background }}" style="width: 110px; vertical-align: top; background-color: {{ global_image_background }};">
                               {% if line_url != blank %}<a href="{{ line_url }}" target="_blank" style="{{ link_style }}">{% endif %}
-                                <img src="{{ line_image_url }}" alt="{{ line_title | escape }}" width="110" style="display: block; width: 110px; height: auto; border: 0;">
+                                <img src="{{ line.image | img_url: 'large' }}" alt="{{ line_title | escape }}" width="110" style="display: block; width: 110px; height: auto; border: 0;">
                               {% if line_url != blank %}</a>{% endif %}
                             </td>
                             <td width="20" style="width: 20px; font-size: 1px; line-height: 1px;">&nbsp;</td>
@@ -266,7 +261,7 @@
                               <br>Refunded
                             {% endif %}
                           </td>
-                          <td width="1" valign="top" align="right" style="width: 1%; padding-left: 10px; vertical-align: top; text-align: right; white-space: nowrap;">
+                          <td width="100" valign="top" align="right" style="width: 100px; vertical-align: top; text-align: right; white-space: nowrap;">
                             {% if line.original_line_price != line.final_line_price %}
                               <del style="text-decoration: line-through;">{{ line.original_line_price | money }}</del><br>
                             {% endif %}
@@ -346,7 +341,7 @@
                 {% endif %}
 
                 <tr>
-                  <td align="left" style="padding-bottom: 30px;">Order Total</td>
+                  <td align="left" style="padding-bottom: 30px;">Total</td>
                   <td align="right" style="padding-bottom: 30px; text-align: right;">{{ total_price | money }}</td>
                 </tr>
               </table>
