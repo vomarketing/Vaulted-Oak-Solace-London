@@ -13,15 +13,15 @@
 
 {% comment %}Intro{% endcomment %}
 
-{% capture intro_title %}Thank you for your order!{% endcapture %}
-{% capture intro_status %}Your order is being processed.{% endcapture %}
-{% capture intro_text %}Please see your order information below. After your order ships we will send another email with tracking information.{% endcapture %}
+{% capture intro_title %}Thank you for choosing Solace London.{% endcapture %}
+{% capture intro_status %}Your order is now being prepared. You'll receive an email with tracking details once it has been dispatched.{% endcapture %}
+{% capture intro_text %}Please find your confirmation details below.{% endcapture %}
 
 {% comment %}Buttons{% endcomment %}
 
 {% capture order_link_text %}View Your Order{% endcapture %}
 {% capture contact_button_text %}Contact Customer Care{% endcapture %}
-{% capture contact_button_url %}{{ site_url }}/pages/contact{% endcapture %}
+{% capture contact_button_url %}{{ site_url }}/#contactUSModal{% endcapture %}
 
 {% comment %}Shared inline styles{% endcomment %}
 
@@ -55,7 +55,7 @@
   <meta name="format-detection" content="telephone=no, date=no, address=no, email=no">
   <meta name="color-scheme" content="light only">
   <meta name="supported-color-schemes" content="light only">
-  <title>{{ intro_title }}</title>
+  <title>Order {{ order_name }} confirmed</title>
   <!--[if mso]>
   <noscript>
     <xml>
@@ -87,6 +87,12 @@
       .product-image { width: 90px !important; }
       .product-image img { width: 90px !important; }
       .footer-cell { padding-top: 50px !important; padding-bottom: 50px !important; }
+    }
+
+    @media only screen and (max-width: 480px) {
+      .email-footer-column { display: block !important; width: 100% !important; text-align: left !important; padding-bottom: 20px !important; }
+      .email-footer-column table { width: 100% !important; }
+      .email-footer-column td { text-align: left !important; }
     }
   </style>
 </head>
@@ -127,7 +133,7 @@
               <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="{{ text_style }}">
                 {% if customer.first_name != blank %}
                   <tr>
-                    <td style="padding-bottom: 18px;">Hi {{ customer.first_name }},</td>
+                    <td style="padding-bottom: 18px;">Hi {{ customer.first_name | escape }},</td>
                   </tr>
                 {% endif %}
                 <tr>
@@ -286,6 +292,11 @@
                   <td colspan="2" style="padding-top: 29px; font-size: 1px; line-height: 1px;">&nbsp;</td>
                 </tr>
 
+                <tr>
+                  <td align="left" style="padding-bottom: 5px;">Subtotal</td>
+                  <td align="right" style="padding-bottom: 5px; text-align: right;">{{ subtotal_price | money }}</td>
+                </tr>
+
                 {% if discounts_amount > 0 %}
                   {% if discounts.first.code %}
                     {% capture discount_title %}Discount ({{ discounts.first.code }}){% endcapture %}
@@ -295,18 +306,6 @@
                   <tr>
                     <td align="left" style="padding-bottom: 5px;">{{ discount_title }}</td>
                     <td align="right" style="padding-bottom: 5px; text-align: right;">{{ discounts_savings | money }}</td>
-                  </tr>
-                {% endif %}
-
-                <tr>
-                  <td align="left" style="padding-bottom: 5px;">Subtotal</td>
-                  <td align="right" style="padding-bottom: 5px; text-align: right;">{{ subtotal_price | money }}</td>
-                </tr>
-
-                {% if requires_shipping %}
-                  <tr>
-                    <td align="left" style="padding-bottom: 5px;">Shipping</td>
-                    <td align="right" style="padding-bottom: 5px; text-align: right;">{{ shipping_price | money }}</td>
                   </tr>
                 {% endif %}
 
@@ -330,6 +329,13 @@
                       </tr>
                     {% endif %}
                   {% endfor %}
+                {% endif %}
+
+                {% if requires_shipping %}
+                  <tr>
+                    <td align="left" style="padding-bottom: 5px;">Shipping</td>
+                    <td align="right" style="padding-bottom: 5px; text-align: right;">{{ shipping_price | money }}</td>
+                  </tr>
                 {% endif %}
 
                 {% if total_tip and total_tip > 0 %}
@@ -405,19 +411,19 @@
                   <td class="footer-cell" style="padding: 68px 0 76px;">
                     <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="font-family: {{ global_font_family }}; color: {{ global_font_colour }}; table-layout: fixed;">
                       <tr>
-                        <td align="left" valign="top" style="padding-bottom: 30px; vertical-align: top;">
+                        <td class="email-footer-column" align="left" valign="top" style="padding-bottom: 30px; vertical-align: top;">
                           <table role="presentation" border="0" cellpadding="0" cellspacing="0" align="left">
                             <tr>
                               <td style="padding-right: 30px; font-family: {{ global_font_family }}; font-size: 12px; line-height: 14px; mso-line-height-rule: exactly;">
                                 <a href="{{ site_url }}/collections/new-arrivals" target="_blank" style="{{ link_style }}">New in</a>
                               </td>
                               <td style="font-family: {{ global_font_family }}; font-size: 12px; line-height: 14px; mso-line-height-rule: exactly;">
-                                <a href="{{ site_url }}/collections/icons" target="_blank" style="{{ link_style }}">Icons</a>
+                                <a href="{{ site_url }}/collections/dresses" target="_blank" style="{{ link_style }}">Dresses</a>
                               </td>
                             </tr>
                           </table>
                         </td>
-                        <td align="right" style="padding-bottom: 30px; font-size: 12px; line-height: 14px; mso-line-height-rule: exactly; text-align: right;">
+                        <td class="email-footer-column" align="right" style="padding-bottom: 30px; font-size: 12px; line-height: 14px; mso-line-height-rule: exactly; text-align: right;">
                           <a href="https://www.instagram.com/solacelondon" target="_blank" style="{{ link_style }}">Instagram</a>
                         </td>
                       </tr>
@@ -431,11 +437,11 @@
                         </td>
                       </tr>
                       <tr>
-                        <td align="left" valign="top" style="vertical-align: top;">
+                        <td class="email-footer-column" align="left" valign="top" style="vertical-align: top;">
                           <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="font-family: {{ global_font_family }}; font-size: 10px; line-height: 12px; mso-line-height-rule: exactly;">
                             <tr>
                               <td align="left" style="padding-bottom: 5px;">
-                                <a href="{{ site_url }}/pages/contact" target="_blank" style="{{ link_style }}">Contact us</a>
+                                <a href="{{ site_url }}/#contactUSModal" target="_blank" style="{{ link_style }}">Contact US</a>
                               </td>
                             </tr>
                             <tr>
@@ -445,7 +451,7 @@
                             </tr>
                           </table>
                         </td>
-                        <td align="right" valign="top" style="vertical-align: top;">
+                        <td class="email-footer-column" align="right" valign="top" style="vertical-align: top;">
                           <table role="presentation" width="100%" border="0" cellpadding="0" cellspacing="0" style="font-family: {{ global_font_family }}; font-size: 10px; line-height: 12px; mso-line-height-rule: exactly;">
                             <tr>
                               <td align="right" style="padding-bottom: 5px; text-align: right;">
