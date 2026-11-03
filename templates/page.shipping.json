@@ -11,7 +11,84 @@
   "sections": {
     "main": {
       "type": "shipping",
-      "settings": {}
+      "blocks": {
+        "shipping_item_ktnApH": {
+          "type": "shipping_item",
+          "settings": {
+            "category": "Shipping Charges",
+            "show_as_accordion": false,
+            "question": "",
+            "answer_font_weight": "500",
+            "answer_before_table": "<p>We offer next working day delivery in the UK and standard international delivery within 1-5 working days.&nbsp;</p>",
+            "show_rates_table": true,
+            "table_heading_destination": "Destination",
+            "table_heading_delivery": "Delivery Time",
+            "table_heading_cost": "Cost",
+            "table_destinations": "UK\nEurope\nRest of the World*",
+            "table_delivery_times": "Next working day\n1 - 3 working days\n3 - 5 working days",
+            "table_costs": "£10\n£15\n£25",
+            "answer_after_table": "<p>All orders are shipped with DHL Express on a fully tracked service. Shipping charges do not include customs duties or import taxes, which may be charged by the destination country - please see&nbsp;<a href=\"https://www.solacelondon.com/pages/shipping-returns#duties-and-taxes\" title=\"Duties & Taxes\">Duties & Taxes</a>&nbsp;below.&nbsp;</p><p>We currently do not ship to Azerbaijan, Belarus, Russia or Ukraine.</p><p><span style=\"text-decoration:underline\"><strong>Dispatch & cut-off times</strong></span></p><p>Orders placed before 2:30pm UK time are dispatched the same working day.&nbsp;</p><p>UK next working day delivery applies to orders placed Monday to Thursday before 2:30pm UK time.</p><p>Orders placed after 2:30pm UK time on Friday, or over the weekend, will be dispatched the following Monday.&nbsp;</p><p>UK next working day delivery applies to mainland England, Scotland and Wales, excluding the Highlands and Islands.&nbsp;</p><p>Delivery times may vary during national and bank holidays. International delivery times may also be affected by customs clearance and procedures outside our control.</p>",
+            "link_text": "",
+            "link_url": "",
+            "open_by_default": false
+          }
+        },
+        "shipping_richtext_FVyVpx": {
+          "type": "shipping_richtext",
+          "settings": {
+            "category": "Tracking Your Order",
+            "content": "<p>Your DHL Express tracking information will be provided in your shipping confirmation email, so you can track your order throughout delivery. A signature may be required on delivery. We are unable to deliver to P.O. boxes.</p>"
+          }
+        },
+        "shipping_richtext_6iA4aB": {
+          "type": "shipping_richtext",
+          "settings": {
+            "category": "Duties & Taxes",
+            "content": "<p>International orders may be subject to customs duties, import taxes and other charges imposed by the destination country. These charges are not collected at checkout and may be billed by your local customs authority when your order arrives. You are responsible for paying these charges.&nbsp;</p><p>The amount payable varies by country and may depend on the value, type and origin of the goods. We cannot confirm the amount before you place your order.&nbsp;</p><p>If your order is subject to these charges, DHL Express or your local customs authority may contact you to arrange payment before delivery. Customs clearance may also affect delivery times.&nbsp;</p><p>If you are unsure what may apply, please check with your local customs authority before placing your order. If applicable charges are not paid, your parcel may be returned to us - please see&nbsp;Refused Deliveries.</p>"
+          }
+        },
+        "shipping_richtext_X7xkYM": {
+          "type": "shipping_richtext",
+          "settings": {
+            "category": "Returns",
+            "content": "<p>Full-price items may be returned within 14 days of receipt. This is in addition to your statutory rights - see our Terms of Sale.&nbsp;</p><p><span style=\"text-decoration:underline\"><strong>How to return</strong></span></p><p>To start a return,&nbsp;<a href=\"https://returns.solacelondon.com/\" target=\"_blank\" title=\"Solace London Returns Portal\">visit our returns portal</a>&nbsp;and enter your order number and email address. Select the item(s) you’d like to return and choose your return method. You’ll then receive a QR code or printable label, which you can use to drop off your return at your nearest DHL location.&nbsp;</p><p>A return shipping fee applies and is deducted from your refund:&nbsp;</p><p>UK - £10&nbsp;</p><p>Europe - £15&nbsp;</p><p>Rest of the World - £25&nbsp;</p><p>Items must be unworn and in their original condition with all original tags attached.&nbsp;</p><p>Please try pieces on with care. If an item is returned worn, marked or no longer in its original condition, we may reduce your refund accordingly.&nbsp;</p><p>All returns are inspected on arrival. Items that do not meet these requirements may be returned to you.&nbsp;</p><p>If an item is faulty, damaged on arrival or not as described, please contact us at&nbsp;<a href=\"mailto:help@solacelondon.com\">help@solacelondon.com</a>. You may be entitled to a refund, repair or replacement and we will cover the cost of return.&nbsp;</p><p>We do not offer exchanges. If you require an alternative size or style, please place a new order.&nbsp;</p><p><span style=\"text-decoration:underline\">Refunds&nbsp;</span></p><p>We process refunds within 14 days of receipt, to your original payment method, less the return fee where applicable.&nbsp;</p><p>It may take several additional days for the refund to appear in your account, depending on your bank or payment provider. &nbsp;</p>"
+          }
+        },
+        "shipping_richtext_MPxCAn": {
+          "type": "shipping_richtext",
+          "settings": {
+            "category": "EU Customers - Right of Withdrawal",
+            "content": "<p>If your order was delivered to an address in the European Union, you have a statutory right to withdraw from your purchase within 14 days of receiving your goods, without giving a reason, unless an exception applies. This is separate from our standard returns process.&nbsp;</p><p>To exercise your EU right of withdrawal, please use the button below. If your order was not delivered to an EU address, or you do not wish to use this right, please follow our standard returns process instead.&nbsp;</p><p><a href=\"https://www.solacelondon.com/pages/shipping-returns#revoq-widerruf\"><span style=\"text-decoration:underline\"><strong>WITHDRAW FROM CONTRACT HERE</strong></span></a></p><p>We will email to acknowledge your request, and Customer Care may contact you if any further information is needed.&nbsp;</p><p>Any items included in your withdrawal request must be returned in line with our returns instructions before a refund is processed.&nbsp;</p><p>Where you withdraw, we will refund the price paid together with the standard outbound delivery cost, within 14 days of receiving the goods back or your proof of return. You are responsible for the cost of returning the goods.&nbsp;</p>"
+          }
+        },
+        "shipping_richtext_7TAxbx": {
+          "type": "shipping_richtext",
+          "settings": {
+            "category": "Refused Deliveries",
+            "content": "<p>If a delivery is refused, or cannot be delivered because applicable customs duties, import taxes or other charges have not been paid, the parcel may be returned to Solace London.&nbsp;</p><p>Any duties, taxes, postage, return shipping or customs charges incurred as a result may be deducted from your refund, except where otherwise required by applicable consumer law.&nbsp;</p>"
+          }
+        },
+        "shipping_richtext_taKrmr": {
+          "type": "shipping_richtext",
+          "settings": {
+            "category": "Customer Services",
+            "content": "<p>Our Customer Care team is based in the United Kingdom.&nbsp;</p><p>For further help or enquiries, please contact us at&nbsp;<a href=\"mailto:help@solacelondon.com\">help@solacelondon.com</a>.&nbsp;</p><p>We are available Monday to Friday, 9:00am–5:00pm UK time, excluding UK bank holidays, and aim to respond within 2 working days.</p><p>Nothing in this policy affects your statutory rights.</p><p></p>"
+          }
+        }
+      },
+      "block_order": [
+        "shipping_item_ktnApH",
+        "shipping_richtext_FVyVpx",
+        "shipping_richtext_6iA4aB",
+        "shipping_richtext_X7xkYM",
+        "shipping_richtext_MPxCAn",
+        "shipping_richtext_7TAxbx",
+        "shipping_richtext_taKrmr"
+      ],
+      "settings": {
+        "navigation_menu": "page-menu",
+        "open_first_category_mobile": true
+      }
     }
   },
   "order": [
