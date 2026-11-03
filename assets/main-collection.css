@@ -137,11 +137,6 @@ body.template-collection.has-collection-scroll-animation.is-collection-nav-hidde
   margin: 0;
 }
 
-.collection-header__product-count {
-  display: inline-block;
-  margin-left: 2px;
-}
-
 .collection-header__description-preview,
 .collection-header__description-full {
   max-width: 570px;
