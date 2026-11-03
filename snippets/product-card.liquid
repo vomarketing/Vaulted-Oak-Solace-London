@@ -77,7 +77,8 @@
 
   assign size_label_market = 'UK'
 
-  if localization.country.iso_code == 'US'
+  assign country_code = localization.country.iso_code | upcase
+  if country_code == 'US' or localization.market.handle == 'us' or request.locale.root_url contains 'en-us'
     assign size_label_market = 'US'
   endif
 
