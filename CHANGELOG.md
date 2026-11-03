@@ -1,6 +1,15 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## v1.1.4 - 2026-11-02
+
+### Changed
+
+- SL-98 Support mobile CTA placement and separate mobile CTA visibility
+- SL-85 Suppress placeholder phone number in organization schema
+- SL-107 Fix nav logo animation
+- SL-107 Fix delayed logo fade-in when closing mega menu
+
 ## v1.1.3 - 2026-10-23
 
 ### Changed
