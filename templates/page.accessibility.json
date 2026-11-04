@@ -15,8 +15,8 @@
         "faq_kVcKyC": {
           "type": "faq",
           "settings": {
-            "title": "Sale Price Adjustments",
-            "text": "<p>We are unable to offer a price adjustment on products purchased at solacelondon.com which may then be included in promotional activity at a future time.</p>",
+            "title": "Our Policy & Commitment",
+            "text": "<p>At Solace London, we are committed to accessibility and inclusion. We want solacelondon.com to be accessible to as many people as possible, including customers with disabilities, and we treat accessibility as an ongoing part of how we design, build and test our site. We are working towards conformance with WCAG 2.2 Level AA and EN 301549, the European standard for ICT accessibility referenced by the European Accessibility Act, and have regard to the UK Equality Act 2010.&nbsp;</p><p>Last reviewed: August, 2026</p>",
             "link_text": "",
             "link_url": ""
           }
@@ -24,17 +24,8 @@
         "faq_WqPAxm": {
           "type": "faq",
           "settings": {
-            "title": "Competitions & Giveaways",
-            "text": "<p>These terms and conditions apply to competitions and/or giveaways run by Solace London or run by a third party in association with Solace London (“Competition” or “Competitions”). By entering a Competition, the entrant certifies that all details given are correct and accurate and agrees to be bound by Solace London’s complete Terms & Conditions and Privacy Policy. Prizes will be awarded on the basis that one prize goes to each winner. Solace London reserves the right to substitute a prize of equivalent value in the event the offered prize is unavailable. The prize is non-transferable and there is no cash alternative. The Competition winner will be chosen at random after the advertised closing date and will be notified by email within 5 working days of the closing date. If the winner cannot be contacted within 10 working days, an alternative winner may be chosen. Once chosen, the winner selection is final. Once the winner has responded with delivery details, the prize will be sent within 10 working days. Solace London may wish to use winners’ names for publicity purposes on the Website, Facebook, email communications, or other publicity avenues. It is a condition of entry to any Competition that you agree to this use of your name. All Competitions are governed by the relevant laws of England and Wales. Employees of Solace London, its affiliates, subsidiaries, advertising and promotion agencies, and their immediate family members and/or those living in the same household, are not eligible to participate in a Competition. By participating in the Competition, you agree to Solace London’s collection, use, and disclosure of any personal information you may submit for the purposes of administering the Competition, as set forth in these Terms and Conditions, and set forth in our Privacy Policy.</p>",
-            "link_text": "",
-            "link_url": ""
-          }
-        },
-        "faq_Tizmhz": {
-          "type": "faq",
-          "settings": {
-            "title": "Severability",
-            "text": "<p>In the event that any one or more of the provisions of the Terms and Conditions shall, for any reason, be held to be invalid, illegal or unenforceable in any respect, such invalidity, illegality or unenforceability, shall not affect the other provisions of this agreement. Instead, so far as possible, this agreement shall be construed as if such invalid, illegal or unenforceable provisions had never been contained herein. Alternatively, the provision shall be modified and reinterpreted to most closely reflect the meaning of the deleted provision.</p>",
+            "title": "Digital Accessibility Statement",
+            "text": "<p>We are continuing to improve, audit and test our website with the support of an accessibility partner, as part of our ongoing work to design, develop and test the site against recognised accessibility standards. We are making ongoing efforts to ensure all areas of the site are fully accessible.&nbsp;</p>",
             "link_text": "",
             "link_url": ""
           }
@@ -43,7 +34,7 @@
           "type": "faq",
           "settings": {
             "title": "Contact Us",
-            "text": "<p>We welcome your feedback and want to hear about any complaints. Please contact us at <a href=\"mailto:help@solacelondon.com\">help@solacelondon.com</a> and we will aim to resolve any issue as quickly as possible once it is brought to our attention. If we are unable to resolve a complaint through our internal process, we will confirm this to you in writing. We are not currently a member of an alternative dispute resolution (ADR) scheme, but we will always do our best to resolve complaints with you directly and can provide details of a certified ADR provider where appropriate.</p><p><span style=\"text-decoration:underline\"><strong>Post</strong></span></p><p>Solace London, 21 Club Row, London, E2 7EY, United Kingdom.</p>",
+            "text": "<p>If you have difficulty using any part of our site, need information in another format, or would like to report an accessibility barrier, please contact us at <a href=\"mailto:help@solacelondon.com\">help@solacelondon.com</a> and we will do our best to help.</p>",
             "link_text": "",
             "link_url": ""
           }
@@ -52,7 +43,6 @@
       "block_order": [
         "faq_kVcKyC",
         "faq_WqPAxm",
-        "faq_Tizmhz",
         "faq_BJfXcz"
       ],
       "settings": {
