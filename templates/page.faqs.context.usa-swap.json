@@ -12,5 +12,71 @@
     "market": "usa-swap"
   },
   "parent": "page.faqs.json",
-  "sections": {}
+  "sections": {
+    "main": {
+      "settings": {},
+      "blocks": {
+        "faq_rCyUmz": {
+          "settings": {
+            "text": "<p>The intellectual property rights of all content made available to you on or through this Website belong either to the Website Owner or respective trademark owners and are protected by copyright laws and treaties around the world. The Website Owner and respective trademark owners reserve the use of such rights. Without the prior written permission of the Website Owner, nothing contained on this website should be construed as granting any licence or right to use any trademark. Where a trade mark or brand name of a respective trademark owner is referred to it is used solely to describe or identify products and services and is in no way an assertion that such products or services are endorsed by or connected to the Website Owner.</p>"
+          }
+        },
+        "faq_C4KtWJ": {
+          "settings": {
+            "text": "<p>The Website Owner is SL US Inc., a corporation incorporated in the State of Delaware, United States, with its registered agent located at 16192 Coastal Highway, Lewes, Delaware 19958. SL US Inc. operates the United States version of this Website and is the seller of products purchased by customers located in the United States. You can contact us at any time at help@solacelondon.com or by phone at (929) 725-3507. By using the Services, you warrant and represent to the Website Owner that you are legally entitled to access and make use of the information made available via the Website. You are strictly prohibited from misusing the Website, including but not limited to: committing or encouraging any unlawful act; transmitting or distributing a virus, trojan, worm, logic bomb or posting any other material which is malicious, technologically harmful, in breach of confidence or in any way offensive or obscene; gaining or attempting to gain unauthorised access to any aspect of the Service; corrupting data; causing annoyance to other users; infringing upon any other person’s proprietary or intellectual property rights; sending any unsolicited advertising or promotional material, commonly referred to as “spam”; or sending or posting any message or material that is unlawful, harassing, defamatory, abusive, indecent, threatening, harmful, vulgar, obscene, sexually orientated, racially offensive, profane, pornographic, or otherwise objectionable. Misuse of the Website may violate applicable federal or state law, and the Website Owner will report any such breach, including the disclosure of your identity, to the relevant law enforcement authorities. The Website Owner will not be liable for any loss or damage caused by a distributed denial-of-service attack, viruses or other technologically harmful material that may infect your computer equipment, computer programs, data or other proprietary material due to your use of this Website or to your downloading of any material posted on it, or on any website linked to it. Additionally, where you are using the Website in the course of a business or trade, by using the Services, you hereby agree to indemnify, defend and hold harmless the Website Owner, its directors, officers, employees, consultants, agents, and affiliates, against any loss, liability, damage or expense of whatever nature that the Website Owner or any third party may suffer arising from your use of this Website or your breach of these Terms and Conditions. This indemnity does not apply where you are using the Website as a consumer.</p>"
+          }
+        },
+        "faq_6Wq8dc": {
+          "settings": {
+            "text": "<p>The Website Owner, unless the contrary is explicitly stated in writing, to the fullest extent permitted by law, disclaims all liability for any damages, including but not limited to any direct, indirect, incidental, or consequential damages, loss, liability, or expense of any nature whatsoever arising from the use of the Services, or damages for loss of use, profits, data or other intangibles, damage to goodwill or reputation, or the cost of procurement of substitute goods and services, arising out of or related to the use, inability to use, performance or failures of this Website or the Linked Sites and any materials posted thereon, irrespective of whether such damages were foreseeable or arise in contract, tort, equity, restitution, by statute, at common law or otherwise. To the fullest extent permitted by applicable law, the Website Owner’s total liability arising out of or relating to these Terms and Conditions or your use of the Website and Services shall not exceed the amount you paid for the products or order giving rise to the claim. Nothing in these Terms and Conditions excludes or limits any liability that cannot be excluded or limited under applicable law, including any liability for fraud or fraudulent misrepresentation or for death or personal injury caused by our negligence. Some states do not allow the exclusion or limitation of incidental or consequential damages or certain other liabilities, so some of the above exclusions or limitations may not apply to you, and you may have additional rights.</p>"
+          }
+        },
+        "faq_3aTrpj": {
+          "settings": {
+            "text": "<p>Except for any warranties or rights that cannot be excluded or limited under the law that applies to you — which may include the implied warranties of merchantability and fitness for a particular purpose — and to the fullest extent permitted by that law, the Website, its content, and the products are provided on an “as is” and “as available” basis, and the Website Owner disclaims all other warranties, representations, statements or guarantees, whether express or implied. Some states do not allow the exclusion or limitation of certain implied warranties, so some or all of the above may not apply to you, and you may have other rights that vary from state to state.</p>"
+          }
+        },
+        "faq_jjP9nC": {
+          "settings": {
+            "text": "<p>By placing your order, you are using the Services of the Website which are subject to the Terms and Conditions. In order to place an order, you must be over 18 years of age and possess a valid credit or debit card from an issuing bank that we can accept. By placing an order, you undertake that all details you provide to us are true and accurate, that you are an authorised user of the credit or debit card used to place your order and that there are sufficient funds to cover the cost of the goods. Prices are shown in US dollars. Your order price includes all applicable import duties and taxes on a Delivered Duty Paid (DDP) basis, as described in our Shipping & Returns policy. Any applicable US state or local sales tax will be calculated and shown at checkout where required. Payment is authorised when you place your order and taken when the goods are dispatched, unless we tell you otherwise at checkout. Delivery times may vary based on availability and may be subject to delays resulting from our chosen shipping partner or events beyond our reasonable control, for which we will not be responsible. Any returned items must be sent back to us at your own cost in their original condition with the original tags attached. Please refer to our Shipping & Returns policy for more details.&nbsp;</p><p>A contract between you and us is formed only when we send you an email confirming that the goods have been dispatched (the “Dispatch Confirmation”). An order acknowledgement does not amount to acceptance of your order, and we may decline or cancel an order before that point.&nbsp;</p><p>We reserve the right to correct errors in pricing or product descriptions and, where an order is affected by an obvious error, to cancel that order and refund any sums paid, even after a Dispatch Confirmation.&nbsp;</p><p>Your rights to return goods are set out in our Shipping & Returns policy, which forms part of these Terms and Conditions. Nothing in these Terms and Conditions limits any rights you may have under applicable law.</p>"
+          }
+        },
+        "faq_kVcKyC": {
+          "settings": {
+            "text": "<p>We are unable to offer a price adjustment on products purchased at solacelondon.com which may then be included in promotional activity at a future time.</p>"
+          }
+        },
+        "faq_WqPAxm": {
+          "settings": {
+            "text": "<p>These terms and conditions apply to competitions and/or giveaways run by Solace London or run by a third party in association with Solace London (“Competition” or “Competitions”). By entering a Competition, the entrant certifies that all details given are correct and accurate and agrees to be bound by Solace London’s complete Terms & Conditions and Privacy Policy. Prizes will be awarded on the basis that one prize goes to each winner. Solace London reserves the right to substitute a prize of equivalent value in the event the offered prize is unavailable. The prize is non-transferable and there is no cash alternative. The Competition winner will be chosen at random after the advertised closing date and will be notified by email within 5 working days of the closing date. If the winner cannot be contacted within 10 working days, an alternative winner may be chosen. Once chosen, the winner selection is final. Once the winner has responded with delivery details, the prize will be sent within 10 working days. Solace London may wish to use winners’ names for publicity purposes on the Website, social media, email communications, or other publicity avenues. It is a condition of entry to any Competition that you agree to this use of your name. Competitions are void where prohibited by law and are governed by the law set out in the Governing Law and Jurisdiction section below. Employees of Solace London, its affiliates, subsidiaries, advertising and promotion agencies, and their immediate family members and/or those living in the same household, are not eligible to participate in a Competition. By participating in the Competition, you agree to Solace London’s collection, use, and disclosure of any personal information you may submit for the purposes of administering the Competition, as set forth in these Terms and Conditions, and set forth in our Privacy Policy.</p>"
+          }
+        },
+        "faq_64MGJM": {
+          "settings": {
+            "text": "<p>The Website Owner may grant waiver of any provision of the Terms and Conditions, but this shall not be deemed a waiver of any other provision. Nor shall waiver of any breach of the Terms and Conditions serve as a continuing waiver of future breaches of the Terms and Conditions unless stated expressly in writing and signed by an authorized officer of the Website Owner. The Website Owner’s failure or delay to exercise any right, remedy, power or privilege will not constitute a waiver of the right to exercise any other right, remedy, power or privilege.</p>"
+          }
+        },
+        "faq_r3XLgU": {
+          "settings": {
+            "text": "<p>These Terms and Conditions, and any dispute or claim arising out of or in connection with them, their subject matter or formation, are governed by and construed in accordance with the laws of the State of Delaware, United States, without regard to its conflict-of-laws principles. Subject to the paragraph below, you and the Website Owner agree to submit to the exclusive jurisdiction of the state and federal courts located in New Castle County, Delaware to resolve any dispute or claim. If you are a consumer, nothing in these Terms and Conditions deprives you of the protection of any mandatory consumer-protection laws of the state in which you reside, and you may be entitled to bring proceedings in your local courts. These Terms and Conditions do not require you to arbitrate any dispute or to waive any right to participate in a class action.</p>"
+          }
+        },
+        "faq_RpfnrP": {
+          "settings": {
+            "text": "<p>The Terms and Conditions constitute the entire agreement between you and the Website Owner and supersede all prior and contemporaneous agreements between the parties. The Terms and Conditions constitute the final, complete and exclusive statement of the agreement between the parties with respect to the subject matter thereof. This clause does not exclude our Shipping & Returns policy, our “EU Customers – Right of Withdrawal” notice or our Privacy Policy, each of which forms part of these Terms and Conditions, and does not limit any rights you may have under applicable law.</p>"
+          }
+        },
+        "faq_qtFLPW": {
+          "settings": {
+            "text": "<p>By using the Services, you agree that the Website Owner may cede, assign and/or delegate all or any of its rights and obligations in relation to the Terms and Conditions to any third party or third parties, provided that this does not reduce your rights under these Terms and Conditions. Where you are a consumer and we assign our obligations, we will tell you in writing.</p>"
+          }
+        },
+        "faq_BJfXcz": {
+          "settings": {
+            "text": "<p>We welcome your feedback and want to hear about any complaints. Please contact us at <a href=\"mailto:help@solacelondon.com\">help@solacelondon.com</a> and we will aim to resolve any issue as quickly as possible once it is brought to our attention. If we are unable to resolve a complaint through our internal process, we will confirm this to you in writing.</p><p><span style=\"text-decoration:underline\"><strong>Post</strong></span></p><p>SL US Inc., 16192 Coastal Highway, Lewes, Delaware 19958, United States.</p>"
+          }
+        }
+      }
+    }
+  }
 }
