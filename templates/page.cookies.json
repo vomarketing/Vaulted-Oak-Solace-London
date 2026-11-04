@@ -18,6 +18,7 @@
             "title": "Cookie Policy",
             "text": "<p>This Cookie Policy explains how Solace London uses cookies and similar technologies on solacelondon.com (the “Site”), and how you can control them. Solace London is a trading name of Solace London Limited, a company registered in England and Wales (company number 08603919) with its registered office at 21 Club Row, London, E2 7EY. It should be read together with our Privacy Policy, which explains how we handle your personal data. We use cookies in accordance with the Privacy and Electronic Communications Regulations (PECR) and the UK GDPR.</p>",
             "link_text": "",
+            "show_cookie_table": false,
             "link_url": ""
           }
         },
@@ -27,6 +28,7 @@
             "title": "Why We Use Cookies",
             "text": "<p>When you visit the Site, our web server sends a cookie to your computer. Cookies are small pieces of information which are issued to your computer when you visit a website and which store and sometimes track information about your use of the Site. A number of cookies we use last only for the duration of your web session and expire when you close your browser. Other cookies are used to remember you when you return to the Site and will last for longer.&nbsp;</p><p>We use cookies to remember that you have visited us before (so we can gauge visitor numbers and make sure we have enough capacity), to customise the layout and content of the pages of the Site, to collect statistical information about how the Site is used and where visitors come from so that we can improve it, and to gather information about the pages you visit — and other sites you visit — so as to place you in a “market segment” and show interest-based advertisements. For more information about interest-based advertising and how to turn it off, please visit youronlinechoices.com/uk.&nbsp;</p><p>Some of the cookies used by the Site are set by us, and some are set by third parties who deliver services on our behalf.&nbsp;</p><p>We only place non-essential cookies — including functional, analytics, performance and advertising cookies — with your consent, which we collect through our cookie banner when you first visit the Site and which you can change at any time (see “Managing your cookies” below). Strictly necessary cookies, which the Site needs in order to function, do not require consent. In addition to our cookie banner, most web browsers let you block or delete cookies, or notify you each time a cookie is set. You can also learn more about cookies at allaboutcookies.org. Please note, however, that by blocking or deleting cookies used on the Site, you may not be able to take full advantage of it.&nbsp;</p>",
             "link_text": "",
+            "show_cookie_table": false,
             "link_url": ""
           }
         },
@@ -36,6 +38,7 @@
             "title": "Managing Your Cookies",
             "text": "<p>You can accept, reject or manage non-essential cookies at any time using our cookie preferences tool, available via <a>Consent Preferences</a>. Non-essential cookies remain off until you consent to them, and you can withdraw your consent at any time — it is as easy to reject cookies as it is to accept them. We may ask you to confirm your choices again from time to time.&nbsp;</p>",
             "link_text": "",
+            "show_cookie_table": false,
             "link_url": ""
           }
         },
@@ -45,6 +48,7 @@
             "title": "The Cookies We Use",
             "text": "<p>The specific cookies we use — including their names, providers, purpose, category and how long they last — are listed in the table below. Strictly necessary cookies are always active; all other cookies run only where you have given your consent, which you can change at any time. &nbsp;</p>",
             "link_text": "",
+            "show_cookie_table": true,
             "link_url": ""
           }
         },
@@ -54,6 +58,7 @@
             "title": "Changes To This Cookie Policy",
             "text": "<p>We may update this Cookie Policy from time to time to reflect changes in the cookies we use or for legal reasons. Any changes will be posted on this page with an updated “last updated” date. This policy was last updated on 27/08/26.</p>",
             "link_text": "",
+            "show_cookie_table": false,
             "link_url": ""
           }
         },
@@ -63,6 +68,7 @@
             "title": "Questions",
             "text": "<p>Please submit any questions, concerns or comments about this Cookie Policy, or any requests concerning your personal data, by email to <a href=\"mailto:help@solacelondon.com\">help@solacelondon.com.</a> Post: Solace London, 21 Club Row, London, E2 7EY.</p>",
             "link_text": "",
+            "show_cookie_table": false,
             "link_url": ""
           }
         }
