@@ -15,8 +15,8 @@
         "faq_j3VC6V": {
           "type": "faq",
           "settings": {
-            "title": "Privacy",
-            "text": "<p>The Website Owner, including subsidiaries and affiliates (“Website”, “Website Owner”, “we”, “us”, “our”), provides access to and use of this Website and the products and services available through this Website (collectively, the “Services”) to visitors (“visitors”; or “you” or “your” collectively) subject to the following terms, conditions and notices (collectively, the “Terms and Conditions”). By using the Services, you are agreeing to all of the Terms and Conditions and any updates we make to the Terms and Conditions from time to time. By visiting the Website, you shall become bound to the current version of the relevant Terms and Conditions (the “Latest Version”) and, unless stated in the Latest Version, all previous versions shall be superseded by the Latest Version. You should refer to this page frequently to remain informed of the most up to date Terms and Conditions and are responsible for reviewing the Latest Version each time you visit the website. However, the version of these Terms and Conditions in force at the time you place an order will apply to that order, and any changes we make will apply only to your use of the Website and to orders placed after the change takes effect. Furthermore, by using the Services, you are also agreeing to the Privacy Policy, consenting to us using your information in the manner described in the Privacy Policy, and warranting that all data provided by you is accurate.</p>",
+            "title": "Privacy Terms",
+            "text": "<p>This policy explains how Solace London (“we”, “us”, “our”) collects and uses your personal information, and your rights in relation to it. Solace London is a trading name of Solace London Limited, a company registered in England and Wales (company number 08603919) with its registered office at 21 Club Row, London, E2 7EY. We are the controller responsible for your personal information and we handle it in accordance with the UK GDPR, the Data Protection Act 2018 and, where it applies to you, the EU GDPR. Our website and products are intended for adults, and we do not knowingly collect personal information from children. Solace London understands the importance of protecting the privacy of our site visitors and customers and as such, has adopted company privacy policies for your protection. By visiting our website, you acknowledge that you have read and understood this Privacy Policy. Please read this policy carefully to understand how we handle your personal information. Where we rely on your consent for a particular use — such as certain marketing or non-essential cookies — we say so below, and you can withdraw that consent at any time.</p>",
             "link_text": "",
             "link_url": ""
           }
@@ -24,8 +24,8 @@
         "faq_eBNGnc": {
           "type": "faq",
           "settings": {
-            "title": "Access To The Website",
-            "text": "<p>We provide access to the Website on a temporary basis only and reserve the right to withdraw or amend the Services without notice. The Website will not be liable should the Website be unavailable at any time or for any period, subject to the Disclaimer of Liability below. Additionally, we reserve the right to revoke access to some or all parts of the Website from time to time.</p>",
+            "title": "Collecting Information & Contacting You",
+            "text": "<p>Solace London will collect your information via the newsletter, the account sign up page, and information provided when you place an order. Information such as name, email address, payment information, and billing and shipping addresses, will be used by us to process your order, manage your account, complete deliveries, personalise your use of the website, and send you Solace London updates such as new arrivals and promotions. Some data such as name, email address, payment information, and billing and shipping addresses, are mandatory for us to be able to process your order.&nbsp;</p><p>We may also collect and process information provided when you submit a return, customer service or withdrawal request, including your name, email address, order number and any information you choose to include in your request. This information is used to locate your order, process your request and communicate with you about it.</p><p>If you have given us your consent, or where we are otherwise permitted to do so, we will occasionally send you news, product details and special offers by email and, where you have agreed, by post or telephone. Occasionally we will also review email activity so that we only send you content you would be interested in — this means that we may change email content based on what our customers open and read. Where required by law, we will only use tracking technologies in marketing emails where you have provided the necessary consent. All recipients of Solace London communications have the ability to opt out of receiving communications by clicking the “unsubscribe” link in any email that we have sent you.</p><p>You have rights in relation to how your personal data is used. If you would like us to delete or change your personal information or account details in any way, or if you have any questions about how your personal data is collected and used, please let us know by emailing&nbsp;<a href=\"mail:help@solacelondon.com\" title=\"Help email | Solace London\">help@solacelondon.com</a>&nbsp;and we will respond within the time limits required by data protection law (usually within one month).</p>",
             "link_text": "",
             "link_url": ""
           }
@@ -33,8 +33,8 @@
         "faq_PxzVc8": {
           "type": "faq",
           "settings": {
-            "title": "Information On The Website",
-            "text": "<p>The Website Owner makes a serious effort to regularly update the information contained on the Website; however, neither the Website Owner nor any third party or data or content provider make any representations or warranties, whether express, implied in law or residual, as to the sequence, accuracy, completeness or reliability of information, opinions, research information, data and/or content contained on the website (including but not limited to any information which may be provided by any third party or data or content providers) (“information”) and shall not be bound in any manner by any information contained on the Website. We aim to ensure that product descriptions, images and other content on the Website are accurate, but we do not warrant that they are complete or error-free, and on-screen colours may vary slightly from the actual products. Where we become aware of an error we will correct it as soon as we reasonably can. In addition, this Website contains links to websites not operated by the Website Owner (the “Linked Sites”). The Website Owner has no control over the Linked Sites and accepts no responsibility for them or for any loss or damage that may arise from your use of them. Your use of the Linked Sites will be subject to the terms of use and service contained within each such site.</p>",
+            "title": "Our Lawful Bases For Using Your Information",
+            "text": "<p>We only use your personal information where the law allows us to. The bases we rely on are: (a) performing our contract with you — to process and deliver your orders, manage your account and handle returns, refunds and withdrawal requests; (b) our legitimate interests — to personalise and improve the website, understand how it is used, prevent fraud and keep our business secure, provided your interests do not override these; (c) your consent — for certain marketing and for non-essential cookies, which you can withdraw at any time; and (d) complying with our legal obligations — for example, keeping records we are required to keep for tax and accounting purposes.</p>",
             "link_text": "",
             "link_url": ""
           }
@@ -42,8 +42,8 @@
         "faq_rCyUmz": {
           "type": "faq",
           "settings": {
-            "title": "Intellectual Property",
-            "text": "<p>The intellectual property rights of all content made available to you on or through this Website belong either to the Website Owner or respective trademark owners and are protected by copyright laws and treaties around the world. The Website Owner and respective trademark owners reserve the use of such rights. Without the prior written permission of the Website Owner, nothing contained on this website should be construed as granting any licence or right to use any trademark. &nbsp;Where a trade mark or brand name of a respective trademark owner is referred to it is used solely to describe or identify products and services and is in no way an assertion that such products or services are endorsed by or connected to the Website Owner.</p>",
+            "title": "When We will Use Your Information",
+            "text": "<p>In line with our policies we will not disclose customer information to third parties except in cases where a service we provide requires such details, such as processing orders, arranging deliveries, handling returns, managing withdrawal requests or providing customer support. Furthermore, we will not sell your name, address, e-mail address, payment information or personal information to any third party for their own marketing purposes without your permission. We may share your personal information with service providers who process it on our behalf. The service providers we share information with — which may include payment providers, delivery and courier partners, IT and hosting providers, and email, marketing and analytics platforms — act on our instructions under contracts that require them to keep your information secure and to use it only for the purposes we specify.</p>",
             "link_text": "",
             "link_url": ""
           }
@@ -51,8 +51,8 @@
         "faq_C4KtWJ": {
           "type": "faq",
           "settings": {
-            "title": "Use Of The Website",
-            "text": "<p>Solace London is a trading name of Solace London Limited, a company registered in England and Wales under company number 08603919, with its registered office at 21 Club Row, London, E2 7EY and VAT number 166629183. The Website Owner is a registered company in England and Wales and makes no warranty or representation that information on the Website is appropriate for use in jurisdictions outside the United Kingdom. By using the Services, you warrant and represent to the Website Owner that you are legally entitled to access and make use of the information made available via the Website. Furthermore, in accordance with the Computer Misuse Act 1990 (“the Act”), you are strictly prohibited from misusing the Website, including but not limited to: committing or encouraging a criminal offence; transmitting or distributing a virus, trojan, worm, logic bomb or posting any other material which is malicious, technologically harmful, in breach of confidence or in any way offensive or obscene; hacking into any aspect of the Service; corrupting data; causing annoyance to other users; infringing upon the rights of any other person’s proprietary rights; sending any unsolicited advertising or promotional material, commonly referred to as “spam”; sending or posting any message or material that is unlawful, harassing, defamatory, abusive, indecent, threatening, harmful, vulgar, obscene, sexually orientated, racially offensive, profane, pornographic; or attempting to affect the performance or functionality of any computer facilities of or accessed through this Website. A breach of this provision constitutes a criminal offence under the Act and the Website Owner will report any such breach including the disclosure of your identity, to the relevant law enforcement authorities. The Website Owner will not be liable for any loss or damage caused by a distributed denial-of-service attack, viruses or other technologically harmful material that may infect your computer equipment, computer programs, data or other proprietary material due to your use of this Website or to your downloading of any material posted on it, or on any website linked to it. Additionally, where you are using the Website in the course of a business or trade, by using the Services, you hereby agree to indemnify, defend and hold harmless the Website Owner its directors, officers, employees, consultants, agents, and affiliates, against any loss, liability, damage or expense of whatever nature that the Website Owner or any third party may suffer arising from your use of this Website or your breach of the Terms of Service. This indemnity does not apply where you are using the Website as a consumer.</p>",
+            "title": "International Transfers",
+            "text": "<p>Some of the service providers we use may store or process your information outside the United Kingdom or the European Economic Area (EEA). Where we transfer personal information outside the UK or EEA, we take steps to ensure it receives an adequate level of protection — for example, by relying on an adequacy decision, or by putting in place approved safeguards such as the UK International Data Transfer Agreement or Addendum, or the European Commission’s Standard Contractual Clauses. You can contact us for more information about these safeguards.</p>",
             "link_text": "",
             "link_url": ""
           }
@@ -60,8 +60,8 @@
         "faq_7d9nAd": {
           "type": "faq",
           "settings": {
-            "title": "Visitor Submissions & Public Comments",
-            "text": "<p>The Website Owner has allowed for Visitor submissions in several areas of the Website. By submitting material to the Website, you hereby acknowledge that the Website Owner is not required to publish any material submitted by you and grant us the royalty-free, perpetual, non-exclusive right and licence to use, reproduce, modify, adapt, publish, translate, create derivative works from, distribute, perform and display all or part of such material worldwide and/or to incorporate it in other works in any form, media, or technology now known or later developed. The Website Owner monitors Visitor submissions but takes no responsibility for any material submitted by Visitors to the public areas, which may include bulletin boards, hosted pages, blogs, or any other public area found on the Website. By posting material to the Website, you hereby agree not to defame, abuse, harass, stalk, threaten or otherwise violate the rights of other users or any third parties; publish, post, distribute or disseminate any defamatory, obscene, indecent or unlawful material or information; post or upload files that contain viruses, corrupted files or any other similar software or programmes that may damage the operation of the Website Owner’s and/or a third party’s computer system and/or network; violate any copyright, trademark, other applicable laws or intellectual property rights of the Website Owner or any other third party; or submit content containing marketing or promotional material which is intended to solicit business. The Website Owner reserves the right to remove any material submitted or posted by you in the public areas, without notice to you, if it becomes aware and determines, in its sole and absolute discretion that any of these limitations are breached. Finally, any material posted by Visitors is not endorsed, reviewed or approved by the Website Owner.</p>",
+            "title": "How Long We Keep Your Information",
+            "text": "<p>We keep your personal information only for as long as we need it for the purposes set out in this policy, and to meet our legal, accounting and reporting obligations. In general: order and transaction records are kept for six years to meet tax and accounting requirements; account information is kept for as long as your account is active and for up to two years after it is closed; and marketing preferences are kept until you ask us to stop contacting you. When we no longer need your information, we securely delete or anonymise it.</p>",
             "link_text": "",
             "link_url": ""
           }
@@ -69,8 +69,8 @@
         "faq_6Wq8dc": {
           "type": "faq",
           "settings": {
-            "title": "Disclaimer of Liability",
-            "text": "<p>The Website Owner, unless the contrary is explicitly stated in writing, to the fullest extent permitted by law, disclaims all liability for any damages, including but not limited to any direct, indirect, or consequential damages, loss, liability, or expense of any nature whatsoever arising from the use of the Services, or damages for loss of use, profits, data or other intangibles, damage to goodwill or reputation, or the cost of procurement of substitute goods and services, arising out of or related to the use, inability to use, performance or failures of this Website or the Linked Sites and any materials posted thereon, irrespective of whether such damages were foreseeable or arise in contract, tort, equity, restitution, by statute, at common law or otherwise. Nothing in these Terms and Conditions excludes or limits our liability for death or personal injury caused by our negligence, for fraud or fraudulent misrepresentation, or for any other liability that cannot be excluded or limited under applicable law. Nothing in these Terms and Conditions affects the statutory rights of consumers.</p>",
+            "title": "Keeping Your Information Secure",
+            "text": "<p>Protecting your privacy is a serious matter to us and we endeavour to use the best methods available to us to ensure the security, integrity and privacy of the information you have provided us with. When you place an order with us, we use Secure Socket Layer (SSL)/Transport Layer Security (TLS) encryption to protect your details from unauthorised use. Additionally, we carefully select our business partners to whom this data is transferred based on the level of protection they have to care for your personal information.</p>",
             "link_text": "",
             "link_url": ""
           }
@@ -78,8 +78,8 @@
         "faq_3aTrpj": {
           "type": "faq",
           "settings": {
-            "title": "Warranties",
-            "text": "<p>For the avoidance of doubt, the Website Owner makes no warranties, representations, statements or guarantees, express, implied in law or residual, regarding the Website, the content contained on the Website, or personal information, materials or information submitted via our systems. This section applies to the Website and its content only. It does not affect the statutory rights you have as a consumer in respect of goods purchased from us — including that the goods will be of satisfactory quality, fit for purpose and as described — which cannot be excluded or limited.</p>",
+            "title": "Your Rights",
+            "text": "<p>Under data protection law you have a number of rights in relation to your personal information: the right to be informed about how we use it; the right to access a copy of the information we hold about you; the right to have inaccurate information corrected; the right to have your information erased in certain circumstances; the right to restrict or object to our processing in certain circumstances; the right to data portability; the right to withdraw your consent at any time where we rely on consent; and the right to object at any time to the use of your information for direct marketing. To exercise any of these rights, please email help@solacelondon.com. We will respond within the time limits required by data protection law, usually within one month, and you will not normally have to pay a fee.&nbsp;</p><p>If you are unhappy with how we have handled your personal information, you have the right to complain to the Information Commissioner’s Office (ICO) at ico.org.uk or on 0303 123 1113. If you are located in the EU or EEA, you may instead contact your local data protection supervisory authority. We would appreciate the chance to address your concerns before you approach the regulator, so please consider contacting us first.&nbsp;</p>",
             "link_text": "",
             "link_url": ""
           }
@@ -87,8 +87,8 @@
         "faq_jjP9nC": {
           "type": "faq",
           "settings": {
-            "title": "Terms Of Sale",
-            "text": "<p>By placing your order, you are using the Services of the Website which are subject to the Terms and Conditions. In order to place an order, you must be over 18 years of age and possess a valid credit or debit card from an issuing bank that we can accept. By placing an order, you undertake that all details you provide to us are true and accurate, that you are an authorised user of the credit or debit card used to place your order and that there are sufficient funds to cover the cost of the goods. The cost of foreign products and services may fluctuate and all prices advertised are subject to such change. Prices shown on the Website include VAT where applicable. Payment is authorised when you place your order and taken when the goods are dispatched, unless we tell you otherwise at checkout. Any import duties or taxes on international orders are dealt with in our Shipping & Returns policy. Delivery times may vary based on availability and may be subject to delays resulting from our chosen shipping partner or force majeure, for which we will not be responsible. Any returned items must be sent back to us at your own cost in their original condition with the original tags attached. Please refer to our Shipping & Returns policy for more details. A contract between you and us is formed only when we send you an email confirming that the goods have been dispatched (the “Dispatch Confirmation”). An order acknowledgement does not amount to acceptance of your order, and we may decline or cancel an order before that point. We reserve the right to correct errors in pricing or product descriptions and, where an order is affected by an obvious error, to cancel that order and refund any sums paid, even after a Dispatch Confirmation. Your rights to return goods and, where applicable, to cancel or withdraw from your purchase are set out in our Shipping & Returns policy and our “EU Customers – Right of Withdrawal” notice, which form part of these Terms and Conditions. Nothing in these Terms and Conditions affects the statutory rights of consumers.</p>",
+            "title": "Cookie Policy",
+            "text": "<p>A cookie is a small file with information about your movements within a website that is sent to and stored on your computer’s hard drive. When you register with us, a cookie with your email address will be stored on your computer to save you time when you next visit Solace London. To prevent cookies being stored on your computer without your pre-approval, you can change the settings on your web browser. You will still be able to shop on the Solace London site without allowing a Solace London cookie to be stored on your computer. We use essential cookies to operate the website, and non-essential cookies (such as analytics and advertising cookies) only where you have given your consent through our cookie banner, which you can change at any time.</p><p>Read more about our&nbsp;<a href=\"/cookies\">cookie policy here</a>.</p>",
             "link_text": "",
             "link_url": ""
           }
@@ -96,8 +96,8 @@
         "faq_kVVW4W": {
           "type": "faq",
           "settings": {
-            "title": "Discount Codes",
-            "text": "<p>We may from time to time offer promotional discount codes which may apply in respect of any, or certain specified, purchases made through this Website. These discount codes apply to a minimum spend if stated and do not apply to shipping. Offers are only valid on full price items, and cannot be used in conjunction with any other promotion or discount. If returning items that were purchased with the discount code, the code will remain valid if the retained items are over the minimum spend. The Website Owner reserves the right to cancel or change any promotion without notice.</p>",
+            "title": "Third Party Sites",
+            "text": "<p>Where we think it will be of interest to our customers, we provide links to third party websites. If you follow a link to any of these websites, please be aware that they have their own privacy policies and that we do not accept any responsibility or liability for these policies. Please check these policies before you submit any personal data to these websites. Regarding privacy and the Data Protection Act 2018 and the UK GDPR, you have the right to access the personal information that we hold about you. We will gladly oblige with any such access request. Furthermore, if you wish to verify the details you have submitted to Solace London you may do so by contacting us via <a href=\"mailto:help@solacelondon.com\">help@solacelondon.com</a>.</p>",
             "link_text": "",
             "link_url": ""
           }
@@ -105,71 +105,8 @@
         "faq_tknEM3": {
           "type": "faq",
           "settings": {
-            "title": "Minimum Spend Free Shipping Offers",
-            "text": "<p>We may from time to time offer minimum spend free shipping offers which may apply in respect of any, or certain specified, purchases made through this Website. These offers apply to a minimum spend and are valid on full price items, and cannot be used in conjunction with any other promotion or discount. If returning items that were purchased with the minimum spend free shipping offer code, the code will remain valid only if the retained items are over the minimum spend. If the minimum spend is not reached after the returns, the shipping cost will be deducted from the refund. The Website Owner reserves the right to cancel or change any promotion without notice.</p>",
-            "link_text": "",
-            "link_url": ""
-          }
-        },
-        "faq_kVcKyC": {
-          "type": "faq",
-          "settings": {
-            "title": "Sale Price Adjustments",
-            "text": "<p>We are unable to offer a price adjustment on products purchased at solacelondon.com which may then be included in promotional activity at a future time.</p>",
-            "link_text": "",
-            "link_url": ""
-          }
-        },
-        "faq_WqPAxm": {
-          "type": "faq",
-          "settings": {
-            "title": "Competitions & Giveaways",
-            "text": "<p>These terms and conditions apply to competitions and/or giveaways run by Solace London or run by a third party in association with Solace London (“Competition” or “Competitions”). By entering a Competition, the entrant certifies that all details given are correct and accurate and agrees to be bound by Solace London’s complete Terms & Conditions and Privacy Policy. Prizes will be awarded on the basis that one prize goes to each winner. Solace London reserves the right to substitute a prize of equivalent value in the event the offered prize is unavailable. The prize is non-transferable and there is no cash alternative. The Competition winner will be chosen at random after the advertised closing date and will be notified by email within 5 working days of the closing date. If the winner cannot be contacted within 10 working days, an alternative winner may be chosen. Once chosen, the winner selection is final. Once the winner has responded with delivery details, the prize will be sent within 10 working days. Solace London may wish to use winners’ names for publicity purposes on the Website, Facebook, email communications, or other publicity avenues. It is a condition of entry to any Competition that you agree to this use of your name. All Competitions are governed by the relevant laws of England and Wales. Employees of Solace London, its affiliates, subsidiaries, advertising and promotion agencies, and their immediate family members and/or those living in the same household, are not eligible to participate in a Competition. By participating in the Competition, you agree to Solace London’s collection, use, and disclosure of any personal information you may submit for the purposes of administering the Competition, as set forth in these Terms and Conditions, and set forth in our Privacy Policy.</p>",
-            "link_text": "",
-            "link_url": ""
-          }
-        },
-        "faq_Tizmhz": {
-          "type": "faq",
-          "settings": {
-            "title": "Severability",
-            "text": "<p>In the event that any one or more of the provisions of the Terms and Conditions shall, for any reason, be held to be invalid, illegal or unenforceable in any respect, such invalidity, illegality or unenforceability, shall not affect the other provisions of this agreement. Instead, so far as possible, this agreement shall be construed as if such invalid, illegal or unenforceable provisions had never been contained herein. Alternatively, the provision shall be modified and reinterpreted to most closely reflect the meaning of the deleted provision.</p>",
-            "link_text": "",
-            "link_url": ""
-          }
-        },
-        "faq_64MGJM": {
-          "type": "faq",
-          "settings": {
-            "title": "Waiver",
-            "text": "<p>The Website Owner may grant waiver of any provision of the Terms and Conditions, but this shall not be deemed a waiver of any other provision. Nor shall waiver of any breach of the Terms and Conditions serve as a continuing waiver of future breaches of the Terms and Conditions unless stated expressly in writing and signed by one of the Directors of the Website Owner. The Website Owner’s failure or delay to exercise any right, remedy, power or privilege will not constitute a waiver of the right to exercise any other right, remedy, power or privilege.</p>",
-            "link_text": "",
-            "link_url": ""
-          }
-        },
-        "faq_r3XLgU": {
-          "type": "faq",
-          "settings": {
-            "title": "Governing Law & Jurisdiction",
-            "text": "<p>The Terms and Conditions are to be governed by and construed in accordance with the laws of England and Wales without giving effect to any principles of conflict of law. If a dispute or claim arises in respect of the Terms and Conditions, it shall be subject to the exclusive jurisdiction of the courts of England and Wales. If you are a consumer, you benefit from any mandatory provisions of the law of the country in which you are resident. Nothing in these Terms and Conditions, including the choice of English law and the courts of England and Wales, deprives you of the protection of those mandatory provisions or of your right, where the law so allows, to bring proceedings in the courts of your country of residence.</p>",
-            "link_text": "",
-            "link_url": ""
-          }
-        },
-        "faq_RpfnrP": {
-          "type": "faq",
-          "settings": {
-            "title": "Entire Agreement",
-            "text": "<p>The Terms and Conditions constitute the entire agreement between you and the Website Owner and supersede all prior and contemporaneous agreements between the parties. The Terms and Conditions constitute the final, complete and exclusive statement of the agreement between the parties with respect to the subject matter thereof. This clause does not exclude our Shipping & Returns policy, our “EU Customers – Right of Withdrawal” notice or our Privacy Policy, each of which forms part of these Terms and Conditions, and does not limit the statutory rights of consumers.</p>",
-            "link_text": "",
-            "link_url": ""
-          }
-        },
-        "faq_qtFLPW": {
-          "type": "faq",
-          "settings": {
-            "title": "Cession",
-            "text": "<p>By using the Services, you agree that the Website Owner may cede, assign and/or delegate all or any of its rights and obligations in relation to the Terms and Conditions to any third party or third parties, provided that this does not reduce your rights under these Terms and Conditions. Where you are a consumer and we assign our obligations, we will tell you in writing.</p>",
+            "title": "Changes To This Policy",
+            "text": "<p>We may update this policy from time to time. When we do, we will post the updated version on this page and update the date shown below. The version in force at the time you use the website or place an order will apply. This policy was last updated on 27th August 2026.</p>",
             "link_text": "",
             "link_url": ""
           }
@@ -177,8 +114,8 @@
         "faq_BJfXcz": {
           "type": "faq",
           "settings": {
-            "title": "Contact Us",
-            "text": "<p>We welcome your feedback and want to hear about any complaints. Please contact us at <a href=\"mailto:help@solacelondon.com\">help@solacelondon.com</a> and we will aim to resolve any issue as quickly as possible once it is brought to our attention. If we are unable to resolve a complaint through our internal process, we will confirm this to you in writing. We are not currently a member of an alternative dispute resolution (ADR) scheme, but we will always do our best to resolve complaints with you directly and can provide details of a certified ADR provider where appropriate.</p><p><span style=\"text-decoration:underline\"><strong>Post</strong></span></p><p>Solace London, 21 Club Row, London, E2 7EY, United Kingdom.</p>",
+            "title": "How To Contact Us",
+            "text": "<p>If you have any questions about this policy or how we handle your personal information, please contact us at <a href=\"mailto:help@solacelondon.com\">help@solacelondon.com</a>, or by post at: Solace London, 21 Club Row, London, E2 7EY, United Kingdom.</p>",
             "link_text": "",
             "link_url": ""
           }
@@ -196,13 +133,6 @@
         "faq_jjP9nC",
         "faq_kVVW4W",
         "faq_tknEM3",
-        "faq_kVcKyC",
-        "faq_WqPAxm",
-        "faq_Tizmhz",
-        "faq_64MGJM",
-        "faq_r3XLgU",
-        "faq_RpfnrP",
-        "faq_qtFLPW",
         "faq_BJfXcz"
       ],
       "settings": {
