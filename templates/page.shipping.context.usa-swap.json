@@ -18,7 +18,40 @@
       "blocks": {
         "shipping_item_ktnApH": {
           "settings": {
-            "table_costs": "£10\n£15\n£25"
+            "table_costs": "$35",
+            "answer_before_table": "<p>All US orders are shipped with FedEx on a fully tracked service</p>",
+            "table_destinations": "US",
+            "table_delivery_times": "3 - 5 working days",
+            "answer_after_table": "<p><span style=\"text-decoration:underline\"><strong>Dispatch & cut-off times</strong></span></p><p>Orders placed before 2:30pm UK time are dispatched the same working day.&nbsp;</p><p>Orders placed after 2:30pm UK time on Friday, or over the weekend, will be dispatched the following Monday.&nbsp;</p><p>Delivery times may vary during national and bank holidays. International delivery times may also be affected by customs clearance and procedures outside our control.</p>"
+          }
+        },
+        "shipping_richtext_FVyVpx": {
+          "settings": {
+            "content": "<p>Your FedEx tracking information will be provided in your shipping confirmation email, so you can track your order throughout delivery.&nbsp;</p><p>A signature may be required on delivery. We are unable to deliver to P.O. Boxes. &nbsp;</p><h3></h3>"
+          }
+        },
+        "shipping_richtext_6iA4aB": {
+          "settings": {
+            "content": "<p>All prices shown at checkout are in US dollars and include all applicable import duties and taxes. Your order ships on a Delivered Duty Paid (DDP) basis, so there's nothing more to pay when your oder arrives.</p>"
+          }
+        },
+        "shipping_richtext_X7xkYM": {
+          "settings": {
+            "content": "<p>Full-price items may be returned within 14 days of receipt. Nothing in these returns terms limits any rights you may have under applicable law.</p><p><span style=\"text-decoration:underline\"><strong>How to return</strong></span></p><p>To start a return,&nbsp;<a href=\"http://returns.solacelondon.com/\" title=\"Solace London Returns Portal\">visit our returns portal</a>&nbsp;and enter your order number and email address. Select the item(s) you’d like to return and choose your return method. You’ll then receive a QR code or a printable label to drop off at your nearest drop-off location.&nbsp;</p><p>A return shipping fee of $35 applies and is deducted from your refund.&nbsp;</p><p>Items must be unworn and in their original condition with all original tags attached.&nbsp;</p><p>Please try pieces on with care. If an item is returned worn, marked or no longer in its original condition, we may reduce your refund accordingly.&nbsp;</p><p>All items are inspected on arrival. Items that do not meet these requirements may be returned to you.&nbsp;</p><p>If an item is faulty, damaged on arrival or not as described, please contact us at&nbsp;<a href=\"mailto:help@solacelondon.com\">help@solacelondon.com</a>. You may be entitled to a refund, repair or replacement and we will cover the cost of return.&nbsp;</p><p>We do not offer exchanges. If you require an alternative size or style, please place a new order.&nbsp;</p><p><span style=\"text-decoration:underline\"><strong>Refunds</strong></span></p><p>We process refunds within 14 days of receipt, to your original payment method, less the $35 return fee where applicable.&nbsp;</p><p>It may take several additional days for the refund to appear in your account, depending on your bank or payment provider. &nbsp;</p>"
+          }
+        },
+        "shipping_richtext_MPxCAn": {
+          "disabled": true,
+          "settings": {}
+        },
+        "shipping_richtext_7TAxbx": {
+          "settings": {
+            "content": "<p>If a delivery is refused or cannot be completed and the order is returned to us, we will refund you in line with our returns policy, less any return shipping costs incurred, except where otherwise required by applicable consumer law.&nbsp;</p><p>Any duties, taxes, postage, return shipping or customs charges incurred as a result may be deducted from your refund, except where otherwise required by applicable consumer law.&nbsp;</p>"
+          }
+        },
+        "shipping_richtext_taKrmr": {
+          "settings": {
+            "content": "<p>Our Customer Care team is based in the United Kingdom.&nbsp;</p><p>For further help or enquiries, please contact us at&nbsp;<a href=\"mailto:help@solacelondon.com\">help@solacelondon.com</a>.&nbsp;</p><p>We are available Monday to Friday, 9:00am–5:00pm UK time, excluding UK bank holidays, and aim to respond within 2 working days.</p><p>Nothing in this policy limits any rights you may have under applicable law.&nbsp;</p><p></p>"
           }
         }
       }
