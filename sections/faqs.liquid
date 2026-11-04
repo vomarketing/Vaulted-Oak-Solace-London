@@ -60,9 +60,13 @@
             {%- endif -%}
 
             <div class="faq-Faqs_Body" data-el="accordion.body">
-              {%- if block.settings.text != blank -%}
+              {%- if block.settings.text != blank or block.settings.show_cookie_table -%}
                 <div class="faq-Faqs_Text rte-RichText">
-                  {{ block.settings.text }}
+                  {% comment %} Rich text fields strip classes, so the CookieYes class is added to this link here. {% endcomment %}
+                  {{ block.settings.text | replace: '<a>Consent Preferences</a>', '<a class="cky-banner-element" href="#" onclick="event.preventDefault()">Consent Preferences</a>' }}
+                  {%- if block.settings.show_cookie_table -%}
+                    <div class="cky-audit-table-element"></div>
+                  {%- endif -%}
                 </div>
               {%- endif -%}
 
@@ -138,6 +142,12 @@
           "id": "link_text",
           "label": "Link text"
         },
+        {
+          "type": "checkbox",
+          "id": "show_cookie_table",
+          "label": "Show CookieYes cookie table",
+          "default": false
+        },        
         {
           "type": "url",
           "id": "link_url",
