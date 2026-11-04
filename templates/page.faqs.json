@@ -11,7 +11,11 @@
   "sections": {
     "main": {
       "type": "faqs",
-      "settings": {}
+      "settings": {
+        "navigation_menu": "page-menu",
+        "initial_state": "closed",
+        "show_one_at_a_time": true
+      }
     }
   },
   "order": [
