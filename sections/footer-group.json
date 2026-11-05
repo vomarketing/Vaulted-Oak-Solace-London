@@ -21,7 +21,7 @@
         "popup_enabled": true,
         "popup_heading": "Promo Popup Title",
         "popup_text": "<p>promo popup title text lorem ipsum promo popup title text lorem ipsum</p>",
-        "button_label": "News",
+        "button_label": "Subscribe To Our Newsletter",
         "button_action": "newsletter",
         "button_link": "shopify://blogs/news",
         "position": "bottom",
