@@ -244,7 +244,8 @@
   },
   "layout": {
     "promo_bar": {
-      "label": "Promoção"
+      "label": "Promoção",
+      "close": "Fechar"
     },
     "cart": {
       "title": "Carrinho",
