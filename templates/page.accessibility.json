@@ -1,0 +1,58 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "faqs",
+      "blocks": {
+        "faq_kVcKyC": {
+          "type": "faq",
+          "settings": {
+            "title": "Our Policy & Commitment",
+            "text": "<p>At Solace London, we are committed to accessibility and inclusion. We want solacelondon.com to be accessible to as many people as possible, including customers with disabilities, and we treat accessibility as an ongoing part of how we design, build and test our site. We are working towards conformance with WCAG 2.2 Level AA and EN 301549, the European standard for ICT accessibility referenced by the European Accessibility Act, and have regard to the UK Equality Act 2010.&nbsp;</p><p>Last reviewed: August, 2026</p>",
+            "link_text": "",
+            "link_url": ""
+          }
+        },
+        "faq_WqPAxm": {
+          "type": "faq",
+          "settings": {
+            "title": "Digital Accessibility Statement",
+            "text": "<p>We are continuing to improve, audit and test our website with the support of an accessibility partner, as part of our ongoing work to design, develop and test the site against recognised accessibility standards. We are making ongoing efforts to ensure all areas of the site are fully accessible.&nbsp;</p>",
+            "link_text": "",
+            "link_url": ""
+          }
+        },
+        "faq_BJfXcz": {
+          "type": "faq",
+          "settings": {
+            "title": "Contact Us",
+            "text": "<p>If you have difficulty using any part of our site, need information in another format, or would like to report an accessibility barrier, please contact us at <a href=\"mailto:help@solacelondon.com\">help@solacelondon.com</a> and we will do our best to help.</p>",
+            "link_text": "",
+            "link_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "faq_kVcKyC",
+        "faq_WqPAxm",
+        "faq_BJfXcz"
+      ],
+      "settings": {
+        "navigation_menu": "page-menu",
+        "initial_state": "closedButFirstOpen",
+        "show_one_at_a_time": true
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

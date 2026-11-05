@@ -1,0 +1,148 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "faqs",
+      "blocks": {
+        "faq_j3VC6V": {
+          "type": "faq",
+          "settings": {
+            "title": "Privacy Terms",
+            "text": "<p>This policy explains how Solace London (“we”, “us”, “our”) collects and uses your personal information, and your rights in relation to it. Solace London is a trading name of Solace London Limited, a company registered in England and Wales (company number 08603919) with its registered office at 21 Club Row, London, E2 7EY. We are the controller responsible for your personal information and we handle it in accordance with the UK GDPR, the Data Protection Act 2018 and, where it applies to you, the EU GDPR. Our website and products are intended for adults, and we do not knowingly collect personal information from children. Solace London understands the importance of protecting the privacy of our site visitors and customers and as such, has adopted company privacy policies for your protection. By visiting our website, you acknowledge that you have read and understood this Privacy Policy. Please read this policy carefully to understand how we handle your personal information. Where we rely on your consent for a particular use — such as certain marketing or non-essential cookies — we say so below, and you can withdraw that consent at any time.</p>",
+            "link_text": "",
+            "link_url": ""
+          }
+        },
+        "faq_eBNGnc": {
+          "type": "faq",
+          "settings": {
+            "title": "Collecting Information & Contacting You",
+            "text": "<p>Solace London will collect your information via the newsletter, the account sign up page, and information provided when you place an order. Information such as name, email address, payment information, and billing and shipping addresses, will be used by us to process your order, manage your account, complete deliveries, personalise your use of the website, and send you Solace London updates such as new arrivals and promotions. Some data such as name, email address, payment information, and billing and shipping addresses, are mandatory for us to be able to process your order.&nbsp;</p><p>We may also collect and process information provided when you submit a return, customer service or withdrawal request, including your name, email address, order number and any information you choose to include in your request. This information is used to locate your order, process your request and communicate with you about it.</p><p>If you have given us your consent, or where we are otherwise permitted to do so, we will occasionally send you news, product details and special offers by email and, where you have agreed, by post or telephone. Occasionally we will also review email activity so that we only send you content you would be interested in — this means that we may change email content based on what our customers open and read. Where required by law, we will only use tracking technologies in marketing emails where you have provided the necessary consent. All recipients of Solace London communications have the ability to opt out of receiving communications by clicking the “unsubscribe” link in any email that we have sent you.</p><p>You have rights in relation to how your personal data is used. If you would like us to delete or change your personal information or account details in any way, or if you have any questions about how your personal data is collected and used, please let us know by emailing&nbsp;<a href=\"mail:help@solacelondon.com\" title=\"Help email | Solace London\">help@solacelondon.com</a>&nbsp;and we will respond within the time limits required by data protection law (usually within one month).</p>",
+            "link_text": "",
+            "link_url": ""
+          }
+        },
+        "faq_PxzVc8": {
+          "type": "faq",
+          "settings": {
+            "title": "Our Lawful Bases For Using Your Information",
+            "text": "<p>We only use your personal information where the law allows us to. The bases we rely on are: (a) performing our contract with you — to process and deliver your orders, manage your account and handle returns, refunds and withdrawal requests; (b) our legitimate interests — to personalise and improve the website, understand how it is used, prevent fraud and keep our business secure, provided your interests do not override these; (c) your consent — for certain marketing and for non-essential cookies, which you can withdraw at any time; and (d) complying with our legal obligations — for example, keeping records we are required to keep for tax and accounting purposes.</p>",
+            "link_text": "",
+            "link_url": ""
+          }
+        },
+        "faq_rCyUmz": {
+          "type": "faq",
+          "settings": {
+            "title": "When We will Use Your Information",
+            "text": "<p>In line with our policies we will not disclose customer information to third parties except in cases where a service we provide requires such details, such as processing orders, arranging deliveries, handling returns, managing withdrawal requests or providing customer support. Furthermore, we will not sell your name, address, e-mail address, payment information or personal information to any third party for their own marketing purposes without your permission. We may share your personal information with service providers who process it on our behalf. The service providers we share information with — which may include payment providers, delivery and courier partners, IT and hosting providers, and email, marketing and analytics platforms — act on our instructions under contracts that require them to keep your information secure and to use it only for the purposes we specify.</p>",
+            "link_text": "",
+            "link_url": ""
+          }
+        },
+        "faq_C4KtWJ": {
+          "type": "faq",
+          "settings": {
+            "title": "International Transfers",
+            "text": "<p>Some of the service providers we use may store or process your information outside the United Kingdom or the European Economic Area (EEA). Where we transfer personal information outside the UK or EEA, we take steps to ensure it receives an adequate level of protection — for example, by relying on an adequacy decision, or by putting in place approved safeguards such as the UK International Data Transfer Agreement or Addendum, or the European Commission’s Standard Contractual Clauses. You can contact us for more information about these safeguards.</p>",
+            "link_text": "",
+            "link_url": ""
+          }
+        },
+        "faq_7d9nAd": {
+          "type": "faq",
+          "settings": {
+            "title": "How Long We Keep Your Information",
+            "text": "<p>We keep your personal information only for as long as we need it for the purposes set out in this policy, and to meet our legal, accounting and reporting obligations. In general: order and transaction records are kept for six years to meet tax and accounting requirements; account information is kept for as long as your account is active and for up to two years after it is closed; and marketing preferences are kept until you ask us to stop contacting you. When we no longer need your information, we securely delete or anonymise it.</p>",
+            "link_text": "",
+            "link_url": ""
+          }
+        },
+        "faq_6Wq8dc": {
+          "type": "faq",
+          "settings": {
+            "title": "Keeping Your Information Secure",
+            "text": "<p>Protecting your privacy is a serious matter to us and we endeavour to use the best methods available to us to ensure the security, integrity and privacy of the information you have provided us with. When you place an order with us, we use Secure Socket Layer (SSL)/Transport Layer Security (TLS) encryption to protect your details from unauthorised use. Additionally, we carefully select our business partners to whom this data is transferred based on the level of protection they have to care for your personal information.</p>",
+            "link_text": "",
+            "link_url": ""
+          }
+        },
+        "faq_3aTrpj": {
+          "type": "faq",
+          "settings": {
+            "title": "Your Rights",
+            "text": "<p>Under data protection law you have a number of rights in relation to your personal information: the right to be informed about how we use it; the right to access a copy of the information we hold about you; the right to have inaccurate information corrected; the right to have your information erased in certain circumstances; the right to restrict or object to our processing in certain circumstances; the right to data portability; the right to withdraw your consent at any time where we rely on consent; and the right to object at any time to the use of your information for direct marketing. To exercise any of these rights, please email help@solacelondon.com. We will respond within the time limits required by data protection law, usually within one month, and you will not normally have to pay a fee.&nbsp;</p><p>If you are unhappy with how we have handled your personal information, you have the right to complain to the Information Commissioner’s Office (ICO) at ico.org.uk or on 0303 123 1113. If you are located in the EU or EEA, you may instead contact your local data protection supervisory authority. We would appreciate the chance to address your concerns before you approach the regulator, so please consider contacting us first.&nbsp;</p>",
+            "link_text": "",
+            "link_url": ""
+          }
+        },
+        "faq_jjP9nC": {
+          "type": "faq",
+          "settings": {
+            "title": "Cookie Policy",
+            "text": "<p>A cookie is a small file with information about your movements within a website that is sent to and stored on your computer’s hard drive. When you register with us, a cookie with your email address will be stored on your computer to save you time when you next visit Solace London. To prevent cookies being stored on your computer without your pre-approval, you can change the settings on your web browser. You will still be able to shop on the Solace London site without allowing a Solace London cookie to be stored on your computer. We use essential cookies to operate the website, and non-essential cookies (such as analytics and advertising cookies) only where you have given your consent through our cookie banner, which you can change at any time.</p><p>Read more about our&nbsp;<a href=\"/cookies\">cookie policy here</a>.</p>",
+            "link_text": "",
+            "link_url": ""
+          }
+        },
+        "faq_kVVW4W": {
+          "type": "faq",
+          "settings": {
+            "title": "Third Party Sites",
+            "text": "<p>Where we think it will be of interest to our customers, we provide links to third party websites. If you follow a link to any of these websites, please be aware that they have their own privacy policies and that we do not accept any responsibility or liability for these policies. Please check these policies before you submit any personal data to these websites. Regarding privacy and the Data Protection Act 2018 and the UK GDPR, you have the right to access the personal information that we hold about you. We will gladly oblige with any such access request. Furthermore, if you wish to verify the details you have submitted to Solace London you may do so by contacting us via <a href=\"mailto:help@solacelondon.com\">help@solacelondon.com</a>.</p>",
+            "link_text": "",
+            "link_url": ""
+          }
+        },
+        "faq_tknEM3": {
+          "type": "faq",
+          "settings": {
+            "title": "Changes To This Policy",
+            "text": "<p>We may update this policy from time to time. When we do, we will post the updated version on this page and update the date shown below. The version in force at the time you use the website or place an order will apply. This policy was last updated on 27th August 2026.</p>",
+            "link_text": "",
+            "link_url": ""
+          }
+        },
+        "faq_BJfXcz": {
+          "type": "faq",
+          "settings": {
+            "title": "How To Contact Us",
+            "text": "<p>If you have any questions about this policy or how we handle your personal information, please contact us at <a href=\"mailto:help@solacelondon.com\">help@solacelondon.com</a>, or by post at: Solace London, 21 Club Row, London, E2 7EY, United Kingdom.</p>",
+            "link_text": "",
+            "link_url": ""
+          }
+        }
+      },
+      "block_order": [
+        "faq_j3VC6V",
+        "faq_eBNGnc",
+        "faq_PxzVc8",
+        "faq_rCyUmz",
+        "faq_C4KtWJ",
+        "faq_7d9nAd",
+        "faq_6Wq8dc",
+        "faq_3aTrpj",
+        "faq_jjP9nC",
+        "faq_kVVW4W",
+        "faq_tknEM3",
+        "faq_BJfXcz"
+      ],
+      "settings": {
+        "navigation_menu": "page-menu",
+        "initial_state": "closedButFirstOpen",
+        "show_one_at_a_time": true
+      }
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

@@ -1,0 +1,76 @@
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "context": {
+    "market": "usa-swap"
+  },
+  "parent": "page.privacy-policy.json",
+  "sections": {
+    "main": {
+      "settings": {},
+      "blocks": {
+        "faq_j3VC6V": {
+          "settings": {
+            "text": "<p>This Privacy Policy explains how SL US Inc. (“we”, “us”, “our”) collects, uses and discloses personal information about customers and visitors located in the United States, and the privacy rights you may have under US state privacy laws. SL US Inc. is a corporation incorporated in the State of Delaware and is the business responsible for personal information collected through the United States version of solacelondon.com. You can contact us at any time at help@solacelondon.com or by phone at (929) 725-3507. Our website and products are intended for adults, and we do not knowingly collect personal information from children; if you believe a child has provided us with personal information, please contact us and we will take appropriate steps to delete it. By using our website, you acknowledge that you have read and understood this Privacy Policy. Where we rely on your consent for a particular use — such as certain marketing or non-essential cookies — we say so below, and you can withdraw that consent at any time.</p>"
+          }
+        },
+        "faq_eBNGnc": {
+          "settings": {
+            "title": "Information We Collect",
+            "text": "<p>Depending on how you interact with us, we collect the following categories of personal information, as those categories are defined under US state privacy laws: identifiers, such as your name, email address, postal, billing and shipping addresses, phone number, and account login details; commercial information, such as your order and transaction history and details of products you have purchased or viewed; internet or network activity, such as information about how you use our website, collected through cookies and similar technologies; approximate location, derived from your IP address; and inferences, such as preferences drawn from your activity that we use to personalise your experience. We collect this information directly from you (for example, when you create an account, place an order or subscribe to our newsletter), automatically when you use our website (through cookies and similar technologies), and from service providers who help us operate our business. We do not intend to collect sensitive personal information, and we do not use or disclose it for purposes that would require a right to limit under applicable law. For more information about the cookies we use, please see our Cookie Policy here. &nbsp;</p>"
+          }
+        },
+        "faq_PxzVc8": {
+          "settings": {
+            "title": "How We Use Your Information",
+            "text": "<p>We use your personal information to: process and deliver your orders and manage your account; handle returns, refunds and customer service requests; personalise and improve our website and understand how it is used; send you marketing communications where you have agreed or where we are otherwise permitted; detect and prevent fraud and keep our business secure; and comply with our legal, tax and accounting obligations.</p>"
+          }
+        },
+        "faq_rCyUmz": {
+          "settings": {
+            "title": "How We Share Your Information",
+            "text": "<p>We may disclose your personal information to service providers who process it on our behalf — which may include payment providers, delivery and courier partners, IT and hosting providers, and email, marketing and analytics platforms — under contracts that require them to keep your information secure and to use it only for the purposes we specify. We may also disclose personal information where required by law, to protect our rights, or in connection with a business transfer. We do not disclose your personal information to third parties for their own independent marketing without your permission.</p>"
+          }
+        },
+        "faq_C4KtWJ": {
+          "settings": {
+            "title": "Sale Or Sharing Of Personal Information",
+            "text": "<p>Some US state privacy laws use the terms “sale” and “sharing” (or “targeted advertising”) to describe the use of advertising and analytics cookies that disclose personal information — such as identifiers and internet activity — to advertising partners for cross-context behavioural advertising. Under US state privacy laws, our use of these advertising cookies and pixels is considered a “sale” or “sharing” of your personal information for cross-context behavioural advertising, and you have the right to opt out. You can opt out using our “Do Not Sell or Share My Personal Information” link [insert link] or by adjusting your cookie preferences, and we honour recognised opt-out preference signals, including the Global Privacy Control (GPC). We do not sell or share the personal information of consumers we know to be under 16 years of age.</p>"
+          }
+        },
+        "faq_7d9nAd": {
+          "settings": {
+            "text": "<p>We keep your personal information only for as long as we need it for the purposes set out in this policy, and to meet our legal, accounting and reporting obligations. In general: order and transaction records are kept for six years to meet tax and accounting requirements; account information is kept for as long as your account is active and for up to two years after it is closed; and marketing preferences are kept until you ask us to stop contacting you. When we no longer need your information, we securely delete or de-identify it.</p>"
+          }
+        },
+        "faq_6Wq8dc": {
+          "settings": {
+            "text": "<p>We use appropriate technical and organisational measures to protect your personal information, including SSL/TLS encryption when you place an order. No method of transmission or storage is completely secure, but we work to protect your information and to limit access to it.</p>"
+          }
+        },
+        "faq_3aTrpj": {
+          "settings": {
+            "title": "Your Privacy Rights",
+            "text": "<p>Depending on the US state in which you reside, you may have a number of rights in relation to your personal information: the right to know about and access the personal information we have collected about you; the right to request correction of inaccurate personal information; the right to request deletion of your personal information; the right to obtain a portable copy of your personal information; the right to opt out of the “sale” or “sharing” of your personal information and of targeted advertising; the right to limit the use of sensitive personal information, where applicable; and the right not to receive discriminatory treatment for exercising your rights.&nbsp;</p><p>To exercise any of these rights, contact us at help@solacelondon.com or (929) 725-3507. We will verify your request by matching the information you provide with the information we already hold, and you may use an authorised agent to submit a request on your behalf. We will respond within the timeframe required by applicable law. Where your state provides a right to appeal a decision on your request, we will tell you how to do so, and you may also contact your state attorney general.&nbsp;</p>"
+          }
+        },
+        "faq_kVVW4W": {
+          "disabled": true,
+          "settings": {}
+        },
+        "faq_BJfXcz": {
+          "settings": {
+            "text": "<p>If you have any questions about this policy or how we handle your personal information, please contact us at <a href=\"mailto:help@solacelondon.com\">help@solacelondon.com</a>, or by post at: SL US Inc., 16192 Coastal Highway, Lewes, Delaware 19958, United States.</p>"
+          }
+        }
+      }
+    }
+  }
+}
