@@ -78,6 +78,26 @@
   }
 }
 
+/*
+ * The newsletter popup can also be opened from outside the footer (the promo
+ * bar's newsletter button) while the footer is still hidden. The popup is
+ * fixed, but the group above it is a stacking context that sits under
+ * #MainContent and, on mobile fullpage pages, is translated off-screen. Lift
+ * it and cancel the offset for as long as the popup is open.
+ */
+body .shopify-section-group-footer-group:has(.ft-NewsletterPopup:not([hidden])) {
+  z-index: 999;
+  transform: none;
+  transition: none;
+}
+
+/* Footer not revealed: sit above the promo bar rather than the footer. */
+@media (min-width: 1201px) {
+  .shopify-section-group-footer-group:not(:has(.js-section-footer.is-visible)) .ft-NewsletterPopup {
+    padding-bottom: calc(var(--promo-bar-bottom-height, 0px) + 40px);
+  }
+}
+
 .shopify-section--footer {
   display: block !important;
   width: 100%;
