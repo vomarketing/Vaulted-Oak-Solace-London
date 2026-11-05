@@ -128,7 +128,7 @@ body[data-mobile-menu-open] .hb-HelpBox_Launcher {
   .hb-HelpBox_Launcher {
     position: fixed;
     right: 20px;
-    bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+    bottom: calc(20px + var(--promo-bar-bottom-height, 0px) + env(safe-area-inset-bottom, 0px));
     z-index: 30;
     display: block;
     padding: 15px 14px;

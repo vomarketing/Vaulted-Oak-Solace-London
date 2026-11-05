@@ -155,14 +155,15 @@ body.template-product[data-fullpage-scroll] {
 }
 
 body:not([data-fullpage-scroll]) {
-  --header-height: 52px;
+  /* Pre-JS fallback; custom-header.js overwrites it. Includes any top promo bars. */
+  --header-height: calc(52px + var(--promo-bar-top-height, 0px));
 
   @media (min-width: 768px) {
-    --header-height: 59px;
+    --header-height: calc(59px + var(--promo-bar-top-height, 0px));
   }
 
   @media (min-width: 1201px) {
-    --header-height: 109px;
+    --header-height: calc(109px + var(--promo-bar-top-height, 0px));
   }
 
   #MainContent {

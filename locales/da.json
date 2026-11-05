@@ -243,6 +243,9 @@
     }
   },
   "layout": {
+    "promo_bar": {
+      "label": "Kampagne"
+    },
     "cart": {
       "title": "Kurv",
       "items_count": {
