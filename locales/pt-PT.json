@@ -243,6 +243,9 @@
     }
   },
   "layout": {
+    "promo_bar": {
+      "label": "Promoção"
+    },
     "cart": {
       "title": "Carrinho",
       "items_count": {

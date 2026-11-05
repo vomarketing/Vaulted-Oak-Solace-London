@@ -1,0 +1,231 @@
+{%- comment -%}
+  Promo bar: a fixed bar pinned to the top or bottom of the viewport.
+  Lives in the header/footer section groups so it can appear on any
+  template; each instance decides for itself which pages it shows on, so
+  several bars can run side by side on different pages. When more than one
+  bar matches a page, promo-bar.js stacks them.
+{%- endcomment -%}
+
+{%- liquid
+  assign should_show = false
+
+  if section.settings.enabled and section.settings.text != blank
+    if section.settings.show_on == 'all'
+      assign should_show = true
+    else
+      case request.page_type
+        when 'index'
+          assign should_show = section.settings.show_on_index
+        when 'collection', 'list-collections'
+          assign should_show = section.settings.show_on_collection
+        when 'product'
+          assign should_show = section.settings.show_on_product
+        when 'page'
+          assign should_show = section.settings.show_on_page
+        when 'blog', 'article'
+          assign should_show = section.settings.show_on_blog
+        when 'search'
+          assign should_show = section.settings.show_on_search
+        when 'cart'
+          assign should_show = section.settings.show_on_cart
+      endcase
+
+      comment
+        Specific paths, one per line, matched against the path without its
+        locale/market prefix (e.g. /en-us). A trailing * matches as a prefix.
+      endcomment
+      if should_show == false and section.settings.paths != blank
+        assign current_path = request.path | downcase
+        if routes.root_url != '/'
+          assign current_path = current_path | remove_first: routes.root_url
+        endif
+        if current_path == blank
+          assign current_path = '/'
+        endif
+
+        assign path_lines = section.settings.paths | newline_to_br | split: '<br />'
+        for line in path_lines
+          assign target = line | strip | downcase
+          if target == blank
+            continue
+          endif
+
+          assign last_char = target | slice: -1
+          if last_char == '*'
+            assign prefix = target | remove_last: '*'
+            assign current_prefix = current_path | slice: 0, prefix.size
+            if current_prefix == prefix
+              assign should_show = true
+              break
+            endif
+          else
+            if target != '/' and last_char == '/'
+              assign target = target | remove_last: '/'
+            endif
+            if current_path == target
+              assign should_show = true
+              break
+            endif
+          endif
+        endfor
+      endif
+    endif
+  endif
+-%}
+
+{%- if should_show -%}
+  <style>
+    {{ 'promo-bar.css' | inline_asset_content }}
+  </style>
+  <script src="{{ 'promo-bar.js' | asset_url }}" defer="defer"></script>
+
+  <aside
+    class="pb-PromoBar pb-PromoBar-{{ section.settings.position }}"
+    data-promo-bar
+    data-promo-bar-position="{{ section.settings.position }}"
+    aria-label="{{ 'layout.promo_bar.label' | t }}"
+    style="--promo-bar-bg: {{ section.settings.background_color }}; --promo-bar-fg: {{ section.settings.text_color }};"
+  >
+    {%- if section.settings.link != blank -%}
+      <a class="pb-PromoBar_Inner pb-PromoBar_Link" href="{{ section.settings.link }}">
+        <span class="pb-PromoBar_Text">{{ section.settings.text | escape }}</span>
+      </a>
+    {%- else -%}
+      <div class="pb-PromoBar_Inner">
+        <p class="pb-PromoBar_Text">{{ section.settings.text | escape }}</p>
+      </div>
+    {%- endif -%}
+  </aside>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Promo bar",
+  "class": "shopify-section--promo-bar",
+  "enabled_on": {
+    "groups": ["header", "footer"]
+  },
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enabled",
+      "label": "Show promo bar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "text",
+      "label": "Text",
+      "default": "Spring / Summer 27 Coming Soon"
+    },
+    {
+      "type": "url",
+      "id": "link",
+      "label": "Link",
+      "info": "Optional. Makes the whole bar clickable."
+    },
+    {
+      "type": "header",
+      "content": "Appearance"
+    },
+    {
+      "type": "select",
+      "id": "position",
+      "label": "Position",
+      "options": [
+        { "value": "top", "label": "Top of page" },
+        { "value": "bottom", "label": "Bottom of page" }
+      ],
+      "default": "bottom"
+    },
+    {
+      "type": "color",
+      "id": "background_color",
+      "label": "Background colour",
+      "default": "#ffffff"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text colour",
+      "default": "#000000"
+    },
+    {
+      "type": "header",
+      "content": "Visibility",
+      "info": "Add more promo bars to show different messages on different pages. If two bars match the same page and position they stack."
+    },
+    {
+      "type": "select",
+      "id": "show_on",
+      "label": "Show on",
+      "options": [
+        { "value": "all", "label": "All pages" },
+        { "value": "selected", "label": "Selected pages only" }
+      ],
+      "default": "all"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_index",
+      "label": "Homepage",
+      "default": false,
+      "visible_if": "{{ section.settings.show_on == 'selected' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_collection",
+      "label": "Collection pages",
+      "default": false,
+      "visible_if": "{{ section.settings.show_on == 'selected' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_product",
+      "label": "Product pages",
+      "default": false,
+      "visible_if": "{{ section.settings.show_on == 'selected' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_page",
+      "label": "Content pages",
+      "default": false,
+      "visible_if": "{{ section.settings.show_on == 'selected' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_blog",
+      "label": "Blog and article pages",
+      "default": false,
+      "visible_if": "{{ section.settings.show_on == 'selected' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_search",
+      "label": "Search page",
+      "default": false,
+      "visible_if": "{{ section.settings.show_on == 'selected' }}"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_on_cart",
+      "label": "Cart page",
+      "default": false,
+      "visible_if": "{{ section.settings.show_on == 'selected' }}"
+    },
+    {
+      "type": "textarea",
+      "id": "paths",
+      "label": "Specific pages",
+      "info": "One URL path per line, e.g. /pages/about or /collections/bridal. End with * to include everything beneath it, e.g. /collections/resort*",
+      "visible_if": "{{ section.settings.show_on == 'selected' }}"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Promo bar"
+    }
+  ]
+}
+{% endschema %}

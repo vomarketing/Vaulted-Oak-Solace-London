@@ -243,6 +243,9 @@
     }
   },
   "layout": {
+    "promo_bar": {
+      "label": "Promotie"
+    },
     "cart": {
       "title": "Winkelmandje",
       "items_count": {

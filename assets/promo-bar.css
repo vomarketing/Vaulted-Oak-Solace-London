@@ -1,0 +1,74 @@
+/*
+ * Promo bar (sections/promo-bar.liquid).
+ * Inlined by the section, only on pages where a bar renders.
+ *
+ * Bars are fixed to the viewport. promo-bar.js measures them, stacks any
+ * that share a position via --promo-bar-offset, and publishes the totals
+ * on <html> as --promo-bar-top-height / --promo-bar-bottom-height. The
+ * :has() fallbacks below cover first paint before the script runs.
+ */
+
+:root:has(.pb-PromoBar-top) {
+  --promo-bar-top-height: 40px;
+}
+
+:root:has(.pb-PromoBar-bottom) {
+  --promo-bar-bottom-height: 40px;
+}
+
+.pb-PromoBar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  z-index: var(--z-header, 10);
+  color: var(--promo-bar-fg, #000000);
+  background-color: var(--promo-bar-bg, #ffffff);
+  pointer-events: auto;
+}
+
+.pb-PromoBar-top {
+  top: var(--promo-bar-offset, 0px);
+}
+
+.pb-PromoBar-bottom {
+  bottom: var(--promo-bar-offset, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.pb-PromoBar_Inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 8px 20px;
+  color: inherit;
+  text-align: center;
+  text-decoration: none;
+}
+
+.pb-PromoBar_Text {
+  margin: 0;
+  font-family: var(--font-family-primary);
+  font-size: var(--type-12-size, 12px);
+  line-height: var(--type-10-line-height, 14px);
+}
+
+.pb-PromoBar_Link:hover .pb-PromoBar_Text,
+.pb-PromoBar_Link:focus-visible .pb-PromoBar_Text {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.pb-PromoBar_Link:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: -4px;
+}
+
+/* Keep page content clear of the bars. */
+.hd-Header[data-sticky="true"] {
+  top: var(--promo-bar-top-height, 0px);
+}
+
+body:not([data-fullpage-scroll]) {
+  padding-bottom: var(--promo-bar-bottom-height, 0px);
+}

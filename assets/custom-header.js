@@ -42,6 +42,11 @@ if (!window.SolaceHeaderContrast) {
         this.headerHeight = this.header ? this.header.offsetHeight || 80 : 80;
       }
 
+      // Fixed promo bars above the header push it down (sections/promo-bar.liquid).
+      document.querySelectorAll('[data-promo-bar-position="top"]').forEach((bar) => {
+        this.headerHeight += bar.offsetHeight;
+      });
+
       this.setCssVars();
     }
 
