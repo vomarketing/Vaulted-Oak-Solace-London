@@ -1,4 +1,4 @@
-.shopify-section-group-footer-group {
+.shopify-section-group-footer-group:not(.shopify-section--promo-bar) {
   position: fixed;
   top: 0;
   left: 0;
