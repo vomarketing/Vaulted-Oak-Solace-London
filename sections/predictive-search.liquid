@@ -11,7 +11,11 @@
           {%- endfor -%}
         ],
         "products": [
+          {%- assign has_rendered_product = false -%}
           {%- for product in predictive_search.resources.products -%}
+            {%- if product.tags contains 'remove-klevu' -%}
+              {%- continue -%}
+            {%- endif -%}
             {%- liquid
               assign card_image = product.metafields.custom.packshot_image.value
               if card_image == blank
@@ -31,6 +35,7 @@
                 assign image_url = card_image | image_url: width: 1024
               endif
             -%}
+            {%- if has_rendered_product -%},{%- endif -%}
             {
               "title": {{ product.title | json }},
               "url": {{ product.url | json }},
@@ -40,7 +45,8 @@
               "featured_image": {
                 "url": {{ image_url | json }}
               }
-            }{%- unless forloop.last -%},{%- endunless -%}
+            }
+            {%- assign has_rendered_product = true -%}
           {%- endfor -%}
         ]
       }
