@@ -244,7 +244,8 @@
   },
   "layout": {
     "promo_bar": {
-      "label": "Kampagne"
+      "label": "Kampagne",
+      "close": "Luk"
     },
     "cart": {
       "title": "Kurv",

@@ -63,7 +63,8 @@
   },
   "layout": {
     "promo_bar": {
-      "label": "Promotion"
+      "label": "Promotion",
+      "close": "Close"
     },
     "breadcrumbs": {
       "home": "Home"

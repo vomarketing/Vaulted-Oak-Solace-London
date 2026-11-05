@@ -86,7 +86,71 @@
     aria-label="{{ 'layout.promo_bar.label' | t }}"
     style="--promo-bar-bg: {{ section.settings.background_color }}; --promo-bar-fg: {{ section.settings.text_color }};"
   >
-    {%- if section.settings.link != blank -%}
+    {%- if section.settings.popup_enabled -%}
+      {%- liquid
+        assign panel_id = 'PromoBarPanel-' | append: section.id
+        assign title_id = 'PromoBarPanelTitle-' | append: section.id
+      -%}
+      <button
+        class="pb-PromoBar_Inner pb-PromoBar_Toggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="{{ panel_id }}"
+        data-promo-bar-toggle
+      >
+        <span class="pb-PromoBar_Text">{{ section.settings.text | escape }}</span>
+        <span class="pb-PromoBar_Icon" aria-hidden="true">
+          <svg xmlns="http://www.w3.org/2000/svg" width="10" height="10" viewBox="0 0 10 10" fill="none">
+            <path d="M0 5h10" stroke="currentColor"/>
+            <path class="pb-PromoBar_IconVertical" d="M5 0v10" stroke="currentColor"/>
+          </svg>
+        </span>
+      </button>
+
+      <div
+        class="pb-PromoBar_Panel"
+        id="{{ panel_id }}"
+        role="region"
+        {% if section.settings.popup_heading != blank -%}
+          aria-labelledby="{{ title_id }}"
+        {%- else -%}
+          aria-label="{{ section.settings.text | escape }}"
+        {%- endif %}
+        data-promo-bar-panel
+        hidden
+      >
+        <div class="pb-PromoBar_PanelHeader">
+          {%- if section.settings.popup_heading != blank -%}
+            <p class="pb-PromoBar_PanelTitle" id="{{ title_id }}">{{ section.settings.popup_heading | escape }}</p>
+          {%- endif -%}
+          <button class="pb-PromoBar_Close" type="button" data-promo-bar-close>
+            {{- 'layout.promo_bar.close' | t -}}
+          </button>
+        </div>
+
+        <div class="pb-PromoBar_PanelBody">
+          {%- if section.settings.popup_text != blank -%}
+            <div class="pb-PromoBar_PanelText">{{ section.settings.popup_text }}</div>
+          {%- endif -%}
+
+          {%- if section.settings.button_label != blank -%}
+            {%- if section.settings.button_action == 'newsletter' -%}
+              {%- comment -%}
+                Opens the footer newsletter popup. promo-bar.js wires it up and
+                reveals it only if that popup is on the page.
+              {%- endcomment -%}
+              <button class="pb-PromoBar_Cta" type="button" data-promo-bar-newsletter hidden>
+                {{- section.settings.button_label | escape -}}
+              </button>
+            {%- elsif section.settings.button_link != blank -%}
+              <a class="pb-PromoBar_Cta" href="{{ section.settings.button_link }}">
+                {{- section.settings.button_label | escape -}}
+              </a>
+            {%- endif -%}
+          {%- endif -%}
+        </div>
+      </div>
+    {%- elsif section.settings.link != blank -%}
       <a class="pb-PromoBar_Inner pb-PromoBar_Link" href="{{ section.settings.link }}">
         <span class="pb-PromoBar_Text">{{ section.settings.text | escape }}</span>
       </a>
@@ -122,7 +186,55 @@
       "type": "url",
       "id": "link",
       "label": "Link",
-      "info": "Optional. Makes the whole bar clickable."
+      "info": "Optional. Makes the whole bar clickable.",
+      "visible_if": "{{ section.settings.popup_enabled == false }}"
+    },
+    {
+      "type": "header",
+      "content": "Popup",
+      "info": "Clicking the bar opens a panel attached to it, in the same colours."
+    },
+    {
+      "type": "checkbox",
+      "id": "popup_enabled",
+      "label": "Enable popup",
+      "default": false
+    },
+    {
+      "type": "text",
+      "id": "popup_heading",
+      "label": "Heading",
+      "visible_if": "{{ section.settings.popup_enabled }}"
+    },
+    {
+      "type": "richtext",
+      "id": "popup_text",
+      "label": "Text",
+      "visible_if": "{{ section.settings.popup_enabled }}"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "visible_if": "{{ section.settings.popup_enabled }}"
+    },
+    {
+      "type": "select",
+      "id": "button_action",
+      "label": "Button action",
+      "options": [
+        { "value": "link", "label": "Go to link" },
+        { "value": "newsletter", "label": "Open newsletter popup" }
+      ],
+      "default": "link",
+      "info": "The newsletter popup needs \"Enable newsletter popup\" turned on in the Footer section. If it's off, the button is hidden.",
+      "visible_if": "{{ section.settings.popup_enabled }}"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button link",
+      "visible_if": "{{ section.settings.popup_enabled and section.settings.button_action == 'link' }}"
     },
     {
       "type": "header",
