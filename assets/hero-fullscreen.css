@@ -23,6 +23,18 @@
     background: linear-gradient(0deg, rgba(0, 0, 0, 0.40) 0%, rgba(0, 0, 0, 0.40) 100%);
   }
 
+  .hero-fullscreen__media-link {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: auto;
+  }
+
+  .hero-fullscreen__media-link:focus-visible {
+    outline: 2px solid var(--hero-content-text-color, #fff);
+    outline-offset: -4px;
+  }
+
   .hero-fullscreen__content {
     position: relative;
     display: flex;
@@ -46,6 +58,14 @@
     @media (min-width: 901px) {
       max-width: calc(710px + 80px);
     }
+
+    &.hero-fullscreen__content--has-media-link {
+      pointer-events: none;
+    }
+  }
+
+  .hero-fullscreen__content--has-media-link a[href] {
+    pointer-events: auto;
   }
 
   .hero-fullscreen__heading {

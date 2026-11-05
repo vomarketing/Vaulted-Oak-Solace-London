@@ -99,6 +99,23 @@
         {{ 'lifestyle-1' | placeholder_svg_tag: 'placeholder-svg' }}
       {%- endif -%}
     {%- endif -%}
+
+    {%- liquid assign has_media_link = false -%}
+    {%- if section.settings.cta_link != blank -%}
+      {%- liquid
+        assign has_media_link = true
+        assign media_link_label = section.settings.cta_text | strip_html | strip
+        if media_link_label == blank
+          assign media_link_label = section.settings.heading | strip_html | strip | default: 'Open featured link'
+        endif
+      -%}
+
+      <a
+        class="hero-fullscreen__media-link"
+        href="{{ section.settings.cta_link | escape }}"
+        aria-label="{{ media_link_label | escape }}"
+      ></a>
+    {%- endif -%}
   </div>
 
   {%- if section.settings.show_overlay -%}
@@ -116,7 +133,7 @@
     <div class="hero-fullscreen__control-scrim" aria-hidden="true"></div>
   {%- endif -%}
 
-  <div class="hero-fullscreen__content{% if has_controls %} hero-fullscreen__content--controls-{{ video_controls_layout }}{% endif %}">
+  <div class="hero-fullscreen__content{% if has_controls %} hero-fullscreen__content--controls-{{ video_controls_layout }}{% endif %} {% if has_media_link %} hero-fullscreen__content--has-media-link{% endif %}">
     {%- if section.settings.heading != blank -%}
       {%- liquid
         assign heading_size = section.settings.heading_font_size | default: 'text-reg-14'
