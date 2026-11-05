@@ -244,7 +244,8 @@
   },
   "layout": {
     "promo_bar": {
-      "label": "Aktion"
+      "label": "Aktion",
+      "close": "Schließen"
     },
     "cart": {
       "title": "Einkaufswagen",
