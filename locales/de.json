@@ -243,6 +243,10 @@
     }
   },
   "layout": {
+    "promo_bar": {
+      "label": "Aktion",
+      "close": "Schließen"
+    },
     "cart": {
       "title": "Einkaufswagen",
       "items_count": {

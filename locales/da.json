@@ -243,6 +243,10 @@
     }
   },
   "layout": {
+    "promo_bar": {
+      "label": "Kampagne",
+      "close": "Luk"
+    },
     "cart": {
       "title": "Kurv",
       "items_count": {

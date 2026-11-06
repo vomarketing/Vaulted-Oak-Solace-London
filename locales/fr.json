@@ -243,6 +243,10 @@
     }
   },
   "layout": {
+    "promo_bar": {
+      "label": "Promotion",
+      "close": "Fermer"
+    },
     "cart": {
       "title": "Panier",
       "items_count": {

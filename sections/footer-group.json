@@ -11,6 +11,33 @@
   "type": "footer",
   "name": "Footer group",
   "sections": {
+    "promo_bar_VVXHMe": {
+      "type": "promo-bar",
+      "name": "Promo bar",
+      "settings": {
+        "enabled": true,
+        "text": "Spring / Summer 27 Coming Soon",
+        "link": "",
+        "popup_enabled": true,
+        "popup_heading": "Promo Popup Title",
+        "popup_text": "<p>promo popup title text lorem ipsum promo popup title text lorem ipsum</p>",
+        "button_label": "News",
+        "button_action": "link",
+        "button_link": "shopify://blogs/news",
+        "position": "bottom",
+        "background_color": "#FFFFFF",
+        "text_color": "#000000",
+        "show_on": "all",
+        "show_on_index": false,
+        "show_on_collection": false,
+        "show_on_product": false,
+        "show_on_page": false,
+        "show_on_blog": false,
+        "show_on_search": false,
+        "show_on_cart": false,
+        "paths": ""
+      }
+    },
     "footer": {
       "type": "footer",
       "blocks": {
@@ -38,7 +65,7 @@
         "newsletter_disclaimer": "<p>By subscribing, you agree to receive emails from Solace London. You can unsubscribe at any time. See our <a href=\"/policies/privacy-policy\" title=\"Privacy Policy\">Privacy Policy</a>.</p>",
         "klaviyo_public_key": "",
         "klaviyo_list_id": "X8aJVX",
-        "newsletter_popup_enabled": false,
+        "newsletter_popup_enabled": true,
         "newsletter_popup_trigger_text": "Subscribe to our newsletter for exclusive access",
         "newsletter_popup_interest_1": "Ready To Wear",
         "newsletter_popup_interest_2": "Bridal"
@@ -89,6 +116,7 @@
     }
   },
   "order": [
+    "promo_bar_VVXHMe",
     "footer",
     "store-switcher"
   ]

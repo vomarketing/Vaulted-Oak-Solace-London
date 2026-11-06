@@ -70,6 +70,10 @@
     }
   },
   "layout": {
+    "promo_bar": {
+      "label": "Promotion",
+      "close": "Close"
+    },
     "breadcrumbs": {
       "home": "Home"
     },

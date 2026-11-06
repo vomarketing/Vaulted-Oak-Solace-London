@@ -243,6 +243,10 @@
     }
   },
   "layout": {
+    "promo_bar": {
+      "label": "Promoção",
+      "close": "Fechar"
+    },
     "cart": {
       "title": "Carrinho",
       "items_count": {

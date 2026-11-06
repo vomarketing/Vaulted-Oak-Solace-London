@@ -1,0 +1,232 @@
+/*
+ * Promo bar (sections/promo-bar.liquid).
+ * Inlined by the section, only on pages where a bar renders.
+ *
+ * Bars are fixed to the viewport. promo-bar.js measures them, stacks any
+ * that share a position via --promo-bar-offset, and publishes the totals
+ * on <html> as --promo-bar-top-height / --promo-bar-bottom-height. The
+ * :has() fallbacks below cover first paint before the script runs.
+ */
+
+:root:has(.pb-PromoBar-top) {
+  --promo-bar-top-height: 40px;
+}
+
+:root:has(.pb-PromoBar-bottom) {
+  --promo-bar-bottom-height: 40px;
+}
+
+.pb-PromoBar {
+  position: fixed;
+  left: 0;
+  right: 0;
+  /* One above the header so a top bar's panel can open over it. */
+  z-index: calc(var(--z-header, 10) + 1);
+  --promo-bar-inset: 20px;
+  color: var(--promo-bar-fg, #000000);
+  background-color: var(--promo-bar-bg, #ffffff);
+  pointer-events: auto;
+}
+
+.pb-PromoBar-top {
+  top: var(--promo-bar-offset, 0px);
+}
+
+.pb-PromoBar-bottom {
+  bottom: var(--promo-bar-offset, 0px);
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+.pb-PromoBar_Inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  padding: 8px 20px;
+  color: inherit;
+  text-align: center;
+  text-decoration: none;
+}
+
+.pb-PromoBar_Text {
+  margin: 0;
+  font-family: var(--font-family-primary);
+  font-size: var(--type-12-size, 12px);
+  line-height: var(--type-10-line-height, 14px);
+}
+
+.pb-PromoBar_Link:hover .pb-PromoBar_Text,
+.pb-PromoBar_Link:focus-visible .pb-PromoBar_Text {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.pb-PromoBar_Link:focus-visible,
+.pb-PromoBar_Toggle:focus-visible {
+  outline: 1px solid currentColor;
+  outline-offset: -4px;
+}
+
+@media (min-width: 768px) {
+  .pb-PromoBar {
+    --promo-bar-inset: 32px;
+  }
+}
+
+/* Popup toggle: text stays centred, +/- icon sits at the right edge. */
+.pb-PromoBar_Toggle {
+  position: relative;
+  width: 100%;
+  margin: 0;
+  padding-inline: calc(var(--promo-bar-inset) + 20px);
+  border: 0;
+  border-radius: 0;
+  background: none;
+  font: inherit;
+  cursor: pointer;
+}
+
+.pb-PromoBar_Icon {
+  position: absolute;
+  top: 50%;
+  right: var(--promo-bar-inset);
+  display: flex;
+  translate: 0 -50%;
+}
+
+.pb-PromoBar_IconVertical {
+  transition: opacity 0.2s ease;
+}
+
+.pb-PromoBar_Toggle[aria-expanded="true"] .pb-PromoBar_IconVertical {
+  opacity: 0;
+}
+
+/* Popup panel, attached above a bottom bar or below a top bar. */
+.pb-PromoBar_Panel {
+  position: absolute;
+  right: var(--promo-bar-inset);
+  width: 370px;
+  max-width: calc(100vw - 2 * var(--promo-bar-inset));
+  max-height: calc(100dvh - var(--promo-bar-top-height, 0px) - var(--promo-bar-bottom-height, 0px) - 2 * var(--promo-bar-inset));
+  overflow-y: auto;
+  border: 1px solid currentColor;
+  color: var(--promo-bar-fg, #000000);
+  background-color: var(--promo-bar-bg, #ffffff);
+  font-family: var(--font-family-primary);
+  font-size: var(--type-12-size, 12px);
+  line-height: var(--type-10-line-height, 14px);
+  animation: pb-PromoBar_PanelIn 0.2s ease;
+}
+
+.pb-PromoBar-bottom .pb-PromoBar_Panel {
+  bottom: calc(100% + var(--promo-bar-inset));
+}
+
+.pb-PromoBar-top .pb-PromoBar_Panel {
+  top: calc(100% + var(--promo-bar-inset));
+}
+
+.pb-PromoBar_Panel[hidden] {
+  display: none;
+}
+
+@keyframes pb-PromoBar_PanelIn {
+  from {
+    opacity: 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .pb-PromoBar_Panel {
+    animation: none;
+  }
+}
+
+.pb-PromoBar_PanelHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  min-height: 40px;
+  padding: 8px 16px;
+  border-bottom: 1px solid color-mix(in srgb, currentColor 20%, transparent);
+}
+
+.pb-PromoBar_PanelTitle {
+  margin: 0;
+}
+
+.pb-PromoBar_Close {
+  margin: 0 0 0 auto;
+  padding: 0;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+
+.pb-PromoBar_Close:hover,
+.pb-PromoBar_Close:focus-visible {
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.pb-PromoBar_PanelBody {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 12px 16px 16px;
+}
+
+.pb-PromoBar_PanelText > * {
+  margin: 0;
+}
+
+.pb-PromoBar_PanelText > * + * {
+  margin-top: 8px;
+}
+
+.pb-PromoBar_PanelText a {
+  color: inherit;
+  text-decoration: underline;
+}
+
+.pb-PromoBar_Cta {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 40px;
+  margin: 0;
+  padding: 8px 16px;
+  border: 1px solid currentColor;
+  border-radius: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-weight: var(--font-weight-medium, 500);
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.pb-PromoBar_Cta[hidden] {
+  display: none;
+}
+
+.pb-PromoBar_Cta:hover,
+.pb-PromoBar_Cta:focus-visible {
+  color: var(--promo-bar-bg, #ffffff);
+  background-color: var(--promo-bar-fg, #000000);
+}
+
+/* Keep page content clear of the bars. */
+.hd-Header[data-sticky="true"] {
+  top: var(--promo-bar-top-height, 0px);
+}
+
+body:not([data-fullpage-scroll]) {
+  padding-bottom: var(--promo-bar-bottom-height, 0px);
+}

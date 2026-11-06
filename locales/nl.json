@@ -243,6 +243,10 @@
     }
   },
   "layout": {
+    "promo_bar": {
+      "label": "Promotie",
+      "close": "Sluiten"
+    },
     "cart": {
       "title": "Winkelmandje",
       "items_count": {
