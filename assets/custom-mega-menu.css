@@ -51,13 +51,14 @@
     transition: visibility 0s linear var(--mm-cover-delay);
   }
 
-  .hd-Header .hd-Header_Logo {
-    transition: opacity 100ms ease;
+  .hd-Header .hd-Header_Logo,
+  .hd-Header .hd-Header_Logo svg {
+    transition: none;
   }
 
   .hd-Header[data-mega-open] .hd-Header_Logo {
     opacity: 0;
-    transition: none;
+    visibility: hidden;
   }
 
   .hd-Header[data-mega-open] .hd-Header_Nav-left .hd-Nav_Link {

@@ -337,17 +337,6 @@
   .hd-Nav_Items {
     align-items: center;
   }
-
-  .hd-Header_Logo {
-    [data-mega-open] & {
-      opacity: 0;
-    }
-
-    [data-mega-open][data-mega-closing] & {
-      opacity: 1;
-      transition: opacity 300ms ease 150ms;
-    }
-  }
 }
 
 @media (min-width: 1920px) {
