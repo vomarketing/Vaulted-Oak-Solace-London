@@ -15,7 +15,7 @@
       "type": "promo-bar",
       "name": "Promo bar",
       "settings": {
-        "enabled": true,
+        "enabled": false,
         "text": "Spring / Summer 27 Coming Soon",
         "link": "",
         "popup_enabled": true,
@@ -25,7 +25,7 @@
         "button_action": "link",
         "button_link": "shopify://blogs/news",
         "position": "bottom",
-        "background_color": "#FFFFFF",
+        "background_color": "#ffffff",
         "text_color": "#000000",
         "show_on": "all",
         "show_on_index": false,
