@@ -16,6 +16,17 @@
     "main": {
       "settings": {},
       "blocks": {
+        "faq_AhzXYj": {
+          "type": "faq",
+          "disabled": false,
+          "settings": {
+            "title": "Online Archive Sale 2026 - Promotion Terms",
+            "text": "<p><span style=\"text-decoration:underline\">Promotion Period</span><br/>The Online Archive Sale (the “Promotion”) runs from 5:00am ET on November 16, 2026 until 11:59pm ET on November 23, 2026. Orders must be placed within this period to qualify.&nbsp;<br/><br/><span style=\"text-decoration:underline\">Eligible Items</span><br/>The Promotion applies only to selected archive items marked as part of the Online Archive Sale on www.solacelondon.com/en-us. Not all products are included. Eligible items are available while supplies last and we cannot guarantee that any item, size or color will be available throughout the Promotion period.&nbsp;<br/><br/><span style=\"text-decoration:underline\">Discount</span><br/>Eligible items are offered at 70% off their original retail price. The discount is applied automatically at checkout and no code is needed. The Promotion cannot be combined with any other offer, discount code or promotion, or applied retrospectively to previous orders.&nbsp;<br/><br/><span style=\"text-decoration:underline\">Final Sale</span><br/>All items purchased as part of the Promotion are final sale. They cannot be returned, exchanged or refunded, for reasons of size, fit or change of mind, except as set out in the “Faulty, Damaged or Incorrect Items\" section below.&nbsp;<br/><br/>This final sale policy is shown on eligible product pages, in your bag and at checkout.<br/><br/>Nothing in this policy limits any rights you may have under applicable federal or state consumer protection laws.&nbsp;<br/><br/><span style=\"text-decoration:underline\">Faulty, Damaged or Incorrect Items</span><br/>The final sale policy does not affect your rights if an item arrives faulty or damaged, or is not the item you ordered.&nbsp;<br/><br/>If this happens, please email help@solacelondon.com with your order number and photos of the item. Our team will advise on the next steps in accordance with your applicable consumer rights.<br/><br/>We cannot guarantee a replacement, as archive stock is limited.&nbsp;<br/><br/><span style=\"text-decoration:underline\">Sizing</span><br/>Please check our size guide before ordering. For help with sizing contact help@solacelondon.com before placing your order. Our team is available daily, 9am-5pm GMT. Final sale items cannot be returned or exchanged for reasons of size or fit.&nbsp;<br/><br/><span style=\"text-decoration:underline\">Changes To The Promotion</span><br/>We may change, suspend or end the Promotion at any time if circumstances beyond our reasonable control require it. Any change will not affect orders already confirmed.<br/></p>",
+            "link_text": "",
+            "show_cookie_table": false,
+            "link_url": ""
+          }
+        },
         "faq_rCyUmz": {
           "settings": {
             "text": "<p>The intellectual property rights of all content made available to you on or through this Website belong either to the Website Owner or respective trademark owners and are protected by copyright laws and treaties around the world. The Website Owner and respective trademark owners reserve the use of such rights. Without the prior written permission of the Website Owner, nothing contained on this website should be construed as granting any licence or right to use any trademark. Where a trade mark or brand name of a respective trademark owner is referred to it is used solely to describe or identify products and services and is in no way an assertion that such products or services are endorsed by or connected to the Website Owner.</p>"
@@ -76,7 +87,29 @@
             "text": "<p>We welcome your feedback and want to hear about any complaints. Please contact us at <a href=\"mailto:help@solacelondon.com\">help@solacelondon.com</a> and we will aim to resolve any issue as quickly as possible once it is brought to our attention. If we are unable to resolve a complaint through our internal process, we will confirm this to you in writing.</p><p><span style=\"text-decoration:underline\"><strong>Post</strong></span></p><p>SL US Inc., 16192 Coastal Highway, Lewes, Delaware 19958, United States.</p>"
           }
         }
-      }
+      },
+      "block_order": [
+        "faq_j3VC6V",
+        "faq_AhzXYj",
+        "faq_eBNGnc",
+        "faq_PxzVc8",
+        "faq_rCyUmz",
+        "faq_C4KtWJ",
+        "faq_7d9nAd",
+        "faq_6Wq8dc",
+        "faq_3aTrpj",
+        "faq_jjP9nC",
+        "faq_kVVW4W",
+        "faq_tknEM3",
+        "faq_kVcKyC",
+        "faq_WqPAxm",
+        "faq_Tizmhz",
+        "faq_64MGJM",
+        "faq_r3XLgU",
+        "faq_RpfnrP",
+        "faq_qtFLPW",
+        "faq_BJfXcz"
+      ]
     }
   }
 }
