@@ -53,6 +53,9 @@
       assign bubble_count_color = '#ffffff'
     endif
   endif
+
+  assign logo_close_delay = section.settings.logo_close_delay | default: 0
+  assign logo_close_transition = section.settings.logo_close_transition | default: 0
 -%}
 
 <style>
@@ -62,6 +65,9 @@
     --Color_Secondary: {{ header_text_color }};
 
     --Header_CountTextColor: {{ bubble_count_color }};
+
+    --Header_Logo_Close_Delay: {{- logo_close_delay | append: 'ms' -}};
+    --Header_Logo_Close_Transition: {{- logo_close_transition | append: 'ms' -}};
 
     width: 100%;
     z-index: 9;
@@ -468,6 +474,30 @@
 {
   "name": "Header",
   "settings": [
+    {
+      "type": "header",
+      "content": "Logo"
+    },
+    {
+      "type": "range",
+      "id": "logo_close_transition",
+      "label": "Transition after closing",
+      "min": 0,
+      "max": 1500,
+      "step": 25,
+      "unit": "ms",
+      "default": 150
+    },
+    {
+      "type": "range",
+      "id": "logo_close_delay",
+      "label": "Delay after closing",
+      "min": 0,
+      "max": 500,
+      "step": 5,
+      "unit": "ms",
+      "default": 150
+    },
     {
       "type": "header",
       "content": "Header navigation"
