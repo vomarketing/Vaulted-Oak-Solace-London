@@ -87,6 +87,7 @@
       const panel = document.getElementById(trigger.dataset.megaTrigger);
       if (!panel || !this.header.contains(panel)) return;
       if (this.panel) this.close(false);
+      this.clearClosedMark?.();
       this.trigger = trigger;
       this.panel = panel;
       this.state = 'overview';
@@ -313,6 +314,7 @@
       this.header.removeAttribute('data-mega-open');
       this.header.removeAttribute('data-mega-opening');
       this.header.removeAttribute('data-mega-closing');
+      this.markClosed();
       for (const [name, value] of this.savedAttributes) {
         if (value === null) this.header.removeAttribute(name); else this.header.setAttribute(name, value);
       }
@@ -336,7 +338,28 @@
       if (restoreFocus && oldTrigger?.isConnected && oldTrigger.getClientRects().length) oldTrigger.focus({ preventScroll: true });
       this.header.dispatchEvent(new CustomEvent('mega-menu:close', { bubbles: true }));
     }
-    destroy() { this.close(false); this.abort.abort(); }
+    // Lets the logo fade back in with the header's "after closing" settings
+    // (custom-header.css). Cleared when that fade ends or is interrupted, or
+    // when the menu reopens, so other logo changes stay instant.
+    markClosed() {
+      this.clearClosedMark?.();
+      const logo = this.header.querySelector('.hd-Header_Logo');
+      if (!logo || !this.media.matches) return;
+      const clear = () => {
+        logo.removeEventListener('transitionend', onEnd);
+        logo.removeEventListener('transitioncancel', onEnd);
+        this.header.removeAttribute('data-mega-closed');
+        this.clearClosedMark = null;
+      };
+      const onEnd = (e) => {
+        if (e.target === logo && e.propertyName === 'opacity') clear();
+      };
+      logo.addEventListener('transitionend', onEnd);
+      logo.addEventListener('transitioncancel', onEnd);
+      this.clearClosedMark = clear;
+      this.header.setAttribute('data-mega-closed', '');
+    }
+    destroy() { this.clearClosedMark?.(); this.close(false); this.abort.abort(); }
   }
   window.SolaceMegaMenu = MegaMenuController;
   const mount = () => {
