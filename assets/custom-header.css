@@ -342,10 +342,19 @@
     [data-mega-open] & {
       opacity: 0;
     }
+  }
 
-    [data-mega-open][data-mega-closing] & {
-      opacity: 1;
-      transition: opacity var(--Header_Logo_Close_Transition, 300ms) ease var(--Header_Logo_Close_Delay, 150ms);
+  /*
+   * Once the mega menu has finished closing, the logo waits for "Delay after
+   * closing" and then fades in over "Transition after closing" (header
+   * settings). custom-mega-menu.js sets data-mega-closed until that fade ends.
+   * Hiding the logo (a menu, dropdown or drawer opening) stays instant.
+   */
+  body:not(.util-Drawer-active) .hd-Header[data-mega-closed]:not(.hd-Header-dropdownActive) .hd-Header_Logo {
+    transition: opacity var(--Header_Logo_Close_Transition, 150ms) ease var(--Header_Logo_Close_Delay, 150ms);
+
+    @media (prefers-reduced-motion: reduce) {
+      transition: none;
     }
   }
 }
