@@ -60,8 +60,8 @@
         "mega_menu_6tMrfh"
       ],
       "settings": {
-        "logo_close_transition": 1500,
-        "logo_close_delay": 500,
+        "logo_close_transition": 500,
+        "logo_close_delay": 335,
         "left_navigation": "desktop-left",
         "right_navigation": "desktop-right",
         "mobile_need_help_menu": "need-help",
