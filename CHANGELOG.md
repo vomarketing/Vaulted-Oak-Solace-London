@@ -1,6 +1,12 @@
 # Changelog
 All notable changes to this project will be documented in this file.
 
+## v1.1.6 - 2026-11-11
+
+### Changed
+
+
+
 ## v1.1.5 - 2026-11-02
 
 ### Changed
