@@ -69,10 +69,54 @@
     for filter in search.filters
       assign active_filter_count = active_filter_count | plus: filter.active_values.size
     endfor
+  -%}
 
+  {%- assign visible_product_count = 0 -%}
+  {%- assign search_page_count = 0 -%}
+  {%- capture search_product_results -%}
+    {%- if search.performed and search.results_count > 0 -%}
+      {%- paginate search.results by pagination_amount -%}
+      {%- assign search_page_count = paginate.pages -%}
+        {%- capture visible_product_cards -%}
+          {%- for item in search.results -%}
+            {%- if item.object_type != 'product' or item.tags contains 'remove-klevu' -%}
+              {%- continue -%}
+            {%- endif -%}
+
+            {%- assign visible_product_count = visible_product_count | plus: 1 -%}
+            <div class="prd-List_Item js-Animate" data-animation="Fade">
+              {%- render 'product-card',
+                product: item,
+                enable_card_swipe: true,
+                packshot_when_available: true,
+                check_first_image_tag: section.settings.enable_first_image_last_tag,
+                first_image_as_hover: section.settings.set_first_image_as_hover
+              -%}
+            </div>
+          {%- endfor -%}
+        {%- endcapture -%}
+
+        {%- if visible_product_count > 0 or search_page_count > 1 -%}
+          <section class="clc-List clc-List--mobile-columns-{{ section.settings.mobile_columns | default: '2' }}">
+            {%- if visible_product_count > 0 -%}
+              <div class="prd-List">
+                <div class="prd-List_Items prd-List_Items--3-col">
+                  {{ visible_product_cards }}
+                </div>
+              </div>
+            {%- endif -%}
+
+            {%- render 'collection-pagination', paginate: paginate -%}
+          </section>
+        {%- endif -%}
+      {%- endpaginate -%}
+    {%- endif -%}
+  {%- endcapture -%}
+
+  {%- liquid
     assign show_filter_button = false
     if search.performed
-      if search.results_count > 0 or active_filter_count > 0
+      if visible_product_count > 0 or search_page_count > 1 or active_filter_count > 0
         assign show_filter_button = true
       endif
     endif
@@ -95,7 +139,7 @@
           <div class="search-header__content">
             <h1 class="search-header__title text-reg-12">
               {%- if search.performed and search.terms != blank -%}
-                Search for “{{ display_search_terms | escape }}” ({{ search.results_count }})
+                Search for “{{ display_search_terms | escape }}” ({{ visible_product_count }}{% if search_page_count > 1 %} on this page{% endif %})
               {%- else -%}
                 {{ 'general.search.title' | t }}
               {%- endif -%}
@@ -139,32 +183,7 @@
       </div>
 
       {%- if search.performed -%}
-        {%- if search.results_count > 0 -%}
-          {%- paginate search.results by pagination_amount -%}
-            <section class="clc-List clc-List--mobile-columns-{{ section.settings.mobile_columns | default: '2' }}">
-              <div class="prd-List">
-                <div class="prd-List_Items prd-List_Items--3-col">
-                  {%- for item in search.results -%}
-                    {%- if item.object_type == 'product' -%}
-                      <div class="prd-List_Item js-Animate" data-animation="Fade">
-                        {%- render 'product-card',
-                          product: item,
-                          enable_card_swipe: true,
-                          packshot_when_available: true,
-                          check_first_image_tag: section.settings.enable_first_image_last_tag,
-                          first_image_as_hover: section.settings.set_first_image_as_hover
-                        -%}
-                      </div>
-                    {%- endif -%}
-                  {%- endfor -%}
-                </div>
-              </div>
-
-              {%- render 'collection-pagination', paginate: paginate -%}
-            </section>
-          {%- endpaginate -%}
-
-        {%- else -%}
+        {%- if visible_product_count == 0 -%}
           <div class="search-empty">
             <h2 class="search-empty__title text-med-14 uppercase">{{ 'general.search.no_results_title' | t }}</h2>
             <p class="search-empty__text text-reg-12">{{ 'general.search.no_results_html' | t }}</p>
@@ -173,6 +192,7 @@
             </a>
           </div>
         {%- endif -%}
+        {{ search_product_results }}
 
       {%- else -%}
         <div class="search-page__form-wrapper">
