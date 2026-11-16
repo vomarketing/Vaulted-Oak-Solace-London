@@ -14,59 +14,49 @@
   "parent": "index.json",
   "sections": {
     "hero_fullscreen_aigzqq": {
-      "disabled": false,
       "settings": {
         "media_type": "image",
         "image_desktop": "shopify://shop_images/Now_Live_-_Desktop.jpg",
         "image_mobile": "shopify://shop_images/Now_Live_-_Mobile.jpg",
         "heading": "*T&Cs Apply",
         "cta_text": "Shop Now",
-        "cta_link": "shopify://collections/archive-sale-27"
-      },
-      "blocks": {}
+        "cta_link": "shopify://collections/archive-sale"
+      }
     },
     "hero_fullscreen_k4QYGJ": {
       "disabled": true,
       "settings": {
         "heading": "Now shipping to the US",
         "cta_text": "Import duties, tariffs and taxes included"
-      },
-      "blocks": {}
+      }
     },
     "hero_fullscreen_VdUAeD": {
       "disabled": true,
-      "settings": {},
-      "blocks": {}
+      "settings": {}
     },
     "two_ups_media_HyFTNx": {
       "disabled": true,
-      "settings": {},
-      "blocks": {}
+      "settings": {}
     },
     "hero_fullscreen_8gXhRJ": {
       "disabled": true,
-      "settings": {},
-      "blocks": {}
+      "settings": {}
     },
     "hero_fullscreen_fnD3ha": {
       "disabled": true,
-      "settings": {},
-      "blocks": {}
+      "settings": {}
     },
     "two_ups_media_qyGArL": {
       "disabled": true,
-      "settings": {},
-      "blocks": {}
+      "settings": {}
     },
     "hero_fullscreen_PPmfBH": {
       "disabled": true,
-      "settings": {},
-      "blocks": {}
+      "settings": {}
     },
     "two_ups_media_daMdzi": {
       "disabled": true,
-      "settings": {},
-      "blocks": {}
+      "settings": {}
     }
   }
 }
