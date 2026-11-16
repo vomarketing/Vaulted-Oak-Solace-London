@@ -26,7 +26,7 @@
       "blocks": {}
     },
     "hero_fullscreen_VdUAeD": {
-      "disabled": false,
+      "disabled": true,
       "settings": {},
       "blocks": {}
     },
@@ -64,6 +64,11 @@
       "blocks": {}
     },
     "hero_fullscreen_fnD3ha": {
+      "disabled": true,
+      "settings": {},
+      "blocks": {}
+    },
+    "rich_text_PG7mfm": {
       "disabled": true,
       "settings": {},
       "blocks": {}
