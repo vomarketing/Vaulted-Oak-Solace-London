@@ -12,7 +12,7 @@
     "market": "usa-swap"
   },
   "current": {
-    "mbg_delivery_summary": "<p>Order by 2:30pm UK time for same-day dispatch.</p><p><strong>Items from The Online Archive are final sale cannot be returned or exchanged.</strong>&nbsp;</p><p>Full-price items may be returned within 14 days of receipt.</p>",
+    "mbg_delivery_summary": "<p><strong>Items from The Online Archive are final sale cannot be returned or exchanged.</strong>&nbsp;</p><p>Order by 2:30pm UK time for same-day dispatch.During sale period, there may be slight delays in dispatch.</p><p>Full-price items may be returned within 14 days of receipt.</p>",
     "mbg_final_sale_message": "Items from The Online Archive Sale and final sale and cannot be returned or exchanged"
   }
 }
