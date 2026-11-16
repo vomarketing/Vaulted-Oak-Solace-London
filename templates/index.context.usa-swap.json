@@ -13,6 +13,18 @@
   },
   "parent": "index.json",
   "sections": {
+    "hero_fullscreen_aigzqq": {
+      "disabled": true,
+      "settings": {
+        "media_type": "image",
+        "image_desktop": "shopify://shop_images/Now_Live_-_Desktop.jpg",
+        "image_mobile": "shopify://shop_images/Now_Live_-_Mobile.jpg",
+        "heading": "*T&Cs Apply",
+        "cta_text": "Shop Now",
+        "cta_link": "shopify://collections/archive-sale-27"
+      },
+      "blocks": {}
+    },
     "hero_fullscreen_k4QYGJ": {
       "settings": {
         "heading": "Now shipping to the US",
