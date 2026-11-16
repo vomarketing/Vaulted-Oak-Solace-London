@@ -32,6 +32,17 @@
             "text": "<p>The intellectual property rights of all content made available to you on or through this Website belong either to the Website Owner or respective trademark owners and are protected by copyright laws and treaties around the world. The Website Owner and respective trademark owners reserve the use of such rights. Without the prior written permission of the Website Owner, nothing contained on this website should be construed as granting any licence or right to use any trademark. Where a trade mark or brand name of a respective trademark owner is referred to it is used solely to describe or identify products and services and is in no way an assertion that such products or services are endorsed by or connected to the Website Owner.</p>"
           }
         },
+        "faq_iUgFX": {
+          "type": "faq",
+          "disabled": true,
+          "settings": {
+            "title": "",
+            "text": "",
+            "link_text": "",
+            "show_cookie_table": false,
+            "link_url": ""
+          }
+        },
         "faq_C4KtWJ": {
           "settings": {
             "text": "<p>The Website Owner is SL US Inc., a corporation incorporated in the State of Delaware, United States, with its registered agent located at 16192 Coastal Highway, Lewes, Delaware 19958. SL US Inc. operates the United States version of this Website and is the seller of products purchased by customers located in the United States. You can contact us at any time at help@solacelondon.com or by phone at (929) 725-3507. By using the Services, you warrant and represent to the Website Owner that you are legally entitled to access and make use of the information made available via the Website. You are strictly prohibited from misusing the Website, including but not limited to: committing or encouraging any unlawful act; transmitting or distributing a virus, trojan, worm, logic bomb or posting any other material which is malicious, technologically harmful, in breach of confidence or in any way offensive or obscene; gaining or attempting to gain unauthorised access to any aspect of the Service; corrupting data; causing annoyance to other users; infringing upon any other person’s proprietary or intellectual property rights; sending any unsolicited advertising or promotional material, commonly referred to as “spam”; or sending or posting any message or material that is unlawful, harassing, defamatory, abusive, indecent, threatening, harmful, vulgar, obscene, sexually orientated, racially offensive, profane, pornographic, or otherwise objectionable. Misuse of the Website may violate applicable federal or state law, and the Website Owner will report any such breach, including the disclosure of your identity, to the relevant law enforcement authorities. The Website Owner will not be liable for any loss or damage caused by a distributed denial-of-service attack, viruses or other technologically harmful material that may infect your computer equipment, computer programs, data or other proprietary material due to your use of this Website or to your downloading of any material posted on it, or on any website linked to it. Additionally, where you are using the Website in the course of a business or trade, by using the Services, you hereby agree to indemnify, defend and hold harmless the Website Owner, its directors, officers, employees, consultants, agents, and affiliates, against any loss, liability, damage or expense of whatever nature that the Website Owner or any third party may suffer arising from your use of this Website or your breach of these Terms and Conditions. This indemnity does not apply where you are using the Website as a consumer.</p>"
@@ -91,6 +102,7 @@
       "block_order": [
         "faq_j3VC6V",
         "faq_AhzXYj",
+        "faq_iUgFX",
         "faq_eBNGnc",
         "faq_PxzVc8",
         "faq_rCyUmz",
