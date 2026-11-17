@@ -14,7 +14,9 @@
       "disabled": true,
       "name": "Hero Fullscreen",
       "settings": {
-        "media_type": "video",
+        "media_type": "image",
+        "image_desktop": "shopify://shop_images/Now_Live_-_Desktop.jpg",
+        "image_mobile": "shopify://shop_images/Now_Live_-_Mobile.jpg",
         "enable_custom_mobile_height": false,
         "custom_mobile_height": 667,
         "video_desktop": "shopify://files/videos/SOLACE 3.mp4",
@@ -30,12 +32,12 @@
         "background_color": "#000000",
         "text_color": "#ffffff",
         "content_vertical_alignment": "bottom",
-        "heading": "",
+        "heading": "T&Cs apply",
         "heading_font_size": "text-reg-14",
         "heading_uppercase": false,
         "description": "",
-        "cta_text": "Resort 27 Collection",
-        "cta_link": "shopify://collections/resort-27",
+        "cta_text": "Shop Now",
+        "cta_link": "shopify://collections/archive-sale",
         "cta_font_size": "text-reg-14",
         "cta_uppercase": false
       }
