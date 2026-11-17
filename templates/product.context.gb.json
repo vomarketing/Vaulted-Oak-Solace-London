@@ -20,14 +20,14 @@
           "disabled": true,
           "settings": {}
         },
+        "tab_content_jWBbB7": {
+          "settings": {
+            "shipping_returns": "<p><strong>Delivery</strong></p><p>UK: 1-2 working days — £10</p><p>Europe: 2–4 working days — £15</p><p>Rest of world: 5–6 working days — £25</p><p>Orders are shipped from the UK via DHL Express. During sale period, there may be slight delays in dispatch. International orders may be subject to customs duties and import taxes</p><p><strong>Returns</strong></p><p><strong>Items from The Online Archive are final sale cannot be returned or exchanged.</strong></p><p>Full-price items may be returned within 14 days of receipt. Returns are subject to a return shipping fee, deducted from your refund</p><p>For full details, see <a href=\"/pages/shipping-returns\" title=\"Shipping & Returns\">Shipping & Returns</a>.</p>"
+          }
+        },
         "duties_taxes_KWFFHd": {
           "disabled": true,
           "settings": {}
-        },
-        "tab_content_jWBbB7": {
-          "settings": {
-            "shipping_returns": "<p><strong>Delivery</strong></p><p>UK: Next working day — £10</p><p>Europe: 1–3 working days — £15</p><p>Rest of world: 3–5 working days — £25</p><p>Orders are shipped from the UK via DHL Express. Order by 2:30pm UK time, Monday–Friday, for same-day dispatch. International orders may be subject to customs duties and import taxes</p><p><strong>Returns</strong></p><p>Full-price items may be returned within 14 days of receipt. Returns are subject to a return shipping fee, deducted from your refund</p><p>For full details, see <a href=\"/pages/shipping-returns\" title=\"Shipping & Returns\">Shipping & Returns</a>.</p>"
-          }
         }
       }
     }
