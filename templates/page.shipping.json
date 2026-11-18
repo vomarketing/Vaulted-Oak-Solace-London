@@ -57,7 +57,7 @@
         "shipping_richtext_MPxCAn": {
           "type": "shipping_richtext",
           "settings": {
-            "category": "EU Customers - Right of Withdrawal",
+            "category": "UK & EU Customers - Right of Withdrawal",
             "content": "<p>If your order was delivered to an address in the European Union, you have a statutory right to withdraw from your purchase within 14 days of receiving your goods, without giving a reason, unless an exception applies. This is separate from our standard returns process.&nbsp;</p><p>To exercise your EU right of withdrawal, please use the button below. If your order was not delivered to an EU address, or you do not wish to use this right, please follow our standard returns process instead.&nbsp;</p><p><a href=\"https://www.solacelondon.com/pages/shipping-returns#revoq-widerruf\"><span style=\"text-decoration:underline\"><strong>WITHDRAW FROM CONTRACT HERE</strong></span></a></p><p>We will email to acknowledge your request, and Customer Care may contact you if any further information is needed.&nbsp;</p><p>Any items included in your withdrawal request must be returned within 14 days of your request, in line with our returns instructions before a refund is processed.&nbsp;</p><p>Where you withdraw, we will refund the price paid together with the standard outbound delivery cost, within 14 days of receiving the goods back or your proof of return. You are responsible for the cost of returning the goods.&nbsp;</p>"
           }
         },
