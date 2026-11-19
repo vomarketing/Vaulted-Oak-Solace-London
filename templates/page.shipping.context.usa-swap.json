@@ -32,7 +32,7 @@
         },
         "shipping_richtext_6iA4aB": {
           "settings": {
-            "content": "<p>All prices shown at checkout are in US dollars and include all applicable import duties and taxes. Your order ships on a Delivered Duty Paid (DDP) basis, so there's nothing more to pay when your oder arrives.</p>"
+            "content": "<p>All prices shown at checkout are in US dollars and include all applicable US import duties and taxes. Your order ships on a Delivered Duty Paid (DDP) basis, so there's nothing more to pay when your order arrives.</p>"
           }
         },
         "shipping_richtext_X7xkYM": {
