@@ -11,6 +11,7 @@
   "sections": {
     "hero_fullscreen_aigzqq": {
       "type": "hero-fullscreen",
+      "disabled": true,
       "name": "Hero Fullscreen",
       "settings": {
         "media_type": "image",
@@ -43,7 +44,6 @@
     },
     "hero_fullscreen_VdUAeD": {
       "type": "hero-fullscreen",
-      "disabled": true,
       "name": "Hero Fullscreen",
       "settings": {
         "media_type": "video",
@@ -74,7 +74,6 @@
     },
     "hero_fullscreen_k4QYGJ": {
       "type": "hero-fullscreen",
-      "disabled": true,
       "name": "Hero Fullscreen",
       "settings": {
         "media_type": "image",
@@ -140,7 +139,6 @@
         "item_TX7wpi",
         "item_cjJJ49"
       ],
-      "disabled": true,
       "name": "Two Ups Media",
       "settings": {
         "layout_width": "contained",
@@ -159,7 +157,6 @@
     },
     "hero_fullscreen_8gXhRJ": {
       "type": "hero-fullscreen",
-      "disabled": true,
       "name": "Hero Fullscreen",
       "settings": {
         "media_type": "image",
@@ -225,7 +222,6 @@
         "item_GLQ4Wk",
         "item_xbFHzD"
       ],
-      "disabled": true,
       "name": "Two Ups Media",
       "settings": {
         "layout_width": "contained",
@@ -244,7 +240,6 @@
     },
     "hero_fullscreen_PPmfBH": {
       "type": "hero-fullscreen",
-      "disabled": true,
       "name": "Hero Fullscreen",
       "settings": {
         "media_type": "image",
@@ -310,7 +305,6 @@
         "item_e6PDEg",
         "item_ccjBN6"
       ],
-      "disabled": true,
       "name": "Two Ups Media",
       "settings": {
         "layout_width": "contained",
@@ -329,7 +323,6 @@
     },
     "hero_fullscreen_fnD3ha": {
       "type": "hero-fullscreen",
-      "disabled": true,
       "name": "Hero Fullscreen",
       "settings": {
         "media_type": "image",
