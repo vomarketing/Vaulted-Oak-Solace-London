@@ -70,6 +70,7 @@
         },
         "shipping_richtext_taKrmr": {
           "type": "shipping_richtext",
+          "disabled": true,
           "settings": {
             "category": "Customer Services",
             "content": "<p>Our Customer Care team is based in the United Kingdom.&nbsp;</p><p>For further help or enquiries, please contact us at&nbsp;<a href=\"mailto:help@solacelondon.com\">help@solacelondon.com</a>.&nbsp;</p><p>We are available Monday to Friday, 9:00am–5:00pm UK time, excluding UK bank holidays, and aim to respond within 2 working days.</p><p>Nothing in this policy affects your statutory rights.</p><p></p>"
